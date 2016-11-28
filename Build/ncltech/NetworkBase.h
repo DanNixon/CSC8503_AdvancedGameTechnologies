@@ -88,14 +88,12 @@ public:
   // port 1234
   // - Note: ENetPeer pointer is used to identify the peer and is needed to
   // send/recieve packets to that computer
-  ENetPeer *ConnectPeer(uint8_t ip_part1, uint8_t ip_part2, uint8_t ip_part3,
-                        uint8_t ip_part4, uint16_t port_number);
+  ENetPeer *ConnectPeer(uint8_t ip_part1, uint8_t ip_part2, uint8_t ip_part3, uint8_t ip_part4, uint16_t port_number);
 
   // Enqueues data to be sent to peer computer over the network.
   // - Note: All enqueued packets will automatically be sent the next time
   // 'ServiceNetwork' is called
-  void EnqueuePacket(ENetPeer *peer, PacketTransportType transport_type,
-                     void *packet_data, size_t data_length);
+  void EnqueuePacket(ENetPeer *peer, PacketTransportType transport_type, void *packet_data, size_t data_length);
 
   // Processes all incoming packets and sends all enqueued outgoing packets
   // - All incoming packets and network events will be parsed through the given
@@ -107,8 +105,7 @@ public:
   //			ENET_EVENT_TYPE_RECEIVE, returned when a packet from a peer has been
   // recieved and is awaiting processing
   //			ENET_EVENT_TYPE_DISCONNECT, returned when a peer is disconnected
-  void ServiceNetwork(float dt,
-                      std::function<void(const ENetEvent &)> callback);
+  void ServiceNetwork(float dt, std::function<void(const ENetEvent &)> callback);
 
   // This manages our open sockets/channels used to send and recieve network
   // packets

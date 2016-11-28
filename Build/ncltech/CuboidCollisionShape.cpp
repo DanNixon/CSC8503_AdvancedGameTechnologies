@@ -43,8 +43,7 @@ Matrix3 CuboidCollisionShape::BuildInverseInertia(float invMass) const
   return inertia;
 }
 
-void CuboidCollisionShape::GetCollisionAxes(
-    const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const
+void CuboidCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const
 {
   if (out_axes)
   {
@@ -55,13 +54,11 @@ void CuboidCollisionShape::GetCollisionAxes(
   }
 }
 
-void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject,
-                                    std::vector<CollisionEdge> *out_edges) const
+void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *out_edges) const
 {
   if (out_edges)
   {
-    Matrix4 transform = currentObject->GetWorldSpaceTransform() *
-                        Matrix4::Scale(Vector3(m_CuboidHalfDimensions));
+    Matrix4 transform = currentObject->GetWorldSpaceTransform() * Matrix4::Scale(Vector3(m_CuboidHalfDimensions));
     for (unsigned int i = 0; i < m_CubeHull.GetNumEdges(); ++i)
     {
       const HullEdge &edge = m_CubeHull.GetEdge(i);
@@ -73,13 +70,11 @@ void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject,
   }
 }
 
-void CuboidCollisionShape::GetMinMaxVertexOnAxis(
-    const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
-    Vector3 *out_max) const
+void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis,
+                                                 Vector3 *out_min, Vector3 *out_max) const
 {
   // Build World Transform
-  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() *
-                        Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * Matrix4::Scale(m_CuboidHalfDimensions);
 
   // Convert world space axis into model space (Axis Aligned Cuboid)
   Matrix3 invNormalMatrix = Matrix3::Transpose(Matrix3(wsTransform));
@@ -97,14 +92,12 @@ void CuboidCollisionShape::GetMinMaxVertexOnAxis(
     *out_max = wsTransform * m_CubeHull.GetVertex(vMax).pos;
 }
 
-void CuboidCollisionShape::GetIncidentReferencePolygon(
-    const PhysicsObject *currentObject, const Vector3 &axis,
-    std::list<Vector3> *out_face, Vector3 *out_normal,
-    std::vector<Plane> *out_adjacent_planes) const
+void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
+                                                       std::list<Vector3> *out_face, Vector3 *out_normal,
+                                                       std::vector<Plane> *out_adjacent_planes) const
 {
   // Get the world-space transform
-  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() *
-                        Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * Matrix4::Scale(m_CuboidHalfDimensions);
 
   // Get normal and inverse-normal matrices to transfom the collision axis to
   // and from modelspace
@@ -157,10 +150,7 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(
   // adjacent faces along with the reference face itself.
   if (out_adjacent_planes)
   {
-    Vector3 wsPointOnPlane =
-        wsTransform *
-        m_CubeHull.GetVertex(m_CubeHull.GetEdge(best_face->edge_ids[0]).vStart)
-            .pos;
+    Vector3 wsPointOnPlane = wsTransform * m_CubeHull.GetVertex(m_CubeHull.GetEdge(best_face->edge_ids[0]).vStart).pos;
 
     // First, form a plane around the reference face
     {
@@ -205,8 +195,7 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(
 void CuboidCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
   // Just draw the cuboid hull-mesh at the position of our PhysicsObject
-  Matrix4 transform = currentObject->GetWorldSpaceTransform() *
-                      Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 transform = currentObject->GetWorldSpaceTransform() * Matrix4::Scale(m_CuboidHalfDimensions);
   m_CubeHull.DebugDraw(transform);
 }
 

@@ -103,14 +103,12 @@ public:
     return m_vFaces.size();
   }
 
-  void GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert,
-                               int *out_max_vert);
+  void GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert);
 
   void DebugDraw(const Matrix4 &transform);
 
 protected:
-  int ConstructNewEdge(int parent_face_idx, int vert_start,
-                       int vert_end); // Called by AddFace
+  int ConstructNewEdge(int parent_face_idx, int vert_start, int vert_end); // Called by AddFace
 
 protected:
   std::vector<HullVertex> m_vVertices;

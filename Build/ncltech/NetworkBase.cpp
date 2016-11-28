@@ -26,14 +26,12 @@ bool NetworkBase::Initialize(uint16_t external_port_number, size_t max_peers)
   address.port = external_port_number;
 
   m_pNetwork = enet_host_create(
-      (external_port_number == 0)
-          ? NULL
-          : &address, // the address at which other peers may connect to this
-                      // host. If NULL, then no peers may connect to the host.
-      max_peers, // the maximum number of peers that should be allocated for the
-                 // host.
-      1,         // the maximum number of channels allowed; if 0, then this is
-                 // equivalent to ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT
+      (external_port_number == 0) ? NULL : &address, // the address at which other peers may connect to this
+                                                     // host. If NULL, then no peers may connect to the host.
+      max_peers,                                     // the maximum number of peers that should be allocated for the
+                                                     // host.
+      1,                                             // the maximum number of channels allowed; if 0, then this is
+                                                     // equivalent to ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT
       0,  // downstream bandwidth of the host in bytes/second; if 0, ENet will
           // assume unlimited bandwidth.
       0); // upstream bandwidth of the host in bytes/second; if 0, ENet will
@@ -68,8 +66,7 @@ void NetworkBase::Release()
 // port 1234
 // - Note: ENetPeer pointer is used to identify the peer and is needed to
 // send/recieve packets to that computer
-ENetPeer *NetworkBase::ConnectPeer(uint8_t ip_part1, uint8_t ip_part2,
-                                   uint8_t ip_part3, uint8_t ip_part4,
+ENetPeer *NetworkBase::ConnectPeer(uint8_t ip_part1, uint8_t ip_part2, uint8_t ip_part3, uint8_t ip_part4,
                                    uint16_t port_number)
 {
   if (m_pNetwork != NULL)
@@ -78,14 +75,12 @@ ENetPeer *NetworkBase::ConnectPeer(uint8_t ip_part1, uint8_t ip_part2,
     address.port = port_number;
 
     // Host IP4 address must be condensed into a 32 bit integer
-    address.host =
-        (ip_part4 << 24) | (ip_part3 << 16) | (ip_part2 << 8) | (ip_part1);
+    address.host = (ip_part4 << 24) | (ip_part3 << 16) | (ip_part2 << 8) | (ip_part1);
 
     ENetPeer *peer = enet_host_connect(m_pNetwork, &address, 2, 0);
     if (peer == NULL)
     {
-      NCLERROR("Unable to connect to peer: %d.%d.%d.%d:%d", ip_part1, ip_part2,
-               ip_part3, ip_part4, port_number);
+      NCLERROR("Unable to connect to peer: %d.%d.%d.%d:%d", ip_part1, ip_part2, ip_part3, ip_part4, port_number);
     }
 
     return peer;
@@ -100,16 +95,14 @@ ENetPeer *NetworkBase::ConnectPeer(uint8_t ip_part1, uint8_t ip_part2,
 // Enqueues data to be sent to peer computer over the network.
 // - Note: All enqueued packets will automatically be sent the next time
 // 'ServiceNetwork' is called
-void NetworkBase::EnqueuePacket(ENetPeer *peer,
-                                PacketTransportType transport_type,
-                                void *packet_data, size_t data_length)
+void NetworkBase::EnqueuePacket(ENetPeer *peer, PacketTransportType transport_type, void *packet_data,
+                                size_t data_length)
 {
   if (m_pNetwork != NULL)
   {
     if (peer != NULL)
     {
-      ENetPacket *packet =
-          enet_packet_create(packet_data, data_length, transport_type);
+      ENetPacket *packet = enet_packet_create(packet_data, data_length, transport_type);
       enet_peer_send(peer, 0, packet);
     }
     else
@@ -132,8 +125,7 @@ void NetworkBase::EnqueuePacket(ENetPeer *peer,
 //			ENET_EVENT_TYPE_RECEIVE, returned when a packet from a peer has been
 // recieved and is awaiting processing
 //			ENET_EVENT_TYPE_DISCONNECT, returned when a peer is disconnected
-void NetworkBase::ServiceNetwork(
-    float dt, std::function<void(const ENetEvent &)> callback)
+void NetworkBase::ServiceNetwork(float dt, std::function<void(const ENetEvent &)> callback)
 {
   if (m_pNetwork != NULL)
   {
@@ -150,9 +142,7 @@ void NetworkBase::ServiceNetwork(
     {
       m_SecondTimer = 0.0f;
 
-      m_IncomingKb =
-          float(m_pNetwork->totalReceivedData /
-                128.0); // - 8 bits in a byte and 1024 bits in a KiloBit
+      m_IncomingKb = float(m_pNetwork->totalReceivedData / 128.0); // - 8 bits in a byte and 1024 bits in a KiloBit
       m_OutgoingKb = float(m_pNetwork->totalSentData / 128.0);
       m_pNetwork->totalReceivedData = 0;
       m_pNetwork->totalSentData = 0;

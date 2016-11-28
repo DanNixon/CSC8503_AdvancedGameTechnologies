@@ -181,6 +181,5 @@ protected:
 
   std::vector<Constraint *> m_vpConstraints; // Misc constraints applying to one
                                              // or more physics objects
-  std::vector<Manifold *>
-      m_vpManifolds; // Contact constraints between pairs of objects
+  std::vector<Manifold *> m_vpManifolds;     // Contact constraints between pairs of objects
 };

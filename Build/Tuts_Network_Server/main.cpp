@@ -73,8 +73,7 @@ int main(int arcg, char **argv)
   // time
   if (!server.Initialize(SERVER_PORT, 32))
   {
-    fprintf(stderr,
-            "An error occurred while trying to create an ENet server host.\n");
+    fprintf(stderr, "An error occurred while trying to create an ENet server host.\n");
     onExit(EXIT_FAILURE);
   }
 
@@ -98,8 +97,7 @@ int main(int arcg, char **argv)
         break;
 
       case ENET_EVENT_TYPE_RECEIVE:
-        printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID,
-               evnt.packet->data);
+        printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
         enet_packet_destroy(evnt.packet);
         break;
 
@@ -126,8 +124,7 @@ int main(int arcg, char **argv)
 
       // Create the packet and broadcast it (unreliable transport) to all
       // clients
-      ENetPacket *position_update =
-          enet_packet_create(&pos, sizeof(Vector3), 0);
+      ENetPacket *position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
       enet_host_broadcast(server.m_pNetwork, 0, position_update);
     }
 
@@ -187,8 +184,7 @@ void Win32_PrintAllAdapterIPAddresses()
       IP_ADDR_STRING *cIpAddress = &cAdapter->IpAddressList;
       while (cIpAddress != NULL)
       {
-        printf("\t - Listening for connections on %s:%u\n",
-               cIpAddress->IpAddress.String, SERVER_PORT);
+        printf("\t - Listening for connections on %s:%u\n", cIpAddress->IpAddress.String, SERVER_PORT);
         cIpAddress = cIpAddress->Next;
       }
       cAdapter = cAdapter->Next;

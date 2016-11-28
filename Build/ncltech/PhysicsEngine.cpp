@@ -33,8 +33,7 @@ void PhysicsEngine::AddPhysicsObject(PhysicsObject *obj)
 void PhysicsEngine::RemovePhysicsObject(PhysicsObject *obj)
 {
   // Lookup the object in question
-  auto found_loc =
-      std::find(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), obj);
+  auto found_loc = std::find(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), obj);
 
   // If found, remove it from the list
   if (found_loc != m_PhysicsObjects.end())
@@ -77,8 +76,7 @@ void PhysicsEngine::Update(float deltaTime)
   if (!m_IsPaused)
   {
     m_UpdateAccum += deltaTime;
-    for (int i = 0;
-         (m_UpdateAccum >= m_UpdateTimestep) && i < max_updates_per_frame; ++i)
+    for (int i = 0; (m_UpdateAccum >= m_UpdateTimestep) && i < max_updates_per_frame; ++i)
     {
       m_UpdateAccum -= m_UpdateTimestep;
       if (!m_IsPaused)
@@ -165,8 +163,7 @@ void PhysicsEngine::BroadPhaseCollisions()
         m_pObj2 = m_PhysicsObjects[j];
 
         // Check they both atleast have collision shapes
-        if (m_pObj1->GetCollisionShape() != NULL &&
-            m_pObj2->GetCollisionShape() != NULL)
+        if (m_pObj1->GetCollisionShape() != NULL && m_pObj2->GetCollisionShape() != NULL)
         {
           CollisionPair cp;
           cp.pObjectA = m_pObj1;
@@ -197,8 +194,7 @@ void PhysicsEngine::NarrowPhaseCollisions()
       CollisionShape *shapeA = cp.pObjectA->GetCollisionShape();
       CollisionShape *shapeB = cp.pObjectB->GetCollisionShape();
 
-      colDetect.BeginNewPair(cp.pObjectA, cp.pObjectB,
-                             cp.pObjectA->GetCollisionShape(),
+      colDetect.BeginNewPair(cp.pObjectA, cp.pObjectB, cp.pObjectA->GetCollisionShape(),
                              cp.pObjectB->GetCollisionShape());
 
       //--TUTORIAL 4 CODE--
@@ -209,12 +205,10 @@ void PhysicsEngine::NarrowPhaseCollisions()
         // - Have to do this here as colData is only temporary.
         if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS)
         {
-          NCLDebug::DrawPointNDT(colData._pointOnPlane, 0.1f,
-                                 Vector4(0.5f, 0.5f, 1.0f, 1.0f));
+          NCLDebug::DrawPointNDT(colData._pointOnPlane, 0.1f, Vector4(0.5f, 0.5f, 1.0f, 1.0f));
           NCLDebug::DrawThickLineNDT(colData._pointOnPlane,
-                                     colData._pointOnPlane -
-                                         colData._normal * colData._penetration,
-                                     0.05f, Vector4(0.0f, 0.0f, 1.0f, 1.0f));
+                                     colData._pointOnPlane - colData._normal * colData._penetration, 0.05f,
+                                     Vector4(0.0f, 0.0f, 1.0f, 1.0f));
         }
 
         // Check to see if any of the objects have collision callbacks that dont

@@ -82,99 +82,90 @@ public:
 
   virtual void OnInitializeScene() override
   {
-    SceneManager::Instance()->GetCamera()->SetPosition(
-        Vector3(-3.0f, 4.0f, 10.0f));
+    SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
     SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
-    PhysicsEngine::Instance()->SetDebugDrawFlags(
-        DEBUGDRAW_FLAGS_COLLISIONNORMALS);
+    PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS);
 
     m_AccumTime = 0.0f;
     m_Rotating = true;
 
     // Create Ground (..why not?)
-    Object *ground = CommonUtils::BuildCuboidObject(
-        "Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false,
-        0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+    Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f),
+                                                    false, 0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 
     this->AddGameObject(ground);
 
     // Create Sphere-Sphere Manifold Test
     {
       Object *sphere = CommonUtils::BuildSphereObject(
-          "orbiting_sphere1",
-          ss_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter
-                                               // overlap between spheres
-          0.5f,                                // Radius
-          true,                                // Has Physics Object
-          0.0f,                                // Infinite Mass
-          true,                                // Has Collision Shape
-          false,                               // Dragable by the user
-          CommonUtils::GenColour(0.3f, 0.5f)); // Color
+          "orbiting_sphere1", ss_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter
+                                                                   // overlap between spheres
+          0.5f,                                                    // Radius
+          true,                                                    // Has Physics Object
+          0.0f,                                                    // Infinite Mass
+          true,                                                    // Has Collision Shape
+          false,                                                   // Dragable by the user
+          CommonUtils::GenColour(0.3f, 0.5f));                     // Color
       this->AddGameObject(sphere);
 
-      this->AddGameObject(CommonUtils::BuildSphereObject(
-          "",
-          ss_pos,                                // Position
-          0.5f,                                  // Radius
-          true,                                  // Has Physics Object
-          0.0f,                                  // Infinite Mass
-          true,                                  // Has Collision Shape
-          true,                                  // Dragable by the user
-          CommonUtils::GenColour(0.55f, 1.0f))); // Color
+      this->AddGameObject(CommonUtils::BuildSphereObject("",
+                                                         ss_pos,                                // Position
+                                                         0.5f,                                  // Radius
+                                                         true,                                  // Has Physics Object
+                                                         0.0f,                                  // Infinite Mass
+                                                         true,                                  // Has Collision Shape
+                                                         true,                                  // Dragable by the user
+                                                         CommonUtils::GenColour(0.55f, 1.0f))); // Color
     }
 
     // Create Sphere-Cuboid Manifold Test
     {
 
       Object *sphere = CommonUtils::BuildSphereObject(
-          "orbiting_sphere2",
-          sc_pos + Vector3(0.9f, 0.0f, 0.0f), // Position leading to 0.1 meter
-                                              // overlap on faces, and more on
-                                              // diagonals
-          0.5f,                                // Radius
-          true,                                // Has Physics Object
-          0.0f,                                // Infinite Mass
-          true,                                // Has Collision Shape
-          false,                               // Dragable by the user
-          CommonUtils::GenColour(0.3f, 0.5f)); // Color
+          "orbiting_sphere2", sc_pos + Vector3(0.9f, 0.0f, 0.0f), // Position leading to 0.1 meter
+                                                                  // overlap on faces, and more on
+                                                                  // diagonals
+          0.5f,                                                   // Radius
+          true,                                                   // Has Physics Object
+          0.0f,                                                   // Infinite Mass
+          true,                                                   // Has Collision Shape
+          false,                                                  // Dragable by the user
+          CommonUtils::GenColour(0.3f, 0.5f));                    // Color
       this->AddGameObject(sphere);
 
-      this->AddGameObject(CommonUtils::BuildCuboidObject(
-          "",
-          sc_pos,                                // Position
-          Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
-          true,                                  // Has Physics Object
-          0.0f,                                  // Infinite Mass
-          true,                                  // Has Collision Shape
-          true,                                  // Dragable by the user
-          CommonUtils::GenColour(0.55f, 1.0f))); // Color
+      this->AddGameObject(CommonUtils::BuildCuboidObject("",
+                                                         sc_pos,                                // Position
+                                                         Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
+                                                         true,                                  // Has Physics Object
+                                                         0.0f,                                  // Infinite Mass
+                                                         true,                                  // Has Collision Shape
+                                                         true,                                  // Dragable by the user
+                                                         CommonUtils::GenColour(0.55f, 1.0f))); // Color
     }
 
     // Create Cuboid-Cuboid Manifold Test
     {
 
       Object *cuboid = CommonUtils::BuildCuboidObject(
-          "rotating_cuboid1",
-          cc_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter
-                                               // overlap on faces, and more on
-                                               // diagonals
-          Vector3(0.5f, 0.5f, 0.5f),           // Half dimensions
-          true,                                // Has Physics Object
-          0.0f,                                // Infinite Mass
-          true,                                // Has Collision Shape
-          false,                               // Dragable by the user
-          CommonUtils::GenColour(0.3f, 0.5f)); // Color
+          "rotating_cuboid1", cc_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter
+                                                                   // overlap on faces, and more on
+                                                                   // diagonals
+          Vector3(0.5f, 0.5f, 0.5f),                               // Half dimensions
+          true,                                                    // Has Physics Object
+          0.0f,                                                    // Infinite Mass
+          true,                                                    // Has Collision Shape
+          false,                                                   // Dragable by the user
+          CommonUtils::GenColour(0.3f, 0.5f));                     // Color
       this->AddGameObject(cuboid);
 
-      this->AddGameObject(CommonUtils::BuildCuboidObject(
-          "",
-          cc_pos,                                // Position
-          Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
-          true,                                  // Has Physics Object
-          0.0f,                                  // Infinite Mass
-          true,                                  // Has Collision Shape
-          true,                                  // Dragable by the user
-          CommonUtils::GenColour(0.55f, 1.0f))); // Color
+      this->AddGameObject(CommonUtils::BuildCuboidObject("",
+                                                         cc_pos,                                // Position
+                                                         Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
+                                                         true,                                  // Has Physics Object
+                                                         0.0f,                                  // Infinite Mass
+                                                         true,                                  // Has Collision Shape
+                                                         true,                                  // Dragable by the user
+                                                         CommonUtils::GenColour(0.55f, 1.0f))); // Color
     }
   }
 
@@ -188,14 +179,12 @@ public:
       m_AccumTime += dt;
 
       // Radius (ranges from 0.2-1.3 meters taking 6 seconds to complete cycle)
-      float rscalar =
-          (cosf(DegToRad(m_AccumTime * 60.f)) * 0.5f + 0.5f) * 1.1f + 0.2f;
+      float rscalar = (cosf(DegToRad(m_AccumTime * 60.f)) * 0.5f + 0.5f) * 1.1f + 0.2f;
 
       // Offset (Orbit around origin of radius 'rscalar' taking 30 seconds to
       // complete orbit)
       Vector3 offset =
-          Vector3(cosf(DegToRad(m_AccumTime * 12.f)) * rscalar, 0.0f,
-                  sinf(DegToRad(m_AccumTime * 12.f)) * rscalar);
+          Vector3(cosf(DegToRad(m_AccumTime * 12.f)) * rscalar, 0.0f, sinf(DegToRad(m_AccumTime * 12.f)) * rscalar);
 
       // Default Colour (not colliding)
       Vector4 col = CommonUtils::GenColour(0.3f, 0.5f);
@@ -225,15 +214,11 @@ public:
     uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
 
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Physics:");
-    NCLDebug::AddStatusEntry(
-        Vector4(1.0f, 0.9f, 0.8f, 1.0f),
-        "     Draw Collision Normals : %s (Press N to toggle)",
-        (drawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled"
-                                                       : "Disabled");
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Normals : %s (Press N to toggle)",
+                             (drawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled" : "Disabled");
 
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "");
-    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f),
-                             "     Animation: %s (Press B to toggle)",
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Animation: %s (Press B to toggle)",
                              (m_Rotating) ? "Enabled" : "Disabled");
 
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_N))

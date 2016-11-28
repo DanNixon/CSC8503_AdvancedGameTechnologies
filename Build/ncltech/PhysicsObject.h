@@ -39,9 +39,7 @@ class Object;
 // further collision resolution/manifold generation
 //			  > This can be useful for AI to see if a player/agent is inside an
 // area/collision volume
-typedef std::function<bool(PhysicsObject *this_obj,
-                           PhysicsObject *colliding_obj)>
-    PhysicsCollisionCallback;
+typedef std::function<bool(PhysicsObject *this_obj, PhysicsObject *colliding_obj)> PhysicsCollisionCallback;
 
 class PhysicsObject
 {
@@ -110,8 +108,7 @@ public:
     return m_pParent;
   }
 
-  const Matrix4 &GetWorldSpaceTransform()
-      const; // Built from scratch or returned from cached value
+  const Matrix4 &GetWorldSpaceTransform() const; // Built from scratch or returned from cached value
 
   //<--------- SETTERS ------------->
   inline void SetElasticity(float elasticity)
@@ -190,8 +187,8 @@ protected:
 
   float m_Elasticity; // Value from 0-1 definiing how much the object bounces
                       // off other objects
-  float m_Friction; // Value from 0-1 defining how much the object can slide off
-                    // other objects
+  float m_Friction;   // Value from 0-1 defining how much the object can slide off
+                      // other objects
 
   //<---------LINEAR-------------->
   Vector3 m_Position;

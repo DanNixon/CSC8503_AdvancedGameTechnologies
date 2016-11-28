@@ -115,8 +115,7 @@ protected:
   void UpdateWorldMatrices(Object *node, const Matrix4 &parentWM);
 
   // Recusive function called via 'InsertToRenderList'
-  void InsertToRenderList(Object *node, RenderList *list,
-                          const Frustum &frustum);
+  void InsertToRenderList(Object *node, RenderList *list, const Frustum &frustum);
 
   // Recusive function called via 'OnUpdateScene'
   void UpdateNode(float dt, Object *cNode);

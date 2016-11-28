@@ -92,18 +92,16 @@ public:
 
   virtual void OnInitializeScene() override
   {
-    SceneManager::Instance()->GetCamera()->SetPosition(
-        Vector3(-2.0f, 7.5f, -8.0f));
+    SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-2.0f, 7.5f, -8.0f));
     SceneManager::Instance()->GetCamera()->SetYaw(-160.f);
     SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
 
-    PhysicsEngine::Instance()->SetDebugDrawFlags(
-        DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_MANIFOLD);
+    PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_MANIFOLD);
 
     // Create Ground
-    this->AddGameObject(CommonUtils::BuildCuboidObject(
-        "Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,
-        0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f),
+                                                       Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false,
+                                                       Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
     // SOLVER EXAMPLE -> Pyramid of cubes stacked on top of eachother
     {
@@ -117,7 +115,7 @@ public:
       // in order to allow the bottom row of boxes to resolve their collisions
       // positively in the y axis.
       //	-> This does also lead into a nice possible optimisation for stacking
-      //purposes where all the manifolds are
+      // purposes where all the manifolds are
       //     sorted based on relative 'Y-axis' height, solving the constraints
       //     with the ground first and working its
       //     way up.
@@ -128,9 +126,8 @@ public:
         {
           Vector4 colour = CommonUtils::GenColour(y * 0.2f, 1.0f);
           Object *cube = CommonUtils::BuildCuboidObject(
-              "", Vector3(x - y * 0.5f,
-                          0.5f + float(pyramid_stack_height - 1 - y), -0.5f),
-              Vector3(0.5f, 0.5f, 0.5f), true, 1.f, true, true, colour);
+              "", Vector3(x - y * 0.5f, 0.5f + float(pyramid_stack_height - 1 - y), -0.5f), Vector3(0.5f, 0.5f, 0.5f),
+              true, 1.f, true, true, colour);
           cube->Physics()->SetFriction(1.0f);
           // cube->Physics()->SetElasticity(0.0f);
           this->AddGameObject(cube);
@@ -146,20 +143,12 @@ public:
     uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
 
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Physics:");
-    NCLDebug::AddStatusEntry(
-        Vector4(1.0f, 0.9f, 0.8f, 1.0f),
-        "     Draw Collision Volumes : %s (Press C to toggle)",
-        (drawFlags & DEBUGDRAW_FLAGS_COLLISIONVOLUMES) ? "Enabled"
-                                                       : "Disabled");
-    NCLDebug::AddStatusEntry(
-        Vector4(1.0f, 0.9f, 0.8f, 1.0f),
-        "     Draw Collision Normals : %s (Press N to toggle)",
-        (drawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled"
-                                                       : "Disabled");
-    NCLDebug::AddStatusEntry(
-        Vector4(1.0f, 0.9f, 0.8f, 1.0f),
-        "     Draw Manifolds : %s (Press M to toggle)",
-        (drawFlags & DEBUGDRAW_FLAGS_MANIFOLD) ? "Enabled" : "Disabled");
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Volumes : %s (Press C to toggle)",
+                             (drawFlags & DEBUGDRAW_FLAGS_COLLISIONVOLUMES) ? "Enabled" : "Disabled");
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Normals : %s (Press N to toggle)",
+                             (drawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled" : "Disabled");
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Manifolds : %s (Press M to toggle)",
+                             (drawFlags & DEBUGDRAW_FLAGS_MANIFOLD) ? "Enabled" : "Disabled");
 
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_C))
       drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;

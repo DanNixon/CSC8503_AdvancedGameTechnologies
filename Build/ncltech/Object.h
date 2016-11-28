@@ -32,8 +32,8 @@ class PhysicsEngine;
 class Object
 {
 
-  friend class Scene; // Can set the private variables m_WorldTransform and
-                      // m_pScene
+  friend class Scene;         // Can set the private variables m_WorldTransform and
+                              // m_pScene
   friend class PhysicsEngine; // Can notionally set private variable
                               // m_pPhysicsObject to NULL if it was deleted
                               // elsewhere
@@ -181,8 +181,7 @@ public:
   virtual void OnMouseDown(float dt, const Vector3 &worldPos){};
 
   // Called each frame the user has clicked (but not released) the object
-  virtual void OnMouseMove(float dt, const Vector3 &worldPos,
-                           const Vector3 &worldChange){};
+  virtual void OnMouseMove(float dt, const Vector3 &worldPos, const Vector3 &worldChange){};
 
   // Called when the user releases the mouse after previously clicking
   virtual void OnMouseUp(float dt, const Vector3 &worldPos){};

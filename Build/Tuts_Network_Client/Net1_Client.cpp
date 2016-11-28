@@ -114,15 +114,13 @@ void Net1_Client::OnInitializeScene()
 
   // Generate Simple Scene with a box that can be updated upon recieving server
   // packets
-  SceneManager::Instance()->GetCamera()->SetPosition(
-      Vector3(-3.0f, 4.0f, 10.0f));
+  SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
   SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
-  m_pObj = CommonUtils::BuildCuboidObject(
-      "Server", Vector3(0.0f, 1.0f, 0.0f), Vector3(0.5f, 0.5f, 0.5f),
-      true, // Physics Enabled here Purely to make setting position easier via
-            // Physics()->SetPosition()
-      0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+  m_pObj = CommonUtils::BuildCuboidObject("Server", Vector3(0.0f, 1.0f, 0.0f), Vector3(0.5f, 0.5f, 0.5f),
+                                          true, // Physics Enabled here Purely to make setting position easier via
+                                                // Physics()->SetPosition()
+                                          0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
   this->AddGameObject(m_pObj);
 }
 
@@ -146,10 +144,9 @@ void Net1_Client::OnUpdateScene(float dt)
   Scene::OnUpdateScene(dt);
 
   // Update Network
-  auto callback =
-      std::bind(&Net1_Client::ProcessNetworkEvent, // Function to call
-                this,                              // Associated class instance
-                std::placeholders::_1); // Where to place the first parameter
+  auto callback = std::bind(&Net1_Client::ProcessNetworkEvent, // Function to call
+                            this,                              // Associated class instance
+                            std::placeholders::_1);            // Where to place the first parameter
   m_Network.ServiceNetwork(dt, callback);
 
   // Add Debug Information to screen
@@ -158,17 +155,13 @@ void Net1_Client::OnUpdateScene(float dt)
   uint8_t ip3 = (m_pServerConnection->address.host >> 16) & 0xFF;
   uint8_t ip4 = (m_pServerConnection->address.host >> 24) & 0xFF;
 
-  NCLDebug::DrawTextWs(
-      m_pObj->Physics()->GetPosition() + Vector3(0.f, 0.5f, 0.f), 14.f,
-      TEXTALIGN_CENTRE, Vector4(), "Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4,
-      m_pServerConnection->address.port);
+  NCLDebug::DrawTextWs(m_pObj->Physics()->GetPosition() + Vector3(0.f, 0.5f, 0.f), 14.f, TEXTALIGN_CENTRE, Vector4(),
+                       "Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4, m_pServerConnection->address.port);
 
   Vector4 status_color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
   NCLDebug::AddStatusEntry(status_color, "Network Traffic");
-  NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps",
-                           m_Network.m_IncomingKb);
-  NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps",
-                           m_Network.m_OutgoingKb);
+  NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", m_Network.m_IncomingKb);
+  NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps", m_Network.m_OutgoingKb);
 }
 
 void Net1_Client::ProcessNetworkEvent(const ENetEvent &evnt)
@@ -184,8 +177,7 @@ void Net1_Client::ProcessNetworkEvent(const ENetEvent &evnt)
 
       // Send a 'hello' packet
       char *text_data = "Hellooo!";
-      ENetPacket *packet =
-          enet_packet_create(text_data, strlen(text_data) + 1, 0);
+      ENetPacket *packet = enet_packet_create(text_data, strlen(text_data) + 1, 0);
       enet_peer_send(m_pServerConnection, 0, packet);
     }
   }

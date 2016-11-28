@@ -28,8 +28,7 @@ the two objects never changes.
 class DistanceConstraint : public Constraint
 {
 public:
-  DistanceConstraint(PhysicsObject *obj1, PhysicsObject *obj2,
-                     const Vector3 &globalOnA, const Vector3 &globalOnB)
+  DistanceConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB)
   {
     m_pObj1 = obj1;
     m_pObj2 = obj2;
@@ -50,13 +49,10 @@ public:
 
   virtual void DebugDraw() const
   {
-    Vector3 globalOnA = m_pObj1->GetOrientation().ToMatrix3() * m_LocalOnA +
-                        m_pObj1->GetPosition();
-    Vector3 globalOnB = m_pObj2->GetOrientation().ToMatrix3() * m_LocalOnB +
-                        m_pObj2->GetPosition();
+    Vector3 globalOnA = m_pObj1->GetOrientation().ToMatrix3() * m_LocalOnA + m_pObj1->GetPosition();
+    Vector3 globalOnB = m_pObj2->GetOrientation().ToMatrix3() * m_LocalOnB + m_pObj2->GetPosition();
 
-    NCLDebug::DrawThickLine(globalOnA, globalOnB, 0.02f,
-                            Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+    NCLDebug::DrawThickLine(globalOnA, globalOnB, 0.02f, Vector4(0.0f, 0.0f, 0.0f, 1.0f));
     NCLDebug::DrawPointNDT(globalOnA, 0.05f, Vector4(1.0f, 0.8f, 1.0f, 1.0f));
     NCLDebug::DrawPointNDT(globalOnB, 0.05f, Vector4(1.0f, 0.8f, 1.0f, 1.0f));
   }

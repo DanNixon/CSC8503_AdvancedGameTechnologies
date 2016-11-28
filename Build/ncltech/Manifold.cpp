@@ -53,8 +53,8 @@ void Manifold::UpdateConstraint(ContactPoint &contact)
   /* TUT 6 CODE HERE */
 }
 
-void Manifold::AddContact(const Vector3 &globalOnA, const Vector3 &globalOnB,
-                          const Vector3 &_normal, const float &_penetration)
+void Manifold::AddContact(const Vector3 &globalOnA, const Vector3 &globalOnB, const Vector3 &_normal,
+                          const float &_penetration)
 {
   // Get relative offsets from each object centre of mass
   // Used to compute rotational velocity at the point of contact.
@@ -110,14 +110,11 @@ void Manifold::DebugDraw() const
       Vector3 globalOnB = m_pNodeB->GetPosition() + contact.relPosB;
 
       // Draw line to form area given by all contact points
-      NCLDebug::DrawThickLineNDT(globalOnA1, globalOnA2, 0.02f,
-                                 Vector4(0.0f, 1.0f, 0.0f, 1.0f));
+      NCLDebug::DrawThickLineNDT(globalOnA1, globalOnA2, 0.02f, Vector4(0.0f, 1.0f, 0.0f, 1.0f));
 
       // Draw descriptors for indivdual contact point
-      NCLDebug::DrawPointNDT(globalOnA2, 0.05f,
-                             Vector4(0.0f, 0.5f, 0.0f, 1.0f));
-      NCLDebug::DrawThickLineNDT(globalOnB, globalOnA2, 0.01f,
-                                 Vector4(1.0f, 0.0f, 1.0f, 1.0f));
+      NCLDebug::DrawPointNDT(globalOnA2, 0.05f, Vector4(0.0f, 0.5f, 0.0f, 1.0f));
+      NCLDebug::DrawThickLineNDT(globalOnB, globalOnA2, 0.01f, Vector4(1.0f, 0.0f, 1.0f, 1.0f));
 
       globalOnA1 = globalOnA2;
     }

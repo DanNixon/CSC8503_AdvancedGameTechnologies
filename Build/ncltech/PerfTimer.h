@@ -73,8 +73,8 @@ public:
 
   void PrintOutputToStatusEntry(const Vector4 &colour, const std::string &name)
   {
-    NCLDebug::AddStatusEntry(colour, "%s%5.2fms [max:%5.2fms, min:%5.2fms]",
-                             name.c_str(), GetAvg(), GetHigh(), GetLow());
+    NCLDebug::AddStatusEntry(colour, "%s%5.2fms [max:%5.2fms, min:%5.2fms]", name.c_str(), GetAvg(), GetHigh(),
+                             GetLow());
   }
 
 protected:
@@ -93,7 +93,6 @@ protected:
     int _num;
   };
 
-  PerfTimer_Data
-      m_PreviousData; // Front - Last completed measurement, shown for output
-  PerfTimer_Data m_CurrentData; // Back - Currently Updating
+  PerfTimer_Data m_PreviousData; // Front - Last completed measurement, shown for output
+  PerfTimer_Data m_CurrentData;  // Back - Currently Updating
 };

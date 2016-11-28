@@ -61,8 +61,7 @@ public:
   // RenderList Factory
   //  - Attempts to create new renderlist - returns false if max-renderlists
   //  (32) have already previously been allocated.
-  static bool AllocateNewRenderList(RenderList **renderlist,
-                                    bool supportsTransparency);
+  static bool AllocateNewRenderList(RenderList **renderlist, bool supportsTransparency);
 
   // Updates all current objects 'distance' to camera
   void UpdateCameraWorldPos(const Vector3 &cameraPos);
@@ -88,10 +87,8 @@ public:
 
   // Iterate over each object in the list calling the provided function
   // per-object.
-  void
-  RenderOpaqueObjects(const std::function<void(Object *)> &per_object_func);
-  void RenderTransparentObjects(
-      const std::function<void(Object *)> &per_object_func);
+  void RenderOpaqueObjects(const std::function<void(Object *)> &per_object_func);
+  void RenderTransparentObjects(const std::function<void(Object *)> &per_object_func);
 
   // Get the bitmask set per Object in the list
   uint BitMask()

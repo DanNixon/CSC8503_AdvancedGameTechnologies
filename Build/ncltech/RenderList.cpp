@@ -4,8 +4,7 @@
 
 uint RenderList::g_NumRenderLists = 0;
 
-bool RenderList::AllocateNewRenderList(RenderList **renderlist,
-                                       bool supportsTransparency)
+bool RenderList::AllocateNewRenderList(RenderList **renderlist, bool supportsTransparency)
 {
   if (g_NumRenderLists >= 31)
   {
@@ -35,8 +34,7 @@ RenderList::~RenderList()
   g_NumRenderLists--;
 }
 
-void RenderList::RenderOpaqueObjects(
-    const std::function<void(Object *)> &per_object_func)
+void RenderList::RenderOpaqueObjects(const std::function<void(Object *)> &per_object_func)
 {
   for (auto node : m_vRenderListOpaque)
   {
@@ -44,8 +42,7 @@ void RenderList::RenderOpaqueObjects(
   }
 }
 
-void RenderList::RenderTransparentObjects(
-    const std::function<void(Object *)> &per_object_func)
+void RenderList::RenderTransparentObjects(const std::function<void(Object *)> &per_object_func)
 {
   if (m_SupportsTransparancy)
   {
@@ -73,10 +70,7 @@ void RenderList::UpdateCameraWorldPos(const Vector3 &cameraPos)
     for (int i = 0; i < (int)list.size(); i++)
     {
       list[i].cam_dist_sq =
-          (list[i].target_obj->GetWorldTransform().GetPositionVector() -
-           m_CameraPos)
-              .LengthSquared() *
-          mul;
+          (list[i].target_obj->GetWorldTransform().GetPositionVector() - m_CameraPos).LengthSquared() * mul;
     }
   };
 
@@ -129,8 +123,7 @@ void RenderList::RemoveExcessObjects(const Frustum &frustum)
     {
       Object *obj = list[i].target_obj;
 
-      if (!frustum.InsideFrustum(obj->GetWorldTransform().GetPositionVector(),
-                                 obj->GetBoundingRadius()))
+      if (!frustum.InsideFrustum(obj->GetWorldTransform().GetPositionVector(), obj->GetBoundingRadius()))
       {
         obj->GetFrustumCullFlags() &= ~m_BitMask;
       }
@@ -189,9 +182,7 @@ void RenderList::InsertObject(Object *obj)
   if (!isOpaque)
   {
 #endif
-    carry_obj.cam_dist_sq =
-        (obj->GetWorldTransform().GetPositionVector() - m_CameraPos)
-            .LengthSquared();
+    carry_obj.cam_dist_sq = (obj->GetWorldTransform().GetPositionVector() - m_CameraPos).LengthSquared();
 
     if (!isOpaque)
     {
@@ -234,8 +225,7 @@ void RenderList::RemoveObject(Object *obj)
     return;
   }
 
-  auto target_list =
-      isOpaque ? &m_vRenderListOpaque : &m_vRenderListTransparent;
+  auto target_list = isOpaque ? &m_vRenderListOpaque : &m_vRenderListTransparent;
   uint new_size = target_list->size();
 
   bool found = false;

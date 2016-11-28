@@ -22,8 +22,7 @@ int Hull::FindEdge(int v0_idx, int v1_idx)
 {
   for (const HullEdge &edge : m_vEdges)
   {
-    if ((edge.vStart == v0_idx && edge.vEnd == v1_idx) ||
-        (edge.vStart == v1_idx && edge.vEnd == v0_idx))
+    if ((edge.vStart == v0_idx && edge.vEnd == v1_idx) || (edge.vStart == v1_idx && edge.vEnd == v0_idx))
     {
       return edge.idx;
     }
@@ -52,8 +51,8 @@ int Hull::ConstructNewEdge(int parent_face_idx, int vert_start, int vert_end)
     // Find Adjacent Edges
     for (int i = 0; i < new_edge.idx; ++i)
     {
-      if (m_vEdges[i].vStart == vert_start || m_vEdges[i].vStart == vert_end ||
-          m_vEdges[i].vEnd == vert_start || m_vEdges[i].vEnd == vert_end)
+      if (m_vEdges[i].vStart == vert_start || m_vEdges[i].vStart == vert_end || m_vEdges[i].vEnd == vert_start ||
+          m_vEdges[i].vEnd == vert_end)
       {
         m_vEdges[i].adjoining_edge_ids.push_back(new_edge.idx);
         new_edge_ptr->adjoining_edge_ids.push_back(i);
@@ -84,8 +83,7 @@ void Hull::AddFace(const Vector3 &_normal, int nVerts, const int *verts)
   for (int p1 = 0; p1 < nVerts; ++p1)
   {
     new_face_ptr->vert_ids.push_back(verts[p1]);
-    new_face_ptr->edge_ids.push_back(
-        ConstructNewEdge(new_face.idx, verts[p0], verts[p1]));
+    new_face_ptr->edge_ids.push_back(ConstructNewEdge(new_face.idx, verts[p0], verts[p1]));
     p0 = p1;
   }
 
@@ -111,21 +109,17 @@ void Hull::AddFace(const Vector3 &_normal, int nVerts, const int *verts)
   // Update Contained Vertices
   for (int i = 0; i < nVerts; ++i)
   {
-    HullVertex *cVertStart =
-        &m_vVertices[m_vEdges[new_face_ptr->edge_ids[i]].vStart];
-    HullVertex *cVertEnd =
-        &m_vVertices[m_vEdges[new_face_ptr->edge_ids[i]].vEnd];
+    HullVertex *cVertStart = &m_vVertices[m_vEdges[new_face_ptr->edge_ids[i]].vStart];
+    HullVertex *cVertEnd = &m_vVertices[m_vEdges[new_face_ptr->edge_ids[i]].vEnd];
 
     auto foundLocStart =
-        std::find(cVertStart->enclosing_faces.begin(),
-                  cVertStart->enclosing_faces.end(), new_face.idx);
+        std::find(cVertStart->enclosing_faces.begin(), cVertStart->enclosing_faces.end(), new_face.idx);
     if (foundLocStart == cVertStart->enclosing_faces.end())
     {
       cVertStart->enclosing_faces.push_back(new_face.idx);
     }
 
-    auto foundLocEnd = std::find(cVertEnd->enclosing_faces.begin(),
-                                 cVertEnd->enclosing_faces.end(), new_face.idx);
+    auto foundLocEnd = std::find(cVertEnd->enclosing_faces.begin(), cVertEnd->enclosing_faces.end(), new_face.idx);
     if (foundLocEnd == cVertEnd->enclosing_faces.end())
     {
       cVertEnd->enclosing_faces.push_back(new_face.idx);
@@ -133,8 +127,7 @@ void Hull::AddFace(const Vector3 &_normal, int nVerts, const int *verts)
   }
 }
 
-void Hull::GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert,
-                                   int *out_max_vert)
+void Hull::GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert)
 {
   float cCorrelation;
   int minVertex, maxVertex;
@@ -179,8 +172,7 @@ void Hull::DebugDraw(const Matrix4 &transform)
       {
         Vector3 polygon_next = transform * m_vVertices[face.vert_ids[idx]].pos;
 
-        NCLDebug::DrawTriangleNDT(polygon_start, polygon_last, polygon_next,
-                                  Vector4(1.0f, 1.0f, 1.0f, 0.2f));
+        NCLDebug::DrawTriangleNDT(polygon_start, polygon_last, polygon_next, Vector4(1.0f, 1.0f, 1.0f, 0.2f));
         polygon_last = polygon_next;
       }
     }
@@ -189,8 +181,7 @@ void Hull::DebugDraw(const Matrix4 &transform)
   // Draw all Hull Edges
   for (HullEdge &edge : m_vEdges)
   {
-    NCLDebug::DrawThickLineNDT(transform * m_vVertices[edge.vStart].pos,
-                               transform * m_vVertices[edge.vEnd].pos, 0.02f,
+    NCLDebug::DrawThickLineNDT(transform * m_vVertices[edge.vStart].pos, transform * m_vVertices[edge.vEnd].pos, 0.02f,
                                Vector4(1.0f, 0.2f, 1.0f, 1.0f));
   }
 }

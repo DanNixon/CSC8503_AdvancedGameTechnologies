@@ -34,8 +34,7 @@ SceneRenderer::SceneRenderer()
   // properly, see InitializeOGLContext for all shader/resource loading
   if (!RenderList::AllocateNewRenderList(&m_pFrameRenderList, true))
   {
-    NCLERROR(
-        "Unable to allocate scene render list! - Try using less shadow maps");
+    NCLERROR("Unable to allocate scene render list! - Try using less shadow maps");
   }
 
   // Initialize the shadow render lists
@@ -186,9 +185,7 @@ void SceneRenderer::RenderScene()
   textureMatrix.ToIdentity();
   modelMatrix.ToIdentity();
   viewMatrix = m_pCamera->BuildViewMatrix();
-  projMatrix = Matrix4::Perspective(
-      PROJ_NEAR, PROJ_FAR, (float)m_ScreenTexWidth / (float)m_ScreenTexHeight,
-      PROJ_FOV);
+  projMatrix = Matrix4::Perspective(PROJ_NEAR, PROJ_FAR, (float)m_ScreenTexWidth / (float)m_ScreenTexHeight, PROJ_FOV);
   m_FrameFrustum.FromMatrix(projMatrix * viewMatrix);
 
   glEnable(GL_DEPTH_TEST);
@@ -218,8 +215,7 @@ void SceneRenderer::RenderScene()
 
   // Use Scene Render List for Picking
   ScreenPicker::Instance()->UpdateFBO(width, height);
-  ScreenPicker::Instance()->RenderPickingScene(m_pFrameRenderList, projMatrix,
-                                               viewMatrix);
+  ScreenPicker::Instance()->RenderPickingScene(m_pFrameRenderList, projMatrix, viewMatrix);
 
   // Main Render Window
   {
@@ -270,18 +266,15 @@ void SceneRenderer::RenderShadowMaps()
   if (m_pScene != NULL)
   {
     const float proj_range = PROJ_FAR - PROJ_NEAR;
-    Matrix4 view = Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f),
-                                            m_InvLightDirection);
+    Matrix4 view = Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), m_InvLightDirection);
     Matrix4 invCamProjView = Matrix4::Inverse(projMatrix * viewMatrix);
 
     auto compute_depth = [&](float x) {
       float proj_start = -(proj_range * x + PROJ_NEAR);
-      return (proj_start * projMatrix[10] + projMatrix[14]) /
-             (proj_start * projMatrix[11]);
+      return (proj_start * projMatrix[10] + projMatrix[14]) / (proj_start * projMatrix[11]);
     };
 
-    const float log_factor =
-        50.0f; // Sub-divide view frustum in log50 increments
+    const float log_factor = 50.0f; // Sub-divide view frustum in log50 increments
     const float log_scalar = 1.0f / logf(log_factor);
 
     float itr_factor = (log_factor - 1.0f) / float(m_ShadowMapNum);
@@ -316,8 +309,7 @@ void SceneRenderer::RenderShadowMaps()
       bb._max.z = max(bb._max.z, m_pScene->GetWorldRadius());
 
       // Build Light Projection
-      m_ShadowProj[i] = Matrix4::Orthographic(bb._max.z, bb._min.z, bb._min.x,
-                                              bb._max.x, bb._max.y, bb._min.y);
+      m_ShadowProj[i] = Matrix4::Orthographic(bb._max.z, bb._min.z, bb._min.x, bb._max.x, bb._max.y, bb._min.y);
       m_ShadowProjView[i] = m_ShadowProj[i] * localView;
 
       // Construct Shadow RenderList
@@ -335,23 +327,18 @@ void SceneRenderer::RenderShadowMaps()
     glViewport(0, 0, m_ShadowMapSize, m_ShadowMapSize);
 
     SetCurrentShader(m_pShaderShadow);
-    GLint uniloc_projviewMatrix =
-        glGetUniformLocation(currentShader->GetProgram(), "uProjViewMtx");
-    GLint uniloc_modelMatrix =
-        glGetUniformLocation(currentShader->GetProgram(), "uModelMtx");
+    GLint uniloc_projviewMatrix = glGetUniformLocation(currentShader->GetProgram(), "uProjViewMtx");
+    GLint uniloc_modelMatrix = glGetUniformLocation(currentShader->GetProgram(), "uModelMtx");
 
     for (uint i = 0; i < m_ShadowMapNum; ++i)
     {
-      glUniformMatrix4fv(uniloc_projviewMatrix, 1, false,
-                         (float *)&m_ShadowProjView[i]);
+      glUniformMatrix4fv(uniloc_projviewMatrix, 1, false, (float *)&m_ShadowProjView[i]);
 
-      glFramebufferTextureLayer(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT,
-                                m_ShadowTex, 0, i);
+      glFramebufferTextureLayer(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT, m_ShadowTex, 0, i);
       glClear(GL_DEPTH_BUFFER_BIT);
 
       auto per_obj_render = [&](Object *obj) {
-        glUniformMatrix4fv(uniloc_modelMatrix, 1, false,
-                           (float *)&obj->GetWorldTransform());
+        glUniformMatrix4fv(uniloc_modelMatrix, 1, false, (float *)&obj->GetWorldTransform());
         obj->OnRenderObject();
       };
       m_apShadowRenderLists[i]->RenderOpaqueObjects(per_obj_render);
@@ -363,8 +350,7 @@ void SceneRenderer::RenderShadowMaps()
 void SceneRenderer::BuildFBOs()
 {
   // Util Function
-  auto build_texture = [&](uint texID, GLint internalformat, uint width,
-                           uint height, bool depth, bool samplerShadow) {
+  auto build_texture = [&](uint texID, GLint internalformat, uint width, uint height, bool depth, bool samplerShadow) {
     glBindTexture(GL_TEXTURE_2D, texID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -372,25 +358,21 @@ void SceneRenderer::BuildFBOs()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     if (samplerShadow)
     {
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
-                      GL_COMPARE_R_TO_TEXTURE);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
       glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_INTENSITY);
     }
 
     if (depth)
     {
-      glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0,
-                   GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+      glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     }
     else
-      glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0, GL_RED,
-                   GL_UNSIGNED_BYTE, NULL);
+      glTexImage2D(GL_TEXTURE_2D, 0, internalformat, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
   };
 
   // Construct Scene GBuffer
-  if (m_ScreenTexWidth != uint(width * m_NumSuperSamples) ||
-      m_ScreenTexHeight != uint(height * m_NumSuperSamples))
+  if (m_ScreenTexWidth != uint(width * m_NumSuperSamples) || m_ScreenTexHeight != uint(height * m_NumSuperSamples))
   {
     m_ScreenTexWidth = uint(width * m_NumSuperSamples);
     m_ScreenTexHeight = uint(height * m_NumSuperSamples);
@@ -399,29 +381,20 @@ void SceneRenderer::BuildFBOs()
       glGenTextures(SCREENTEX_MAX, m_ScreenTex);
 
     // Generate our Scene Depth Texture
-    build_texture(m_ScreenTex[SCREENTEX_DEPTH], GL_DEPTH24_STENCIL8,
-                  m_ScreenTexWidth, m_ScreenTexHeight, true, false);
-    build_texture(m_ScreenTex[SCREENTEX_COLOUR0], GL_SRGB8, m_ScreenTexWidth,
-                  m_ScreenTexHeight, false, false);
-    build_texture(m_ScreenTex[SCREENTEX_COLOUR1], GL_SRGB8, m_ScreenTexWidth,
-                  m_ScreenTexHeight, false, false);
-    build_texture(m_ScreenTex[SCREENTEX_NORMALS], GL_RGB16F, m_ScreenTexWidth,
-                  m_ScreenTexHeight, false, false);
-    build_texture(m_ScreenTex[SCREENTEX_LIGHTING], GL_RG16F, m_ScreenTexWidth,
-                  m_ScreenTexHeight, false, false);
+    build_texture(m_ScreenTex[SCREENTEX_DEPTH], GL_DEPTH24_STENCIL8, m_ScreenTexWidth, m_ScreenTexHeight, true, false);
+    build_texture(m_ScreenTex[SCREENTEX_COLOUR0], GL_SRGB8, m_ScreenTexWidth, m_ScreenTexHeight, false, false);
+    build_texture(m_ScreenTex[SCREENTEX_COLOUR1], GL_SRGB8, m_ScreenTexWidth, m_ScreenTexHeight, false, false);
+    build_texture(m_ScreenTex[SCREENTEX_NORMALS], GL_RGB16F, m_ScreenTexWidth, m_ScreenTexHeight, false, false);
+    build_texture(m_ScreenTex[SCREENTEX_LIGHTING], GL_RG16F, m_ScreenTexWidth, m_ScreenTexHeight, false, false);
 
     // Generate our Framebuffer
     if (!m_ScreenFBO)
       glGenFramebuffers(1, &m_ScreenFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenFBO);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D,
-                           m_ScreenTex[SCREENTEX_DEPTH], 0);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D,
-                           m_ScreenTex[SCREENTEX_DEPTH], 0);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                           m_ScreenTex[SCREENTEX_COLOUR0], 0);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D,
-                           m_ScreenTex[SCREENTEX_COLOUR1], 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_DEPTH], 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_DEPTH], 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_COLOUR0], 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_COLOUR1], 0);
 
     // Validate our framebuffer
     GLuint status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -441,22 +414,19 @@ void SceneRenderer::BuildFBOs()
     if (!m_ShadowTex)
       glGenTextures(1, &m_ShadowTex);
     glBindTexture(GL_TEXTURE_2D_ARRAY, m_ShadowTex);
-    glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_DEPTH_COMPONENT32,
-                   m_ShadowMapSize, m_ShadowMapSize, m_ShadowMapNum);
+    glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_DEPTH_COMPONENT32, m_ShadowMapSize, m_ShadowMapSize, m_ShadowMapNum);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_COMPARE_MODE,
-                    GL_COMPARE_R_TO_TEXTURE);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_DEPTH_TEXTURE_MODE, GL_INTENSITY);
 
     if (!m_ShadowFBO)
       glGenFramebuffers(1, &m_ShadowFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, m_ShadowFBO);
-    glFramebufferTextureLayer(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT,
-                              m_ShadowTex, 0, 0);
+    glFramebufferTextureLayer(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT, m_ShadowTex, 0, 0);
     glDrawBuffers(0, GL_NONE);
     GLuint status = glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT);
     if (status != GL_FRAMEBUFFER_COMPLETE)
@@ -468,13 +438,10 @@ void SceneRenderer::BuildFBOs()
 
 bool SceneRenderer::ShadersLoad()
 {
-  auto SHADERERROR = [&](const char *name) {
-    NCLERROR("Could not link shader: %s", name);
-  };
+  auto SHADERERROR = [&](const char *name) { NCLERROR("Could not link shader: %s", name); };
 
   m_pShaderColNorm =
-      new Shader(SHADERDIR "SceneRenderer/TechVertexFull.glsl",
-                 SHADERDIR "SceneRenderer/TechFragDeferred.glsl");
+      new Shader(SHADERDIR "SceneRenderer/TechVertexFull.glsl", SHADERDIR "SceneRenderer/TechFragDeferred.glsl");
   if (!m_pShaderColNorm->LinkProgram())
   {
     SHADERERROR("Default Deferred Render");
@@ -482,8 +449,7 @@ bool SceneRenderer::ShadersLoad()
   }
 
   m_pShaderLightDir =
-      new Shader(SHADERDIR "Common/EmptyVertex.glsl",
-                 SHADERDIR "SceneRenderer/TechFragDeferredDirLight.glsl",
+      new Shader(SHADERDIR "Common/EmptyVertex.glsl", SHADERDIR "SceneRenderer/TechFragDeferredDirLight.glsl",
                  SHADERDIR "Common/FullScreenQuadGeometry.glsl");
   if (!m_pShaderLightDir->LinkProgram())
   {
@@ -492,8 +458,7 @@ bool SceneRenderer::ShadersLoad()
   }
 
   m_pShaderCombineLighting =
-      new Shader(SHADERDIR "Common/EmptyVertex.glsl",
-                 SHADERDIR "SceneRenderer/TechFragDeferredCombine.glsl",
+      new Shader(SHADERDIR "Common/EmptyVertex.glsl", SHADERDIR "SceneRenderer/TechFragDeferredCombine.glsl",
                  SHADERDIR "Common/FullScreenQuadGeometry.glsl");
   if (!m_pShaderCombineLighting->LinkProgram())
   {
@@ -502,8 +467,7 @@ bool SceneRenderer::ShadersLoad()
   }
 
   m_pShaderPresentToWindow =
-      new Shader(SHADERDIR "Common/EmptyVertex.glsl",
-                 SHADERDIR "SceneRenderer/TechFragSuperSample.glsl",
+      new Shader(SHADERDIR "Common/EmptyVertex.glsl", SHADERDIR "SceneRenderer/TechFragSuperSample.glsl",
                  SHADERDIR "Common/FullScreenQuadGeometry.glsl");
   if (!m_pShaderPresentToWindow->LinkProgram())
   {
@@ -511,8 +475,7 @@ bool SceneRenderer::ShadersLoad()
     return false;
   }
 
-  m_pShaderShadow = new Shader(SHADERDIR "SceneRenderer/TechVertexShadow.glsl",
-                               SHADERDIR "Common/EmptyFragment.glsl");
+  m_pShaderShadow = new Shader(SHADERDIR "SceneRenderer/TechVertexShadow.glsl", SHADERDIR "Common/EmptyFragment.glsl");
   if (!m_pShaderShadow->LinkProgram())
   {
     SHADERERROR("Shadow Shader");
@@ -520,8 +483,7 @@ bool SceneRenderer::ShadersLoad()
   }
 
   m_pShaderForwardLighting =
-      new Shader(SHADERDIR "SceneRenderer/TechVertexFull.glsl",
-                 SHADERDIR "SceneRenderer/TechFragForwardRender.glsl");
+      new Shader(SHADERDIR "SceneRenderer/TechVertexFull.glsl", SHADERDIR "SceneRenderer/TechFragForwardRender.glsl");
   if (!m_pShaderForwardLighting->LinkProgram())
   {
     SHADERERROR("Forward Renderer");
@@ -538,85 +500,48 @@ void SceneRenderer::ShadersSetDefaults()
   Matrix4 clipspaceToWorldspace = Matrix4::Inverse(projMatrix * viewMatrix);
 
   SetCurrentShader(m_pShaderColNorm);
-  glUniformMatrix4fv(
-      glGetUniformLocation(currentShader->GetProgram(), "uProjViewMtx"), 1,
-      false, (float *)&projview);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uDiffuseTex"),
-              0);
+  glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "uProjViewMtx"), 1, false, (float *)&projview);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uDiffuseTex"), 0);
 
   SetCurrentShader(m_pShaderLightDir);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uDepthTex"),
-              5);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uColourTex"),
-              6);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uNormalTex"),
-              7);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uShadowTex"),
-              8);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uShadowNum"),
-              m_ShadowMapNum);
-  glUniform2f(
-      glGetUniformLocation(currentShader->GetProgram(), "uShadowSinglePixel"),
-      1.0f / m_ShadowMapSize, 1.0f / m_ShadowMapSize);
-  glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(),
-                                          "uClipToWorldTransform"),
-                     1, GL_FALSE, &clipspaceToWorldspace.values[0]);
-  glUniform3fv(
-      glGetUniformLocation(currentShader->GetProgram(), "uInvLightDir"), 1,
-      &m_InvLightDirection.x);
-  glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "uCameraPos"),
-               1, &camPos.x);
-  glUniform1f(
-      glGetUniformLocation(currentShader->GetProgram(), "uSpecularIntensity"),
-      m_SpecularIntensity);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uDepthTex"), 5);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uColourTex"), 6);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uNormalTex"), 7);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uShadowTex"), 8);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uShadowNum"), m_ShadowMapNum);
+  glUniform2f(glGetUniformLocation(currentShader->GetProgram(), "uShadowSinglePixel"), 1.0f / m_ShadowMapSize,
+              1.0f / m_ShadowMapSize);
+  glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "uClipToWorldTransform"), 1, GL_FALSE,
+                     &clipspaceToWorldspace.values[0]);
+  glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "uInvLightDir"), 1, &m_InvLightDirection.x);
+  glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "uCameraPos"), 1, &camPos.x);
+  glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "uSpecularIntensity"), m_SpecularIntensity);
 
   SetCurrentShader(m_pShaderForwardLighting);
-  glUniformMatrix4fv(
-      glGetUniformLocation(currentShader->GetProgram(), "uProjViewMtx"), 1,
-      false, (float *)&projview);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uDiffuseTex"),
-              0);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uShadowTex"),
-              8);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uShadowNum"),
-              m_ShadowMapNum);
-  glUniform2f(
-      glGetUniformLocation(currentShader->GetProgram(), "uShadowSinglePixel"),
-      1.0f / m_ShadowMapSize, 1.0f / m_ShadowMapSize);
-  glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(),
-                                          "uClipToWorldTransform"),
-                     1, GL_FALSE, &clipspaceToWorldspace.values[0]);
-  glUniform3fv(
-      glGetUniformLocation(currentShader->GetProgram(), "uInvLightDir"), 1,
-      &m_InvLightDirection.x);
-  glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "uCameraPos"),
-               1, &camPos.x);
-  glUniform1f(
-      glGetUniformLocation(currentShader->GetProgram(), "uSpecularIntensity"),
-      m_SpecularIntensity);
-  glUniform3fv(
-      glGetUniformLocation(currentShader->GetProgram(), "uAmbientColour"), 1,
-      &m_AmbientColour.x);
+  glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "uProjViewMtx"), 1, false, (float *)&projview);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uDiffuseTex"), 0);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uShadowTex"), 8);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uShadowNum"), m_ShadowMapNum);
+  glUniform2f(glGetUniformLocation(currentShader->GetProgram(), "uShadowSinglePixel"), 1.0f / m_ShadowMapSize,
+              1.0f / m_ShadowMapSize);
+  glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "uClipToWorldTransform"), 1, GL_FALSE,
+                     &clipspaceToWorldspace.values[0]);
+  glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "uInvLightDir"), 1, &m_InvLightDirection.x);
+  glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "uCameraPos"), 1, &camPos.x);
+  glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "uSpecularIntensity"), m_SpecularIntensity);
+  glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "uAmbientColour"), 1, &m_AmbientColour.x);
 
   SetCurrentShader(m_pShaderCombineLighting);
-  glUniform3fv(
-      glGetUniformLocation(currentShader->GetProgram(), "uAmbientColour"), 1,
-      &m_AmbientColour.x);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uColourTex"),
-              5);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uLightingTex"),
-              6);
+  glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "uAmbientColour"), 1, &m_AmbientColour.x);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uColourTex"), 5);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uLightingTex"), 6);
 
   SetCurrentShader(m_pShaderPresentToWindow);
-  glUniform2f(glGetUniformLocation(currentShader->GetProgram(), "uSinglepixel"),
-              1.0f / m_ScreenTexWidth, 1.0f / m_ScreenTexHeight);
-  glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "uNumSamples"),
-              m_NumSuperSamples);
-  glUniform1f(
-      glGetUniformLocation(currentShader->GetProgram(), "uGammaCorrection"),
-      1.0f / m_GammaCorrection);
-  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uColourTex"),
-              5);
+  glUniform2f(glGetUniformLocation(currentShader->GetProgram(), "uSinglepixel"), 1.0f / m_ScreenTexWidth,
+              1.0f / m_ScreenTexHeight);
+  glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "uNumSamples"), m_NumSuperSamples);
+  glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "uGammaCorrection"), 1.0f / m_GammaCorrection);
+  glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "uColourTex"), 5);
 }
 
 void SceneRenderer::DeferredRenderOpaqueObjects()
@@ -627,13 +552,10 @@ void SceneRenderer::DeferredRenderOpaqueObjects()
   // Render the Scene to Depth/Color/Normal textures
   glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenFBO);
   glViewport(0, 0, m_ScreenTexWidth, m_ScreenTexHeight);
-  glClearColor(m_BackgroundColour.x, m_BackgroundColour.y, m_BackgroundColour.z,
-               0.0f);
+  glClearColor(m_BackgroundColour.x, m_BackgroundColour.y, m_BackgroundColour.z, 0.0f);
 
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                         m_ScreenTex[SCREENTEX_COLOUR0], 0);
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D,
-                         m_ScreenTex[SCREENTEX_NORMALS], 0);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_COLOUR0], 0);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_NORMALS], 0);
   glDrawBuffers(2, drawbuffers_2);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -642,29 +564,24 @@ void SceneRenderer::DeferredRenderOpaqueObjects()
   glStencilFunc(GL_ALWAYS, 1, 1);
   glStencilOp(GL_ZERO, GL_KEEP, GL_REPLACE);
 
-  GLint uniloc_modelMatrix =
-      glGetUniformLocation(currentShader->GetProgram(), "uModelMtx");
-  GLint uniloc_nodeColour =
-      glGetUniformLocation(currentShader->GetProgram(), "uColour");
+  GLint uniloc_modelMatrix = glGetUniformLocation(currentShader->GetProgram(), "uModelMtx");
+  GLint uniloc_nodeColour = glGetUniformLocation(currentShader->GetProgram(), "uColour");
   m_pFrameRenderList->RenderOpaqueObjects([&](Object *obj) {
-    glUniformMatrix4fv(uniloc_modelMatrix, 1, false,
-                       (float *)&obj->GetWorldTransform());
+    glUniformMatrix4fv(uniloc_modelMatrix, 1, false, (float *)&obj->GetWorldTransform());
     if (uniloc_nodeColour > -1)
       glUniform4fv(uniloc_nodeColour, 1, (float *)&obj->GetColour());
     obj->OnRenderObject();
   });
 
   // Compute Lighting
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                         m_ScreenTex[SCREENTEX_LIGHTING], 0);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_LIGHTING], 0);
   glDrawBuffers(1, drawbuffers_1);
   glClear(GL_COLOR_BUFFER_BIT);
   glDisable(GL_DEPTH_TEST);
 
   SetCurrentShader(m_pShaderLightDir);
-  glUniformMatrix4fv(
-      glGetUniformLocation(currentShader->GetProgram(), "uShadowTransform[0]"),
-      m_ShadowMapNum, GL_FALSE, &m_ShadowProjView[0].values[0]);
+  glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "uShadowTransform[0]"), m_ShadowMapNum, GL_FALSE,
+                     &m_ShadowProjView[0].values[0]);
   glActiveTexture(GL_TEXTURE5);
   glBindTexture(GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_DEPTH]);
   glActiveTexture(GL_TEXTURE6);
@@ -680,8 +597,7 @@ void SceneRenderer::DeferredRenderOpaqueObjects()
 
   // Finally Combine all the colours/lighting/shadows etc into a single texture
   glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenFBO);
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                         m_ScreenTex[SCREENTEX_COLOUR1], 0);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_COLOUR1], 0);
   glClear(GL_COLOR_BUFFER_BIT);
 
   SetCurrentShader(m_pShaderCombineLighting);
@@ -698,9 +614,8 @@ void SceneRenderer::ForwardRenderTransparentObjects()
 {
   // Draw all transparent objects onto scene using forward-rendering
   SetCurrentShader(m_pShaderForwardLighting);
-  glUniformMatrix4fv(
-      glGetUniformLocation(currentShader->GetProgram(), "uShadowTransform[0]"),
-      m_ShadowMapNum, GL_FALSE, &m_ShadowProjView[0].values[0]);
+  glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "uShadowTransform[0]"), m_ShadowMapNum, GL_FALSE,
+                     &m_ShadowProjView[0].values[0]);
   glActiveTexture(GL_TEXTURE5);
   glBindTexture(GL_TEXTURE_2D, m_ScreenTex[SCREENTEX_DEPTH]);
   glActiveTexture(GL_TEXTURE6);
@@ -710,13 +625,10 @@ void SceneRenderer::ForwardRenderTransparentObjects()
   glActiveTexture(GL_TEXTURE8);
   glBindTexture(GL_TEXTURE_2D_ARRAY, m_ShadowTex);
 
-  GLint uniloc_modelMatrix =
-      glGetUniformLocation(currentShader->GetProgram(), "uModelMtx");
-  GLint uniloc_nodeColour =
-      glGetUniformLocation(currentShader->GetProgram(), "uColour");
+  GLint uniloc_modelMatrix = glGetUniformLocation(currentShader->GetProgram(), "uModelMtx");
+  GLint uniloc_nodeColour = glGetUniformLocation(currentShader->GetProgram(), "uColour");
   m_pFrameRenderList->RenderTransparentObjects([&](Object *obj) {
-    glUniformMatrix4fv(uniloc_modelMatrix, 1, false,
-                       (float *)&obj->GetWorldTransform());
+    glUniformMatrix4fv(uniloc_modelMatrix, 1, false, (float *)&obj->GetWorldTransform());
     if (uniloc_nodeColour > -1)
       glUniform4fv(uniloc_nodeColour, 1, (float *)&obj->GetColour());
     glCullFace(GL_FRONT);

@@ -54,17 +54,14 @@ public:
   Phy2_Integration(const std::string &friendly_name)
       : Scene(friendly_name)
   {
-    m_TargetTexture = SOIL_load_OGL_texture(
-        TEXTUREDIR "target.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID,
-        SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB |
-            SOIL_FLAG_COMPRESS_TO_DXT);
+    m_TargetTexture = SOIL_load_OGL_texture(TEXTUREDIR "target.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID,
+                                            SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 
     glBindTexture(GL_TEXTURE_2D, m_TargetTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                    GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -86,25 +83,22 @@ public:
 
     PhysicsEngine::Instance()->SetPaused(false);
 
-    SceneManager::Instance()->GetCamera()->SetPosition(
-        Vector3(-6.25f, 2.0f, 10.0f));
+    SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-6.25f, 2.0f, 10.0f));
     SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
     SceneManager::Instance()->GetCamera()->SetYaw(0.0f);
 
-    PhysicsEngine::Instance()->SetGravity(
-        Vector3(0.0f, 0.0f, 0.0f));                    // No Gravity
-    PhysicsEngine::Instance()->SetDampingFactor(1.0f); // No Damping
+    PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f)); // No Gravity
+    PhysicsEngine::Instance()->SetDampingFactor(1.0f);                // No Damping
 
     // Create Ground
-    this->AddGameObject(CommonUtils::BuildCuboidObject(
-        "Ground",                          // Friendly ID/Name
-        Vector3(-6.25f, -0.2f, 0.0f),      // Centre Position
-        Vector3(10.0f, 0.1f, 2.f),         // Scale
-        false,                             // No Physics Yet
-        0.0f,                              // No Physical Mass Yet
-        false,                             // No Collision Shape
-        false,                             // Not Dragable By the user
-        Vector4(0.2f, 1.0f, 0.5f, 1.0f))); // Color
+    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground",                          // Friendly ID/Name
+                                                       Vector3(-6.25f, -0.2f, 0.0f),      // Centre Position
+                                                       Vector3(10.0f, 0.1f, 2.f),         // Scale
+                                                       false,                             // No Physics Yet
+                                                       0.0f,                              // No Physical Mass Yet
+                                                       false,                             // No Collision Shape
+                                                       false,                             // Not Dragable By the user
+                                                       Vector4(0.2f, 1.0f, 0.5f, 1.0f))); // Color
 
     // Create Target
     ObjectMesh *target = new ObjectMesh("Target");
@@ -144,13 +138,11 @@ public:
   {
     Scene::OnUpdateScene(dt);
 
-    NCLDebug::AddStatusEntry(
-        Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Physics Timestep: %5.2fms [%5.2ffps]",
-        PhysicsEngine::Instance()->GetUpdateTimestep() * 1000.0f,
-        1.0f / PhysicsEngine::Instance()->GetUpdateTimestep());
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Physics Timestep: %5.2fms [%5.2ffps]",
+                             PhysicsEngine::Instance()->GetUpdateTimestep() * 1000.0f,
+                             1.0f / PhysicsEngine::Instance()->GetUpdateTimestep());
 
-    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f),
-                             "Select Integration Timestep:");
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Select Integration Timestep:");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     1: 5fps");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     2: 15fps");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     3: 30fps");
@@ -177,8 +169,7 @@ public:
 
     for (size_t i = 1; i < m_TrajectoryPoints.size(); i++)
     {
-      NCLDebug::DrawThickLine(m_TrajectoryPoints[i - 1], m_TrajectoryPoints[i],
-                              0.05f, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+      NCLDebug::DrawThickLine(m_TrajectoryPoints[i - 1], m_TrajectoryPoints[i], 0.05f, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
     }
   }
 

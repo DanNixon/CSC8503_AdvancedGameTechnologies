@@ -56,9 +56,7 @@ void Scene::BuildWorldMatrices()
 void Scene::UpdateWorldMatrices(Object *cNode, const Matrix4 &parentWM)
 {
   if (cNode->HasPhysics())
-    cNode->m_WorldTransform = parentWM *
-                              cNode->Physics()->GetWorldSpaceTransform() *
-                              cNode->m_LocalTransform;
+    cNode->m_WorldTransform = parentWM * cNode->Physics()->GetWorldSpaceTransform() * cNode->m_LocalTransform;
   else
     cNode->m_WorldTransform = parentWM * cNode->m_LocalTransform;
 
@@ -73,11 +71,9 @@ void Scene::InsertToRenderList(RenderList *list, const Frustum &frustum)
   InsertToRenderList(m_pRootGameObject, list, frustum);
 }
 
-void Scene::InsertToRenderList(Object *node, RenderList *list,
-                               const Frustum &frustum)
+void Scene::InsertToRenderList(Object *node, RenderList *list, const Frustum &frustum)
 {
-  bool inside = frustum.InsideFrustum(
-      node->m_WorldTransform.GetPositionVector(), node->m_BoundingRadius);
+  bool inside = frustum.InsideFrustum(node->m_WorldTransform.GetPositionVector(), node->m_BoundingRadius);
 
   if (inside)
   {

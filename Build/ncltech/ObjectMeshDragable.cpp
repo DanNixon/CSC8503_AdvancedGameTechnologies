@@ -50,8 +50,7 @@ void ObjectMeshDragable::OnMouseDown(float dt, const Vector3 &worldPos)
   }
 }
 
-void ObjectMeshDragable::OnMouseMove(float dt, const Vector3 &worldPos,
-                                     const Vector3 &worldChange)
+void ObjectMeshDragable::OnMouseMove(float dt, const Vector3 &worldPos, const Vector3 &worldChange)
 {
   Vector3 newpos = worldPos - m_LocalClickOffset;
 

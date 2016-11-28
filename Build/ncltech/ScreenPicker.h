@@ -63,9 +63,7 @@ protected:
   // Called by ScreenRenderer
   void ClearAllObjects();
   void UpdateFBO(int screen_width, int screen_height);
-  void RenderPickingScene(RenderList *scene_renderlist,
-                          const Matrix4 &proj_matrix,
-                          const Matrix4 &view_matrix);
+  void RenderPickingScene(RenderList *scene_renderlist, const Matrix4 &proj_matrix, const Matrix4 &view_matrix);
 
   // ScreenRenderer Update Phase
   //  - Returns true if an object has been clicked

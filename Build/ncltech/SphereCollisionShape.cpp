@@ -31,22 +31,19 @@ Matrix3 SphereCollisionShape::BuildInverseInertia(float invMass) const
   return inertia;
 }
 
-void SphereCollisionShape::GetCollisionAxes(
-    const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const
+void SphereCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const
 {
   /* There is infinite possible axes on a sphere so we MUST handle it seperately
    */
 }
 
-void SphereCollisionShape::GetEdges(const PhysicsObject *currentObject,
-                                    std::vector<CollisionEdge> *out_edges) const
+void SphereCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *out_edges) const
 {
   /* There is infinite edges on a sphere so we MUST handle it seperately */
 }
 
-void SphereCollisionShape::GetMinMaxVertexOnAxis(
-    const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
-    Vector3 *out_max) const
+void SphereCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis,
+                                                 Vector3 *out_min, Vector3 *out_max) const
 {
   if (out_min)
     *out_min = currentObject->GetPosition() - axis * m_Radius;
@@ -55,10 +52,9 @@ void SphereCollisionShape::GetMinMaxVertexOnAxis(
     *out_max = currentObject->GetPosition() + axis * m_Radius;
 }
 
-void SphereCollisionShape::GetIncidentReferencePolygon(
-    const PhysicsObject *currentObject, const Vector3 &axis,
-    std::list<Vector3> *out_face, Vector3 *out_normal,
-    std::vector<Plane> *out_adjacent_planes) const
+void SphereCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
+                                                       std::list<Vector3> *out_face, Vector3 *out_normal,
+                                                       std::vector<Plane> *out_adjacent_planes) const
 {
   if (out_face)
     out_face->push_back(currentObject->GetPosition() + axis * m_Radius);
@@ -88,12 +84,9 @@ void SphereCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
     Vector3 newY = pos + Vector3(alpha, 0.0f, beta);
     Vector3 newZ = pos + Vector3(alpha, beta, 0.0f);
 
-    NCLDebug::DrawThickLineNDT(lastX, newX, 0.02f,
-                               Vector4(1.0f, 0.3f, 1.0f, 1.0f));
-    NCLDebug::DrawThickLineNDT(lastY, newY, 0.02f,
-                               Vector4(1.0f, 0.3f, 1.0f, 1.0f));
-    NCLDebug::DrawThickLineNDT(lastZ, newZ, 0.02f,
-                               Vector4(1.0f, 0.3f, 1.0f, 1.0f));
+    NCLDebug::DrawThickLineNDT(lastX, newX, 0.02f, Vector4(1.0f, 0.3f, 1.0f, 1.0f));
+    NCLDebug::DrawThickLineNDT(lastY, newY, 0.02f, Vector4(1.0f, 0.3f, 1.0f, 1.0f));
+    NCLDebug::DrawThickLineNDT(lastZ, newZ, 0.02f, Vector4(1.0f, 0.3f, 1.0f, 1.0f));
 
     lastX = newX;
     lastY = newY;

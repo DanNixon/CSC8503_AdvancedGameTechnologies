@@ -64,28 +64,24 @@ public:
   // Get all possible collision axes
   //	- This is a list of all the face normals ignoring any duplicates and
   // parallel vectors.
-  virtual void GetCollisionAxes(const PhysicsObject *currentObject,
-                                std::vector<Vector3> *out_axes) const = 0;
+  virtual void GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const = 0;
 
   // Get all shape Edges
   //	- Returns a list of all edges AB that form the convex hull of the
   // collision shape. These are
   //    used to check edge/edge collisions aswell as finding the closest point
   //    to a sphere. */
-  virtual void GetEdges(const PhysicsObject *currentObject,
-                        std::vector<CollisionEdge> *out_edges) const = 0;
+  virtual void GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *out_edges) const = 0;
 
   // Get the min/max vertices along a given axis
-  virtual void GetMinMaxVertexOnAxis(const PhysicsObject *currentObject,
-                                     const Vector3 &axis, Vector3 *out_min,
+  virtual void GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
                                      Vector3 *out_max) const = 0;
 
   // Get all data needed to build manifold
   //	- Computes the face that is closest to parallel to that of the given axis,
   //    returning the face (as a list of vertices), face normal and the planes
   //    of all adjacent faces in order to clip against.
-  virtual void GetIncidentReferencePolygon(
-      const PhysicsObject *currentObject, const Vector3 &axis,
-      std::list<Vector3> *out_face, Vector3 *out_normal,
-      std::vector<Plane> *out_adjacent_planes) const = 0;
+  virtual void GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
+                                           std::list<Vector3> *out_face, Vector3 *out_normal,
+                                           std::vector<Plane> *out_adjacent_planes) const = 0;
 };

@@ -46,8 +46,7 @@ int TaskScheduler::BeginNewTaskQueue()
 {
   if (m_UnassignedQueueIndices.size() == 0)
   {
-    std::cout
-        << "Task Scheduler Error: Unable to obtain free Task Queue Index.";
+    std::cout << "Task Scheduler Error: Unable to obtain free Task Queue Index.";
     return -1;
   }
 
@@ -61,13 +60,11 @@ int TaskScheduler::BeginNewTaskQueue()
   return idx;
 }
 
-void TaskScheduler::PostTaskToQueue(int queue_idx,
-                                    const std::function<void()> &task)
+void TaskScheduler::PostTaskToQueue(int queue_idx, const std::function<void()> &task)
 {
   if (queue_idx == -1)
   {
-    std::cout
-        << "Task Scheduler Error: Invalid Queue Index parsed as parameter";
+    std::cout << "Task Scheduler Error: Invalid Queue Index parsed as parameter";
     return;
   }
 
@@ -91,8 +88,7 @@ void TaskScheduler::WaitForTaskQueueToComplete(int queue_idx)
 {
   if (queue_idx == -1)
   {
-    std::cout
-        << "Task Scheduler Error: Invalid Queue Index parsed as parameter";
+    std::cout << "Task Scheduler Error: Invalid Queue Index parsed as parameter";
     return;
   }
 
@@ -112,8 +108,7 @@ void TaskScheduler::ThreadWorkLoop()
     lck.lock();
     // Check if either the program is terminating or more work is already
     // availible
-    m_cvTaskReadyForProcessing.wait(
-        lck, [&] { return (m_IsTerminating || !m_QueuedTasks.empty()); });
+    m_cvTaskReadyForProcessing.wait(lck, [&] { return (m_IsTerminating || !m_QueuedTasks.empty()); });
 
     // Once notified, or the confition already holds true, check again if the
     // thread should terminate or if it has work todo.

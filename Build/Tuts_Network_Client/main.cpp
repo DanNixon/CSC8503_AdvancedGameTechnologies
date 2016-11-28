@@ -35,8 +35,7 @@ void Quit(bool error = false, const string &reason = "")
 void Initialize()
 {
   // Initialise the Window
-  if (!Window::Initialise("Game Technologies - Collision Resolution", 1280, 800,
-                          false))
+  if (!Window::Initialise("Game Technologies - Collision Resolution", 1280, 800, false))
     Quit(true, "Window failed to initialise!");
 
   // Initialise ENET for networking  //!!!NEW!!!!!
@@ -61,34 +60,25 @@ void PrintStatusEntries()
 {
   // Print Engine Options
   NCLDebug::AddStatusEntry(status_colour_header, "NCLTech Settings");
-  NCLDebug::AddStatusEntry(
-      status_colour, "     Monitor V-Sync: %s (Press V to toggle)",
-      SceneManager::Instance()->GetVsyncEnabled() ? "Enabled " : "Disabled");
+  NCLDebug::AddStatusEntry(status_colour, "     Monitor V-Sync: %s (Press V to toggle)",
+                           SceneManager::Instance()->GetVsyncEnabled() ? "Enabled " : "Disabled");
   NCLDebug::AddStatusEntry(status_colour, "");
 
   // Print Current Scene Name
-  NCLDebug::AddStatusEntry(
-      status_colour_header, "[%d/%d]: %s",
-      SceneManager::Instance()->GetCurrentSceneIndex() + 1,
-      SceneManager::Instance()->SceneCount(),
-      SceneManager::Instance()->GetCurrentScene()->GetSceneName().c_str());
-  NCLDebug::AddStatusEntry(status_colour,
-                           "     \x01 Q/E to cycle or R to reload scene");
+  NCLDebug::AddStatusEntry(status_colour_header, "[%d/%d]: %s", SceneManager::Instance()->GetCurrentSceneIndex() + 1,
+                           SceneManager::Instance()->SceneCount(),
+                           SceneManager::Instance()->GetCurrentScene()->GetSceneName().c_str());
+  NCLDebug::AddStatusEntry(status_colour, "     \x01 Q/E to cycle or R to reload scene");
 
   // Print Performance Timers
-  NCLDebug::AddStatusEntry(
-      status_colour, "     FPS: %5.2f  (Press G for %s info)",
-      1000.f / timer_total.GetAvg(), show_perf_metrics ? "less" : "more");
+  NCLDebug::AddStatusEntry(status_colour, "     FPS: %5.2f  (Press G for %s info)", 1000.f / timer_total.GetAvg(),
+                           show_perf_metrics ? "less" : "more");
   if (show_perf_metrics)
   {
-    timer_total.PrintOutputToStatusEntry(status_colour,
-                                         "          Total Time     :");
-    timer_update.PrintOutputToStatusEntry(status_colour,
-                                          "          Scene Update   :");
-    timer_physics.PrintOutputToStatusEntry(status_colour,
-                                           "          Physics Update :");
-    timer_render.PrintOutputToStatusEntry(status_colour,
-                                          "          Render Scene   :");
+    timer_total.PrintOutputToStatusEntry(status_colour, "          Total Time     :");
+    timer_update.PrintOutputToStatusEntry(status_colour, "          Scene Update   :");
+    timer_physics.PrintOutputToStatusEntry(status_colour, "          Physics Update :");
+    timer_render.PrintOutputToStatusEntry(status_colour, "          Render Scene   :");
   }
   NCLDebug::AddStatusEntry(status_colour, "");
 }
@@ -96,8 +86,7 @@ void PrintStatusEntries()
 void HandleKeyboardInputs()
 {
   if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_V))
-    SceneManager::Instance()->SetVsyncEnabled(
-        !SceneManager::Instance()->GetVsyncEnabled());
+    SceneManager::Instance()->SetVsyncEnabled(!SceneManager::Instance()->GetVsyncEnabled());
 
   if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_G))
     show_perf_metrics = !show_perf_metrics;
@@ -108,8 +97,7 @@ void HandleKeyboardInputs()
     SceneManager::Instance()->JumpToScene((sceneIdx + 1) % sceneMax);
 
   if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_Q))
-    SceneManager::Instance()->JumpToScene(
-        (sceneIdx == 0 ? sceneMax : sceneIdx) - 1);
+    SceneManager::Instance()->JumpToScene((sceneIdx == 0 ? sceneMax : sceneIdx) - 1);
 
   if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_R))
     SceneManager::Instance()->JumpToScene(sceneIdx);
@@ -123,12 +111,10 @@ int main()
   Window::GetWindow().GetTimer()->GetTimedMS();
 
   // Create main game-loop
-  while (Window::GetWindow().UpdateWindow() &&
-         !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE))
+  while (Window::GetWindow().UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE))
   {
     // Start Timing
-    float dt = Window::GetWindow().GetTimer()->GetTimedMS() *
-               0.001f; // How many seconds since last update?
+    float dt = Window::GetWindow().GetTimer()->GetTimedMS() * 0.001f; // How many seconds since last update?
     timer_total.BeginTimingSection();
 
     // Print Status Entries
@@ -160,8 +146,7 @@ int main()
       // Forces synchronisation if vsync is disabled
       // - This is solely to allow accurate estimation of render time
       // - We should NEVER normally lock our render or game loop!
-      glClientWaitSync(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, NULL),
-                       GL_SYNC_FLUSH_COMMANDS_BIT, 1000000);
+      glClientWaitSync(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, NULL), GL_SYNC_FLUSH_COMMANDS_BIT, 1000000);
     }
     timer_render.EndTimingSection();
 

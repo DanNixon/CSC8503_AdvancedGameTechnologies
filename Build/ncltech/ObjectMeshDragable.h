@@ -46,8 +46,7 @@ protected:
   virtual void OnMouseEnter(float dt) override;
   virtual void OnMouseLeave(float dt) override;
   virtual void OnMouseDown(float dt, const Vector3 &worldPos) override;
-  virtual void OnMouseMove(float dt, const Vector3 &worldPos,
-                           const Vector3 &worldChange) override;
+  virtual void OnMouseMove(float dt, const Vector3 &worldPos, const Vector3 &worldChange) override;
   virtual void OnMouseUp(float dt, const Vector3 &worldPos) override;
 
 protected:

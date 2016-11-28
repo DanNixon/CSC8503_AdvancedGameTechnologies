@@ -49,8 +49,7 @@ void ScreenPicker::RegisterObject(Object *obj)
 
 void ScreenPicker::UnregisterObject(Object *obj)
 {
-  auto loc = std::find(m_AllRegisteredObjects.begin(),
-                       m_AllRegisteredObjects.end(), obj);
+  auto loc = std::find(m_AllRegisteredObjects.begin(), m_AllRegisteredObjects.end(), obj);
 
   if (loc != m_AllRegisteredObjects.end())
   {
@@ -73,13 +72,11 @@ void ScreenPicker::UpdateFBO(int screen_width, int screen_height)
   if (m_pShaderPicker == NULL)
   {
 #ifdef USE_NSIGHT_HACK
-    m_pShaderPicker =
-        new Shader(SHADERDIR "SceneRenderer/TechVertexShadow.glsl", SHADERDIR
-                   "SceneRenderer/TechFragScreenPicker_nsightfix.glsl");
+    m_pShaderPicker = new Shader(SHADERDIR "SceneRenderer/TechVertexShadow.glsl",
+                                 SHADERDIR "SceneRenderer/TechFragScreenPicker_nsightfix.glsl");
 #else
-    m_pShaderPicker =
-        new Shader(SHADERDIR "SceneRenderer/TechVertexShadow.glsl",
-                   SHADERDIR "SceneRenderer/TechFragScreenPicker.glsl");
+    m_pShaderPicker = new Shader(SHADERDIR "SceneRenderer/TechVertexShadow.glsl",
+                                 SHADERDIR "SceneRenderer/TechFragScreenPicker.glsl");
 #endif
     glBindFragDataLocation(m_pShaderPicker->GetProgram(), 0, "OutFrag");
     if (!m_pShaderPicker->LinkProgram())
@@ -105,25 +102,21 @@ void ScreenPicker::UpdateFBO(int screen_width, int screen_height)
     if (!m_PickerDepthRB)
       glGenRenderbuffers(1, &m_PickerDepthRB);
     glBindRenderbuffer(GL_RENDERBUFFER, m_PickerDepthRB);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_TexWidth,
-                          m_TexHeight);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_TexWidth, m_TexHeight);
 
     // Build FBO
     if (!m_PickerFBO)
       glGenFramebuffers(1, &m_PickerFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, m_PickerFBO);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                              GL_RENDERBUFFER, m_PickerRB);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                              GL_RENDERBUFFER, m_PickerDepthRB);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_PickerRB);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_PickerDepthRB);
 
     // Validate our framebuffer
     GLuint status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (status != GL_FRAMEBUFFER_COMPLETE)
     {
 
-      NCLERROR("Unable to create ScreenPicker Framebuffer! StatusCode: %x",
-               status);
+      NCLERROR("Unable to create ScreenPicker Framebuffer! StatusCode: %x", status);
     }
   }
 }
@@ -134,12 +127,10 @@ bool ScreenPicker::HandleMouseClicks(float dt)
   {
     Vector2 mousepos;
     bool mouseInWindow = Window::GetWindow().GetMouseScreenPos(&mousepos);
-    mousepos.y =
-        m_TexHeight - mousepos.y; // Flip Y as opengl uses bottom left as origin
+    mousepos.y = m_TexHeight - mousepos.y; // Flip Y as opengl uses bottom left as origin
 
     Vector3 clipspacepos =
-        Vector3(mousepos.x / (m_TexWidth * 0.5f) - 1.0f,
-                mousepos.y / (m_TexHeight * 0.5f) - 1.0f, 0.0f);
+        Vector3(mousepos.x / (m_TexWidth * 0.5f) - 1.0f, mousepos.y / (m_TexHeight * 0.5f) - 1.0f, 0.0f);
 
     bool mouseDown = Window::GetMouse()->ButtonDown(MOUSE_LEFT);
     bool mouseHeld = Window::GetMouse()->ButtonHeld(MOUSE_LEFT);
@@ -168,20 +159,17 @@ bool ScreenPicker::HandleMouseClicks(float dt)
       glReadBuffer(GL_COLOR_ATTACHMENT0);
 #ifdef USE_NSIGHT_HACK
       float pixelIdxf = 0.0f;
-      glReadPixels((int)mousepos.x, (int)mousepos.y, 1, 1, GL_RED, GL_FLOAT,
-                   &pixelIdxf);
+      glReadPixels((int)mousepos.x, (int)mousepos.y, 1, 1, GL_RED, GL_FLOAT, &pixelIdxf);
       pixelIdx = (uint)pixelIdxf;
 #else
-      glReadPixels((int)mousepos.x, (int)mousepos.y, 1, 1, GL_RED_INTEGER,
-                   GL_UNSIGNED_INT, &pixelIdx);
+      glReadPixels((int)mousepos.x, (int)mousepos.y, 1, 1, GL_RED_INTEGER, GL_UNSIGNED_INT, &pixelIdx);
 #endif
 
       if (pixelIdx > 0 && pixelIdx <= m_AllRegisteredObjects.size())
       {
         // Compute World Space position
         float pixelDepth;
-        glReadPixels((int)mousepos.x, (int)mousepos.y, 1, 1, GL_DEPTH_COMPONENT,
-                     GL_FLOAT, &pixelDepth);
+        glReadPixels((int)mousepos.x, (int)mousepos.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &pixelDepth);
 
         clipspacepos.z = pixelDepth * 2.0f - 1.0f;
         m_OldWorldSpacePos = m_invViewProjMtx * clipspacepos;
@@ -225,8 +213,7 @@ bool ScreenPicker::HandleMouseClicks(float dt)
   return false;
 }
 
-void ScreenPicker::HandleObjectMouseUp(float dt, bool mouse_in_window,
-                                       Vector3 &clip_space)
+void ScreenPicker::HandleObjectMouseUp(float dt, bool mouse_in_window, Vector3 &clip_space)
 {
   if (!mouse_in_window)
   {
@@ -255,8 +242,7 @@ void ScreenPicker::HandleObjectMouseMove(float dt, Vector3 &clip_space)
   m_pCurrentlyHeldObject->OnMouseMove(dt, newWorldSpacePos, worldMovement);
 }
 
-void ScreenPicker::RenderPickingScene(RenderList *scene_renderlist,
-                                      const Matrix4 &proj_matrix,
+void ScreenPicker::RenderPickingScene(RenderList *scene_renderlist, const Matrix4 &proj_matrix,
                                       const Matrix4 &view_matrix)
 {
   Matrix4 projview = proj_matrix * view_matrix;
@@ -264,17 +250,15 @@ void ScreenPicker::RenderPickingScene(RenderList *scene_renderlist,
 
   // Check to see if we even need an updated picking texture?
   Vector2 mousepos;
-  if (m_pCurrentlyHeldObject != NULL ||
-      !Window::GetWindow().GetMouseScreenPos(&mousepos))
+  if (m_pCurrentlyHeldObject != NULL || !Window::GetWindow().GetMouseScreenPos(&mousepos))
   {
     return;
   }
 
   // Setup Shader
   glUseProgram(m_pShaderPicker->GetProgram());
-  glUniformMatrix4fv(
-      glGetUniformLocation(m_pShaderPicker->GetProgram(), "uProjViewMtx"), 1,
-      GL_FALSE, &projview.values[0]);
+  glUniformMatrix4fv(glGetUniformLocation(m_pShaderPicker->GetProgram(), "uProjViewMtx"), 1, GL_FALSE,
+                     &projview.values[0]);
 
   // Bind FBO
   glBindFramebuffer(GL_FRAMEBUFFER, m_PickerFBO);
@@ -286,13 +270,10 @@ void ScreenPicker::RenderPickingScene(RenderList *scene_renderlist,
   glDisable(GL_BLEND);
 
   // Render Objects
-  GLint uniloc_modelMatrix =
-      glGetUniformLocation(m_pShaderPicker->GetProgram(), "uModelMtx");
-  GLint uniloc_idx =
-      glGetUniformLocation(m_pShaderPicker->GetProgram(), "uObjID");
+  GLint uniloc_modelMatrix = glGetUniformLocation(m_pShaderPicker->GetProgram(), "uModelMtx");
+  GLint uniloc_idx = glGetUniformLocation(m_pShaderPicker->GetProgram(), "uObjID");
   auto per_object_render = [&](Object *obj) {
-    glUniformMatrix4fv(uniloc_modelMatrix, 1, false,
-                       (float *)&obj->GetWorldTransform());
+    glUniformMatrix4fv(uniloc_modelMatrix, 1, false, (float *)&obj->GetWorldTransform());
     glUniform1ui(uniloc_idx, obj->GetScreenPickerIdx());
     obj->OnRenderObject();
   };

@@ -5,9 +5,7 @@ CollisionDetectionSAT::CollisionDetectionSAT()
 {
 }
 
-void CollisionDetectionSAT::BeginNewPair(PhysicsObject *obj1,
-                                         PhysicsObject *obj2,
-                                         CollisionShape *shape1,
+void CollisionDetectionSAT::BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj2, CollisionShape *shape1,
                                          CollisionShape *shape2)
 {
   m_vPossibleCollisionAxes.clear();
@@ -31,8 +29,7 @@ void CollisionDetectionSAT::FindAllPossibleCollisionAxes()
   /* TUT 4 */
 }
 
-bool CollisionDetectionSAT::CheckCollisionAxis(const Vector3 &axis,
-                                               CollisionData *coldata)
+bool CollisionDetectionSAT::CheckCollisionAxis(const Vector3 &axis, CollisionData *coldata)
 {
   /* TUT 4 */
   return false;
@@ -60,9 +57,7 @@ bool CollisionDetectionSAT::AddPossibleCollisionAxis(Vector3 axis)
   return true;
 }
 
-Vector3
-CollisionDetectionSAT::GetClosestPoint(const Vector3 &pos,
-                                       std::vector<CollisionEdge> &edges)
+Vector3 CollisionDetectionSAT::GetClosestPoint(const Vector3 &pos, std::vector<CollisionEdge> &edges)
 {
   Vector3 final_closest_point, edge_closest_point;
   float final_closest_distsq = FLT_MAX;
@@ -112,9 +107,7 @@ void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
   /* TUT 5 CODE */
 }
 
-Vector3 CollisionDetectionSAT::PlaneEdgeIntersection(const Plane &plane,
-                                                     const Vector3 &start,
-                                                     const Vector3 &end) const
+Vector3 CollisionDetectionSAT::PlaneEdgeIntersection(const Plane &plane, const Vector3 &start, const Vector3 &end) const
 {
   Vector3 ab = end - start;
 
@@ -140,10 +133,9 @@ Vector3 CollisionDetectionSAT::PlaneEdgeIntersection(const Plane &plane,
   return start;
 }
 
-void CollisionDetectionSAT::SutherlandHodgmanClipping(
-    const std::list<Vector3> &input_polygon, int num_clip_planes,
-    const Plane *clip_planes, std::list<Vector3> *out_polygon,
-    bool removePoints) const
+void CollisionDetectionSAT::SutherlandHodgmanClipping(const std::list<Vector3> &input_polygon, int num_clip_planes,
+                                                      const Plane *clip_planes, std::list<Vector3> *out_polygon,
+                                                      bool removePoints) const
 {
   if (!out_polygon)
     return;

@@ -104,110 +104,82 @@ public:
   // objects.
 
   // Draw Point (circle)
+  static void DrawPoint(const Vector3 &pos, float point_radius, const Vector3 &colour);
   static void DrawPoint(const Vector3 &pos, float point_radius,
-                        const Vector3 &colour);
-  static void DrawPoint(const Vector3 &pos, float point_radius,
-                        const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f,
-                                                        1.0f));
+                        const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+  static void DrawPointNDT(const Vector3 &pos, float point_radius, const Vector3 &colour);
   static void DrawPointNDT(const Vector3 &pos, float point_radius,
-                           const Vector3 &colour);
-  static void DrawPointNDT(const Vector3 &pos, float point_radius,
-                           const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f,
-                                                           1.0f));
+                           const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
   // Draw Line with a given thickness
-  static void DrawThickLine(const Vector3 &start, const Vector3 &end,
-                            float line_width, const Vector3 &colour);
-  static void
-  DrawThickLine(const Vector3 &start, const Vector3 &end, float line_width,
-                const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-  static void DrawThickLineNDT(const Vector3 &start, const Vector3 &end,
-                               float line_width, const Vector3 &colour);
-  static void
-  DrawThickLineNDT(const Vector3 &start, const Vector3 &end, float line_width,
-                   const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+  static void DrawThickLine(const Vector3 &start, const Vector3 &end, float line_width, const Vector3 &colour);
+  static void DrawThickLine(const Vector3 &start, const Vector3 &end, float line_width,
+                            const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+  static void DrawThickLineNDT(const Vector3 &start, const Vector3 &end, float line_width, const Vector3 &colour);
+  static void DrawThickLineNDT(const Vector3 &start, const Vector3 &end, float line_width,
+                               const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
   // Draw line with thickness of 1 screen pixel regardless of distance from
   // camera
+  static void DrawHairLine(const Vector3 &start, const Vector3 &end, const Vector3 &colour);
   static void DrawHairLine(const Vector3 &start, const Vector3 &end,
-                           const Vector3 &colour);
-  static void DrawHairLine(const Vector3 &start, const Vector3 &end,
-                           const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f,
-                                                           1.0f));
+                           const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+  static void DrawHairLineNDT(const Vector3 &start, const Vector3 &end, const Vector3 &colour);
   static void DrawHairLineNDT(const Vector3 &start, const Vector3 &end,
-                              const Vector3 &colour);
-  static void DrawHairLineNDT(const Vector3 &start, const Vector3 &end,
-                              const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f,
-                                                              1.0f));
+                              const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
   // Draw Matrix (x,y,z axis at pos)
   static void DrawMatrix(const Matrix4 &transform_mtx);
   static void DrawMatrix(const Matrix3 &rotation_mtx, const Vector3 &position);
   static void DrawMatrixNDT(const Matrix4 &transform_mtx);
-  static void DrawMatrixNDT(const Matrix3 &rotation_mtx,
-                            const Vector3 &position);
+  static void DrawMatrixNDT(const Matrix3 &rotation_mtx, const Vector3 &position);
 
   // Draw Triangle
-  static void
-  DrawTriangle(const Vector3 &v0, const Vector3 &v1, const Vector3 &v2,
-               const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-  static void
-  DrawTriangleNDT(const Vector3 &v0, const Vector3 &v1, const Vector3 &v2,
-                  const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+  static void DrawTriangle(const Vector3 &v0, const Vector3 &v1, const Vector3 &v2,
+                           const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+  static void DrawTriangleNDT(const Vector3 &v0, const Vector3 &v1, const Vector3 &v2,
+                              const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
   // Draw Polygon (Renders as a triangle fan, so verts must be arranged in
   // order)
-  static void DrawPolygon(int n_verts, const Vector3 *verts,
-                          const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f,
-                                                          1.0f));
+  static void DrawPolygon(int n_verts, const Vector3 *verts, const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
   static void DrawPolygonNDT(int n_verts, const Vector3 *verts,
-                             const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f,
-                                                             1.0f));
+                             const Vector4 &colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
   // Draw Text WorldSpace (pos given here in worldspace)
-  static void DrawTextWs(const Vector3 &pos, const float font_size,
-                         const TextAlignment alignment, const Vector4 colour,
+  static void DrawTextWs(const Vector3 &pos, const float font_size, const TextAlignment alignment, const Vector4 colour,
                          const string text,
                          ...); /// See "printf" for usage manual
-  static void DrawTextWsNDT(const Vector3 &pos, const float font_size,
-                            const TextAlignment alignment, const Vector4 colour,
-                            const string text,
+  static void DrawTextWsNDT(const Vector3 &pos, const float font_size, const TextAlignment alignment,
+                            const Vector4 colour, const string text,
                             ...); /// See "printf" for usage manual
 
   // Draw Text (pos is assumed to be pre-multiplied by projMtx * viewMtx at this
   // point)
-  static void
-  DrawTextCs(const Vector4 &pos, const float font_size, const string &text,
-             const TextAlignment alignment = TEXTALIGN_LEFT,
-             const Vector4 colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+  static void DrawTextCs(const Vector4 &pos, const float font_size, const string &text,
+                         const TextAlignment alignment = TEXTALIGN_LEFT,
+                         const Vector4 colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
   // Add a status entry at the top left of the screen (Cleared each frame)
-  static void AddStatusEntry(const Vector4 &colour, const std::string text,
-                             ...); /// See "printf" for usuage manual
+  static void AddStatusEntry(const Vector4 &colour, const std::string text, ...); /// See "printf" for usuage manual
 
   // Add a log entry at the bottom left - persistent until scene reset
-  static void Log(const Vector3 &colour, const std::string text,
-                  ...); /// See "printf" for usuage manual
-  static void Log(const std::string text, ...); // Default Text Colour
+  static void Log(const Vector3 &colour, const std::string text, ...); /// See "printf" for usuage manual
+  static void Log(const std::string text, ...);                        // Default Text Colour
 
   // Add an error using default error formatting - use "NCLERROR("error
   // description", <printf params>) to automatically call this function and fill
   // in the required params
-  static void LogE(const char *filename, int linenumber, const std::string text,
-                   ...);
+  static void LogE(const char *filename, int linenumber, const std::string text, ...);
 
 protected:
   // Actual functions managing data parsing to save code bloat - called by
   // public functions
-  static void GenDrawPoint(bool ndt, const Vector3 &pos, float point_radius,
-                           const Vector4 &colour);
-  static void GenDrawThickLine(bool ndt, const Vector3 &start,
-                               const Vector3 &end, float line_width,
+  static void GenDrawPoint(bool ndt, const Vector3 &pos, float point_radius, const Vector4 &colour);
+  static void GenDrawThickLine(bool ndt, const Vector3 &start, const Vector3 &end, float line_width,
                                const Vector4 &colour);
-  static void GenDrawHairLine(bool ndt, const Vector3 &start,
-                              const Vector3 &end, const Vector4 &colour);
-  static void GenDrawTriangle(bool ndt, const Vector3 &v0, const Vector3 &v1,
-                              const Vector3 &v2, const Vector4 &colour);
+  static void GenDrawHairLine(bool ndt, const Vector3 &start, const Vector3 &end, const Vector4 &colour);
+  static void GenDrawTriangle(bool ndt, const Vector3 &v0, const Vector3 &v1, const Vector3 &v2, const Vector4 &colour);
 
   static void AddLogEntry(const Vector3 &colour, const std::string &text);
 
@@ -222,8 +194,7 @@ protected:
 
   static void ClearLog();
 
-  static void SetDebugDrawData(const Matrix4 &projMtx, const Matrix4 &viewMtx,
-                               const Vector3 &camera_pos)
+  static void SetDebugDrawData(const Matrix4 &projMtx, const Matrix4 &viewMtx, const Vector3 &camera_pos)
   {
     m_ProjMtx = projMtx;
     m_ViewMtx = viewMtx;

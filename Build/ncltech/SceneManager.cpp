@@ -36,8 +36,7 @@ void SceneManager::EnqueueScene(Scene *scene)
   if (m_vpAllScenes.size() == 1)
     JumpToScene(0);
   else
-    Window::GetWindow().SetWindowTitle("NCLTech - [%d/%d] %s", m_SceneIdx + 1,
-                                       m_vpAllScenes.size(),
+    Window::GetWindow().SetWindowTitle("NCLTech - [%d/%d] %s", m_SceneIdx + 1, m_vpAllScenes.size(),
                                        m_pScene->GetSceneName().c_str());
 }
 
@@ -74,8 +73,7 @@ void SceneManager::JumpToScene(int idx)
   PhysicsEngine::Instance()->SetDefaults();
   InitializeDefaults();
   m_pScene->OnInitializeScene();
-  Window::GetWindow().SetWindowTitle("NCLTech - [%d/%d] %s", idx + 1,
-                                     m_vpAllScenes.size(),
+  Window::GetWindow().SetWindowTitle("NCLTech - [%d/%d] %s", idx + 1, m_vpAllScenes.size(),
                                      m_pScene->GetSceneName().c_str());
 }
 
