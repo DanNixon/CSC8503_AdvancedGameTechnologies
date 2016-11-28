@@ -158,19 +158,13 @@ public:
       ResetScene(1.0f / 60.0f);
 
     if (!PhysicsEngine::Instance()->IsPaused())
-    {
       m_TrajectoryPoints.push_back(m_Sphere->Physics()->GetPosition());
-    }
 
     if (m_Sphere->Physics()->GetPosition().y < 0.0f)
-    {
       PhysicsEngine::Instance()->SetPaused(true);
-    }
 
     for (size_t i = 1; i < m_TrajectoryPoints.size(); i++)
-    {
       NCLDebug::DrawThickLine(m_TrajectoryPoints[i - 1], m_TrajectoryPoints[i], 0.05f, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-    }
   }
 
 private:

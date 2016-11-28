@@ -42,10 +42,7 @@ public:
     m_LocalOnB = Matrix3::Transpose(m_pObj2->GetOrientation().ToMatrix3()) * r2;
   }
 
-  virtual void ApplyImpulse() override
-  {
-    /* TUT 3 */
-  }
+  virtual void ApplyImpulse() override { /* TUT 3 */ }
 
   virtual void DebugDraw() const
   {

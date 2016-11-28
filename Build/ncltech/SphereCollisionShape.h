@@ -31,14 +31,8 @@ public:
   virtual ~SphereCollisionShape();
 
   // Get/Set Sphere Radius
-  void SetRadius(float radius)
-  {
-    m_Radius = radius;
-  }
-  float GetRadius() const
-  {
-    return m_Radius;
-  }
+  void SetRadius(float radius) { m_Radius = radius; }
+  float GetRadius() const { return m_Radius; }
 
   // Debug Collision Shape
   virtual void DebugDraw(const PhysicsObject *currentObject) const override;

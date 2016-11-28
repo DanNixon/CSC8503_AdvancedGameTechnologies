@@ -25,9 +25,7 @@ CuboidCollisionShape::CuboidCollisionShape(const Vector3 &halfdims)
   }
 }
 
-CuboidCollisionShape::~CuboidCollisionShape()
-{
-}
+CuboidCollisionShape::~CuboidCollisionShape() {}
 
 Matrix3 CuboidCollisionShape::BuildInverseInertia(float invMass) const
 {

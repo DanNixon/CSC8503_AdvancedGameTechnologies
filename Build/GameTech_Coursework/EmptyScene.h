@@ -11,9 +11,7 @@ public:
       : Scene(friendly_name)
   {
   }
-  virtual ~EmptyScene()
-  {
-  }
+  virtual ~EmptyScene() {}
 
   virtual void OnInitializeScene() override
   {

@@ -9,10 +9,7 @@ NetworkBase::NetworkBase()
 {
 }
 
-NetworkBase::~NetworkBase()
-{
-  Release();
-}
+NetworkBase::~NetworkBase() { Release(); }
 
 // Initialze network
 // - external_port_number MUST be specified to allow peers to connect to this

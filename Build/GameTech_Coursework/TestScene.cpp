@@ -14,9 +14,7 @@ TestScene::TestScene(const std::string &friendly_name)
 {
 }
 
-TestScene::~TestScene()
-{
-}
+TestScene::~TestScene() {}
 
 void TestScene::OnInitializeScene()
 {

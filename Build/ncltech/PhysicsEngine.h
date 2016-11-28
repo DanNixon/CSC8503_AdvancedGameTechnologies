@@ -84,10 +84,7 @@ public:
                                   // be initialized
 
   // Add Constraints
-  void AddConstraint(Constraint *c)
-  {
-    m_vpConstraints.push_back(c);
-  }
+  void AddConstraint(Constraint *c) { m_vpConstraints.push_back(c); }
 
   // Update Physics Engine
   void Update(float deltaTime); // Remember DeltaTime is 'seconds' since last
@@ -97,55 +94,22 @@ public:
   void DebugRender();
 
   // Getters / Setters
-  bool IsPaused()
-  {
-    return m_IsPaused;
-  }
-  void SetPaused(bool paused)
-  {
-    m_IsPaused = paused;
-  }
+  bool IsPaused() { return m_IsPaused; }
+  void SetPaused(bool paused) { m_IsPaused = paused; }
 
-  uint GetDebugDrawFlags()
-  {
-    return m_DebugDrawFlags;
-  }
-  void SetDebugDrawFlags(uint flags)
-  {
-    m_DebugDrawFlags = flags;
-  }
+  uint GetDebugDrawFlags() { return m_DebugDrawFlags; }
+  void SetDebugDrawFlags(uint flags) { m_DebugDrawFlags = flags; }
 
-  void SetUpdateTimestep(float updateTimestep)
-  {
-    m_UpdateTimestep = updateTimestep;
-  }
-  float GetUpdateTimestep()
-  {
-    return m_UpdateTimestep;
-  }
+  void SetUpdateTimestep(float updateTimestep) { m_UpdateTimestep = updateTimestep; }
+  float GetUpdateTimestep() { return m_UpdateTimestep; }
 
-  const Vector3 &GetGravity()
-  {
-    return m_Gravity;
-  }
-  void SetGravity(const Vector3 &g)
-  {
-    m_Gravity = g;
-  }
+  const Vector3 &GetGravity() { return m_Gravity; }
+  void SetGravity(const Vector3 &g) { m_Gravity = g; }
 
-  float GetDampingFactor()
-  {
-    return m_DampingFactor;
-  }
-  void SetDampingFactor(float d)
-  {
-    m_DampingFactor = d;
-  }
+  float GetDampingFactor() { return m_DampingFactor; }
+  void SetDampingFactor(float d) { m_DampingFactor = d; }
 
-  float GetDeltaTime()
-  {
-    return m_UpdateTimestep;
-  }
+  float GetDeltaTime() { return m_UpdateTimestep; }
 
 protected:
   PhysicsEngine();

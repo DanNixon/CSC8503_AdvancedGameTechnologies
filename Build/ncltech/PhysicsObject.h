@@ -50,129 +50,58 @@ public:
   virtual ~PhysicsObject();
 
   //<--------- GETTERS ------------->
-  inline bool IsEnabled() const
-  {
-    return m_Enabled;
-  }
+  inline bool IsEnabled() const { return m_Enabled; }
 
-  inline float GetElasticity() const
-  {
-    return m_Elasticity;
-  }
-  inline float GetFriction() const
-  {
-    return m_Friction;
-  }
+  inline float GetElasticity() const { return m_Elasticity; }
+  inline float GetFriction() const { return m_Friction; }
 
-  inline const Vector3 &GetPosition() const
-  {
-    return m_Position;
-  }
-  inline const Vector3 &GetLinearVelocity() const
-  {
-    return m_LinearVelocity;
-  }
-  inline const Vector3 &GetForce() const
-  {
-    return m_Force;
-  }
-  inline float GetInverseMass() const
-  {
-    return m_InvMass;
-  }
+  inline const Vector3 &GetPosition() const { return m_Position; }
+  inline const Vector3 &GetLinearVelocity() const { return m_LinearVelocity; }
+  inline const Vector3 &GetForce() const { return m_Force; }
 
-  inline const Quaternion &GetOrientation() const
-  {
-    return m_Orientation;
-  }
-  inline const Vector3 &GetAngularVelocity() const
-  {
-    return m_AngularVelocity;
-  }
-  inline const Vector3 &GetTorque() const
-  {
-    return m_Torque;
-  }
-  inline const Matrix3 &GetInverseInertia() const
-  {
-    return m_InvInertia;
-  }
+  inline float GetInverseMass() const { return m_InvMass; }
 
-  inline CollisionShape *GetCollisionShape() const
-  {
-    return m_pColShape;
-  }
+  inline const Quaternion &GetOrientation() const { return m_Orientation; }
+  inline const Vector3 &GetAngularVelocity() const { return m_AngularVelocity; }
+  inline const Vector3 &GetTorque() const { return m_Torque; }
+  inline const Matrix3 &GetInverseInertia() const { return m_InvInertia; }
 
-  inline Object *GetAssociatedObject() const
-  {
-    return m_pParent;
-  }
+  inline CollisionShape *GetCollisionShape() const { return m_pColShape; }
+
+  inline Object *GetAssociatedObject() const { return m_pParent; }
 
   const Matrix4 &GetWorldSpaceTransform() const; // Built from scratch or returned from cached value
 
   //<--------- SETTERS ------------->
-  inline void SetElasticity(float elasticity)
-  {
-    m_Elasticity = elasticity;
-  }
-  inline void SetFriction(float friction)
-  {
-    m_Friction = friction;
-  }
+  inline void SetElasticity(float elasticity) { m_Elasticity = elasticity; }
+  inline void SetFriction(float friction) { m_Friction = friction; }
 
   inline void SetPosition(const Vector3 &v)
   {
     m_Position = v;
     m_wsTransformInvalidated = true;
   }
-  inline void SetLinearVelocity(const Vector3 &v)
-  {
-    m_LinearVelocity = v;
-  }
-  inline void SetForce(const Vector3 &v)
-  {
-    m_Force = v;
-  }
-  inline void SetInverseMass(const float &v)
-  {
-    m_InvMass = v;
-  }
+  inline void SetLinearVelocity(const Vector3 &v) { m_LinearVelocity = v; }
+  inline void SetForce(const Vector3 &v) { m_Force = v; }
+  inline void SetInverseMass(const float &v) { m_InvMass = v; }
 
   inline void SetOrientation(const Quaternion &v)
   {
     m_Orientation = v;
     m_wsTransformInvalidated = true;
   }
-  inline void SetAngularVelocity(const Vector3 &v)
-  {
-    m_AngularVelocity = v;
-  }
-  inline void SetTorque(const Vector3 &v)
-  {
-    m_Torque = v;
-  }
-  inline void SetInverseInertia(const Matrix3 &v)
-  {
-    m_InvInertia = v;
-  }
+  inline void SetAngularVelocity(const Vector3 &v) { m_AngularVelocity = v; }
+  inline void SetTorque(const Vector3 &v) { m_Torque = v; }
+  inline void SetInverseInertia(const Matrix3 &v) { m_InvInertia = v; }
 
-  inline void SetCollisionShape(CollisionShape *colShape)
-  {
-    m_pColShape = colShape;
-  }
+  inline void SetCollisionShape(CollisionShape *colShape) { m_pColShape = colShape; }
 
   // Called automatically when PhysicsObject is created through
   // Object::CreatePhysicsNode()
-  inline void SetAssociatedObject(Object *obj)
-  {
-    m_pParent = obj;
-  }
+  inline void SetAssociatedObject(Object *obj) { m_pParent = obj; }
 
   //<---------- CALLBACKS ------------>
-  inline void SetOnCollisionCallback(PhysicsCollisionCallback callback)
-  {
-    m_OnCollisionCallback = callback;
-  }
+  inline void SetOnCollisionCallback(PhysicsCollisionCallback callback) { m_OnCollisionCallback = callback; }
   inline bool FireOnCollisionEvent(PhysicsObject *obj_a, PhysicsObject *obj_b)
   {
     return (m_OnCollisionCallback) ? m_OnCollisionCallback(obj_a, obj_b) : true;

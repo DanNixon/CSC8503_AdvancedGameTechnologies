@@ -123,92 +123,44 @@ public:
   virtual void UpdateScene(float dt) override;
 
   // Get Camera instance
-  inline Camera *GetCamera()
-  {
-    return m_pCamera;
-  }
+  inline Camera *GetCamera() { return m_pCamera; }
 
   // Get Render Lighting Parameters
-  inline const Vector3 &GetBackgroundColor()
-  {
-    return m_BackgroundColour;
-  }
-  inline const Vector3 &GetAmbientColor()
-  {
-    return m_AmbientColour;
-  }
-  inline const Vector3 &GetInverseLightDirection()
-  {
-    return m_InvLightDirection;
-  }
-  inline const float GetSpecularIntensity()
-  {
-    return m_SpecularIntensity;
-  }
+  inline const Vector3 &GetBackgroundColor() { return m_BackgroundColour; }
+  inline const Vector3 &GetAmbientColor() { return m_AmbientColour; }
+  inline const Vector3 &GetInverseLightDirection() { return m_InvLightDirection; }
+  inline const float GetSpecularIntensity() { return m_SpecularIntensity; }
 
   // Set Render Lighting Parameters
-  inline void SetBackgroundColor(const Vector3 &col)
-  {
-    m_BackgroundColour = col;
-  }
-  inline void SetAmbientColor(const Vector3 &col)
-  {
-    m_AmbientColour = col;
-  }
+  inline void SetBackgroundColor(const Vector3 &col) { m_BackgroundColour = col; }
+  inline void SetAmbientColor(const Vector3 &col) { m_AmbientColour = col; }
   inline void SetInverseLightDirection(const Vector3 &dir)
   {
     m_InvLightDirection = dir;
     m_InvLightDirection.Normalise();
   }
-  inline void SetSpecularIntensity(float intensity)
-  {
-    m_SpecularIntensity = intensity;
-  }
+  inline void SetSpecularIntensity(float intensity) { m_SpecularIntensity = intensity; }
 
   // Turn V-Sync on-off (if vsync is on, the renderer will be locked to only run
   // at the speed of the monitor)
-  inline bool GetVsyncEnabled()
-  {
-    return m_VsyncEnabled;
-  }
-  inline void SetVsyncEnabled(bool enabled)
-  {
-    wglSwapIntervalEXT((m_VsyncEnabled = enabled) ? 1 : 0);
-  }
+  inline bool GetVsyncEnabled() { return m_VsyncEnabled; }
+  inline void SetVsyncEnabled(bool enabled) { wglSwapIntervalEXT((m_VsyncEnabled = enabled) ? 1 : 0); }
 
   // Get/Set Gamma Correction (default: 2.2)
-  inline float GetGammaCorrection()
-  {
-    return m_GammaCorrection;
-  }
-  inline void SetGammaCorrection(float gamma)
-  {
-    m_GammaCorrection = gamma;
-  }
+  inline float GetGammaCorrection() { return m_GammaCorrection; }
+  inline void SetGammaCorrection(float gamma) { m_GammaCorrection = gamma; }
 
   // Get/Set Shadow map texture size (default: 2048)
-  inline uint GetShadowMapSize()
-  {
-    return m_ShadowMapSize;
-  }
+  inline uint GetShadowMapSize() { return m_ShadowMapSize; }
   void SetShadowMapSize(uint size);
 
   // Get/Set Number of shadow maps to use for light source (default: 4)
-  inline uint GetShadowMapNum()
-  {
-    return m_ShadowMapNum;
-  }
+  inline uint GetShadowMapNum() { return m_ShadowMapNum; }
   void SetShadowMapNum(uint num);
 
   // Get/Set Super sampling ammount (default: 4x)
-  inline float GetSuperSamplingScalar()
-  {
-    return m_NumSuperSamples;
-  }
-  inline void SetSuperSamplingScalar(float scalar)
-  {
-    m_NumSuperSamples = scalar;
-  }
+  inline float GetSuperSamplingScalar() { return m_NumSuperSamples; }
+  inline void SetSuperSamplingScalar(float scalar) { m_NumSuperSamples = scalar; }
 
 protected:
   // Class-Only Functions

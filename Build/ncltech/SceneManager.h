@@ -45,22 +45,13 @@ public:
   void JumpToScene(const std::string &friendly_name);
 
   // Get currently active scene (returns NULL if no scenes yet added)
-  inline Scene *GetCurrentScene()
-  {
-    return m_pScene;
-  }
+  inline Scene *GetCurrentScene() { return m_pScene; }
 
   // Get currently active scene's index (return 0 if no scenes yet added)
-  inline uint GetCurrentSceneIndex()
-  {
-    return m_SceneIdx;
-  }
+  inline uint GetCurrentSceneIndex() { return m_SceneIdx; }
 
   // Get total number of enqueued scenes
-  inline uint SceneCount()
-  {
-    return m_vpAllScenes.size();
-  }
+  inline uint SceneCount() { return m_vpAllScenes.size(); }
 
 protected:
   SceneManager();

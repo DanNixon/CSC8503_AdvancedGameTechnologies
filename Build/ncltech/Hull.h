@@ -77,31 +77,13 @@ public:
 
   int FindEdge(int v0_idx, int v1_idx);
 
-  const HullVertex &GetVertex(int idx)
-  {
-    return m_vVertices[idx];
-  }
-  const HullEdge &GetEdge(int idx)
-  {
-    return m_vEdges[idx];
-  }
-  const HullFace &GetFace(int idx)
-  {
-    return m_vFaces[idx];
-  }
+  const HullVertex &GetVertex(int idx) { return m_vVertices[idx]; }
+  const HullEdge &GetEdge(int idx) { return m_vEdges[idx]; }
+  const HullFace &GetFace(int idx) { return m_vFaces[idx]; }
 
-  size_t GetNumVertices()
-  {
-    return m_vVertices.size();
-  }
-  size_t GetNumEdges()
-  {
-    return m_vEdges.size();
-  }
-  size_t GetNumFaces()
-  {
-    return m_vFaces.size();
-  }
+  size_t GetNumVertices() { return m_vVertices.size(); }
+  size_t GetNumEdges() { return m_vEdges.size(); }
+  size_t GetNumFaces() { return m_vFaces.size(); }
 
   void GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert);
 

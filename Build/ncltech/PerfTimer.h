@@ -14,32 +14,15 @@ public:
     memset(&m_PreviousData, 0, sizeof(PerfTimer_Data));
   }
 
-  virtual ~PerfTimer()
-  {
-  }
+  virtual ~PerfTimer() {}
 
-  float GetHigh()
-  {
-    return m_PreviousData._max;
-  }
-  float GetLow()
-  {
-    return m_PreviousData._min;
-  }
-  float GetAvg()
-  {
-    return m_PreviousData._sum / float(m_PreviousData._num);
-  }
+  float GetHigh() { return m_PreviousData._max; }
+  float GetLow() { return m_PreviousData._min; }
+  float GetAvg() { return m_PreviousData._sum / float(m_PreviousData._num); }
 
-  void SetUpdateInterval(float seconds)
-  {
-    m_UpdateInterval = seconds;
-  }
+  void SetUpdateInterval(float seconds) { m_UpdateInterval = seconds; }
 
-  void BeginTimingSection()
-  {
-    m_Timer.GetTimedMS();
-  }
+  void BeginTimingSection() { m_Timer.GetTimedMS(); }
 
   void EndTimingSection()
   {

@@ -40,10 +40,7 @@ void SceneManager::EnqueueScene(Scene *scene)
                                        m_pScene->GetSceneName().c_str());
 }
 
-void SceneManager::JumpToScene()
-{
-  JumpToScene((m_SceneIdx + 1) % m_vpAllScenes.size());
-}
+void SceneManager::JumpToScene() { JumpToScene((m_SceneIdx + 1) % m_vpAllScenes.size()); }
 
 void SceneManager::JumpToScene(int idx)
 {

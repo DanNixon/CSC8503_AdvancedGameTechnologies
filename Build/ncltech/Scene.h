@@ -51,17 +51,12 @@ public:
   // Called when scene is being activated, and will begin being
   // rendered/updated.
   //	 - Initialize objects/physics here
-  virtual void OnInitializeScene()
-  {
-  }
+  virtual void OnInitializeScene() {}
 
   // Called when scene is being swapped and will no longer be rendered/updated
   //	 - Remove objects/physics here
   //	   Note: Default action here automatically delete all game objects
-  virtual void OnCleanupScene()
-  {
-    DeleteAllGameObjects();
-  };
+  virtual void OnCleanupScene() { DeleteAllGameObjects(); };
 
   // Update Scene Logic
   //   - Called once per frame and should contain all time-sensitive update
@@ -86,23 +81,14 @@ public:
   Object *FindGameObject(const std::string &name);
 
   // The friendly name associated with this scene instance
-  const std::string &GetSceneName()
-  {
-    return m_SceneName;
-  }
+  const std::string &GetSceneName() { return m_SceneName; }
 
   // The maximum bounds of the contained scene
   //   - This is exclusively used for shadowing purposes, ensuring all objects
   //   that could
   //     cast shadows are rendered as necessary.
-  void SetWorldRadius(float radius)
-  {
-    m_pRootGameObject->SetBoundingRadius(radius);
-  }
-  float GetWorldRadius()
-  {
-    return m_pRootGameObject->GetBoundingRadius();
-  }
+  void SetWorldRadius(float radius) { m_pRootGameObject->SetBoundingRadius(radius); }
+  float GetWorldRadius() { return m_pRootGameObject->GetBoundingRadius(); }
 
   // Adds all visible objects to given RenderList
   void InsertToRenderList(RenderList *list, const Frustum &frustum);

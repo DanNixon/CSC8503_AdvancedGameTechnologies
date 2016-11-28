@@ -1,9 +1,7 @@
 #include "CollisionDetectionSAT.h"
 #include "NCLDebug.h"
 
-CollisionDetectionSAT::CollisionDetectionSAT()
-{
-}
+CollisionDetectionSAT::CollisionDetectionSAT() {}
 
 void CollisionDetectionSAT::BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj2, CollisionShape *shape1,
                                          CollisionShape *shape2)
@@ -24,10 +22,7 @@ bool CollisionDetectionSAT::AreColliding(CollisionData *out_coldata)
   return false;
 }
 
-void CollisionDetectionSAT::FindAllPossibleCollisionAxes()
-{
-  /* TUT 4 */
-}
+void CollisionDetectionSAT::FindAllPossibleCollisionAxes() { /* TUT 4 */ }
 
 bool CollisionDetectionSAT::CheckCollisionAxis(const Vector3 &axis, CollisionData *coldata)
 {
@@ -102,10 +97,7 @@ Vector3 CollisionDetectionSAT::GetClosestPoint(const Vector3 &pos, std::vector<C
   return final_closest_point;
 }
 
-void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
-{
-  /* TUT 5 CODE */
-}
+void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold) { /* TUT 5 CODE */ }
 
 Vector3 CollisionDetectionSAT::PlaneEdgeIntersection(const Plane &plane, const Vector3 &start, const Vector3 &end) const
 {

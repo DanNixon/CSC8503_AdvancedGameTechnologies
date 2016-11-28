@@ -3,19 +3,11 @@
 #include "PhysicsObject.h"
 #include <nclgl/Matrix3.h>
 
-SphereCollisionShape::SphereCollisionShape()
-{
-  m_Radius = 1.0f;
-}
+SphereCollisionShape::SphereCollisionShape() { m_Radius = 1.0f; }
 
-SphereCollisionShape::SphereCollisionShape(float radius)
-{
-  m_Radius = radius;
-}
+SphereCollisionShape::SphereCollisionShape(float radius) { m_Radius = radius; }
 
-SphereCollisionShape::~SphereCollisionShape()
-{
-}
+SphereCollisionShape::~SphereCollisionShape() {}
 
 Matrix3 SphereCollisionShape::BuildInverseInertia(float invMass) const
 {

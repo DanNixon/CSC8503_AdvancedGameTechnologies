@@ -15,20 +15,11 @@ void PhysicsEngine::SetDefaults()
   m_DampingFactor = 0.999f;
 }
 
-PhysicsEngine::PhysicsEngine()
-{
-  SetDefaults();
-}
+PhysicsEngine::PhysicsEngine() { SetDefaults(); }
 
-PhysicsEngine::~PhysicsEngine()
-{
-  RemoveAllPhysicsObjects();
-}
+PhysicsEngine::~PhysicsEngine() { RemoveAllPhysicsObjects(); }
 
-void PhysicsEngine::AddPhysicsObject(PhysicsObject *obj)
-{
-  m_PhysicsObjects.push_back(obj);
-}
+void PhysicsEngine::AddPhysicsObject(PhysicsObject *obj) { m_PhysicsObjects.push_back(obj); }
 
 void PhysicsEngine::RemovePhysicsObject(PhysicsObject *obj)
 {
@@ -133,10 +124,7 @@ void PhysicsEngine::SolveConstraints()
     c->ApplyImpulse();
 }
 
-void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
-{
-  /* TUTORIAL 2 */
-}
+void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj) { /* TUTORIAL 2 */ }
 
 void PhysicsEngine::BroadPhaseCollisions()
 {
