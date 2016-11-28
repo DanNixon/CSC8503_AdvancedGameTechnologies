@@ -124,7 +124,34 @@ void PhysicsEngine::SolveConstraints()
     c->ApplyImpulse();
 }
 
-void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj) { /* TUTORIAL 2 */ }
+void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
+{
+  // Apply gravity
+  if (obj->m_InvMass > 0.0f)
+    obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
+
+  // Update linear velocity (v = u + at, semi-implicit Euler)
+  obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
+
+  // Linear velocity damping
+  obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
+
+  // Update position (Euler)
+  obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
+
+  // Update angular velocity
+  obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
+
+  // Angular velocity damping
+  obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
+
+  // Update orientation
+  obj->m_Orientation = obj->m_Orientation + (obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f));
+  obj->m_Orientation.Normalise();
+
+  // Mark cached world transform as invalid
+  obj->m_wsTransformInvalidated = true;
+}
 
 void PhysicsEngine::BroadPhaseCollisions()
 {
