@@ -1,26 +1,25 @@
 
 #pragma once
 
-#include <ncltech\Scene.h>
 #include <ncltech\NetworkBase.h>
+#include <ncltech\Scene.h>
 
-//Basic Network Example
+// Basic Network Example
 
 class Net1_Client : public Scene
 {
 public:
-	Net1_Client(const std::string& friendly_name);
+  Net1_Client(const std::string &friendly_name);
 
-	virtual void OnInitializeScene() override;
-	virtual void OnCleanupScene() override;
-	virtual void OnUpdateScene(float dt) override;
+  virtual void OnInitializeScene() override;
+  virtual void OnCleanupScene() override;
+  virtual void OnUpdateScene(float dt) override;
 
-
-	void ProcessNetworkEvent(const ENetEvent& evnt);
+  void ProcessNetworkEvent(const ENetEvent &evnt);
 
 protected:
-	Object*     m_pObj;
+  Object *m_pObj;
 
-	NetworkBase m_Network;
-	ENetPeer*	m_pServerConnection;
+  NetworkBase m_Network;
+  ENetPeer *m_pServerConnection;
 };

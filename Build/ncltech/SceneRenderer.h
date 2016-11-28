@@ -81,136 +81,193 @@ Extra Features:
 	/"""""""""""""""""""""""\
 ....\_@____@____@____@____@_/
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include "RenderList.h"
+#include "Scene.h"
+#include "TSingleton.h"
 #include <nclgl\OGLRenderer.h>
 #include <nclgl\common.h>
-#include "Scene.h"
-#include "RenderList.h"
-#include "TSingleton.h"
 
 enum ScreenTextures //..or GBuffer
 {
-	SCREENTEX_DEPTH    = 0,			//Depth Buffer
-	SCREENTEX_STENCIL  = 0,			//Stencil Buffer (Same Tex as Depth)
-	SCREENTEX_COLOUR0  = 1,			//Main Render (gamma corrected) (Ping-Pong A)
-	SCREENTEX_COLOUR1  = 2,			//Main Render (gamma corrected) (Ping-Pong B)
-	SCREENTEX_NORMALS  = 3,			//Deferred Render - World Space Normals
-	SCREENTEX_LIGHTING = 4,			//Deferred Render - Diffuse/Spec Computations
-	SCREENTEX_MAX
+  SCREENTEX_DEPTH = 0,    // Depth Buffer
+  SCREENTEX_STENCIL = 0,  // Stencil Buffer (Same Tex as Depth)
+  SCREENTEX_COLOUR0 = 1,  // Main Render (gamma corrected) (Ping-Pong A)
+  SCREENTEX_COLOUR1 = 2,  // Main Render (gamma corrected) (Ping-Pong B)
+  SCREENTEX_NORMALS = 3,  // Deferred Render - World Space Normals
+  SCREENTEX_LIGHTING = 4, // Deferred Render - Diffuse/Spec Computations
+  SCREENTEX_MAX
 };
 
-#define SHADOWMAP_MAX 16	//Hard limit defined in shader
+#define SHADOWMAP_MAX 16 // Hard limit defined in shader
 
-#define PROJ_FAR				80.0f			//Can see for 80m - setting this too far really hurts shadow quality as they attempt to cover the entirety of the view frustum
-#define PROJ_NEAR				0.01f			//Nearest object @ 1cm
-#define PROJ_FOV				45.0f			//45 degree field of view
+#define PROJ_FAR                                                               \
+  80.0f // Can see for 80m - setting this too far really hurts shadow quality as
+        // they attempt to cover the entirety of the view frustum
+#define PROJ_NEAR 0.01f // Nearest object @ 1cm
+#define PROJ_FOV 45.0f  // 45 degree field of view
 
 class SceneRenderer : public OGLRenderer
 {
 public:
-	//Initialize the SceneRenderer and all OpenGL components
-	virtual void InitializeOGLContext(Window& parent) override;
+  // Initialize the SceneRenderer and all OpenGL components
+  virtual void InitializeOGLContext(Window &parent) override;
 
-	//Render Current Scene
-	virtual void RenderScene() override;
+  // Render Current Scene
+  virtual void RenderScene() override;
 
-	//Update Current Scene
-	// Note: dt (delta time) here is in seconds not milliseconds to tie in with the physics updates
-	virtual void UpdateScene(float dt) override; 
+  // Update Current Scene
+  // Note: dt (delta time) here is in seconds not milliseconds to tie in with
+  // the physics updates
+  virtual void UpdateScene(float dt) override;
 
-	//Get Camera instance
-	inline Camera* GetCamera()									{ return m_pCamera; }
+  // Get Camera instance
+  inline Camera *GetCamera()
+  {
+    return m_pCamera;
+  }
 
-	//Get Render Lighting Parameters
-	inline const Vector3& GetBackgroundColor()					{ return m_BackgroundColour; }
-	inline const Vector3& GetAmbientColor()						{ return m_AmbientColour; }
-	inline const Vector3& GetInverseLightDirection()			{ return m_InvLightDirection; }
-	inline const float	  GetSpecularIntensity()				{ return m_SpecularIntensity; }
+  // Get Render Lighting Parameters
+  inline const Vector3 &GetBackgroundColor()
+  {
+    return m_BackgroundColour;
+  }
+  inline const Vector3 &GetAmbientColor()
+  {
+    return m_AmbientColour;
+  }
+  inline const Vector3 &GetInverseLightDirection()
+  {
+    return m_InvLightDirection;
+  }
+  inline const float GetSpecularIntensity()
+  {
+    return m_SpecularIntensity;
+  }
 
-	//Set Render Lighting Parameters
-	inline void SetBackgroundColor(const Vector3& col)			{ m_BackgroundColour = col; }
-	inline void SetAmbientColor(const Vector3& col)				{ m_AmbientColour = col; }
-	inline void SetInverseLightDirection(const Vector3& dir)	{ m_InvLightDirection = dir; m_InvLightDirection.Normalise(); }
-	inline void SetSpecularIntensity(float intensity)			{ m_SpecularIntensity = intensity; }
+  // Set Render Lighting Parameters
+  inline void SetBackgroundColor(const Vector3 &col)
+  {
+    m_BackgroundColour = col;
+  }
+  inline void SetAmbientColor(const Vector3 &col)
+  {
+    m_AmbientColour = col;
+  }
+  inline void SetInverseLightDirection(const Vector3 &dir)
+  {
+    m_InvLightDirection = dir;
+    m_InvLightDirection.Normalise();
+  }
+  inline void SetSpecularIntensity(float intensity)
+  {
+    m_SpecularIntensity = intensity;
+  }
 
-	//Turn V-Sync on-off (if vsync is on, the renderer will be locked to only run at the speed of the monitor)
-	inline bool GetVsyncEnabled()								{ return m_VsyncEnabled; }
-	inline void SetVsyncEnabled(bool enabled)					{ wglSwapIntervalEXT((m_VsyncEnabled = enabled) ? 1 : 0); }
+  // Turn V-Sync on-off (if vsync is on, the renderer will be locked to only run
+  // at the speed of the monitor)
+  inline bool GetVsyncEnabled()
+  {
+    return m_VsyncEnabled;
+  }
+  inline void SetVsyncEnabled(bool enabled)
+  {
+    wglSwapIntervalEXT((m_VsyncEnabled = enabled) ? 1 : 0);
+  }
 
-	//Get/Set Gamma Correction (default: 2.2)
-	inline float GetGammaCorrection()							{ return m_GammaCorrection; }
-	inline void  SetGammaCorrection(float gamma)				{ m_GammaCorrection = gamma; }
+  // Get/Set Gamma Correction (default: 2.2)
+  inline float GetGammaCorrection()
+  {
+    return m_GammaCorrection;
+  }
+  inline void SetGammaCorrection(float gamma)
+  {
+    m_GammaCorrection = gamma;
+  }
 
-	//Get/Set Shadow map texture size (default: 2048)
-	inline uint GetShadowMapSize()								{ return m_ShadowMapSize; }
-	void SetShadowMapSize(uint size);
+  // Get/Set Shadow map texture size (default: 2048)
+  inline uint GetShadowMapSize()
+  {
+    return m_ShadowMapSize;
+  }
+  void SetShadowMapSize(uint size);
 
-	//Get/Set Number of shadow maps to use for light source (default: 4)
-	inline uint GetShadowMapNum()								{ return m_ShadowMapNum; }
-	void SetShadowMapNum(uint num);
+  // Get/Set Number of shadow maps to use for light source (default: 4)
+  inline uint GetShadowMapNum()
+  {
+    return m_ShadowMapNum;
+  }
+  void SetShadowMapNum(uint num);
 
-	//Get/Set Super sampling ammount (default: 4x)
-	inline float GetSuperSamplingScalar()						{ return m_NumSuperSamples; }
-	inline void  SetSuperSamplingScalar(float scalar)			{ m_NumSuperSamples = scalar; }
-
+  // Get/Set Super sampling ammount (default: 4x)
+  inline float GetSuperSamplingScalar()
+  {
+    return m_NumSuperSamples;
+  }
+  inline void SetSuperSamplingScalar(float scalar)
+  {
+    m_NumSuperSamples = scalar;
+  }
 
 protected:
-	//Class-Only Functions
-	SceneRenderer();
-	virtual ~SceneRenderer();
+  // Class-Only Functions
+  SceneRenderer();
+  virtual ~SceneRenderer();
 
-	bool InitialiseGL();
-	void InitializeDefaults();
+  bool InitialiseGL();
+  void InitializeDefaults();
 
-	void BuildFBOs();
-	bool ShadersLoad();
-	void ShadersSetDefaults();
+  void BuildFBOs();
+  bool ShadersLoad();
+  void ShadersSetDefaults();
 
-	void DeferredRenderOpaqueObjects();
-	void ForwardRenderTransparentObjects();
+  void DeferredRenderOpaqueObjects();
+  void ForwardRenderTransparentObjects();
 
-	void RenderShadowMaps();
+  void RenderShadowMaps();
 
 protected:
-	//Current Scene
-	Scene*				m_pScene;
-	
-	//Shaders
-	Shader*				m_pShaderShadow;
-	Shader*				m_pShaderForwardLighting;
-	Shader*				m_pShaderColNorm; 
-	Shader*				m_pShaderLightDir;
-	Shader*				m_pShaderCombineLighting;
-	Shader*				m_pShaderPresentToWindow;
+  // Current Scene
+  Scene *m_pScene;
 
-	//Camera + view frustum/renderlist
-	Camera*				m_pCamera;
-	Frustum				m_FrameFrustum;
-	RenderList*			m_pFrameRenderList;
+  // Shaders
+  Shader *m_pShaderShadow;
+  Shader *m_pShaderForwardLighting;
+  Shader *m_pShaderColNorm;
+  Shader *m_pShaderLightDir;
+  Shader *m_pShaderCombineLighting;
+  Shader *m_pShaderPresentToWindow;
 
-	//Render FBO
-	GLuint				m_ScreenTexWidth, m_ScreenTexHeight;
-	GLuint				m_ScreenFBO;
-	GLuint				m_ScreenTex[SCREENTEX_MAX];
+  // Camera + view frustum/renderlist
+  Camera *m_pCamera;
+  Frustum m_FrameFrustum;
+  RenderList *m_pFrameRenderList;
 
-	//Shadow Maps
-	uint				m_ShadowMapNum;
-	uint				m_ShadowMapSize;
-	bool				m_ShadowMapsInvalidated;
-	GLuint				m_ShadowFBO;
-	GLuint				m_ShadowTex;
-	Matrix4				m_ShadowProj[SHADOWMAP_MAX];
-	Matrix4				m_ShadowProjView[SHADOWMAP_MAX];
-	RenderList*			m_apShadowRenderLists[SHADOWMAP_MAX];
+  // Render FBO
+  GLuint m_ScreenTexWidth, m_ScreenTexHeight;
+  GLuint m_ScreenFBO;
+  GLuint m_ScreenTex[SCREENTEX_MAX];
 
-	//Render Paramaters
-	float				m_GammaCorrection; //Monitor Default: 1.0 / 2.2 (Where 2.2 here is the gamma of the monitor which we need to invert before showing)
-	Vector3				m_BackgroundColour;
-	Vector3				m_AmbientColour;
-	Vector3				m_InvLightDirection;
-	float				m_SpecularIntensity;
-	bool				m_VsyncEnabled;
-	float				m_NumSuperSamples;
+  // Shadow Maps
+  uint m_ShadowMapNum;
+  uint m_ShadowMapSize;
+  bool m_ShadowMapsInvalidated;
+  GLuint m_ShadowFBO;
+  GLuint m_ShadowTex;
+  Matrix4 m_ShadowProj[SHADOWMAP_MAX];
+  Matrix4 m_ShadowProjView[SHADOWMAP_MAX];
+  RenderList *m_apShadowRenderLists[SHADOWMAP_MAX];
+
+  // Render Paramaters
+  float m_GammaCorrection; // Monitor Default: 1.0 / 2.2 (Where 2.2 here is the
+                           // gamma of the monitor which we need to invert
+                           // before showing)
+  Vector3 m_BackgroundColour;
+  Vector3 m_AmbientColour;
+  Vector3 m_InvLightDirection;
+  float m_SpecularIntensity;
+  bool m_VsyncEnabled;
+  float m_NumSuperSamples;
 };

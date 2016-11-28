@@ -22,7 +22,7 @@ does not get deleted multiple times.
 	/"""""""""""""""""""""""\			
 ....\_@____@____@____@____@_/
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "Object.h"
 #include <nclgl/Mesh.h>
@@ -30,25 +30,31 @@ does not get deleted multiple times.
 class ObjectMesh : public Object
 {
 public:
-	ObjectMesh(const std::string& name);
-	virtual ~ObjectMesh();
+  ObjectMesh(const std::string &name);
+  virtual ~ObjectMesh();
 
-	//Get/Set the mesh to use
-	void	SetMesh(Mesh* mesh, bool deleteMeshOnCleanup);
-	Mesh*	GetMesh()		{ return m_pMesh; }
+  // Get/Set the mesh to use
+  void SetMesh(Mesh *mesh, bool deleteMeshOnCleanup);
+  Mesh *GetMesh()
+  {
+    return m_pMesh;
+  }
 
-	//Get/Set the texture to use for mesh rendering
-	void	SetTexture(GLuint tex, bool deleteTexOnCleanup);
-	GLuint  GetTexture()	{ return m_Texture; }
+  // Get/Set the texture to use for mesh rendering
+  void SetTexture(GLuint tex, bool deleteTexOnCleanup);
+  GLuint GetTexture()
+  {
+    return m_Texture;
+  }
 
 protected:
-	//Handles OpenGL calls to Render the object - called by SceneRenderer
-	void	OnRenderObject() override;				
+  // Handles OpenGL calls to Render the object - called by SceneRenderer
+  void OnRenderObject() override;
 
 protected:
-	GLuint  m_Texture;
-	Mesh*	m_pMesh;
+  GLuint m_Texture;
+  Mesh *m_pMesh;
 
-	bool	m_DeleteMeshOnCleanup;
-	bool	m_DeleteTexOnCleanup;
+  bool m_DeleteMeshOnCleanup;
+  bool m_DeleteTexOnCleanup;
 };

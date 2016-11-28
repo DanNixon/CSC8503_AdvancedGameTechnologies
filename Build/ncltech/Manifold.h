@@ -19,62 +19,69 @@ additional energy to the system or negate existing velocity.
 	/"""""""""""""""""""""""\
 ....\_@____@____@____@____@_/
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
 #include "PhysicsObject.h"
 #include <nclgl\Vector3.h>
 
-/* A contact constraint is actually the summation of a normal distance constraint
-   along with two friction constraints going along the axes perpendicular to the collision
+/* A contact constraint is actually the summation of a normal distance
+   constraint
+   along with two friction constraints going along the axes perpendicular to the
+   collision
    normal.
 */
 struct ContactPoint
 {
-	float   sumImpulseContact;
-	Vector3 sumImpulseFriction;
+  float sumImpulseContact;
+  Vector3 sumImpulseFriction;
 
-	float	elatisity_term;
+  float elatisity_term;
 
-	Vector3 collisionNormal;
-	float	collisionPenetration;
+  Vector3 collisionNormal;
+  float collisionPenetration;
 
-	Vector3 relPosA;			//Position relative to objectA
-	Vector3 relPosB;			//Position relative to objectB
+  Vector3 relPosA; // Position relative to objectA
+  Vector3 relPosB; // Position relative to objectB
 };
-
-
 
 class Manifold
 {
 public:
-	Manifold();
-	~Manifold();
+  Manifold();
+  ~Manifold();
 
-	//Initiate for collision pair
-	void Initiate(PhysicsObject* nodeA, PhysicsObject* nodeB);
+  // Initiate for collision pair
+  void Initiate(PhysicsObject *nodeA, PhysicsObject *nodeB);
 
-	//Called whenever a new collision contact between A & B are found
-	void AddContact(const Vector3& globalOnA, const Vector3& globalOnB, const Vector3& _normal, const float& _penetration);	
+  // Called whenever a new collision contact between A & B are found
+  void AddContact(const Vector3 &globalOnA, const Vector3 &globalOnB,
+                  const Vector3 &_normal, const float &_penetration);
 
-	//Sequentially solves each contact constraint
-	void ApplyImpulse();
-	void PreSolverStep(float dt);
-	
+  // Sequentially solves each contact constraint
+  void ApplyImpulse();
+  void PreSolverStep(float dt);
 
-	//Debug draws the manifold surface area
-	void DebugDraw() const;
+  // Debug draws the manifold surface area
+  void DebugDraw() const;
 
-	//Get the physics objects
-	PhysicsObject* NodeA() { return m_pNodeA; }
-	PhysicsObject* NodeB() { return m_pNodeB; }
+  // Get the physics objects
+  PhysicsObject *NodeA()
+  {
+    return m_pNodeA;
+  }
+  PhysicsObject *NodeB()
+  {
+    return m_pNodeB;
+  }
+
 protected:
-	void SolveContactPoint(ContactPoint& c);
-	void UpdateConstraint(ContactPoint& c);
+  void SolveContactPoint(ContactPoint &c);
+  void UpdateConstraint(ContactPoint &c);
 
 protected:
-	PhysicsObject*				m_pNodeA;
-	PhysicsObject*				m_pNodeB;
-	std::vector<ContactPoint>	m_vContacts;
+  PhysicsObject *m_pNodeA;
+  PhysicsObject *m_pNodeB;
+  std::vector<ContactPoint> m_vContacts;
 };

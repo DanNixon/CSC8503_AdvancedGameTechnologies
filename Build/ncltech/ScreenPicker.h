@@ -29,81 +29,82 @@ picking and the way all commercial game engines will handle mouse-interactivity.
 	/"""""""""""""""""""""""\
 ....\_@____@____@____@____@_/
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
 #include "RenderList.h"
 #include "TSingleton.h"
 
-//Our texture only stores 16bit unsigned shorts, so has a hard limit on the number of values it can store. 
-//  Hopefully you will never be able to trigger this value though. 
+// Our texture only stores 16bit unsigned shorts, so has a hard limit on the
+// number of values it can store.
+//  Hopefully you will never be able to trigger this value though.
 #define MAX_PICKABLE_OBJECTS 65534
 
-//NSIGHT doesnt (at the time of writing) support reading GL_RED_INTEGER format. So this hack will treat all indicies as 32bit floats
-// that will be converted to integers again later. Not ideal - but worth it to allow nsight debugging as needed ;)
+// NSIGHT doesnt (at the time of writing) support reading GL_RED_INTEGER format.
+// So this hack will treat all indicies as 32bit floats
+// that will be converted to integers again later. Not ideal - but worth it to
+// allow nsight debugging as needed ;)
 #define USE_NSIGHT_HACK
 
 class ScreenPicker : public TSingleton<ScreenPicker>
 {
-	friend class TSingleton<ScreenPicker>;
-	friend class SceneRenderer;
+  friend class TSingleton<ScreenPicker>;
+  friend class SceneRenderer;
 
 public:
+  // Add object to list of 'clickable' objects to be tested
+  void RegisterObject(Object *obj);
 
-	//Add object to list of 'clickable' objects to be tested 
-	void RegisterObject(Object* obj);
-
-	//Remove object from the list of 'clickable' objects
-	void UnregisterObject(Object* obj);
+  // Remove object from the list of 'clickable' objects
+  void UnregisterObject(Object *obj);
 
 protected:
-	//Called by ScreenRenderer
-	void ClearAllObjects();
-	void UpdateFBO(int screen_width, int screen_height);
-	void RenderPickingScene(RenderList* scene_renderlist, const Matrix4& proj_matrix, const Matrix4& view_matrix);
+  // Called by ScreenRenderer
+  void ClearAllObjects();
+  void UpdateFBO(int screen_width, int screen_height);
+  void RenderPickingScene(RenderList *scene_renderlist,
+                          const Matrix4 &proj_matrix,
+                          const Matrix4 &view_matrix);
 
-	//ScreenRenderer Update Phase
-	//  - Returns true if an object has been clicked
-	bool HandleMouseClicks(float dt); 
+  // ScreenRenderer Update Phase
+  //  - Returns true if an object has been clicked
+  bool HandleMouseClicks(float dt);
 
-	//Internal handling of different mouse state scenarios
-	void HandleObjectMouseUp(float dt, bool mouse_in_window, Vector3& clip_space);
-	void HandleObjectMouseMove(float dt, Vector3& clip_space);
+  // Internal handling of different mouse state scenarios
+  void HandleObjectMouseUp(float dt, bool mouse_in_window, Vector3 &clip_space);
+  void HandleObjectMouseMove(float dt, Vector3 &clip_space);
 
+  // Pseodo Protected
+  ScreenPicker();
+  virtual ~ScreenPicker();
 
-	//Pseodo Protected
-	ScreenPicker();
-	virtual ~ScreenPicker();
 protected:
+  // Array of all objects to be tested
+  std::vector<Object *> m_AllRegisteredObjects;
 
-	//Array of all objects to be tested
-	std::vector<Object*> m_AllRegisteredObjects;
+  // Current State
+  Object *m_pCurrentlyHoverObject;
+  Object *m_pCurrentlyHeldObject;
 
-	//Current State
-	Object*			m_pCurrentlyHoverObject;
-	Object*			m_pCurrentlyHeldObject;
+  // Cached data to allow world-space movement computation
+  float m_OldDepth;
+  Vector3 m_OldWorldSpacePos;
 
-	//Cached data to allow world-space movement computation
-	float			m_OldDepth;
-	Vector3			m_OldWorldSpacePos;
+  // clip-space to world-space transform
+  Matrix4 m_invViewProjMtx;
 
-	//clip-space to world-space transform
-	Matrix4			m_invViewProjMtx;
+  // Shader
+  Shader *m_pShaderPicker;
 
+  // Framebuffer
+  int m_TexWidth, m_TexHeight;
+  GLuint m_PickerFBO;
 
-
-	//Shader
-	Shader*			m_pShaderPicker;
-
-	//Framebuffer
-	int				m_TexWidth, m_TexHeight;
-	GLuint			m_PickerFBO;
-
-	// We use RenderBuffers instead of 2D Textures as the contents
-	// of the framebuffer never have to be used for anything else.
-	// Also having a 2D-Texture with a pixel format of unsigned int
-	// is not currently supported.
-	GLuint			m_PickerRB; 
-	GLuint			m_PickerDepthRB;
+  // We use RenderBuffers instead of 2D Textures as the contents
+  // of the framebuffer never have to be used for anything else.
+  // Also having a 2D-Texture with a pixel format of unsigned int
+  // is not currently supported.
+  GLuint m_PickerRB;
+  GLuint m_PickerDepthRB;
 };

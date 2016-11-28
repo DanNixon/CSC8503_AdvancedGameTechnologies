@@ -30,7 +30,7 @@ which you may want to implement yourselves.
 	/"""""""""""""""""""""""\
 ....\_@____@____@____@____@_/
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "PhysicsObject.h"
 #include <nclgl\Vector3.h>
@@ -38,21 +38,26 @@ which you may want to implement yourselves.
 class Constraint
 {
 public:
-	Constraint() {}
+  Constraint()
+  {
+  }
 
+  // Apply Velocity Impulse to object(s) in order to satisfy given constraint
+  //  - Called by PhysicsEngine upon resolving constraints
+  virtual void ApplyImpulse() = 0;
 
-	// Apply Velocity Impulse to object(s) in order to satisfy given constraint
-	//  - Called by PhysicsEngine upon resolving constraints
-	virtual void ApplyImpulse() = 0;
-	
+  // Optional: Pre-solver step will be triggered before any calls to
+  // ApplyImpulse
+  //			 and only ever be called once per physics timestep
+  //  - If you need to precompute any data/velocity forces prior to them
+  //  changing
+  //    through this (or other constraints) then you can do it here.
+  virtual void PreSolverStep(float dt)
+  {
+  }
 
-	// Optional: Pre-solver step will be triggered before any calls to ApplyImpulse
-	//			 and only ever be called once per physics timestep
-	//  - If you need to precompute any data/velocity forces prior to them changing
-	//    through this (or other constraints) then you can do it here.
-	virtual void PreSolverStep(float dt) {}
-
-
-	// Visually Debug Constraint 
-	virtual void DebugDraw() const {}
+  // Visually Debug Constraint
+  virtual void DebugDraw() const
+  {
+  }
 };

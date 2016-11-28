@@ -18,7 +18,7 @@ false in order to prevent them being deleted when the ObjectMesh instance is del
 	/"""""""""""""""""""""""\
 ....\_@____@____@____@____@_/
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 #include <nclgl\Mesh.h>
@@ -27,35 +27,43 @@ class Scene;
 
 class CommonMeshes
 {
-	friend class SceneRenderer; //Initializes/Destroys the given meshes within it's own lifecycle
+  friend class SceneRenderer; // Initializes/Destroys the given meshes within
+                              // it's own lifecycle
 
 public:
+  // Quad
+  static Mesh *Plane()
+  {
+    return m_pPlane;
+  }
 
-	//Quad
-	static Mesh* Plane()			{ return m_pPlane; }
+  // Cube
+  static Mesh *Cube()
+  {
+    return m_pCube;
+  }
 
-	//Cube
-	static Mesh* Cube()				{ return m_pCube; }
+  // Sphere
+  static Mesh *Sphere()
+  {
+    return m_pSphere;
+  }
 
-	//Sphere
-	static Mesh* Sphere()			{ return m_pSphere; }
-
-
-
-	//PhysicsEngine Checkerboard - Hidden here for reasons of laziness
-	static GLuint CheckerboardTex() { return m_CheckerboardTex; }
-
+  // PhysicsEngine Checkerboard - Hidden here for reasons of laziness
+  static GLuint CheckerboardTex()
+  {
+    return m_CheckerboardTex;
+  }
 
 protected:
-	//Called by SceneRenderer
-	static void InitializeMeshes();
-	static void ReleaseMeshes();
+  // Called by SceneRenderer
+  static void InitializeMeshes();
+  static void ReleaseMeshes();
 
 protected:
-	static Mesh* m_pCube;
-	static Mesh* m_pSphere;
-	static Mesh* m_pPlane;
+  static Mesh *m_pCube;
+  static Mesh *m_pSphere;
+  static Mesh *m_pPlane;
 
-
-	static GLuint m_CheckerboardTex;
+  static GLuint m_CheckerboardTex;
 };

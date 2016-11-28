@@ -25,12 +25,12 @@ so you could represent your mesh as a series of pentagons, quads etc or any comb
 	/"""""""""""""""""""""""\
 ....\_@____@____@____@____@_/
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-#include <nclgl\Vector3.h>
 #include <nclgl\Matrix4.h>
+#include <nclgl\Vector3.h>
 #include <vector>
 
 struct HullEdge;
@@ -38,65 +38,82 @@ struct HullFace;
 
 struct HullVertex
 {
-	int idx;
-	Vector3 pos;
-	std::vector<int> enclosing_edges;
-	std::vector<int> enclosing_faces;
+  int idx;
+  Vector3 pos;
+  std::vector<int> enclosing_edges;
+  std::vector<int> enclosing_faces;
 };
 
 struct HullEdge
 {
-	int idx;
-	int vStart, vEnd;
-	std::vector<int> adjoining_edge_ids;
-	std::vector<int> enclosing_faces;
+  int idx;
+  int vStart, vEnd;
+  std::vector<int> adjoining_edge_ids;
+  std::vector<int> enclosing_faces;
 };
 
 struct HullFace
 {
-	int idx;
-	Vector3 _normal;
-	std::vector<int> vert_ids;
-	std::vector<int> edge_ids;
-	std::vector<int> adjoining_face_ids;
+  int idx;
+  Vector3 _normal;
+  std::vector<int> vert_ids;
+  std::vector<int> edge_ids;
+  std::vector<int> adjoining_face_ids;
 };
 
 class Hull
 {
 public:
-	Hull();
-	~Hull();
+  Hull();
+  ~Hull();
 
-	void AddVertex(const Vector3& v);
-	
+  void AddVertex(const Vector3 &v);
 
-	void AddFace(const Vector3& _normal, int nVerts, const int* verts);
-	void AddFace(const Vector3& _normal, const std::vector<int>& vert_ids)		{ AddFace(_normal, vert_ids.size(), &vert_ids[0]); }
+  void AddFace(const Vector3 &_normal, int nVerts, const int *verts);
+  void AddFace(const Vector3 &_normal, const std::vector<int> &vert_ids)
+  {
+    AddFace(_normal, vert_ids.size(), &vert_ids[0]);
+  }
 
+  int FindEdge(int v0_idx, int v1_idx);
 
-	int FindEdge(int v0_idx, int v1_idx);
-	
+  const HullVertex &GetVertex(int idx)
+  {
+    return m_vVertices[idx];
+  }
+  const HullEdge &GetEdge(int idx)
+  {
+    return m_vEdges[idx];
+  }
+  const HullFace &GetFace(int idx)
+  {
+    return m_vFaces[idx];
+  }
 
-	const HullVertex& GetVertex(int idx)		{ return m_vVertices[idx]; }
-	const HullEdge& GetEdge(int idx)			{ return m_vEdges[idx]; }
-	const HullFace& GetFace(int idx)			{ return m_vFaces[idx]; }
+  size_t GetNumVertices()
+  {
+    return m_vVertices.size();
+  }
+  size_t GetNumEdges()
+  {
+    return m_vEdges.size();
+  }
+  size_t GetNumFaces()
+  {
+    return m_vFaces.size();
+  }
 
-	size_t GetNumVertices()					{ return m_vVertices.size(); }
-	size_t GetNumEdges()					{ return m_vEdges.size(); }
-	size_t GetNumFaces()					{ return m_vFaces.size(); }
+  void GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert,
+                               int *out_max_vert);
 
-
-	void GetMinMaxVerticesInAxis(const Vector3& local_axis, int* out_min_vert, int* out_max_vert);
-
-
-	void DebugDraw(const Matrix4& transform);
+  void DebugDraw(const Matrix4 &transform);
 
 protected:
-	int ConstructNewEdge(int parent_face_idx, int vert_start, int vert_end); //Called by AddFace
-	
-protected:
-	std::vector<HullVertex>		m_vVertices;
-	std::vector<HullEdge>		m_vEdges;
-	std::vector<HullFace>		m_vFaces;
+  int ConstructNewEdge(int parent_face_idx, int vert_start,
+                       int vert_end); // Called by AddFace
 
+protected:
+  std::vector<HullVertex> m_vVertices;
+  std::vector<HullEdge> m_vEdges;
+  std::vector<HullFace> m_vFaces;
 };

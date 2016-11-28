@@ -39,110 +39,148 @@ The general runtime consists of:
 	/"""""""""""""""""""""""\
 ....\_@____@____@____@____@_/
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "TSingleton.h"
-#include "PhysicsObject.h"
 #include "Constraint.h"
 #include "Manifold.h"
-#include <vector>
+#include "PhysicsObject.h"
+#include "TSingleton.h"
 #include <mutex>
-
+#include <vector>
 
 #define SOLVER_ITERATIONS 50
 
 #ifndef FALSE
-	#define FALSE	0
-	#define TRUE	1
+#define FALSE 0
+#define TRUE 1
 #endif
 
-#define DEBUGDRAW_FLAGS_CONSTRAINT				0x1
-#define DEBUGDRAW_FLAGS_MANIFOLD				0x2
-#define DEBUGDRAW_FLAGS_COLLISIONVOLUMES		0x4
-#define DEBUGDRAW_FLAGS_COLLISIONNORMALS		0x8
+#define DEBUGDRAW_FLAGS_CONSTRAINT 0x1
+#define DEBUGDRAW_FLAGS_MANIFOLD 0x2
+#define DEBUGDRAW_FLAGS_COLLISIONVOLUMES 0x4
+#define DEBUGDRAW_FLAGS_COLLISIONNORMALS 0x8
 
-
-struct CollisionPair	//Forms the output of the broadphase collision detection
+struct CollisionPair // Forms the output of the broadphase collision detection
 {
-	PhysicsObject* pObjectA;
-	PhysicsObject* pObjectB;
+  PhysicsObject *pObjectA;
+  PhysicsObject *pObjectB;
 };
 
 class PhysicsEngine : public TSingleton<PhysicsEngine>
 {
-	friend class TSingleton < PhysicsEngine > ;
+  friend class TSingleton<PhysicsEngine>;
+
 public:
-	//Reset Default Values like gravity/timestep - called when scene is switched out
-	void SetDefaults();
+  // Reset Default Values like gravity/timestep - called when scene is switched
+  // out
+  void SetDefaults();
 
-	//Add/Remove Physics Objects
-	void AddPhysicsObject(PhysicsObject* obj);
-	void RemovePhysicsObject(PhysicsObject* obj);
-	void RemoveAllPhysicsObjects(); //Delete all physics entities etc and reset-physics environment for new scene to be initialized
+  // Add/Remove Physics Objects
+  void AddPhysicsObject(PhysicsObject *obj);
+  void RemovePhysicsObject(PhysicsObject *obj);
+  void RemoveAllPhysicsObjects(); // Delete all physics entities etc and
+                                  // reset-physics environment for new scene to
+                                  // be initialized
 
-	//Add Constraints
-	void AddConstraint(Constraint* c) { m_vpConstraints.push_back(c); }
-	
+  // Add Constraints
+  void AddConstraint(Constraint *c)
+  {
+    m_vpConstraints.push_back(c);
+  }
 
-	//Update Physics Engine
-	void Update(float deltaTime);			//Remember DeltaTime is 'seconds' since last update not milliseconds
-	
-	//Debug draw all physics objects, manifolds and constraints
-	void DebugRender();
+  // Update Physics Engine
+  void Update(float deltaTime); // Remember DeltaTime is 'seconds' since last
+                                // update not milliseconds
 
+  // Debug draw all physics objects, manifolds and constraints
+  void DebugRender();
 
+  // Getters / Setters
+  bool IsPaused()
+  {
+    return m_IsPaused;
+  }
+  void SetPaused(bool paused)
+  {
+    m_IsPaused = paused;
+  }
 
-	//Getters / Setters 
-	bool IsPaused()						{ return m_IsPaused; }
-	void SetPaused(bool paused)			{ m_IsPaused = paused; }
+  uint GetDebugDrawFlags()
+  {
+    return m_DebugDrawFlags;
+  }
+  void SetDebugDrawFlags(uint flags)
+  {
+    m_DebugDrawFlags = flags;
+  }
 
-	uint GetDebugDrawFlags()			{ return m_DebugDrawFlags;  }
-	void SetDebugDrawFlags(uint flags)  { m_DebugDrawFlags = flags; }
-	
-	void SetUpdateTimestep(float updateTimestep) { m_UpdateTimestep = updateTimestep; }
-	float GetUpdateTimestep()			{ return m_UpdateTimestep; }
+  void SetUpdateTimestep(float updateTimestep)
+  {
+    m_UpdateTimestep = updateTimestep;
+  }
+  float GetUpdateTimestep()
+  {
+    return m_UpdateTimestep;
+  }
 
-	const Vector3& GetGravity()			{ return m_Gravity; }
-	void SetGravity(const Vector3& g)	{ m_Gravity = g; }
+  const Vector3 &GetGravity()
+  {
+    return m_Gravity;
+  }
+  void SetGravity(const Vector3 &g)
+  {
+    m_Gravity = g;
+  }
 
-	float GetDampingFactor()			{ return m_DampingFactor; }
-	void  SetDampingFactor(float d)		{ m_DampingFactor = d; }
+  float GetDampingFactor()
+  {
+    return m_DampingFactor;
+  }
+  void SetDampingFactor(float d)
+  {
+    m_DampingFactor = d;
+  }
 
-	float GetDeltaTime()				{ return m_UpdateTimestep; }
+  float GetDeltaTime()
+  {
+    return m_UpdateTimestep;
+  }
 
 protected:
-	PhysicsEngine();
-	~PhysicsEngine();
+  PhysicsEngine();
+  ~PhysicsEngine();
 
-	//The actual time-independant update function
-	void UpdatePhysics();
+  // The actual time-independant update function
+  void UpdatePhysics();
 
-	//Handles broadphase collision detection
-	void BroadPhaseCollisions();
+  // Handles broadphase collision detection
+  void BroadPhaseCollisions();
 
-	//Handles narrowphase collision detection
-	void NarrowPhaseCollisions();
+  // Handles narrowphase collision detection
+  void NarrowPhaseCollisions();
 
-	//Updates all physics objects position, orientation, velocity etc - Tutorial 2
-	void UpdatePhysicsObject(PhysicsObject* obj);
-	
-	//Solves all physical constraints (constraints and manifolds)
-	void SolveConstraints();
+  // Updates all physics objects position, orientation, velocity etc - Tutorial
+  // 2
+  void UpdatePhysicsObject(PhysicsObject *obj);
+
+  // Solves all physical constraints (constraints and manifolds)
+  void SolveConstraints();
 
 protected:
-	bool		m_IsPaused;
-	float		m_UpdateTimestep, m_UpdateAccum;
-	uint		m_DebugDrawFlags;
+  bool m_IsPaused;
+  float m_UpdateTimestep, m_UpdateAccum;
+  uint m_DebugDrawFlags;
 
-	Vector3		m_Gravity;
-	float		m_DampingFactor;
+  Vector3 m_Gravity;
+  float m_DampingFactor;
 
+  std::vector<CollisionPair> m_BroadphaseCollisionPairs;
 
-	std::vector<CollisionPair> m_BroadphaseCollisionPairs;
+  std::vector<PhysicsObject *> m_PhysicsObjects;
 
-	std::vector<PhysicsObject*> m_PhysicsObjects;
-
-	std::vector<Constraint*>	m_vpConstraints;		// Misc constraints applying to one or more physics objects
-	std::vector<Manifold*>		m_vpManifolds;			// Contact constraints between pairs of objects
+  std::vector<Constraint *> m_vpConstraints; // Misc constraints applying to one
+                                             // or more physics objects
+  std::vector<Manifold *>
+      m_vpManifolds; // Contact constraints between pairs of objects
 };
