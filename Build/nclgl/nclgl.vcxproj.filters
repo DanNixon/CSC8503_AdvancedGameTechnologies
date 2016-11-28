@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{de2098b3-d2e4-472a-8363-6445bc5b2cd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{b7779e61-22b2-44f1-a060-cb735777b2f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Camera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeRobot.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix3.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="MD5Anim.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="MD5FileData.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="MD5Mesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="MD5Node.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="OGLRenderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneNode.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeRobot.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDevice.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix3.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="MD5Anim.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="MD5FileData.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="MD5Mesh.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="MD5Node.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJMesh.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="OGLRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneNode.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildMeshInterface.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
