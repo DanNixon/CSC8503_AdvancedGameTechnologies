@@ -24,9 +24,9 @@ void Manifold::Initiate(PhysicsObject *nodeA, PhysicsObject *nodeB)
   m_pNodeB = nodeB;
 }
 
-void Manifold::ApplyImpulse() { /* TUT 6 CODE HERE */ }
+void Manifold::ApplyImpulse() { /* TUT 6 CODE HERE */}
 
-void Manifold::SolveContactPoint(ContactPoint &c) { /* TUT 6 CODE HERE */ }
+void Manifold::SolveContactPoint(ContactPoint &c) { /* TUT 6 CODE HERE */}
 
 void Manifold::PreSolverStep(float dt)
 {

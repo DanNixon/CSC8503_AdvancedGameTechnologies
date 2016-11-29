@@ -106,22 +106,39 @@ public:
   void DebugRender();
 
   // Getters / Setters
-  bool IsPaused() { return m_IsPaused; }
+  bool IsPaused() const { return m_IsPaused; }
+
   void SetPaused(bool paused) { m_IsPaused = paused; }
 
-  uint GetDebugDrawFlags() { return m_DebugDrawFlags; }
+  uint GetDebugDrawFlags() const { return m_DebugDrawFlags; }
+
   void SetDebugDrawFlags(uint flags) { m_DebugDrawFlags = flags; }
 
-  void SetUpdateTimestep(float updateTimestep) { m_UpdateTimestep = updateTimestep; }
-  float GetUpdateTimestep() { return m_UpdateTimestep; }
+  float GetUpdateTimestep() const { return m_UpdateTimestep; }
 
-  const Vector3 &GetGravity() { return m_Gravity; }
+  void SetUpdateTimestep(float updateTimestep) { m_UpdateTimestep = updateTimestep; }
+
+  /**
+   * @brief Gets the current integration scheme.
+   * @return Integration scheme
+   */
+  inline IntegrationType GetIntegrationType() const { return m_integrationType; }
+
+  /**
+   * @brief Sets the integration scheme used in object updates.
+   * @param type Integration scheme
+   */
+  void SetIntegrationType(IntegrationType type) { m_integrationType = type; }
+
+  const Vector3 &GetGravity() const { return m_Gravity; }
+
   void SetGravity(const Vector3 &g) { m_Gravity = g; }
 
-  float GetDampingFactor() { return m_DampingFactor; }
+  float GetDampingFactor() const { return m_DampingFactor; }
+
   void SetDampingFactor(float d) { m_DampingFactor = d; }
 
-  float GetDeltaTime() { return m_UpdateTimestep; }
+  float GetDeltaTime() const { return m_UpdateTimestep; }
 
 protected:
   PhysicsEngine();

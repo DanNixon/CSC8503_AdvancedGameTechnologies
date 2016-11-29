@@ -115,12 +115,14 @@ void PhysicsEngine::SolveConstraints()
   // before they are updated in the main loop below.
   for (Manifold *m : m_vpManifolds)
     m->PreSolverStep(m_UpdateTimestep);
+
   for (Constraint *c : m_vpConstraints)
     c->PreSolverStep(m_UpdateTimestep);
 
   // Solve all Constraints and Collision Manifolds
   for (Manifold *m : m_vpManifolds)
     m->ApplyImpulse();
+
   for (Constraint *c : m_vpConstraints)
     c->ApplyImpulse();
 }
@@ -142,13 +144,13 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
   default:
   case INTEGRATION_SEMI_IMPLICIT_EULER:
   {
-    // Update linear velocity (v = u + at, semi-implicit Euler)
+    // Update linear velocity (v = u + at)
     obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
 
     // Linear velocity damping
     obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
 
-    // Update position (Euler)
+    // Update position
     obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
 
     // Update angular velocity
