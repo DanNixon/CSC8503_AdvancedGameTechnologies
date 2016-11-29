@@ -67,8 +67,14 @@ public:
   void DebugDraw() const;
 
   // Get the physics objects
-  PhysicsObject *NodeA() { return m_pNodeA; }
-  PhysicsObject *NodeB() { return m_pNodeB; }
+  PhysicsObject *NodeA()
+  {
+    return m_pNodeA;
+  }
+  PhysicsObject *NodeB()
+  {
+    return m_pNodeB;
+  }
 
 protected:
   void SolveContactPoint(ContactPoint &c);

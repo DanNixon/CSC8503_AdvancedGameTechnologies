@@ -91,7 +91,10 @@ public:
   void RenderTransparentObjects(const std::function<void(Object *)> &per_object_func);
 
   // Get the bitmask set per Object in the list
-  uint BitMask() { return m_BitMask; }
+  uint BitMask()
+  {
+    return m_BitMask;
+  }
 
 protected:
   // Keeps a list of the number of unique render lists as to enforce and
@@ -123,5 +126,7 @@ private:
   // No copying! - the deconstructor updates a global counter of active
   // renderlists so deleting a copy would cause all future renderlist instances
   // to overlap each other
-  RenderList(const RenderList &rl) {}
+  RenderList(const RenderList &rl)
+  {
+  }
 };

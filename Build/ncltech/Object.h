@@ -48,14 +48,23 @@ public:
   void CreatePhysicsNode();
 
   // Returns true if this object has a physicsObject attached
-  bool HasPhysics() { return (m_pPhysicsObject != NULL); }
+  bool HasPhysics()
+  {
+    return (m_pPhysicsObject != NULL);
+  }
 
   // Gets a pointer to this objects physicsObject (or NULL if none set)
-  PhysicsObject *Physics() { return m_pPhysicsObject; }
+  PhysicsObject *Physics()
+  {
+    return m_pPhysicsObject;
+  }
 
   //<--------- SCENE TREE ---------->
   // Get a list of all child scene-tree objects
-  std::vector<Object *> &GetChildren() { return m_vpChildren; }
+  std::vector<Object *> &GetChildren()
+  {
+    return m_vpChildren;
+  }
 
   // Recursively search this and all children for an object with the given name
   // (returns NULL if none found)
@@ -68,22 +77,40 @@ public:
 
   //<------- Object Parameters ------>
   // Get the name of this object (if set)
-  const std::string &GetName() { return m_Name; }
+  const std::string &GetName()
+  {
+    return m_Name;
+  }
 
   // Returns if this object should be treated as opaque or transparent
   //	- Should be overrided if the object's transparency is not based on it's
   // colour
-  virtual bool IsOpaque() { return m_Colour.w >= 0.999f; }
+  virtual bool IsOpaque()
+  {
+    return m_Colour.w >= 0.999f;
+  }
 
   // Gets/Sets object colour
-  void SetColour(const Vector4 &colour) { m_Colour = colour; }
-  const Vector4 &GetColour() { return m_Colour; }
+  void SetColour(const Vector4 &colour)
+  {
+    m_Colour = colour;
+  }
+  const Vector4 &GetColour()
+  {
+    return m_Colour;
+  }
 
   // Gets/Sets object bounding radius
   //	- Used solely for graphics frustum culling, and should be set for each
   // object
-  void SetBoundingRadius(float radius) { m_BoundingRadius = radius; }
-  float GetBoundingRadius() { return m_BoundingRadius; }
+  void SetBoundingRadius(float radius)
+  {
+    m_BoundingRadius = radius;
+  }
+  float GetBoundingRadius()
+  {
+    return m_BoundingRadius;
+  }
 
   // Gets/Sets the local transform
   //	- This will be multiplied by the transform provided by the physicsObject
@@ -91,22 +118,37 @@ public:
   //	  the world transform used for rendering. If no physicsObject exists, this
   // contains
   //	  the position of the object relevant to it's parent.
-  void SetLocalTransform(const Matrix4 &transform) { m_LocalTransform = transform; }
-  const Matrix4 &GetLocalTransform() { return m_LocalTransform; }
+  void SetLocalTransform(const Matrix4 &transform)
+  {
+    m_LocalTransform = transform;
+  }
+  const Matrix4 &GetLocalTransform()
+  {
+    return m_LocalTransform;
+  }
 
   // Get the final world transform of the object, this is recalculated each
   // render pass
   // - This is premultiplied by the objects parent (if any), it's physics
   // transform (if any) and local transform in that order.
-  const Matrix4 &GetWorldTransform() { return m_WorldTransform; }
+  const Matrix4 &GetWorldTransform()
+  {
+    return m_WorldTransform;
+  }
 
   // Get the frustum flags used to identify which RenderList's this object is
   // currently visible within
-  uint &GetFrustumCullFlags() { return m_FrustumCullFlags; }
+  uint &GetFrustumCullFlags()
+  {
+    return m_FrustumCullFlags;
+  }
 
   // Get the screen picker unique ID used to identify where the object exists
   // (if it exsists) within the screen picker array
-  uint &GetScreenPickerIdx() { return m_ScreenPickerIdx; }
+  uint &GetScreenPickerIdx()
+  {
+    return m_ScreenPickerIdx;
+  }
 
 public:
   //<------ OVERRIDABLE FUNCTIONALITY ---->

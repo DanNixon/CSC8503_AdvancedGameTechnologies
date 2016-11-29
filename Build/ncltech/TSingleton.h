@@ -69,14 +69,22 @@ public:
 
 protected:
   // Only allow the class to be created and destroyed by itself
-  TSingleton() {}
-  virtual ~TSingleton() {}
+  TSingleton()
+  {
+  }
+  virtual ~TSingleton()
+  {
+  }
 
 private:
   // Prevent the class from being copied either by '=' operator or by copy
   // constructor
-  TSingleton(TSingleton const &) {}
-  TSingleton &operator=(TSingleton const &) {}
+  TSingleton(TSingleton const &)
+  {
+  }
+  TSingleton &operator=(TSingleton const &)
+  {
+  }
 
   // Keep a static instance pointer to refer to as required by the rest of the
   // program

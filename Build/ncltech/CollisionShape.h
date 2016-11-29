@@ -44,8 +44,12 @@ struct CollisionEdge
 class CollisionShape
 {
 public:
-  CollisionShape() {}
-  virtual ~CollisionShape() {}
+  CollisionShape()
+  {
+  }
+  virtual ~CollisionShape()
+  {
+  }
 
   // Constructs an inverse inertia matrix of the given collision volume. This is
   // the equivilant of the inverse mass of an object for rotation,

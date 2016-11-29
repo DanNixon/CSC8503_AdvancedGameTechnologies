@@ -32,16 +32,28 @@ class CommonMeshes
 
 public:
   // Quad
-  static Mesh *Plane() { return m_pPlane; }
+  static Mesh *Plane()
+  {
+    return m_pPlane;
+  }
 
   // Cube
-  static Mesh *Cube() { return m_pCube; }
+  static Mesh *Cube()
+  {
+    return m_pCube;
+  }
 
   // Sphere
-  static Mesh *Sphere() { return m_pSphere; }
+  static Mesh *Sphere()
+  {
+    return m_pSphere;
+  }
 
   // PhysicsEngine Checkerboard - Hidden here for reasons of laziness
-  static GLuint CheckerboardTex() { return m_CheckerboardTex; }
+  static GLuint CheckerboardTex()
+  {
+    return m_CheckerboardTex;
+  }
 
 protected:
   // Called by SceneRenderer

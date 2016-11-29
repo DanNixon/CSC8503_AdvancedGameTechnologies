@@ -33,15 +33,36 @@ public:
   virtual ~CuboidCollisionShape();
 
   // Set Cuboid Dimensions
-  void SetHalfWidth(float half_width) { m_CuboidHalfDimensions.x = fabs(half_width); }
-  void SetHalfHeight(float half_height) { m_CuboidHalfDimensions.y = fabs(half_height); }
-  void SetHalfDepth(float half_depth) { m_CuboidHalfDimensions.z = fabs(half_depth); }
+  void SetHalfWidth(float half_width)
+  {
+    m_CuboidHalfDimensions.x = fabs(half_width);
+  }
+  void SetHalfHeight(float half_height)
+  {
+    m_CuboidHalfDimensions.y = fabs(half_height);
+  }
+  void SetHalfDepth(float half_depth)
+  {
+    m_CuboidHalfDimensions.z = fabs(half_depth);
+  }
 
   // Get Cuboid Dimensions
-  const Vector3 &GetHalfDims() const { return m_CuboidHalfDimensions; }
-  float GetHalfWidth() const { return m_CuboidHalfDimensions.x; }
-  float GetHalfHeight() const { return m_CuboidHalfDimensions.y; }
-  float GetHalfDepth() const { return m_CuboidHalfDimensions.z; }
+  const Vector3 &GetHalfDims() const
+  {
+    return m_CuboidHalfDimensions;
+  }
+  float GetHalfWidth() const
+  {
+    return m_CuboidHalfDimensions.x;
+  }
+  float GetHalfHeight() const
+  {
+    return m_CuboidHalfDimensions.y;
+  }
+  float GetHalfDepth() const
+  {
+    return m_CuboidHalfDimensions.z;
+  }
 
   // Debug Collision Shape
   virtual void DebugDraw(const PhysicsObject *currentObject) const override;

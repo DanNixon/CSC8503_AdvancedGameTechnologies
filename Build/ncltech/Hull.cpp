@@ -1,9 +1,13 @@
 #include "Hull.h"
 #include "NCLDebug.h"
 
-Hull::Hull() {}
+Hull::Hull()
+{
+}
 
-Hull::~Hull() {}
+Hull::~Hull()
+{
+}
 
 void Hull::AddVertex(const Vector3 &v)
 {

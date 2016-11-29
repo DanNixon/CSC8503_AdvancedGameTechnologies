@@ -18,16 +18,25 @@ ObjectMeshDragable::~ObjectMeshDragable()
   ScreenPicker::Instance()->UnregisterObject(this);
 }
 
-void ObjectMeshDragable::SetMouseOverColourOffset(const Vector4 &col_offset) { m_MouseOverColOffset = col_offset; }
+void ObjectMeshDragable::SetMouseOverColourOffset(const Vector4 &col_offset)
+{
+  m_MouseOverColOffset = col_offset;
+}
 
 void ObjectMeshDragable::SetMouseDownColourOffset(const Vector4 &col_offset)
 {
   m_MouseOverColOffset = m_MouseDownColOffset - col_offset;
 }
 
-void ObjectMeshDragable::OnMouseEnter(float dt) { this->m_Colour += m_MouseOverColOffset; }
+void ObjectMeshDragable::OnMouseEnter(float dt)
+{
+  this->m_Colour += m_MouseOverColOffset;
+}
 
-void ObjectMeshDragable::OnMouseLeave(float dt) { this->m_Colour -= m_MouseOverColOffset; }
+void ObjectMeshDragable::OnMouseLeave(float dt)
+{
+  this->m_Colour -= m_MouseOverColOffset;
+}
 
 void ObjectMeshDragable::OnMouseDown(float dt, const Vector3 &worldPos)
 {

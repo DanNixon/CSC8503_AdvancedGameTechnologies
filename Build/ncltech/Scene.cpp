@@ -21,9 +21,15 @@ Scene::~Scene()
   }
 }
 
-void Scene::AddGameObject(Object *game_object) { m_pRootGameObject->AddChildObject(game_object); }
+void Scene::AddGameObject(Object *game_object)
+{
+  m_pRootGameObject->AddChildObject(game_object);
+}
 
-Object *Scene::FindGameObject(const std::string &name) { return m_pRootGameObject->FindGameObject(name); }
+Object *Scene::FindGameObject(const std::string &name)
+{
+  return m_pRootGameObject->FindGameObject(name);
+}
 
 void Scene::DeleteAllGameObjects()
 {
@@ -37,9 +43,15 @@ void Scene::DeleteAllGameObjects()
   }
 }
 
-void Scene::OnUpdateScene(float dt) { UpdateNode(dt, m_pRootGameObject); }
+void Scene::OnUpdateScene(float dt)
+{
+  UpdateNode(dt, m_pRootGameObject);
+}
 
-void Scene::BuildWorldMatrices() { UpdateWorldMatrices(m_pRootGameObject, Matrix4()); }
+void Scene::BuildWorldMatrices()
+{
+  UpdateWorldMatrices(m_pRootGameObject, Matrix4());
+}
 
 void Scene::UpdateWorldMatrices(Object *cNode, const Matrix4 &parentWM)
 {

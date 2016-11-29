@@ -35,11 +35,17 @@ public:
 
   // Get/Set the mesh to use
   void SetMesh(Mesh *mesh, bool deleteMeshOnCleanup);
-  Mesh *GetMesh() { return m_pMesh; }
+  Mesh *GetMesh()
+  {
+    return m_pMesh;
+  }
 
   // Get/Set the texture to use for mesh rendering
   void SetTexture(GLuint tex, bool deleteTexOnCleanup);
-  GLuint GetTexture() { return m_Texture; }
+  GLuint GetTexture()
+  {
+    return m_Texture;
+  }
 
 protected:
   // Handles OpenGL calls to Render the object - called by SceneRenderer

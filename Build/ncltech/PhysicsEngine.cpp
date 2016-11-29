@@ -16,11 +16,20 @@ void PhysicsEngine::SetDefaults()
   m_integrationType = INTEGRATION_SEMI_IMPLICIT_EULER;
 }
 
-PhysicsEngine::PhysicsEngine() { SetDefaults(); }
+PhysicsEngine::PhysicsEngine()
+{
+  SetDefaults();
+}
 
-PhysicsEngine::~PhysicsEngine() { RemoveAllPhysicsObjects(); }
+PhysicsEngine::~PhysicsEngine()
+{
+  RemoveAllPhysicsObjects();
+}
 
-void PhysicsEngine::AddPhysicsObject(PhysicsObject *obj) { m_PhysicsObjects.push_back(obj); }
+void PhysicsEngine::AddPhysicsObject(PhysicsObject *obj)
+{
+  m_PhysicsObjects.push_back(obj);
+}
 
 void PhysicsEngine::RemovePhysicsObject(PhysicsObject *obj)
 {
