@@ -13,6 +13,7 @@ void PhysicsEngine::SetDefaults()
   m_UpdateAccum = 0.0f;
   m_Gravity = Vector3(0.0f, -9.81f, 0.0f);
   m_DampingFactor = 0.999f;
+  m_integrationType = INTEGRATION_SEMI_IMPLICIT_EULER;
 }
 
 PhysicsEngine::PhysicsEngine() { SetDefaults(); }
@@ -130,24 +131,39 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
   if (obj->m_InvMass > 0.0f)
     obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
 
-  // Update linear velocity (v = u + at, semi-implicit Euler)
-  obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
+  switch (m_integrationType)
+  {
+  case INTEGRATION_EXPLICIT_EULER:
+  {
+    // TODO
+    break;
+  }
 
-  // Linear velocity damping
-  obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
+  default:
+  case INTEGRATION_SEMI_IMPLICIT_EULER:
+  {
+    // Update linear velocity (v = u + at, semi-implicit Euler)
+    obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
 
-  // Update position (Euler)
-  obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
+    // Linear velocity damping
+    obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
 
-  // Update angular velocity
-  obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
+    // Update position (Euler)
+    obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
 
-  // Angular velocity damping
-  obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
+    // Update angular velocity
+    obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
 
-  // Update orientation
-  obj->m_Orientation = obj->m_Orientation + (obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f));
-  obj->m_Orientation.Normalise();
+    // Angular velocity damping
+    obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
+
+    // Update orientation
+    obj->m_Orientation = obj->m_Orientation + (obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f));
+    obj->m_Orientation.Normalise();
+
+    break;
+  }
+  }
 
   // Mark cached world transform as invalid
   obj->m_wsTransformInvalidated = true;

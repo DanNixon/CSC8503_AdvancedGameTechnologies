@@ -61,7 +61,19 @@ The general runtime consists of:
 #define DEBUGDRAW_FLAGS_COLLISIONVOLUMES 0x4
 #define DEBUGDRAW_FLAGS_COLLISIONNORMALS 0x8
 
-struct CollisionPair // Forms the output of the broadphase collision detection
+/**
+ * @brief Represents different integration schemes.
+ */
+enum IntegrationType
+{
+  INTEGRATION_EXPLICIT_EULER,
+  INTEGRATION_SEMI_IMPLICIT_EULER
+};
+
+/**
+ * @brief Forms the output of the broadphase collision detection
+ */
+struct CollisionPair
 {
   PhysicsObject *pObjectA;
   PhysicsObject *pObjectB;
@@ -135,6 +147,8 @@ protected:
   bool m_IsPaused;
   float m_UpdateTimestep, m_UpdateAccum;
   uint m_DebugDrawFlags;
+
+  IntegrationType m_integrationType; //!< Type of integration performed in object updates
 
   Vector3 m_Gravity;
   float m_DampingFactor;
