@@ -60,8 +60,7 @@ void Initialize()
   SceneManager::Instance()->EnqueueScene(new Phy2_Integration("Physics Tut #2 - Integration"));
   SceneManager::Instance()->EnqueueScene(new Phy3_Constraints("Physics Tut #3 - Distance Constraints"));
   SceneManager::Instance()->EnqueueScene(new Phy4_ColDetection("Physics Tut #4 - Collision Detection"));
-  // SceneManager::Instance()->EnqueueScene(new Phy4_ColDetectionExtra("Physics
-  // Tut #4.5 - Collision Detection"));
+  SceneManager::Instance()->EnqueueScene(new Phy4_ColDetectionExtra("Physics Tut #4.5 - Collision Detection"));
   SceneManager::Instance()->EnqueueScene(new Phy5_ColManifolds("Physics Tut #5 - Collision Manifolds"));
   SceneManager::Instance()->EnqueueScene(new Phy6_ColResponse("Physics Tut #6 - Collision Response"));
   SceneManager::Instance()->EnqueueScene(new Phy7_Solver("Physics Tut #7 - Global Solver"));
