@@ -157,6 +157,39 @@ public:
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_4))
       ResetScene(1.0f / 60.0f);
 
+    std::string integrationMethodName;
+    switch (PhysicsEngine::Instance()->GetIntegrationType())
+    {
+    case INTEGRATION_EXPLICIT_EULER:
+      integrationMethodName = "Explicit Euler";
+      break;
+    case INTEGRATION_SEMI_IMPLICIT_EULER:
+      integrationMethodName = "Semi-Implicit Euler";
+      break;
+    case INTEGRATION_RUNGE_KUTTA_2:
+      integrationMethodName = "Runge-Kutta 2";
+      break;
+    case INTEGRATION_RUNGE_KUTTA_4:
+      integrationMethodName = "Runge-Kutta 4";
+      break;
+    }
+
+    NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "Integration Method: %s", integrationMethodName);
+    NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "Select Integration Method:");
+    NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "     7: Explicit Euler");
+    NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "     8: Semi-Implicit Euler");
+    NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "     9: Runge-Kutta 2");
+    NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "     0: Runge-Kutta 4");
+
+    if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_7))
+      PhysicsEngine::Instance()->SetIntegrationType(INTEGRATION_EXPLICIT_EULER);
+    if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_8))
+      PhysicsEngine::Instance()->SetIntegrationType(INTEGRATION_SEMI_IMPLICIT_EULER);
+    if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_9))
+      PhysicsEngine::Instance()->SetIntegrationType(INTEGRATION_RUNGE_KUTTA_2);
+    if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_0))
+      PhysicsEngine::Instance()->SetIntegrationType(INTEGRATION_RUNGE_KUTTA_4);
+
     if (!PhysicsEngine::Instance()->IsPaused())
       m_TrajectoryPoints.push_back(m_Sphere->Physics()->GetPosition());
 

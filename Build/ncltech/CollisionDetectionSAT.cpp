@@ -20,12 +20,35 @@ void CollisionDetectionSAT::BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj
 
 bool CollisionDetectionSAT::AreColliding(CollisionData *out_coldata)
 {
-  /* TUT 4 */
-  return false;
+  if (!m_pShape1 || !m_pShape2)
+    return false;
+
+  m_Colliding = false;
+
+  FindAllPossibleCollisionAxes();
+
+  m_BestColData._penetration = -FLT_MAX;
+
+  CollisionData cur_colData;
+  for (const Vector3 &axis : m_vPossibleCollisionAxes)
+  {
+    if (!CheckCollisionAxis(axis, &cur_colData))
+      return false;
+
+    if (cur_colData._penetration >= m_BestColData._penetration)
+      m_BestColData = cur_colData;
+  }
+
+  if (out_coldata)
+    *out_coldata = m_BestColData;
+
+  m_Colliding = true;
+  return true;
 }
 
 void CollisionDetectionSAT::FindAllPossibleCollisionAxes()
-{ /* TUT 4 */
+{
+  /* TUT 4 */
 }
 
 bool CollisionDetectionSAT::CheckCollisionAxis(const Vector3 &axis, CollisionData *coldata)

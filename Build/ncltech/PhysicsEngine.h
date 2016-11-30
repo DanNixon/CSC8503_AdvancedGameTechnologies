@@ -67,7 +67,9 @@ The general runtime consists of:
 enum IntegrationType
 {
   INTEGRATION_EXPLICIT_EULER,
-  INTEGRATION_SEMI_IMPLICIT_EULER
+  INTEGRATION_SEMI_IMPLICIT_EULER,
+  INTEGRATION_RUNGE_KUTTA_2,
+  INTEGRATION_RUNGE_KUTTA_4
 };
 
 /**
@@ -195,8 +197,7 @@ protected:
   // Handles narrowphase collision detection
   void NarrowPhaseCollisions();
 
-  // Updates all physics objects position, orientation, velocity etc - Tutorial
-  // 2
+  // Updates all physics objects position, orientation, velocity etc
   void UpdatePhysicsObject(PhysicsObject *obj);
 
   // Solves all physical constraints (constraints and manifolds)
@@ -216,7 +217,6 @@ protected:
 
   std::vector<PhysicsObject *> m_PhysicsObjects;
 
-  std::vector<Constraint *> m_vpConstraints; // Misc constraints applying to one
-                                             // or more physics objects
+  std::vector<Constraint *> m_vpConstraints; // Misc constraints applying to one or more physics objects
   std::vector<Manifold *> m_vpManifolds;     // Contact constraints between pairs of objects
 };

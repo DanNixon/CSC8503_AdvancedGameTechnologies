@@ -146,7 +146,25 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
   {
   case INTEGRATION_EXPLICIT_EULER:
   {
-    // TODO
+    // Update position
+    obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
+
+    // Update linear velocity (v = u + at)
+    obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
+
+    // Linear velocity damping
+    obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
+
+    // Update orientation
+    obj->m_Orientation = obj->m_Orientation + (obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f));
+    obj->m_Orientation.Normalise();
+
+    // Update angular velocity
+    obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
+
+    // Angular velocity damping
+    obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
+
     break;
   }
 
@@ -172,6 +190,18 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
     obj->m_Orientation = obj->m_Orientation + (obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f));
     obj->m_Orientation.Normalise();
 
+    break;
+  }
+
+  case INTEGRATION_RUNGE_KUTTA_2:
+  {
+    // TODO
+    break;
+  }
+
+  case INTEGRATION_RUNGE_KUTTA_4:
+  {
+    // TODO
     break;
   }
   }
