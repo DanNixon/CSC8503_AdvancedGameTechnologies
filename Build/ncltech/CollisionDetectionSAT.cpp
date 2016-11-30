@@ -48,12 +48,79 @@ bool CollisionDetectionSAT::AreColliding(CollisionData *out_coldata)
 
 void CollisionDetectionSAT::FindAllPossibleCollisionAxes()
 {
-  /* TUT 4 */
+  m_pShape1->GetCollisionAxes(m_pObj1, &m_vPossibleCollisionAxes);
+  m_pShape2->GetCollisionAxes(m_pObj2, &m_vPossibleCollisionAxes);
+
+  std::vector<CollisionEdge> shape1_edges;
+  std::vector<CollisionEdge> shape2_edges;
+
+  m_pShape1->GetEdges(m_pObj1, &shape1_edges);
+  m_pShape2->GetEdges(m_pObj2, &shape2_edges);
+
+  // Handle special case for curved shapes
+  bool shape1_isSphere = shape1_edges.empty();
+  bool shape2_isSphere = shape2_edges.empty();
+
+  if (shape1_isSphere && shape2_isSphere)
+  {
+    Vector3 axis = m_pObj2->GetPosition() - m_pObj1->GetPosition();
+    axis.Normalise();
+    AddPossibleCollisionAxis(axis);
+  }
+  else if (shape1_isSphere)
+  {
+    Vector3 p = GetClosestPoint( m_pObj1->GetPosition(), shape2_edges);
+    Vector3 pt = m_pObj1->GetPosition() - p;
+    pt.Normalise();
+    AddPossibleCollisionAxis(pt);
+  }
+  else if (shape2_isSphere)
+  {
+    Vector3 p = GetClosestPoint(m_pObj2->GetPosition(), shape1_edges);
+    Vector3 pt = m_pObj2->GetPosition() - p;
+    pt.Normalise();
+    AddPossibleCollisionAxis(pt);
+  }
 }
 
 bool CollisionDetectionSAT::CheckCollisionAxis(const Vector3 &axis, CollisionData *coldata)
 {
-  /* TUT 4 */
+  Vector3 min1, min2, max1, max2;
+
+  // Get the min /max vertices along the axis from shape1 and shape2
+  m_pShape1->GetMinMaxVertexOnAxis(m_pObj1, axis, &min1, &max1);
+  m_pShape2->GetMinMaxVertexOnAxis(m_pObj2, axis, &min2, &max2);
+
+  float minCorrelation1 = Vector3::Dot(axis, min1);
+  float maxCorrelation1 = Vector3::Dot(axis, max1);
+  float minCorrelation2 = Vector3::Dot(axis, min2);
+  float maxCorrelation2 = Vector3::Dot(axis, max2);
+
+  // Object 1 mostly overlapping Object 2
+  if (minCorrelation1 <= minCorrelation2 && maxCorrelation1 >= minCorrelation2)
+  {
+    if (coldata != NULL)
+    {
+      coldata->_normal = axis;
+      coldata->_penetration = minCorrelation2 - maxCorrelation1;
+      coldata->_pointOnPlane = max1 + coldata->_normal * coldata->_penetration;
+    }
+
+    return true;
+  }
+
+  // Object 2 mostly overlapping Object 1
+  if (minCorrelation2 <= minCorrelation1 && maxCorrelation2 >= minCorrelation1)
+  {
+    if (coldata != NULL)
+    {
+      coldata->_normal = -axis;
+      coldata->_penetration = minCorrelation1 - maxCorrelation2;
+      coldata->_pointOnPlane = min1 + coldata->_normal * coldata->_penetration;
+    }
+    return true;
+  }
+
   return false;
 }
 
