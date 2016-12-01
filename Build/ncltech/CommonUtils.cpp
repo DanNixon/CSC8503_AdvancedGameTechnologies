@@ -57,7 +57,7 @@ Object *CommonUtils::BuildSphereObject(const std::string &name, const Vector3 &p
     else
     {
       CollisionShape *pColshape = new SphereCollisionShape(radius);
-      pSphere->Physics()->SetCollisionShape(pColshape);
+      pSphere->Physics()->AddCollisionShape(pColshape);
       pSphere->Physics()->SetInverseInertia(pColshape->BuildInverseInertia(inverse_mass));
     }
   }
@@ -99,7 +99,7 @@ Object *CommonUtils::BuildCuboidObject(const std::string &name, const Vector3 &p
     else
     {
       CollisionShape *pColshape = new CuboidCollisionShape(halfdims);
-      pCuboid->Physics()->SetCollisionShape(pColshape);
+      pCuboid->Physics()->AddCollisionShape(pColshape);
       pCuboid->Physics()->SetInverseInertia(pColshape->BuildInverseInertia(inverse_mass));
     }
   }

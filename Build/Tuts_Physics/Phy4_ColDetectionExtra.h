@@ -129,7 +129,7 @@ public:
     player->SetMesh(m_MeshPlayer, false);
     player->CreatePhysicsNode();
     player->Physics()->SetPosition(Vector3(0.0f, 0.5f, 0.0f));
-    player->Physics()->SetCollisionShape(new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)));
+    player->Physics()->AddCollisionShape(new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)));
     player->SetBoundingRadius(1.0f);
     player->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
     this->AddGameObject(player);
@@ -149,7 +149,7 @@ public:
       obj->SetBoundingRadius(col_size.Length());
       obj->CreatePhysicsNode();
       obj->Physics()->SetPosition(Vector3(-5.0f, 2.f, -5.0f));
-      obj->Physics()->SetCollisionShape(new CuboidCollisionShape(col_size));
+      obj->Physics()->AddCollisionShape(new CuboidCollisionShape(col_size));
 
       obj->Physics()->SetOnCollisionCallback([](PhysicsObject *self, PhysicsObject *collidingObject) {
         NCLDebug::Log("You are inside the house!");
@@ -177,7 +177,7 @@ public:
       obj->SetBoundingRadius(col_size.Length());
       obj->CreatePhysicsNode();
       obj->Physics()->SetPosition(Vector3(5.0f, 0.5f, -5.0f));
-      obj->Physics()->SetCollisionShape(new CuboidCollisionShape(col_size));
+      obj->Physics()->AddCollisionShape(new CuboidCollisionShape(col_size));
       obj->Physics()->SetOnCollisionCallback([](PhysicsObject *self, PhysicsObject *collidingObject) {
         NCLDebug::Log("You are inside the garden!");
 
@@ -194,7 +194,7 @@ public:
     {
       PhysicsObject *obj = new PhysicsObject();
       obj->SetPosition(Vector3(5.0f, 1.0f, 0.0f));
-      obj->SetCollisionShape(new SphereCollisionShape(1.0f));
+      obj->AddCollisionShape(new SphereCollisionShape(1.0f));
       obj->SetOnCollisionCallback([obj](PhysicsObject *self, PhysicsObject *collidingObject) {
 
         NCLDebug::Log("You found the secret!");

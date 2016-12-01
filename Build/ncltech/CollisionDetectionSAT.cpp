@@ -12,8 +12,8 @@ void CollisionDetectionSAT::BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj
 
   m_pObj1 = obj1;
   m_pObj2 = obj2;
-  m_pShape1 = obj1->GetCollisionShape();
-  m_pShape2 = obj2->GetCollisionShape();
+  m_pShape1 = shape1;
+  m_pShape2 = shape2;
 
   m_Colliding = false;
 }

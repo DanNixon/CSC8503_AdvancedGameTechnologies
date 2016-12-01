@@ -7,10 +7,6 @@ Description:
 This defines all the physical properties of an element in the world, such
 as velocity, position, mass etc..
 
-
-
-
-
 		(\_/)							
 		( '_')						
 	 /""""""""""""\=========     -----D	
@@ -59,6 +55,7 @@ public:
   {
     return m_Elasticity;
   }
+
   inline float GetFriction() const
   {
     return m_Friction;
@@ -68,10 +65,12 @@ public:
   {
     return m_Position;
   }
+
   inline const Vector3 &GetLinearVelocity() const
   {
     return m_LinearVelocity;
   }
+
   inline const Vector3 &GetForce() const
   {
     return m_Force;
@@ -86,22 +85,35 @@ public:
   {
     return m_Orientation;
   }
+
   inline const Vector3 &GetAngularVelocity() const
   {
     return m_AngularVelocity;
   }
+
   inline const Vector3 &GetTorque() const
   {
     return m_Torque;
   }
+
   inline const Matrix3 &GetInverseInertia() const
   {
     return m_InvInertia;
   }
 
-  inline CollisionShape *GetCollisionShape() const
+  inline size_t NumCollisionShapes() const
   {
-    return m_pColShape;
+    return m_vCollisionShapes.size();
+  }
+
+  inline std::vector<CollisionShape *>::const_iterator CollisionShapesBegin() const
+  {
+    return m_vCollisionShapes.cbegin();
+  }
+
+  inline std::vector<CollisionShape *>::const_iterator CollisionShapesEnd() const
+  {
+    return m_vCollisionShapes.cend();
   }
 
   inline Object *GetAssociatedObject() const
@@ -116,6 +128,7 @@ public:
   {
     m_Elasticity = elasticity;
   }
+
   inline void SetFriction(float friction)
   {
     m_Friction = friction;
@@ -126,14 +139,17 @@ public:
     m_Position = v;
     m_wsTransformInvalidated = true;
   }
+
   inline void SetLinearVelocity(const Vector3 &v)
   {
     m_LinearVelocity = v;
   }
+
   inline void SetForce(const Vector3 &v)
   {
     m_Force = v;
   }
+
   inline void SetInverseMass(const float &v)
   {
     m_InvMass = v;
@@ -144,22 +160,25 @@ public:
     m_Orientation = v;
     m_wsTransformInvalidated = true;
   }
+
   inline void SetAngularVelocity(const Vector3 &v)
   {
     m_AngularVelocity = v;
   }
+
   inline void SetTorque(const Vector3 &v)
   {
     m_Torque = v;
   }
+
   inline void SetInverseInertia(const Matrix3 &v)
   {
     m_InvInertia = v;
   }
 
-  inline void SetCollisionShape(CollisionShape *colShape)
+  inline void AddCollisionShape(CollisionShape *colShape)
   {
-    m_pColShape = colShape;
+    m_vCollisionShapes.push_back(colShape);
   }
 
   // Called automatically when PhysicsObject is created through
@@ -174,6 +193,7 @@ public:
   {
     m_OnCollisionCallback = callback;
   }
+
   inline bool FireOnCollisionEvent(PhysicsObject *obj_a, PhysicsObject *obj_b)
   {
     return (m_OnCollisionCallback) ? m_OnCollisionCallback(obj_a, obj_b) : true;
@@ -204,6 +224,6 @@ protected:
   Matrix3 m_InvInertia;
 
   //<----------COLLISION------------>
-  CollisionShape *m_pColShape;
+  std::vector<CollisionShape *> m_vCollisionShapes;
   PhysicsCollisionCallback m_OnCollisionCallback;
 };

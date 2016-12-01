@@ -235,7 +235,7 @@ void PhysicsEngine::BroadPhaseCollisions()
         m_pObj2 = m_PhysicsObjects[j];
 
         // Check they both atleast have collision shapes
-        if (m_pObj1->GetCollisionShape() != NULL && m_pObj2->GetCollisionShape() != NULL)
+        if (m_pObj1->NumCollisionShapes() > 0 && m_pObj2->NumCollisionShapes() > 0)
         {
           CollisionPair cp;
           cp.pObjectA = m_pObj1;
@@ -263,13 +263,15 @@ void PhysicsEngine::NarrowPhaseCollisions()
     {
       CollisionPair &cp = m_BroadphaseCollisionPairs[i];
 
-      CollisionShape *shapeA = cp.pObjectA->GetCollisionShape();
-      CollisionShape *shapeB = cp.pObjectB->GetCollisionShape();
+      for (auto aIt = cp.pObjectA->CollisionShapesBegin(); aIt != cp.pObjectA->CollisionShapesEnd(); ++aIt)
+      {
+        for (auto bIt = cp.pObjectB->CollisionShapesBegin(); bIt != cp.pObjectB->CollisionShapesEnd(); ++bIt)
+        {
+          CollisionShape *shapeA = *aIt;
+          CollisionShape *shapeB = *bIt;
 
-      colDetect.BeginNewPair(cp.pObjectA, cp.pObjectB, cp.pObjectA->GetCollisionShape(),
-                             cp.pObjectB->GetCollisionShape());
+      colDetect.BeginNewPair(cp.pObjectA, cp.pObjectB, shapeA, shapeB);
 
-      //--TUTORIAL 4 CODE--
       // Detects if the objects are colliding - Seperating Axis Theorem
       if (colDetect.AreColliding(&colData))
       {
@@ -306,6 +308,8 @@ void PhysicsEngine::NarrowPhaseCollisions()
       }
     }
   }
+    }
+  }
 }
 
 void PhysicsEngine::DebugRender()
@@ -333,10 +337,8 @@ void PhysicsEngine::DebugRender()
   {
     for (PhysicsObject *obj : m_PhysicsObjects)
     {
-      if (obj->GetCollisionShape() != NULL)
-      {
-        obj->GetCollisionShape()->DebugDraw(obj);
-      }
+      for (auto it = obj->CollisionShapesBegin(); it != obj->CollisionShapesEnd(); ++it)
+        (*it)->DebugDraw(obj);
     }
   }
 }
