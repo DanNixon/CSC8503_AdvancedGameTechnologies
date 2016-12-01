@@ -64,10 +64,8 @@ public:
   };
 
   // Update Scene Logic
-  //   - Called once per frame and should contain all time-sensitive update
-  //   logic
-  //	   Note: This is time relative to seconds not milliseconds! (e.g. msec /
-  // 1000)
+  //   - Called once per frame and should contain all time-sensitive update logic
+  //	   Note: This is time relative to seconds not milliseconds! (e.g. msec / 1000)
   virtual void OnUpdateScene(float dt);
 
   // Delete all contained Objects
@@ -75,14 +73,11 @@ public:
   void DeleteAllGameObjects();
 
   // Add GameObject to the scene list
-  //    - All added game objects are managed by the scene itself, firing
-  //		OnRender and OnUpdate functions automatically
+  //    - All added game objects are managed by the scene itself, firing OnRender and OnUpdate functions automatically
   void AddGameObject(Object *game_object);
 
   // Simple recursive search
-  //   - Searches all Objects in the tree and returns the first one with the
-  //   name specified
-  //     or NULL if none can be found.
+  //   - Searches all Objects in the tree and returns the first one with the name specified or NULL if none can be found.
   Object *FindGameObject(const std::string &name);
 
   // The friendly name associated with this scene instance
@@ -92,13 +87,12 @@ public:
   }
 
   // The maximum bounds of the contained scene
-  //   - This is exclusively used for shadowing purposes, ensuring all objects
-  //   that could
-  //     cast shadows are rendered as necessary.
+  //    - This is exclusively used for shadowing purposes, ensuring all objects that could cast shadows are rendered as necessary.
   void SetWorldRadius(float radius)
   {
     m_pRootGameObject->SetBoundingRadius(radius);
   }
+
   float GetWorldRadius()
   {
     return m_pRootGameObject->GetBoundingRadius();

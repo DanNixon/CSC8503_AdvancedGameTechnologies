@@ -11,6 +11,7 @@ public:
       : Scene(friendly_name)
   {
   }
+
   virtual ~EmptyScene()
   {
   }

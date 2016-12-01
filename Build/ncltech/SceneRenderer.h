@@ -133,14 +133,17 @@ public:
   {
     return m_BackgroundColour;
   }
+
   inline const Vector3 &GetAmbientColor()
   {
     return m_AmbientColour;
   }
+
   inline const Vector3 &GetInverseLightDirection()
   {
     return m_InvLightDirection;
   }
+
   inline const float GetSpecularIntensity()
   {
     return m_SpecularIntensity;
@@ -151,15 +154,18 @@ public:
   {
     m_BackgroundColour = col;
   }
+
   inline void SetAmbientColor(const Vector3 &col)
   {
     m_AmbientColour = col;
   }
+
   inline void SetInverseLightDirection(const Vector3 &dir)
   {
     m_InvLightDirection = dir;
     m_InvLightDirection.Normalise();
   }
+
   inline void SetSpecularIntensity(float intensity)
   {
     m_SpecularIntensity = intensity;
@@ -171,6 +177,7 @@ public:
   {
     return m_VsyncEnabled;
   }
+
   inline void SetVsyncEnabled(bool enabled)
   {
     wglSwapIntervalEXT((m_VsyncEnabled = enabled) ? 1 : 0);
@@ -181,6 +188,7 @@ public:
   {
     return m_GammaCorrection;
   }
+
   inline void SetGammaCorrection(float gamma)
   {
     m_GammaCorrection = gamma;
@@ -191,6 +199,7 @@ public:
   {
     return m_ShadowMapSize;
   }
+
   void SetShadowMapSize(uint size);
 
   // Get/Set Number of shadow maps to use for light source (default: 4)
@@ -198,6 +207,7 @@ public:
   {
     return m_ShadowMapNum;
   }
+
   void SetShadowMapNum(uint num);
 
   // Get/Set Super sampling ammount (default: 4x)
@@ -205,6 +215,7 @@ public:
   {
     return m_NumSuperSamples;
   }
+
   inline void SetSuperSamplingScalar(float scalar)
   {
     m_NumSuperSamples = scalar;

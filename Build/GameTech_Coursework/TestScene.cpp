@@ -132,7 +132,7 @@ void TestScene::OnUpdateScene(float dt)
 
   // Lets sun a little bit...
   Vector3 invLightDir =
-      Matrix4::Rotation(15.f * dt, Vector3(0.0f, 1.0f, 0.0f)) * SceneManager::Instance()->GetInverseLightDirection();
+      Matrix4::Rotation(15.0f * dt, Vector3(0.0f, 1.0f, 0.0f)) * SceneManager::Instance()->GetInverseLightDirection();
   SceneManager::Instance()->SetInverseLightDirection(invLightDir);
 
   // Or move our car around the scene..

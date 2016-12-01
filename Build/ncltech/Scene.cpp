@@ -36,9 +36,8 @@ void Scene::DeleteAllGameObjects()
   if (m_pRootGameObject)
   {
     for (auto child : m_pRootGameObject->m_vpChildren)
-    {
       delete child;
-    }
+
     m_pRootGameObject->m_vpChildren.clear();
   }
 }
@@ -61,9 +60,7 @@ void Scene::UpdateWorldMatrices(Object *cNode, const Matrix4 &parentWM)
     cNode->m_WorldTransform = parentWM * cNode->m_LocalTransform;
 
   for (auto child : cNode->GetChildren())
-  {
     UpdateWorldMatrices(child, cNode->m_WorldTransform);
-  }
 }
 
 void Scene::InsertToRenderList(RenderList *list, const Frustum &frustum)
@@ -79,16 +76,12 @@ void Scene::InsertToRenderList(Object *node, RenderList *list, const Frustum &fr
   {
     // Check to see if the object is already listed or not
     if (!(list->BitMask() & node->m_FrustumCullFlags))
-    {
       list->InsertObject(node);
-    }
   }
 
   // Iterate through all child nodes
   for (auto child : node->GetChildren())
-  {
     InsertToRenderList(child, list, frustum);
-  }
 }
 
 void Scene::UpdateNode(float dt, Object *cNode)
@@ -96,7 +89,5 @@ void Scene::UpdateNode(float dt, Object *cNode)
   cNode->OnUpdateObject(dt);
 
   for (auto child : cNode->GetChildren())
-  {
     UpdateNode(dt, child);
-  }
 }
