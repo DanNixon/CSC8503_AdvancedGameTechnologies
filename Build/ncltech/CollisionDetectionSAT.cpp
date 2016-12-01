@@ -220,54 +220,42 @@ void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
   }
   else
   {
-    // TODO: this can be so much neater
-
-    bool flipped;
-
     std::list<Vector3> *incPolygon;
+    std::list<Vector3> *refPolygon;
     Vector3 *incNormal;
+    Vector3 *refNormal;
     std::vector<Plane> *refAdjPlanes;
 
-    Plane refPlane;
-    float penetrationOffset;
+    bool flipped =
+        fabs(Vector3::Dot(m_BestColData._normal, normal1)) <= fabs(Vector3::Dot(m_BestColData._normal, normal2));
 
-    if (fabs(Vector3::Dot(m_BestColData._normal, normal1)) > fabs(Vector3::Dot(m_BestColData._normal, normal2)))
+    if (flipped)
     {
-      float planeDist = -Vector3::Dot(-normal1, polygon1.front());
-      refPlane = Plane(-normal1, planeDist);
-      refAdjPlanes = &adjPlanes1;
-
-      incPolygon = &polygon2;
-      incNormal = &normal2;
-
-      penetrationOffset = -FLT_MAX;
-      for (auto it = polygon1.begin(); it != polygon1.end(); ++it)
-      {
-        float pOffset = Vector3::Dot(*it, m_BestColData._normal);
-        if (pOffset > penetrationOffset)
-          penetrationOffset = pOffset;
-      }
-
-      flipped = false;
-    }
-    else
-    {
-      float planeDist = -Vector3::Dot(-normal2, polygon2.front());
-      refPlane = Plane(-normal2, planeDist);
-      refAdjPlanes = &adjPlanes2;
-
+      refPolygon = &polygon2;
+      refNormal = &normal2;
       incPolygon = &polygon1;
       incNormal = &normal1;
 
-      penetrationOffset = -FLT_MAX;
-      for (auto it = polygon2.begin(); it != polygon2.end(); ++it)
-      {
-        float pOffset = Vector3::Dot(*it, m_BestColData._normal);
-        if (pOffset > penetrationOffset)
-          penetrationOffset = pOffset;
-      }
+      refAdjPlanes = &adjPlanes2;
+    }
+    else
+    {
+      refPolygon = &polygon1;
+      refNormal = &normal1;
+      incPolygon = &polygon2;
+      incNormal = &normal2;
 
-      flipped = true;
+      refAdjPlanes = &adjPlanes1;
+    }
+
+    Plane refPlane = Plane(-(*refNormal), -Vector3::Dot(-(*refNormal), refPolygon->front()));
+    float penetrationOffset = -FLT_MAX;
+
+    for (auto it = refPolygon->begin(); it != refPolygon->end(); ++it)
+    {
+      float pOffset = Vector3::Dot(*it, m_BestColData._normal);
+      if (pOffset > penetrationOffset)
+        penetrationOffset = pOffset;
     }
 
     // Clip adjacent contact points
