@@ -210,11 +210,13 @@ void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
   }
   else if (polygon1.size() == 1)
   {
+    // Single contact point
     out_manifold->AddContact(polygon1.front(), polygon1.front() - m_BestColData._normal * m_BestColData._penetration,
                              m_BestColData._normal, m_BestColData._penetration);
   }
   else if (polygon2.size() == 1)
   {
+    // Single contact point
     out_manifold->AddContact(polygon2.front(), polygon2.front() - m_BestColData._normal * m_BestColData._penetration,
                              m_BestColData._normal, m_BestColData._penetration);
   }
@@ -226,6 +228,7 @@ void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
     Vector3 *refNormal;
     std::vector<Plane> *refAdjPlanes;
 
+    // Determine which polygon is the reference and incident
     bool flipped =
         fabs(Vector3::Dot(m_BestColData._normal, normal1)) <= fabs(Vector3::Dot(m_BestColData._normal, normal2));
 
@@ -249,8 +252,9 @@ void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
     }
 
     Plane refPlane = Plane(-(*refNormal), -Vector3::Dot(-(*refNormal), refPolygon->front()));
-    float penetrationOffset = -FLT_MAX;
 
+    // Determine largest penetration
+    float penetrationOffset = -FLT_MAX;
     for (auto it = refPolygon->begin(); it != refPolygon->end(); ++it)
     {
       float pOffset = Vector3::Dot(*it, m_BestColData._normal);
@@ -276,7 +280,7 @@ void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
 
         if (flipped)
         {
-          contactPenetration = -Vector3::Dot(*it, m_BestColData._normal) - penetrationOffset;
+          contactPenetration = -Vector3::Dot(*it, m_BestColData._normal) + penetrationOffset;
           globalOnA = *it + (m_BestColData._normal * contactPenetration);
           globalOnB = *it;
         }
