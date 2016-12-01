@@ -192,7 +192,120 @@ Vector3 CollisionDetectionSAT::GetClosestPoint(const Vector3 &pos, std::vector<C
 }
 
 void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
-{ /* TUT 5 CODE */
+{
+  if (!out_manifold || !m_Colliding)
+    return;
+
+  std::list<Vector3> polygon1, polygon2;
+  Vector3 normal1, normal2;
+  std::vector<Plane> adjPlanes1, adjPlanes2;
+
+  m_pShape1->GetIncidentReferencePolygon(m_pObj1, m_BestColData._normal, &polygon1, &normal1, &adjPlanes1);
+  m_pShape2->GetIncidentReferencePolygon(m_pObj2, -m_BestColData._normal, &polygon2, &normal2, &adjPlanes2);
+
+  if (polygon1.empty() && polygon2.empty())
+  {
+    // Empty manifold
+    return;
+  }
+  else if (polygon1.size() == 1)
+  {
+    out_manifold->AddContact(polygon1.front(), polygon1.front() - m_BestColData._normal * m_BestColData._penetration,
+                             m_BestColData._normal, m_BestColData._penetration);
+  }
+  else if (polygon2.size() == 1)
+  {
+    out_manifold->AddContact(polygon2.front(), polygon2.front() - m_BestColData._normal * m_BestColData._penetration,
+                             m_BestColData._normal, m_BestColData._penetration);
+  }
+  else
+  {
+    // TODO: this can be so much neater
+
+    bool flipped;
+
+    std::list<Vector3> *incPolygon;
+    Vector3 *incNormal;
+    std::vector<Plane> *refAdjPlanes;
+
+    Plane refPlane;
+    float penetrationOffset;
+
+    if (fabs(Vector3::Dot(m_BestColData._normal, normal1)) > fabs(Vector3::Dot(m_BestColData._normal, normal2)))
+    {
+      float planeDist = -Vector3::Dot(-normal1, polygon1.front());
+      refPlane = Plane(-normal1, planeDist);
+      refAdjPlanes = &adjPlanes1;
+
+      incPolygon = &polygon2;
+      incNormal = &normal2;
+
+      penetrationOffset = -FLT_MAX;
+      for (auto it = polygon1.begin(); it != polygon1.end(); ++it)
+      {
+        float pOffset = Vector3::Dot(*it, m_BestColData._normal);
+        if (pOffset > penetrationOffset)
+          penetrationOffset = pOffset;
+      }
+
+      flipped = false;
+    }
+    else
+    {
+      float planeDist = -Vector3::Dot(-normal2, polygon2.front());
+      refPlane = Plane(-normal2, planeDist);
+      refAdjPlanes = &adjPlanes2;
+
+      incPolygon = &polygon1;
+      incNormal = &normal1;
+
+      penetrationOffset = -FLT_MAX;
+      for (auto it = polygon2.begin(); it != polygon2.end(); ++it)
+      {
+        float pOffset = Vector3::Dot(*it, m_BestColData._normal);
+        if (pOffset > penetrationOffset)
+          penetrationOffset = pOffset;
+      }
+
+      flipped = true;
+    }
+
+    // Clip adjacent contact points
+    SutherlandHodgmanClipping(*incPolygon, refAdjPlanes->size(), &(*refAdjPlanes)[0], incPolygon, false);
+
+    // Clip above contact points
+    SutherlandHodgmanClipping(*incPolygon, 1, &refPlane, incPolygon, true);
+
+    // Process remaining contact points
+    if (!incPolygon->empty())
+    {
+      Vector3 startPoint = incPolygon->back();
+
+      for (auto it = incPolygon->begin(); it != incPolygon->end(); ++it)
+      {
+        float contactPenetration;
+        Vector3 globalOnA, globalOnB;
+
+        if (flipped)
+        {
+          contactPenetration = -Vector3::Dot(*it, m_BestColData._normal) - penetrationOffset;
+          globalOnA = *it + (m_BestColData._normal * contactPenetration);
+          globalOnB = *it;
+        }
+        else
+        {
+          contactPenetration = Vector3::Dot(*it, m_BestColData._normal) - penetrationOffset;
+          globalOnA = *it;
+          globalOnB = *it - (m_BestColData._normal * contactPenetration);
+        }
+
+        if (contactPenetration < 0.0f)
+          out_manifold->AddContact(globalOnA, globalOnB, m_BestColData._normal, contactPenetration);
+
+        startPoint = *it;
+      }
+    }
+  }
 }
 
 Vector3 CollisionDetectionSAT::PlaneEdgeIntersection(const Plane &plane, const Vector3 &start, const Vector3 &end) const
@@ -245,8 +358,7 @@ void CollisionDetectionSAT::SutherlandHodgmanClipping(const std::list<Vector3> &
 
     const Plane &plane = clip_planes[i];
 
-    // Swap input/output polygons, and clear output list for us to generate
-    // afresh
+    // Swap input/output polygons, and clear output list for us to generate afresh
     std::swap(input, output);
     output->clear();
 

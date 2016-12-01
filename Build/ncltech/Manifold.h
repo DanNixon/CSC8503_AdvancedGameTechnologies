@@ -71,6 +71,7 @@ public:
   {
     return m_pNodeA;
   }
+
   PhysicsObject *NodeB()
   {
     return m_pNodeB;
