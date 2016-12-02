@@ -90,8 +90,9 @@ public:
       this->AddGameObject(ball);
 
       // Add distance constraint between the two objects
-      PhysicsEngine::Instance()->AddConstraint(new SpringConstraint(
-          handle->Physics(), ball->Physics(), handle->Physics()->GetPosition(), ball->Physics()->GetPosition(), 0.9f, 0.5f));
+      PhysicsEngine::Instance()->AddConstraint(new SpringConstraint(handle->Physics(), ball->Physics(),
+                                                                    handle->Physics()->GetPosition(),
+                                                                    ball->Physics()->GetPosition(), 0.9f, 0.5f));
     }
 
     // Create Hanging Cube (Attached by corner)

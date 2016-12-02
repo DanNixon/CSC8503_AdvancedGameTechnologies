@@ -45,8 +45,10 @@ const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
 /**
  * @brief Performs test to determine if this object is at rest and sets the at rest flag accordingly.
  *
- * Uses an exponential moving average of the sum of the magnitudes of linear and angular acceleration and sets the at rest flag when this average is below a threshold.
- * Probably not the best solution but is relatively cheap and reduces the likelyhood of an object entering rest state when changing direction.
+ * Uses an exponential moving average of the sum of the magnitudes of linear and angular acceleration and sets the at
+ * rest flag when this average is below a threshold.
+ * Probably not the best solution but is relatively cheap and reduces the likelyhood of an object entering rest state
+ * when changing direction.
  */
 void PhysicsObject::DoAtRestTest()
 {

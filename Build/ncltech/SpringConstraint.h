@@ -21,11 +21,12 @@ Description:
 class SpringConstraint : public Constraint
 {
 public:
-  SpringConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB, float springConstant, float dampingFactor)
-    : m_pObj1(obj1)
-    , m_pObj2(obj2)
-    , m_springConstant(springConstant)
-    , m_dampingFactor(dampingFactor)
+  SpringConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB,
+                   float springConstant, float dampingFactor)
+      : m_pObj1(obj1)
+      , m_pObj2(obj2)
+      , m_springConstant(springConstant)
+      , m_dampingFactor(dampingFactor)
   {
     Vector3 ab = globalOnB - globalOnA;
     m_restDistance = ab.Length();

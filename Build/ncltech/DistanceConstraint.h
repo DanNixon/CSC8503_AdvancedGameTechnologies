@@ -29,8 +29,8 @@ class DistanceConstraint : public Constraint
 {
 public:
   DistanceConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB)
-    : m_pObj1(obj1)
-    , m_pObj2(obj2)
+      : m_pObj1(obj1)
+      , m_pObj2(obj2)
   {
     Vector3 ab = globalOnB - globalOnA;
     m_Distance = ab.Length();

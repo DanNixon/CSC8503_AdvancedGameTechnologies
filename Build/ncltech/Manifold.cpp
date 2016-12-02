@@ -72,7 +72,7 @@ void Manifold::SolveContactPoint(ContactPoint &c)
 
     float oldSumImpulseContact = c.sumImpulseContact;
     c.sumImpulseContact = min(c.sumImpulseContact + jn, 0.0f);
-    jn = c.sumImpulseContact - oldSumImpulseContact ;
+    jn = c.sumImpulseContact - oldSumImpulseContact;
 
     m_pNodeA->SetLinearVelocity(m_pNodeA->GetLinearVelocity() + normal * (jn * m_pNodeA->GetInverseMass()));
     m_pNodeB->SetLinearVelocity(m_pNodeB->GetLinearVelocity() - normal * (jn * m_pNodeB->GetInverseMass()));

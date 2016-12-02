@@ -22,8 +22,8 @@ class HingeConstraint : public Constraint
 {
 public:
   HingeConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB)
-    : m_pObj1(obj1)
-    , m_pObj2(obj2)
+      : m_pObj1(obj1)
+      , m_pObj2(obj2)
   {
     Vector3 r1 = (globalOnA - m_pObj1->GetPosition());
     Vector3 r2 = (globalOnB - m_pObj2->GetPosition());

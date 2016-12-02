@@ -77,7 +77,8 @@ public:
   void AddGameObject(Object *game_object);
 
   // Simple recursive search
-  //   - Searches all Objects in the tree and returns the first one with the name specified or NULL if none can be found.
+  //   - Searches all Objects in the tree and returns the first one with the name specified or NULL if none can be
+  //   found.
   Object *FindGameObject(const std::string &name);
 
   // The friendly name associated with this scene instance
@@ -87,7 +88,8 @@ public:
   }
 
   // The maximum bounds of the contained scene
-  //    - This is exclusively used for shadowing purposes, ensuring all objects that could cast shadows are rendered as necessary.
+  //    - This is exclusively used for shadowing purposes, ensuring all objects that could cast shadows are rendered as
+  //    necessary.
   void SetWorldRadius(float radius)
   {
     m_pRootGameObject->SetBoundingRadius(radius);

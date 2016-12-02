@@ -129,7 +129,8 @@ public:
       this->AddGameObject(sphere);
 
       // TODO: testing
-      (*(sphere->Physics()->CollisionShapesBegin()))->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
+      (*(sphere->Physics()->CollisionShapesBegin()))
+          ->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
 
       // Second collision sphere shape (for testing)
       CollisionShape *secondSphereCollShape = new SphereCollisionShape(0.5f);
@@ -161,7 +162,8 @@ public:
       this->AddGameObject(cuboid);
 
       // TODO: testing
-      (*(cuboid->Physics()->CollisionShapesBegin()))->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
+      (*(cuboid->Physics()->CollisionShapesBegin()))
+          ->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
 
       this->AddGameObject(CommonUtils::BuildCuboidObject("",
                                                          cc_pos,                                // Position
@@ -214,7 +216,7 @@ public:
 
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Physics:");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Volumes : %s (Press C to toggle)",
-      (drawFlags & DEBUGDRAW_FLAGS_COLLISIONVOLUMES) ? "Enabled" : "Disabled");
+                             (drawFlags & DEBUGDRAW_FLAGS_COLLISIONVOLUMES) ? "Enabled" : "Disabled");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Normals : %s (Press N to toggle)",
                              (drawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled" : "Disabled");
 
