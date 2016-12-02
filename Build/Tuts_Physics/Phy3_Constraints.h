@@ -40,6 +40,9 @@ Once the distance constraint class is built this should swing like a pendulum.
 
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
+#include <ncltech\SpringConstraint.h>
+#include <ncltech\SliderConstraint.h>
+#include <ncltech\HingeConstraint.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\Scene.h>

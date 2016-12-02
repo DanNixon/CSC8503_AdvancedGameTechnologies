@@ -105,6 +105,7 @@
     <ClInclude Include="Constraint.h" />
     <ClInclude Include="CuboidCollisionShape.h" />
     <ClInclude Include="DistanceConstraint.h" />
+    <ClInclude Include="HingeConstraint.h" />
     <ClInclude Include="Hull.h" />
     <ClInclude Include="Manifold.h" />
     <ClInclude Include="NCLDebug.h" />
@@ -119,7 +120,9 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneRenderer.h" />
     <ClInclude Include="ScreenPicker.h" />
+    <ClInclude Include="SliderConstraint.h" />
     <ClInclude Include="SphereCollisionShape.h" />
+    <ClInclude Include="SpringConstraint.h" />
     <ClInclude Include="TSingleton.h" />
     <ClInclude Include="PerfTimer.h" />
   </ItemGroup>

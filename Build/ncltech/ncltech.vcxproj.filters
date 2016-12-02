@@ -187,5 +187,14 @@
     <ClInclude Include="CollisionDetectionSAT.h">
       <Filter>include\Physics\CollisionDetection</Filter>
     </ClInclude>
+    <ClInclude Include="SpringConstraint.h">
+      <Filter>include\Physics\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="HingeConstraint.h">
+      <Filter>include\Physics\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="SliderConstraint.h">
+      <Filter>include\Physics\Constraints</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

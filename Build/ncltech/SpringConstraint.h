@@ -1,15 +1,8 @@
 /******************************************************************************
-Class: DistanceConstraint
+Class: SpringConstraint
 Implements:
-Author: Pieran Marris      <p.marris@newcastle.ac.uk> and YOU!
+Author: Dan Nixon
 Description:
-
-Manages a distance constraint between two objects, ensuring the two objects never
-seperate. It works on a velocity level, enforcing the constraint:
-	dot([(velocity of B) - (velocity of A)], normal) = zero
-
-Thus ensuring that after integrating the position through the time, the distance between
-the two objects never changes. 
 
 		(\_/)
 		( '_')
@@ -25,15 +18,16 @@ the two objects never changes.
 #include "NCLDebug.h"
 #include "PhysicsEngine.h"
 
-class DistanceConstraint : public Constraint
+class SpringConstraint : public Constraint
 {
 public:
-  DistanceConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB)
+  SpringConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB, const float springConstant)
     : m_pObj1(obj1)
     , m_pObj2(obj2)
+    , m_springConstant(springConstant)
   {
     Vector3 ab = globalOnB - globalOnA;
-    m_Distance = ab.Length();
+    m_restDistance = ab.Length();
 
     Vector3 r1 = (globalOnA - m_pObj1->GetPosition());
     Vector3 r2 = (globalOnB - m_pObj2->GetPosition());
@@ -41,6 +35,7 @@ public:
     m_LocalOnB = Matrix3::Transpose(m_pObj2->GetOrientation().ToMatrix3()) * r2;
   }
 
+  // TODO
   virtual void ApplyImpulse() override
   {
     if (m_pObj1->GetInverseMass() + m_pObj2->GetInverseMass() == 0.0f)
@@ -65,7 +60,7 @@ public:
 
     float b = 0.0f;
     {
-      float distanceOffset = ab.Length() - m_Distance;
+      float distanceOffset = ab.Length() - m_restDistance;
       float baumgarteScalar = 0.1f;
       b = -(baumgarteScalar / PhysicsEngine::Instance()->GetDeltaTime()) * distanceOffset;
     }
@@ -95,7 +90,8 @@ protected:
   PhysicsObject *m_pObj1;
   PhysicsObject *m_pObj2;
 
-  float m_Distance;
+  float m_restDistance;
+  float m_springConstant;
 
   Vector3 m_LocalOnA;
   Vector3 m_LocalOnB;
