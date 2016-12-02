@@ -181,8 +181,7 @@ public:
     m_vCollisionShapes.push_back(colShape);
   }
 
-  // Called automatically when PhysicsObject is created through
-  // Object::CreatePhysicsNode()
+  // Called automatically when PhysicsObject is created through Object::CreatePhysicsNode()
   inline void SetAssociatedObject(Object *obj)
   {
     m_pParent = obj;

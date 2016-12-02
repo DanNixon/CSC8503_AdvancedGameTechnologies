@@ -63,12 +63,14 @@ void CollisionDetectionSAT::FindAllPossibleCollisionAxes()
 
   if (shape1_isSphere && shape2_isSphere)
   {
+    // TODO
     Vector3 axis = m_pObj2->GetPosition() - m_pObj1->GetPosition();
     axis.Normalise();
     AddPossibleCollisionAxis(axis);
   }
   else if (shape1_isSphere)
   {
+    // TODO
     Vector3 p = GetClosestPoint(m_pObj1->GetPosition(), shape2_edges);
     Vector3 pt = m_pObj1->GetPosition() - p;
     pt.Normalise();
@@ -76,6 +78,7 @@ void CollisionDetectionSAT::FindAllPossibleCollisionAxes()
   }
   else if (shape2_isSphere)
   {
+    // TODO
     Vector3 p = GetClosestPoint(m_pObj2->GetPosition(), shape1_edges);
     Vector3 pt = m_pObj2->GetPosition() - p;
     pt.Normalise();

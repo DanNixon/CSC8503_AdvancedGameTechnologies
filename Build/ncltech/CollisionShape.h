@@ -46,9 +46,29 @@ class CollisionShape
 public:
   CollisionShape()
   {
+    m_LocalTransform.ToIdentity();
   }
+
   virtual ~CollisionShape()
   {
+  }
+
+  /**
+   * @brief Gets the local transformaton on this shape.
+   * @return Transformation matrix
+   */
+  inline Matrix4 GetLocalTransform() const
+  {
+    return m_LocalTransform;
+  }
+
+  /**
+   * @brief Sets the local transformaton on this shape.
+   * @param Transformation matrix
+   */
+  void SetLocalTransform(const Matrix4 &transform)
+  {
+    m_LocalTransform = transform;
   }
 
   // Constructs an inverse inertia matrix of the given collision volume. This is
@@ -62,15 +82,12 @@ public:
 
   //<----- USED BY COLLISION DETECTION ----->
   // Get all possible collision axes
-  //	- This is a list of all the face normals ignoring any duplicates and
-  // parallel vectors.
+  //	- This is a list of all the face normals ignoring any duplicates and parallel vectors.
   virtual void GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const = 0;
 
   // Get all shape Edges
-  //	- Returns a list of all edges AB that form the convex hull of the
-  // collision shape. These are
-  //    used to check edge/edge collisions aswell as finding the closest point
-  //    to a sphere. */
+  //	- Returns a list of all edges AB that form the convex hull of the collision shape.
+  //    These are used to check edge/edge collisions aswell as finding the closest point to a sphere.
   virtual void GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *out_edges) const = 0;
 
   // Get the min/max vertices along a given axis
@@ -84,4 +101,7 @@ public:
   virtual void GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
                                            std::list<Vector3> *out_face, Vector3 *out_normal,
                                            std::vector<Plane> *out_adjacent_planes) const = 0;
+
+protected:
+  Matrix4 m_LocalTransform; //!< Local transformation on this shape from the associated object in world space
 };

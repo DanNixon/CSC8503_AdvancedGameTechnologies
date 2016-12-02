@@ -18,16 +18,13 @@ I may or may not have spent bashing my head against 3D modeling programs,
 just trying to make a damn cuboid house and blobby garden.. and the pain I 
 would suffer knowing it was all for nothing if it were deleted.
 
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::: IF YOUR /VERY/ BORED! :::
 :::::::::::::::::::::::::::::
 	1.  Go! Go.. and see the beautiful 3D geometry that may or may not have 
 	    cost me my PhD in terms of time wasted.  
 
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 		 (\_/)                      
 		 ( '_')                     

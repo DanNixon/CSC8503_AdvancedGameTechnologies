@@ -10,9 +10,7 @@ CuboidCollisionShape::CuboidCollisionShape()
   m_CuboidHalfDimensions = Vector3(0.5f, 0.5f, 0.5f);
 
   if (m_CubeHull.GetNumVertices() == 0)
-  {
     ConstructCubeHull();
-  }
 }
 
 CuboidCollisionShape::CuboidCollisionShape(const Vector3 &halfdims)
@@ -20,9 +18,7 @@ CuboidCollisionShape::CuboidCollisionShape(const Vector3 &halfdims)
   m_CuboidHalfDimensions = halfdims;
 
   if (m_CubeHull.GetNumVertices() == 0)
-  {
     ConstructCubeHull();
-  }
 }
 
 CuboidCollisionShape::~CuboidCollisionShape()
@@ -58,7 +54,8 @@ void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vec
 {
   if (out_edges)
   {
-    Matrix4 transform = currentObject->GetWorldSpaceTransform() * Matrix4::Scale(Vector3(m_CuboidHalfDimensions));
+    Matrix4 transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(Vector3(m_CuboidHalfDimensions));
+
     for (unsigned int i = 0; i < m_CubeHull.GetNumEdges(); ++i)
     {
       const HullEdge &edge = m_CubeHull.GetEdge(i);
@@ -74,7 +71,7 @@ void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObj
                                                  Vector3 *out_min, Vector3 *out_max) const
 {
   // Build World Transform
-  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
 
   // Convert world space axis into model space (Axis Aligned Cuboid)
   Matrix3 invNormalMatrix = Matrix3::Transpose(Matrix3(wsTransform));
@@ -97,7 +94,7 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
                                                        std::vector<Plane> *out_adjacent_planes) const
 {
   // Get the world-space transform
-  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
 
   // Get normal and inverse-normal matrices to transfom the collision axis to
   // and from modelspace
@@ -195,7 +192,7 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
 void CuboidCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
   // Just draw the cuboid hull-mesh at the position of our PhysicsObject
-  Matrix4 transform = currentObject->GetWorldSpaceTransform() * Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
   m_CubeHull.DebugDraw(transform);
 }
 

@@ -132,6 +132,9 @@ public:
           CommonUtils::GenColour(0.3f, 0.5f)); // Color
       this->AddGameObject(sphere);
 
+      // TODO: testing
+      (*(sphere->Physics()->CollisionShapesBegin()))->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
+
       this->AddGameObject(CommonUtils::BuildCuboidObject("",
                                                          sc_pos,                                // Position
                                                          Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
@@ -155,6 +158,9 @@ public:
           false,                               // Dragable by the user
           CommonUtils::GenColour(0.3f, 0.5f)); // Color
       this->AddGameObject(cuboid);
+
+      // TODO: testing
+      (*(cuboid->Physics()->CollisionShapesBegin()))->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
 
       this->AddGameObject(CommonUtils::BuildCuboidObject("",
                                                          cc_pos,                                // Position
@@ -189,21 +195,15 @@ public:
 
       Object *orbiting_sphere1 = this->FindGameObject("orbiting_sphere1");
       if (orbiting_sphere1 != NULL)
-      {
         orbiting_sphere1->Physics()->SetPosition(ss_pos + offset);
-      }
 
       Object *orbiting_sphere2 = this->FindGameObject("orbiting_sphere2");
       if (orbiting_sphere2 != NULL)
-      {
         orbiting_sphere2->Physics()->SetPosition(sc_pos + offset);
-      }
 
       Object *rotating_cuboid1 = this->FindGameObject("rotating_cuboid1");
       if (rotating_cuboid1 != NULL)
-      {
         rotating_cuboid1->Physics()->SetPosition(cc_pos + offset);
-      }
     }
 
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_B))
@@ -212,12 +212,17 @@ public:
     uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
 
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Physics:");
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Volumes : %s (Press C to toggle)",
+      (drawFlags & DEBUGDRAW_FLAGS_COLLISIONVOLUMES) ? "Enabled" : "Disabled");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Normals : %s (Press N to toggle)",
                              (drawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled" : "Disabled");
 
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Animation: %s (Press B to toggle)",
                              (m_Rotating) ? "Enabled" : "Disabled");
+
+    if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_C))
+      drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
 
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_N))
       drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONNORMALS;

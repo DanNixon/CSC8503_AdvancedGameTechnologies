@@ -45,11 +45,14 @@ void SphereCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vec
 void SphereCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis,
                                                  Vector3 *out_min, Vector3 *out_max) const
 {
+  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
+  Vector3 pos = wsTransform.GetPositionVector();
+
   if (out_min)
-    *out_min = currentObject->GetPosition() - axis * m_Radius;
+    *out_min = pos - axis * m_Radius;
 
   if (out_max)
-    *out_max = currentObject->GetPosition() + axis * m_Radius;
+    *out_max = pos + axis * m_Radius;
 }
 
 void SphereCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
@@ -57,7 +60,10 @@ void SphereCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
                                                        std::vector<Plane> *out_adjacent_planes) const
 {
   if (out_face)
-    out_face->push_back(currentObject->GetPosition() + axis * m_Radius);
+  {
+    Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
+    out_face->push_back(wsTransform.GetPositionVector() + axis * m_Radius);
+  }
 
   if (out_normal)
     *out_normal = axis;
@@ -65,7 +71,8 @@ void SphereCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
 
 void SphereCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
-  Vector3 pos = currentObject->GetPosition();
+  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
+  Vector3 pos = wsTransform.GetPositionVector();
 
   // Draw Filled Circle
   NCLDebug::DrawPointNDT(pos, m_Radius, Vector4(1.0f, 1.0f, 1.0f, 0.2f));
