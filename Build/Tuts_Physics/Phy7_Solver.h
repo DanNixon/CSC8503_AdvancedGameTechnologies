@@ -10,7 +10,6 @@ of each other.
 
 If you have got this working, then:
 
-
           ___   ____
         /' --;^/ ,-_\     \ | /
        / / --o\ o-\ \\   --(_)--
@@ -23,9 +22,6 @@ If you have got this working, then:
 	,;;;;;;;;;;;;;;;;;;;;;;;;,.
 ~~,;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,  ______   ---------   _____     ------ (From: http://ascii.co.uk/art/)
-
-
-
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::: IF YOUR BORED! :::
@@ -65,8 +61,6 @@ If you have got this working, then:
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-
 		(\_/)
 		( '_')
 	 /""""""""""""\=========     -----D
@@ -103,9 +97,8 @@ public:
                                                        Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false,
                                                        Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
-    // SOLVER EXAMPLE -> Pyramid of cubes stacked on top of eachother
+    // SOLVER EXAMPLE -> Pyramid of cubes stacked on top of each other
     {
-
       // This tower is purposely set to be built from top to bottom in order to
       // give the solver a chalenge.
       // This will result in the first manifold (top) pushing all the second to
@@ -119,7 +112,9 @@ public:
       //     sorted based on relative 'Y-axis' height, solving the constraints
       //     with the ground first and working its
       //     way up.
-      const int pyramid_stack_height = 6;
+
+      //const int pyramid_stack_height = 6;
+      const int pyramid_stack_height = 1;
       for (int y = 0; y < pyramid_stack_height; ++y)
       {
         for (int x = 0; x <= y; ++x)
@@ -143,6 +138,8 @@ public:
     uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
 
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Physics:");
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     At rest: %s",
+                             PhysicsEngine::Instance()->SimulationIsAtRest() ? "Yes" : "Nope");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Volumes : %s (Press C to toggle)",
                              (drawFlags & DEBUGDRAW_FLAGS_COLLISIONVOLUMES) ? "Enabled" : "Disabled");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Normals : %s (Press N to toggle)",

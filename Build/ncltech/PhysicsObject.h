@@ -25,16 +25,12 @@ class Object;
 
 // Callback function called whenever a collision is detected between two objects
 // Params:
-//	PhysicsObject* this_obj			- The current object class that contains the
-// callback
-//	PhysicsObject* colliding_obj	- The object that is colliding with the given
-// object
+//	PhysicsObject* this_obj			- The current object class that contains the callback
+//	PhysicsObject* colliding_obj	- The object that is colliding with the given object
 // Return:
 //  True	- The physics engine should process the collision as normal
-//	False	- The physics engine should drop the collision pair and not do any
-// further collision resolution/manifold generation
-//			  > This can be useful for AI to see if a player/agent is inside an
-// area/collision volume
+//	False	- The physics engine should drop the collision pair and not do any further collision resolution/manifold generation
+//			  > This can be useful for AI to see if a player/agent is inside an area/collision volume
 typedef std::function<bool(PhysicsObject *this_obj, PhysicsObject *colliding_obj)> PhysicsCollisionCallback;
 
 class PhysicsObject
@@ -46,9 +42,14 @@ public:
   virtual ~PhysicsObject();
 
   //<--------- GETTERS ------------->
-  inline bool IsEnabled() const
+  inline bool AtRest() const
   {
-    return m_Enabled;
+    return m_AtRest;
+  }
+
+  inline float GetRestVelocityThresholdSquared() const
+  {
+    return m_RestVelocityThresholdSquared;
   }
 
   inline float GetElasticity() const
@@ -124,6 +125,11 @@ public:
   const Matrix4 &GetWorldSpaceTransform() const; // Built from scratch or returned from cached value
 
   //<--------- SETTERS ------------->
+  void SetRestVelocityThreshold(float vel)
+  {
+    m_RestVelocityThresholdSquared = vel * vel;
+  }
+
   inline void SetElasticity(float elasticity)
   {
     m_Elasticity = elasticity;
@@ -138,6 +144,7 @@ public:
   {
     m_Position = v;
     m_wsTransformInvalidated = true;
+    m_AtRest = false;
   }
 
   inline void SetLinearVelocity(const Vector3 &v)
@@ -159,6 +166,7 @@ public:
   {
     m_Orientation = v;
     m_wsTransformInvalidated = true;
+    m_AtRest = false;
   }
 
   inline void SetAngularVelocity(const Vector3 &v)
@@ -195,12 +203,27 @@ public:
 
   inline bool FireOnCollisionEvent(PhysicsObject *obj_a, PhysicsObject *obj_b)
   {
+    // Reset at rest flag
+    m_AtRest = false;
+
     return (m_OnCollisionCallback) ? m_OnCollisionCallback(obj_a, obj_b) : true;
+  }
+
+  void DoAtRestTest();
+
+  /**
+   * @brief Clears the at rest flag.
+   */
+  inline void WakeUp()
+  {
+    m_AtRest = false;
   }
 
 protected:
   Object *m_pParent; // Optional: Attached GameObject or NULL if none set
-  bool m_Enabled;
+
+  bool m_AtRest; //!< Flag indicating if this object is at rest
+  float m_RestVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be stationary
 
   mutable bool m_wsTransformInvalidated;
   mutable Matrix4 m_wsTransform;

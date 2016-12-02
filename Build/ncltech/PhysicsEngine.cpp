@@ -2,6 +2,7 @@
 #include "CollisionDetectionSAT.h"
 #include "NCLDebug.h"
 #include "Object.h"
+#include <algorithm>
 #include <nclgl\Window.h>
 #include <omp.h>
 
@@ -47,15 +48,11 @@ void PhysicsEngine::RemoveAllPhysicsObjects()
 {
   // Delete and remove all constraints/collision manifolds
   for (Constraint *c : m_vpConstraints)
-  {
     delete c;
-  }
   m_vpConstraints.clear();
 
   for (Manifold *m : m_vpManifolds)
-  {
     delete m;
-  }
   m_vpManifolds.clear();
 
   // Delete and remove all physics objects
@@ -98,9 +95,7 @@ void PhysicsEngine::Update(float deltaTime)
 void PhysicsEngine::UpdatePhysics()
 {
   for (Manifold *m : m_vpManifolds)
-  {
     delete m;
-  }
   m_vpManifolds.clear();
 
   // Check for collisions
@@ -112,9 +107,7 @@ void PhysicsEngine::UpdatePhysics()
 
   // Update movement
   for (PhysicsObject *obj : m_PhysicsObjects)
-  {
     UpdatePhysicsObject(obj);
-  }
 }
 
 void PhysicsEngine::SolveConstraints()
@@ -141,6 +134,10 @@ void PhysicsEngine::SolveConstraints()
 
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 {
+  // Skip if object is at rest
+  if (obj->AtRest())
+    return;
+
   // Apply gravity
   if (obj->m_InvMass > 0.0f)
     obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
@@ -209,6 +206,9 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
   }
   }
 
+  // Test for rest conditions
+  obj->DoAtRestTest();
+
   // Mark cached world transform as invalid
   obj->m_wsTransformInvalidated = true;
 }
@@ -273,44 +273,43 @@ void PhysicsEngine::NarrowPhaseCollisions()
           CollisionShape *shapeA = *aIt;
           CollisionShape *shapeB = *bIt;
 
-      colDetect.BeginNewPair(cp.pObjectA, cp.pObjectB, shapeA, shapeB);
+          colDetect.BeginNewPair(cp.pObjectA, cp.pObjectB, shapeA, shapeB);
 
-      // Detects if the objects are colliding - Seperating Axis Theorem
-      if (colDetect.AreColliding(&colData))
-      {
-        // Draw collision data to the window if requested
-        // - Have to do this here as colData is only temporary.
-        if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS)
-        {
-          NCLDebug::DrawPointNDT(colData._pointOnPlane, 0.1f, Vector4(0.5f, 0.5f, 1.0f, 1.0f));
-          NCLDebug::DrawThickLineNDT(colData._pointOnPlane,
-                                     colData._pointOnPlane - colData._normal * colData._penetration, 0.05f,
-                                     Vector4(0.0f, 0.0f, 1.0f, 1.0f));
-        }
+          // Detects if the objects are colliding - Seperating Axis Theorem
+          if (colDetect.AreColliding(&colData))
+          {
+            // Draw collision data to the window if requested
+            // - Have to do this here as colData is only temporary.
+            if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS)
+            {
+              NCLDebug::DrawPointNDT(colData._pointOnPlane, 0.1f, Vector4(0.5f, 0.5f, 1.0f, 1.0f));
+              NCLDebug::DrawThickLineNDT(colData._pointOnPlane,
+                                         colData._pointOnPlane - colData._normal * colData._penetration, 0.05f,
+                                         Vector4(0.0f, 0.0f, 1.0f, 1.0f));
+            }
 
-        // Check to see if any of the objects have collision callbacks that dont
-        // want the objects to physically collide
-        bool okA = cp.pObjectA->FireOnCollisionEvent(cp.pObjectA, cp.pObjectB);
-        bool okB = cp.pObjectB->FireOnCollisionEvent(cp.pObjectB, cp.pObjectA);
+            // Check to see if any of the objects have collision callbacks that dont
+            // want the objects to physically collide
+            bool okA = cp.pObjectA->FireOnCollisionEvent(cp.pObjectA, cp.pObjectB);
+            bool okB = cp.pObjectB->FireOnCollisionEvent(cp.pObjectB, cp.pObjectA);
 
-        if (okA && okB)
-        {
-          //-- TUTORIAL 5 CODE --
-          // Build full collision manifold that will also handle the collision
-          // response between the two objects in the solver stage
-          Manifold *manifold = new Manifold();
-          manifold->Initiate(cp.pObjectA, cp.pObjectB);
+            if (okA && okB)
+            {
+              // Build full collision manifold that will also handle the collision
+              // response between the two objects in the solver stage
+              Manifold *manifold = new Manifold();
+              manifold->Initiate(cp.pObjectA, cp.pObjectB);
 
-          // Construct contact points that form the perimeter of the collision
-          // manifold
-          colDetect.GenContactPoints(manifold);
+              // Construct contact points that form the perimeter of the collision
+              // manifold
+              colDetect.GenContactPoints(manifold);
 
-          // Add to list of manifolds that need solving
-          m_vpManifolds.push_back(manifold);
+              // Add to list of manifolds that need solving
+              m_vpManifolds.push_back(manifold);
+            }
+          }
         }
       }
-    }
-  }
     }
   }
 }
@@ -344,4 +343,17 @@ void PhysicsEngine::DebugRender()
         (*it)->DebugDraw(obj);
     }
   }
+}
+
+/**
+ * @brief Checks if all physics objects in the system have the at rest flags set.
+ * @return True if all objects are flagged as at rest
+ *
+ * Mainly added for debugging.
+ */
+bool PhysicsEngine::SimulationIsAtRest() const
+{
+  auto firstObjectNotAtRest =
+      std::find_if(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), [](PhysicsObject *o) { return !o->AtRest(); });
+  return (firstObjectNotAtRest == m_PhysicsObjects.end());
 }

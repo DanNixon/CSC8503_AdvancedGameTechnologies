@@ -107,7 +107,7 @@ public:
       Object *cube = CommonUtils::BuildCuboidObject("", Vector3(7.f, 7.f, -5.0f),        // Position
                                                     Vector3(0.5f, 0.5f, 0.5f),           // Half Dimensions
                                                     true,                                // Has Physics Object
-                                                    1.0f,                                // Infinite Mass
+                                                    1.0f,                                // Inverse Mass = 1 / 1kg mass
                                                     false,                               // No Collision Shape Yet
                                                     true,                                // Dragable by the user
                                                     CommonUtils::GenColour(0.6f, 1.0f)); // Color

@@ -184,6 +184,8 @@ public:
     return m_UpdateTimestep;
   }
 
+  bool SimulationIsAtRest() const;
+
 protected:
   PhysicsEngine();
   ~PhysicsEngine();
