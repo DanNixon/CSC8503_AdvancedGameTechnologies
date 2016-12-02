@@ -40,13 +40,13 @@ Once the distance constraint class is built this should swing like a pendulum.
 
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
-#include <ncltech\SpringConstraint.h>
-#include <ncltech\SliderConstraint.h>
 #include <ncltech\HingeConstraint.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
+#include <ncltech\SliderConstraint.h>
+#include <ncltech\SpringConstraint.h>
 
 class Phy3_Constraints : public Scene
 {
@@ -90,14 +90,8 @@ public:
       this->AddGameObject(ball);
 
       // Add distance constraint between the two objects
-      DistanceConstraint *constraint =
-          new DistanceConstraint(handle->Physics(),                // Physics Object A
-                                 ball->Physics(),                  // Physics Object B
-                                 handle->Physics()->GetPosition(), // Attachment Position on Object A
-                                                                   // -> Currently the centre
-                                 ball->Physics()->GetPosition());  // Attachment Position on Object B
-                                                                   // -> Currently the centre
-      PhysicsEngine::Instance()->AddConstraint(constraint);
+      PhysicsEngine::Instance()->AddConstraint(new SpringConstraint(
+          handle->Physics(), ball->Physics(), handle->Physics()->GetPosition(), ball->Physics()->GetPosition(), 0.9f, 0.5f));
     }
 
     // Create Hanging Cube (Attached by corner)
@@ -121,13 +115,9 @@ public:
       this->AddGameObject(handle);
       this->AddGameObject(cube);
 
-      PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(
-          handle->Physics(),                                               // Physics Object A
-          cube->Physics(),                                                 // Physics Object B
-          handle->Physics()->GetPosition(),                                // Attachment Position on Object A
-                                                                           // -> Currently the far right edge
-          cube->Physics()->GetPosition() + Vector3(-0.5f, -0.5f, -0.5f))); // Attachment Position on Object B
-                                                                           // -> Currently the far left edge
+      PhysicsEngine::Instance()->AddConstraint(
+          new DistanceConstraint(handle->Physics(), cube->Physics(), handle->Physics()->GetPosition(),
+                                 cube->Physics()->GetPosition() + Vector3(-0.5f, -0.5f, -0.5f)));
     }
   }
 

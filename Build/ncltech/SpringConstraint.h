@@ -21,10 +21,11 @@ Description:
 class SpringConstraint : public Constraint
 {
 public:
-  SpringConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB, const float springConstant)
+  SpringConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB, float springConstant, float dampingFactor)
     : m_pObj1(obj1)
     , m_pObj2(obj2)
     , m_springConstant(springConstant)
+    , m_dampingFactor(dampingFactor)
   {
     Vector3 ab = globalOnB - globalOnA;
     m_restDistance = ab.Length();
@@ -35,7 +36,6 @@ public:
     m_LocalOnB = Matrix3::Transpose(m_pObj2->GetOrientation().ToMatrix3()) * r2;
   }
 
-  // TODO
   virtual void ApplyImpulse() override
   {
     if (m_pObj1->GetInverseMass() + m_pObj2->GetInverseMass() == 0.0f)
@@ -65,7 +65,9 @@ public:
       b = -(baumgarteScalar / PhysicsEngine::Instance()->GetDeltaTime()) * distanceOffset;
     }
 
-    float jn = -(Vector3::Dot(v0 - v1, abn) + b) / constraintMass;
+    // TODO
+    float jn = (-(Vector3::Dot(v0 - v1, abn) + b) * m_springConstant) - (m_dampingFactor * (v0 - v1).Length());
+    jn /= constraintMass;
 
     m_pObj1->SetLinearVelocity(m_pObj1->GetLinearVelocity() + abn * (jn * m_pObj1->GetInverseMass()));
     m_pObj2->SetLinearVelocity(m_pObj2->GetLinearVelocity() - abn * (jn * m_pObj2->GetInverseMass()));
@@ -92,6 +94,7 @@ protected:
 
   float m_restDistance;
   float m_springConstant;
+  float m_dampingFactor;
 
   Vector3 m_LocalOnA;
   Vector3 m_LocalOnB;
