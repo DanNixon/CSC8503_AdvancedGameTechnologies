@@ -63,6 +63,7 @@ normal are correct for all collisions. =]
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
+#include <ncltech\SphereCollisionShape.h>
 
 class Phy4_ColDetection : public Scene
 {
@@ -134,6 +135,11 @@ public:
 
       // TODO: testing
       (*(sphere->Physics()->CollisionShapesBegin()))->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
+
+      // Second collision sphere shape (for testing)
+      CollisionShape *secondSphereCollShape = new SphereCollisionShape(0.5f);
+      secondSphereCollShape->SetLocalTransform(Matrix4::Translation(Vector3(-0.5f, 0.0f, 0.0f)));
+      sphere->Physics()->AddCollisionShape(secondSphereCollShape);
 
       this->AddGameObject(CommonUtils::BuildCuboidObject("",
                                                          sc_pos,                                // Position
