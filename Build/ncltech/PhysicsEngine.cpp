@@ -128,12 +128,15 @@ void PhysicsEngine::SolveConstraints()
   for (Constraint *c : m_vpConstraints)
     c->PreSolverStep(m_UpdateTimestep);
 
-  // Solve all Constraints and Collision Manifolds
-  for (Manifold *m : m_vpManifolds)
-    m->ApplyImpulse();
+  for (size_t i = 0; i < SOLVER_ITERATIONS; i++)
+  {
+    // Solve all Constraints and Collision Manifolds
+    for (Manifold *m : m_vpManifolds)
+      m->ApplyImpulse();
 
-  for (Constraint *c : m_vpConstraints)
-    c->ApplyImpulse();
+    for (Constraint *c : m_vpConstraints)
+      c->ApplyImpulse();
+  }
 }
 
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)

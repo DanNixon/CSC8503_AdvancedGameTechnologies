@@ -35,7 +35,7 @@ additional energy to the system or negate existing velocity.
 struct ContactPoint
 {
   float sumImpulseContact;
-  Vector3 sumImpulseFriction;
+  float sumImpulseFriction;
 
   float elatisity_term;
 
