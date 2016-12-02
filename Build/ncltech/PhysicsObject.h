@@ -224,6 +224,7 @@ protected:
 
   bool m_AtRest; //!< Flag indicating if this object is at rest
   float m_RestVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be stationary
+  float m_AverageSummedVelocity; //!< Exponential moving average of sum of magnitudes of linear and angular velocity
 
   mutable bool m_wsTransformInvalidated;
   mutable Matrix4 m_wsTransform;

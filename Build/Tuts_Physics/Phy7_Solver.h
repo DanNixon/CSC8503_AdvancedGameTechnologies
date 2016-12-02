@@ -113,8 +113,7 @@ public:
       //     with the ground first and working its
       //     way up.
 
-      //const int pyramid_stack_height = 6;
-      const int pyramid_stack_height = 1;
+      const int pyramid_stack_height = 6;
       for (int y = 0; y < pyramid_stack_height; ++y)
       {
         for (int x = 0; x <= y; ++x)
