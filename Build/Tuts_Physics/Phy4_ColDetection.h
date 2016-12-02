@@ -11,8 +11,6 @@ tests should automatically be performed by the physics engine.
 Hopefully the visual collision data, showing penetration depth and collision
 normal are correct for all collisions. =]
 
-
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::: IF YOUR BORED! :::
 ::::::::::::::::::::::
@@ -43,10 +41,7 @@ normal are correct for all collisions. =]
 	   the concave shape we are trying to display; for instance a tree with an ellipsoid for the leaves
 	   and a cylinder for the trunk.
 	  
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
 
 		(\_/)
 		( '_')
@@ -85,7 +80,7 @@ public:
   {
     SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
     SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
-    PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS);
+    PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES);
 
     m_AccumTime = 0.0f;
     m_Rotating = true;
@@ -138,7 +133,7 @@ public:
 
       // Second collision sphere shape (for testing)
       CollisionShape *secondSphereCollShape = new SphereCollisionShape(0.5f);
-      secondSphereCollShape->SetLocalTransform(Matrix4::Translation(Vector3(-0.5f, 0.0f, 0.0f)));
+      secondSphereCollShape->SetLocalTransform(Matrix4::Translation(Vector3(-0.25f, 0.0f, 0.0f)));
       sphere->Physics()->AddCollisionShape(secondSphereCollShape);
 
       this->AddGameObject(CommonUtils::BuildCuboidObject("",
