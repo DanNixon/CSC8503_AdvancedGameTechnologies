@@ -42,11 +42,11 @@ higher mark will require the implementation of optional elements.
 
 ## Coursework Part A: Standard Features
 
-- [ ] You must implement a Newtonian solver capable of updating the linear and
+- [x] You must implement a Newtonian solver capable of updating the linear and
       angular motion of 3-dimensional objects.
 - [ ] You must implement gravity, acting in the direction of the planet's
       centre of mass.
-- [ ] You must implement a 'Rest' state under which objects are not subject to
+- [x] You must implement a 'Rest' state under which objects are not subject to
       physics updates (including gravity). This Rest state should end (the
       object should 'wake up') when an object suffers a collision.
 - [ ] You must add the capability to launch a textured, spherical projectile
