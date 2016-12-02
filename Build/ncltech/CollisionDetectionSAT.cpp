@@ -51,36 +51,47 @@ void CollisionDetectionSAT::FindAllPossibleCollisionAxes()
   m_pShape1->GetCollisionAxes(m_pObj1, &m_vPossibleCollisionAxes);
   m_pShape2->GetCollisionAxes(m_pObj2, &m_vPossibleCollisionAxes);
 
-  std::vector<CollisionEdge> shape1_edges;
-  std::vector<CollisionEdge> shape2_edges;
+  std::vector<CollisionEdge> shape1Edges;
+  std::vector<CollisionEdge> shape2Edges;
 
-  m_pShape1->GetEdges(m_pObj1, &shape1_edges);
-  m_pShape2->GetEdges(m_pObj2, &shape2_edges);
+  m_pShape1->GetEdges(m_pObj1, &shape1Edges);
+  m_pShape2->GetEdges(m_pObj2, &shape2Edges);
 
-  // Handle special case for curved shapes
-  bool shape1_isSphere = shape1_edges.empty();
-  bool shape2_isSphere = shape2_edges.empty();
+  // Handle special cases
+  bool shape1IsSphere = shape1Edges.empty();
+  bool shape2IsSphere = shape2Edges.empty();
 
-  if (shape1_isSphere && shape2_isSphere)
+  Vector3 shape1Position;
+  Vector3 shape2Position;
+
+  // Get the position of collision shape 1 if needed
+  if (shape1IsSphere)
+    shape1Position = (m_pShape1->GetLocalTransform() * m_pObj1->GetWorldSpaceTransform()).GetPositionVector();
+
+  // Get the position of collision shape 2 if needed
+  if (shape2IsSphere)
+    shape2Position = (m_pShape2->GetLocalTransform() * m_pObj2->GetWorldSpaceTransform()).GetPositionVector();
+
+  // Handle sphere-sphere
+  if (shape1IsSphere && shape2IsSphere)
   {
-    // TODO
-    Vector3 axis = m_pObj2->GetPosition() - m_pObj1->GetPosition();
+    Vector3 axis = shape2Position - shape1Position;
     axis.Normalise();
     AddPossibleCollisionAxis(axis);
   }
-  else if (shape1_isSphere)
+  // Handle sphere-something
+  else if (shape1IsSphere)
   {
-    // TODO
-    Vector3 p = GetClosestPoint(m_pObj1->GetPosition(), shape2_edges);
-    Vector3 pt = m_pObj1->GetPosition() - p;
+    Vector3 p = GetClosestPoint(shape1Position, shape2Edges);
+    Vector3 pt = shape1Position - p;
     pt.Normalise();
     AddPossibleCollisionAxis(pt);
   }
-  else if (shape2_isSphere)
+  // Handle something-sphere
+  else if (shape2IsSphere)
   {
-    // TODO
-    Vector3 p = GetClosestPoint(m_pObj2->GetPosition(), shape1_edges);
-    Vector3 pt = m_pObj2->GetPosition() - p;
+    Vector3 p = GetClosestPoint(shape2Position, shape1Edges);
+    Vector3 pt = shape2Position - p;
     pt.Normalise();
     AddPossibleCollisionAxis(pt);
   }
