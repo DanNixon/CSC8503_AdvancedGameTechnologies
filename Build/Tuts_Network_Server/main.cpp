@@ -1,4 +1,3 @@
-
 /******************************************************************************
 Class: Net1_Client
 Implements:
@@ -17,12 +16,7 @@ Description:
 - You can also optionally spawn more instances by right clicking on the specific project
 and going to Debug->Start New Instance.
 
-
-
-
 FOR MORE NETWORKING INFORMATION SEE "Tuts_Network_Client -> Net1_Client.h"
-
-
 
 		(\_/)
 		( '_')
@@ -69,8 +63,7 @@ int main(int arcg, char **argv)
     return EXIT_FAILURE;
   }
 
-  // Initialize Server on Port 1234, with a possible 32 clients connected at any
-  // time
+  // Initialize Server on Port 1234, with a possible 32 clients connected at any time
   if (!server.Initialize(SERVER_PORT, 32))
   {
     fprintf(stderr, "An error occurred while trying to create an ENet server host.\n");
@@ -107,8 +100,7 @@ int main(int arcg, char **argv)
       }
     });
 
-    // Broadcast update packet to all connected clients at a rate of
-    // UPDATE_TIMESTEP updates per second
+    // Broadcast update packet to all connected clients at a rate of UPDATE_TIMESTEP updates per second
     if (accum_time >= UPDATE_TIMESTEP)
     {
 
@@ -146,10 +138,8 @@ void Win32_PrintAllAdapterIPAddresses()
   IP_ADAPTER_INFO *pAdapters = NULL;
   DWORD status = ERROR_BUFFER_OVERFLOW;
 
-  // Keep attempting to fit all adapter info inside our buffer, allocating more
-  // memory if needed
-  // Note: Will exit after 5 failed attempts, or not enough memory. Lets pray it
-  // never comes to this!
+  // Keep attempting to fit all adapter info inside our buffer, allocating more memory if needed
+  // Note: Will exit after 5 failed attempts, or not enough memory. Lets pray it never comes to this!
   for (int i = 0; i < 5 && (status == ERROR_BUFFER_OVERFLOW); i++)
   {
     pAdapters = (IP_ADAPTER_INFO *)malloc(outBufLen);
@@ -174,10 +164,8 @@ void Win32_PrintAllAdapterIPAddresses()
 
   if (pAdapters != NULL)
   {
-    // Iterate through all Network Adapters, and print all IPv4 addresses
-    // associated with them to the console
-    // - Adapters here are stored as a linked list termenated with a NULL
-    // next-pointer
+    // Iterate through all Network Adapters, and print all IPv4 addresses associated with them to the console
+    // - Adapters here are stored as a linked list termenated with a NULL next-pointer
     IP_ADAPTER_INFO *cAdapter = &pAdapters[0];
     while (cAdapter != NULL)
     {

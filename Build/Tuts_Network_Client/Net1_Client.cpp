@@ -16,9 +16,6 @@ Description:
 - You can also optionally spawn more instances by right clicking on the specific project
   and going to Debug->Start New Instance.
 
-
-
-
 This demo scene will demonstrate a very simple network example, with a single server
 and multiple clients. The client will attempt to connect to the server, and say "Hellooo!" 
 if it successfully connects. The server, will continually broadcast a packet containing a 
@@ -35,8 +32,7 @@ solution however, so most work on networking (that I have found atleast) is on b
 a network bespoke communication system that sends the minimal amount of data needed to
 produce satisfactory results on the networked peers.
 
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::
 ::: IF YOUR BORED! :::
 ::::::::::::::::::::::
 	1. Try setting up both the server and client within the same Scene (disabling collisions
@@ -77,7 +73,6 @@ produce satisfactory results on the networked peers.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
 		(\_/)
 		( '_')
 	 /""""""""""""\=========     -----D
@@ -112,8 +107,7 @@ void Net1_Client::OnInitializeScene()
     NCLDebug::Log("Network: Attempting to connect to server.");
   }
 
-  // Generate Simple Scene with a box that can be updated upon recieving server
-  // packets
+  // Generate Simple Scene with a box that can be updated upon recieving server packets
   SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
   SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 

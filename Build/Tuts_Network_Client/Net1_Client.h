@@ -1,10 +1,7 @@
-
 #pragma once
 
 #include <ncltech\NetworkBase.h>
 #include <ncltech\Scene.h>
-
-// Basic Network Example
 
 class Net1_Client : public Scene
 {
