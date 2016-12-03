@@ -43,9 +43,14 @@ public:
   virtual ~PhysicsObject();
 
   //<--------- GETTERS ------------->
-  inline bool AtRest() const
+  inline bool IsAtRest() const
   {
     return m_AtRest;
+  }
+
+  inline bool IsAwake() const
+  {
+    return !m_AtRest;
   }
 
   inline float GetRestVelocityThresholdSquared() const
@@ -204,10 +209,13 @@ public:
 
   inline bool FireOnCollisionEvent(PhysicsObject *obj_a, PhysicsObject *obj_b)
   {
-    // Reset at rest flag
-    m_AtRest = false;
+    bool handleCollision = (m_OnCollisionCallback) ? m_OnCollisionCallback(obj_a, obj_b) : true;
 
-    return (m_OnCollisionCallback) ? m_OnCollisionCallback(obj_a, obj_b) : true;
+    // Reset at rest flag
+    if (handleCollision)
+      m_AtRest = false;
+
+    return handleCollision;
   }
 
   void DoAtRestTest();

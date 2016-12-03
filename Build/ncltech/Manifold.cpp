@@ -60,7 +60,7 @@ void Manifold::SolveContactPoint(ContactPoint &c)
       float distanceOffset = c.collisionPenetration;
 
       float baumgarteScalar = 0.3f; // Amount of force to add to the system to solve error
-      float baumgarteSlop = 0.001f; // Amount of allowed penetration , ensures a complete manifold each frame
+      float baumgarteSlop = 0.001f; // Amount of allowed penetration, ensures a complete manifold each frame
 
       float penetrationSlop = min(c.collisionPenetration + baumgarteSlop, 0.0f);
 
@@ -146,11 +146,11 @@ void Manifold::UpdateConstraint(ContactPoint &contact)
     else
     {
       // Elasticity slop here is used to make objects come to
-      // rest quicker . It works out if the elastic term is less
-      // than a given value (0.2 m/s here ) and if it is , then we
+      // rest quicker. It works out if the elastic term is less
+      // than a given value (0.2 m/s here) and if it is, then we
       // assume it is too small to see and should ignore the
-      // elasticity calculation . Most noticable when you have a
-      // stack of objects , without this they will jitter alot .
+      // elasticity calculation. Most noticable when you have a
+      // stack of objects, without this they will jitter alot.
 
       const float elasticity_slop = 0.2f;
 

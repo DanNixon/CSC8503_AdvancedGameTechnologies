@@ -123,7 +123,7 @@ public:
               "", Vector3(x - y * 0.5f, 0.5f + float(pyramid_stack_height - 1 - y), -0.5f), Vector3(0.5f, 0.5f, 0.5f),
               true, 1.f, true, true, colour);
           cube->Physics()->SetFriction(1.0f);
-          // cube->Physics()->SetElasticity(0.0f);
+          cube->Physics()->SetElasticity(0.0f);
           this->AddGameObject(cube);
         }
       }

@@ -112,18 +112,16 @@ void PhysicsEngine::UpdatePhysics()
 
 void PhysicsEngine::SolveConstraints()
 {
-  // Optional step to allow constraints to
-  // precompute values based off current velocities
-  // before they are updated in the main loop below.
+  // Optional step to allow constraints to precompute values based off current velocities before they are updated in the main loop below.
   for (Manifold *m : m_vpManifolds)
     m->PreSolverStep(m_UpdateTimestep);
 
   for (Constraint *c : m_vpConstraints)
     c->PreSolverStep(m_UpdateTimestep);
 
+  // Solve all Constraints and Collision Manifolds
   for (size_t i = 0; i < SOLVER_ITERATIONS; i++)
   {
-    // Solve all Constraints and Collision Manifolds
     for (Manifold *m : m_vpManifolds)
       m->ApplyImpulse();
 
@@ -135,7 +133,7 @@ void PhysicsEngine::SolveConstraints()
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 {
   // Skip if object is at rest
-  if (obj->AtRest())
+  if (obj->IsAtRest())
     return;
 
   // Apply gravity
@@ -217,7 +215,7 @@ void PhysicsEngine::BroadPhaseCollisions()
 {
   m_BroadphaseCollisionPairs.clear();
 
-  PhysicsObject *m_pObj1, *m_pObj2;
+  PhysicsObject *obj1, *obj2;
   //	The broadphase needs to build a list of all potentially colliding objects
   // in the world,
   //	which then get accurately assesed in narrowphase. If this is too coarse
@@ -234,15 +232,15 @@ void PhysicsEngine::BroadPhaseCollisions()
     {
       for (size_t j = i + 1; j < m_PhysicsObjects.size(); ++j)
       {
-        m_pObj1 = m_PhysicsObjects[i];
-        m_pObj2 = m_PhysicsObjects[j];
+        obj1 = m_PhysicsObjects[i];
+        obj2 = m_PhysicsObjects[j];
 
         // Check they both atleast have collision shapes
-        if (m_pObj1->NumCollisionShapes() > 0 && m_pObj2->NumCollisionShapes() > 0)
+        if (obj1->NumCollisionShapes() > 0 && obj2->NumCollisionShapes() > 0 && (obj1->IsAwake() || obj2->IsAwake()))
         {
           CollisionPair cp;
-          cp.pObjectA = m_pObj1;
-          cp.pObjectB = m_pObj2;
+          cp.pObjectA = obj1;
+          cp.pObjectB = obj2;
           m_BroadphaseCollisionPairs.push_back(cp);
         }
       }
@@ -354,6 +352,6 @@ void PhysicsEngine::DebugRender()
 bool PhysicsEngine::SimulationIsAtRest() const
 {
   auto firstObjectNotAtRest =
-      std::find_if(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), [](PhysicsObject *o) { return !o->AtRest(); });
+      std::find_if(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), [](PhysicsObject *o) { return o->IsAwake(); });
   return (firstObjectNotAtRest == m_PhysicsObjects.end());
 }

@@ -47,6 +47,7 @@ const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
  *
  * Uses an exponential moving average of the sum of the magnitudes of linear and angular acceleration and sets the at
  * rest flag when this average is below a threshold.
+ *
  * Probably not the best solution but is relatively cheap and reduces the likelyhood of an object entering rest state
  * when changing direction.
  */
