@@ -1,22 +1,8 @@
 /******************************************************************************
-Class: CuboidCollisionShape
+Class: AABBCollisionShape
 Implements: CollisionShape
-Author: Pieran Marris      <p.marris@newcastle.ac.uk> and YOU!
+Author: Dan Nixon
 Description: 
-
-Extends CollisionShape to represent a cuboid geometric shape.
-
-To simplify some of the methods such as getting the min/max vertices and acquiring the reference face, this 
-class uses a cuboid 'Hull' object as it's basis. This keeps a list of all vertices, faces and their inter-connectivity,
-allowing easy access to adjacent faces which is required for retrieving the clipping planes later on.
-
-
-
-        (\_/)
-        ( '_')
-     /""""""""""""\=========     -----D
-    /"""""""""""""""""""""""\
-....\_@____@____@____@____@_/
 
 */ /////////////////////////////////////////////////////////////////////////////
 
@@ -25,12 +11,12 @@ allowing easy access to adjacent faces which is required for retrieving the clip
 #include "CollisionShape.h"
 #include "Hull.h"
 
-class CuboidCollisionShape : public CollisionShape
+class AABBCollisionShape : public CollisionShape
 {
 public:
-  CuboidCollisionShape();
-  CuboidCollisionShape(const Vector3 &halfdims);
-  virtual ~CuboidCollisionShape();
+  AABBCollisionShape();
+  AABBCollisionShape(const Vector3 &halfdims);
+  virtual ~AABBCollisionShape();
 
   // Set Cuboid Dimensions
   void SetHalfWidth(float half_width)

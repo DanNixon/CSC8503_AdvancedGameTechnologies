@@ -238,9 +238,6 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 
   // Mark cached world transform as invalid
   obj->m_wsTransformInvalidated = true;
-
-  // TODO
-  obj->ClearForces();
 }
 
 void PhysicsEngine::BroadPhaseCollisions()

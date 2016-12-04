@@ -162,6 +162,19 @@ Matrix4 Matrix4::Translation( const Vector3 &translation )	{
 	return m;
 }
 
+void Matrix4::ClearRotation()
+{
+  values[0] = 1.0f;
+  values[5] = 1.0f;
+  values[10] = 1.0f;
+  values[1] = 0.0f;
+  values[4] = 0.0f;
+  values[2] = 0.0f;
+  values[8] = 0.0f;
+  values[6] = 0.0f;
+  values[9] = 0.0f;
+}
+
 Matrix4 Matrix4::GetRotation() const
 {
 	Matrix4 temp;

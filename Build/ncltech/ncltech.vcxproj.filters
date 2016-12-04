@@ -110,6 +110,9 @@
     <ClCompile Include="SphereCollisionShape.cpp">
       <Filter>src\Physics\CollisionShapes</Filter>
     </ClCompile>
+    <ClCompile Include="AABBCollisionShape.cpp">
+      <Filter>src\Physics\CollisionShapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -195,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="SliderConstraint.h">
       <Filter>include\Physics\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="AABBCollisionShape.h">
+      <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

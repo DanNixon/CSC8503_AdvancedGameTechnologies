@@ -59,6 +59,7 @@ normal are correct for all collisions. =]
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SphereCollisionShape.h>
+#include <ncltech\AABBCollisionShape.h>
 
 class Phy4_ColDetection : public Scene
 {
@@ -156,14 +157,17 @@ public:
           Vector3(0.5f, 0.5f, 0.5f),           // Half dimensions
           true,                                // Has Physics Object
           0.0f,                                // Infinite Mass
-          true,                                // Has Collision Shape
+          false,                               // Add a shape later
           false,                               // Dragable by the user
           CommonUtils::GenColour(0.3f, 0.5f)); // Color
       this->AddGameObject(cuboid);
 
+      cuboid->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 30.0f));
+
       // TODO: testing
-      (*(cuboid->Physics()->CollisionShapesBegin()))
-          ->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
+      CollisionShape * shape = new AABBCollisionShape();
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 0.0f, 0.0f)));
+      cuboid->Physics()->AddCollisionShape(shape);
 
       this->AddGameObject(CommonUtils::BuildCuboidObject("",
                                                          cc_pos,                                // Position
