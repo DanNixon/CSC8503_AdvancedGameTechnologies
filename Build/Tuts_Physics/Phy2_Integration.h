@@ -131,7 +131,7 @@ public:
     m_TrajectoryPoints.clear();
     m_Sphere->Physics()->SetPosition(Vector3(-12.5f, 2.0f, 0.f));
     m_Sphere->Physics()->SetLinearVelocity(Vector3(0.f, 2.5f, 0.0f));
-    m_Sphere->Physics()->SetForce(Vector3(1.f, -1.f, 0.0f));
+    m_Sphere->Physics()->SetForce(Vector3(1.0f, -1.0f, 0.0f));
   }
 
   virtual void OnUpdateScene(float dt) override

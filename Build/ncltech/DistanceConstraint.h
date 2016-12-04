@@ -35,8 +35,8 @@ public:
     Vector3 ab = globalOnB - globalOnA;
     m_Distance = ab.Length();
 
-    Vector3 r1 = (globalOnA - m_pObj1->GetPosition());
-    Vector3 r2 = (globalOnB - m_pObj2->GetPosition());
+    Vector3 r1 = globalOnA - m_pObj1->GetPosition();
+    Vector3 r2 = globalOnB - m_pObj2->GetPosition();
     m_LocalOnA = Matrix3::Transpose(m_pObj1->GetOrientation().ToMatrix3()) * r1;
     m_LocalOnB = Matrix3::Transpose(m_pObj2->GetOrientation().ToMatrix3()) * r2;
   }

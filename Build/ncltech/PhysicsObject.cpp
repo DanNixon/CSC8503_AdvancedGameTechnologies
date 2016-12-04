@@ -2,10 +2,12 @@
 #include "PhysicsEngine.h"
 
 PhysicsObject::PhysicsObject()
-    : m_wsTransformInvalidated(true)
+    : m_parent(nullptr)
+    , m_wsTransformInvalidated(true)
     , m_AtRest(false)
     , m_RestVelocityThresholdSquared(0.001f)
     , m_AverageSummedVelocity(0.0f)
+    , m_gravitationTarget(nullptr)
     , m_Position(0.0f, 0.0f, 0.0f)
     , m_LinearVelocity(0.0f, 0.0f, 0.0f)
     , m_Force(0.0f, 0.0f, 0.0f)

@@ -190,7 +190,7 @@ protected:
   // Scene Tree
   std::string m_Name;
   Scene *m_pScene;
-  Object *m_pParent;
+  Object *m_parent;
   std::vector<Object *> m_vpChildren;
 
   // Physics

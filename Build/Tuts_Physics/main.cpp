@@ -11,6 +11,7 @@
 #include "Phy5_ColManifolds.h"
 #include "Phy6_ColResponse.h"
 #include "Phy7_Solver.h"
+#include "Test1_PointGravitation.h"
 
 const Vector4 status_colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 const Vector4 status_colour_header = Vector4(0.8f, 0.9f, 1.0f, 1.0f);
@@ -64,6 +65,7 @@ void Initialize()
   SceneManager::Instance()->EnqueueScene(new Phy5_ColManifolds("Physics Tut #5 - Collision Manifolds"));
   SceneManager::Instance()->EnqueueScene(new Phy6_ColResponse("Physics Tut #6 - Collision Response"));
   SceneManager::Instance()->EnqueueScene(new Phy7_Solver("Physics Tut #7 - Global Solver"));
+  SceneManager::Instance()->EnqueueScene(new Test1_PointGravitation("Test #1 - Point Gravitation"));
 }
 
 // Print Debug Info

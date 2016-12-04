@@ -9,6 +9,7 @@
     <ClInclude Include="Phy4_ColDetectionExtra.h" />
     <ClInclude Include="Phy5_ColManifolds.h" />
     <ClInclude Include="Phy6_ColResponse.h" />
+    <ClInclude Include="Test1_PointGravitation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

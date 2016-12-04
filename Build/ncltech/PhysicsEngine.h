@@ -161,12 +161,12 @@ public:
 
   const Vector3 &GetGravity() const
   {
-    return m_Gravity;
+    return m_LinearGravity;
   }
 
   void SetGravity(const Vector3 &g)
   {
-    m_Gravity = g;
+    m_LinearGravity = g;
   }
 
   float GetDampingFactor() const
@@ -212,7 +212,10 @@ protected:
 
   IntegrationType m_integrationType; //!< Type of integration performed in object updates
 
-  Vector3 m_Gravity;
+  Vector3 m_LinearGravity;
+  float m_PointGravity;
+  float m_PointGravitation;
+
   float m_DampingFactor;
 
   std::vector<CollisionPair> m_BroadphaseCollisionPairs;

@@ -12,7 +12,9 @@ void PhysicsEngine::SetDefaults()
   m_IsPaused = false;
   m_UpdateTimestep = 1.0f / 60.f;
   m_UpdateAccum = 0.0f;
-  m_Gravity = Vector3(0.0f, -9.81f, 0.0f);
+  m_LinearGravity = Vector3(0.0f, -9.81f, 0.0f);
+  m_PointGravity = -9.81f;
+  m_PointGravitation = 6.674e-11f;
   m_DampingFactor = 0.999f;
   m_integrationType = INTEGRATION_SEMI_IMPLICIT_EULER;
 }
@@ -60,8 +62,8 @@ void PhysicsEngine::RemoveAllPhysicsObjects()
   //   that the physics object no longer exists
   for (PhysicsObject *obj : m_PhysicsObjects)
   {
-    if (obj->m_pParent != NULL)
-      obj->m_pParent->m_pPhysicsObject = NULL;
+    if (obj->m_parent != NULL)
+      obj->m_parent->m_pPhysicsObject = NULL;
     delete obj;
   }
   m_PhysicsObjects.clear();
@@ -138,7 +140,34 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 
   // Apply gravity
   if (obj->m_InvMass > 0.0f)
-    obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
+  {
+    if (obj->m_gravitationTarget == nullptr)
+    {
+      // Uniform directional gravity
+      obj->m_LinearVelocity += m_LinearGravity * m_UpdateTimestep;
+    }
+    else
+    {
+      Vector3 ab = obj->m_gravitationTarget->m_Position - obj->m_Position;
+      Vector3 abn = ab;
+      abn.Normalise();
+
+      if (obj->m_gravitationTarget->m_InvMass > 0.0f)
+      {
+        // Handle gravity between points (target is pulled towards self)
+        float r2 = ab.LengthSquared();
+        float f = m_PointGravitation / (r2 * obj->m_InvMass * obj->m_gravitationTarget->m_InvMass);
+        obj->ApplyForce(abn * f);
+        obj->m_gravitationTarget->ApplyForce(abn * -f);
+        obj->m_gravitationTarget->WakeUp();
+      }
+      else
+      {
+        // Handle gravity between points (target is immovable)
+        obj->m_LinearVelocity += abn * -m_PointGravity * m_UpdateTimestep;
+      }
+    }
+  }
 
   switch (m_integrationType)
   {
@@ -209,6 +238,9 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 
   // Mark cached world transform as invalid
   obj->m_wsTransformInvalidated = true;
+
+  // TODO
+  obj->ClearForces();
 }
 
 void PhysicsEngine::BroadPhaseCollisions()

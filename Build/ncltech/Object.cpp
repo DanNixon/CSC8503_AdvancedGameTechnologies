@@ -3,7 +3,7 @@
 
 Object::Object(const std::string &name)
     : m_pScene(NULL)
-    , m_pParent(NULL)
+    , m_parent(NULL)
     , m_Name(name)
     , m_Colour(1.0f, 1.0f, 1.0f, 1.0f)
     , m_BoundingRadius(1.0f)
@@ -61,6 +61,6 @@ Object *Object::FindGameObject(const std::string &name)
 void Object::AddChildObject(Object *child)
 {
   m_vpChildren.push_back(child);
-  child->m_pParent = this;
+  child->m_parent = this;
   child->m_pScene = this->m_pScene;
 }

@@ -125,15 +125,20 @@ public:
 
   inline Object *GetAssociatedObject() const
   {
-    return m_pParent;
+    return m_parent;
   }
 
   const Matrix4 &GetWorldSpaceTransform() const; // Built from scratch or returned from cached value
 
   //<--------- SETTERS ------------->
-  void SetRestVelocityThreshold(float vel)
+  inline void SetRestVelocityThreshold(float vel)
   {
     m_RestVelocityThresholdSquared = vel * vel;
+  }
+
+  inline void SetGravitationTarget(PhysicsObject * obj)
+  {
+    m_gravitationTarget = obj;
   }
 
   inline void SetElasticity(float elasticity)
@@ -156,6 +161,16 @@ public:
   inline void SetLinearVelocity(const Vector3 &v)
   {
     m_LinearVelocity = v;
+  }
+
+  inline void ApplyForce(const Vector3 &force)
+  {
+    m_Force += force;
+  }
+
+  inline void ClearForces()
+  {
+    m_Force.ToZero();
   }
 
   inline void SetForce(const Vector3 &v)
@@ -198,7 +213,7 @@ public:
   // Called automatically when PhysicsObject is created through Object::CreatePhysicsNode()
   inline void SetAssociatedObject(Object *obj)
   {
-    m_pParent = obj;
+    m_parent = obj;
   }
 
   //<---------- CALLBACKS ------------>
@@ -211,7 +226,7 @@ public:
   {
     bool handleCollision = (m_OnCollisionCallback) ? m_OnCollisionCallback(obj_a, obj_b) : true;
 
-    // Reset at rest flag
+    // Wake up on collision
     if (handleCollision)
       m_AtRest = false;
 
@@ -229,20 +244,19 @@ public:
   }
 
 protected:
-  Object *m_pParent; // Optional: Attached GameObject or NULL if none set
+  Object *m_parent; // Optional: Attached GameObject or NULL if none set
 
   bool m_AtRest;                        //!< Flag indicating if this object is at rest
-  float m_RestVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be
-                                        //!stationary
+  float m_RestVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be stationary
   float m_AverageSummedVelocity; //!< Exponential moving average of sum of magnitudes of linear and angular velocity
+
+  PhysicsObject * m_gravitationTarget; //!< Physical object that this object is attracted to through gravity
 
   mutable bool m_wsTransformInvalidated;
   mutable Matrix4 m_wsTransform;
 
-  float m_Elasticity; // Value from 0-1 definiing how much the object bounces
-                      // off other objects
-  float m_Friction;   // Value from 0-1 defining how much the object can slide off
-                      // other objects
+  float m_Elasticity; //!< Value from 0-1 definiing how much the object bounces off other objects
+  float m_Friction;   //!< Value from 0-1 defining how much the object can slide off other objects
 
   //<---------LINEAR-------------->
   Vector3 m_Position;
