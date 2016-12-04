@@ -25,29 +25,33 @@ _-_-_-_-_-_-_-|   /\_/\   NYANYANYAN
 -_-_-_-_-_-_-~|__( ^ .^) /
 _-_-_-_-_-_-_-""  ""   
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "Plane.h"
 #include "Matrix4.h"
+#include "Plane.h"
 #include "SceneNode.h"
 
-class Frustum	{
+class Frustum
+{
 public:
-	Frustum(void){};
-	~Frustum(void){};
+  Frustum(void){};
+  ~Frustum(void){};
 
-	//Creates the frustum planes from a 'view projection' matrix
-	void FromMatrix(const Matrix4 &viewProj);
-	//Is a SceneNode inside this frustum?
+  // Creates the frustum planes from a 'view projection' matrix
+  void FromMatrix(const Matrix4 &viewProj);
+  // Is a SceneNode inside this frustum?
 
-	bool InsideFrustum(const Vector3& position, float radius) const;
-	bool InsideFrustum(SceneNode&n) const;
+  bool InsideFrustum(const Vector3 &position, float radius) const;
+  bool InsideFrustum(SceneNode &n) const;
 
-	bool	AABBInsideFrustum(Vector3 &position, const Vector3 &size) const;
+  bool AABBInsideFrustum(Vector3 &position, const Vector3 &size) const;
 
-	Plane& GetPlane(int idx) { return planes[idx]; }
+  Plane &GetPlane(int idx)
+  {
+    return planes[idx];
+  }
 
 protected:
-	Plane planes[6];
+  Plane planes[6];
 };

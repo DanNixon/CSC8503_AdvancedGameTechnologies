@@ -10,27 +10,29 @@ _-_-_-_-_-_-_-|   /\_/\   NYANYANYAN
 -_-_-_-_-_-_-~|__( ^ .^) /
 _-_-_-_-_-_-_-""  ""   
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
 #include "Windows.h"
 
-class GameTimer	{
+class GameTimer
+{
 public:
-	GameTimer(void);
-	~GameTimer(void) {}
+  GameTimer(void);
+  ~GameTimer(void)
+  {
+  }
 
-	//How many milliseconds have passed since the GameTimer was created
-	float	GetMS();
+  // How many milliseconds have passed since the GameTimer was created
+  float GetMS();
 
-	//How many milliseconds have passed since GetTimedMS was last called
-	float	GetTimedMS();
+  // How many milliseconds have passed since GetTimedMS was last called
+  float GetTimedMS();
 
 protected:
-	LARGE_INTEGER	start;			//Start of timer
-	LARGE_INTEGER	frequency;		//Ticks Per Second
+  LARGE_INTEGER start;     // Start of timer
+  LARGE_INTEGER frequency; // Ticks Per Second
 
-	float lastTime;					//Last time GetTimedMS was called
+  float lastTime; // Last time GetTimedMS was called
 };
-

@@ -52,7 +52,7 @@ _-_-_-_-_-_-_-|   /\_/\   NYANYANYAN
 -_-_-_-_-_-_-~|__( ^ .^) /
 _-_-_-_-_-_-_-""  ""   
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 
 /*
 As this tutorial series progresses, you'll learn how to generate normals, tangents,
@@ -69,90 +69,94 @@ time lighting tutorial, uncomment both OBJ_USE_NORMALS and OBJ_USE_TANGENTS_BUMP
 #define OBJ_USE_NORMALS
 //#define OBJ_USE_TANGENTS_BUMPMAPS
 
-//New! 
+// New!
 
 #define OBJ_FIX_TEXTURES
-
 
 #pragma once
 
 #include <fstream>
-#include <string>
-#include <sstream>
 #include <map>
+#include <sstream>
+#include <string>
 
-#include "Vector3.h"
-#include "Vector2.h"
-#include "Mesh.h"
 #include "ChildMeshInterface.h"
+#include "Mesh.h"
+#include "Vector2.h"
+#include "Vector3.h"
 
-#define OBJOBJECT		"object"	//the current line of the obj file defines the start of a new material
-#define OBJMTLLIB		"mtllib"
-#define OBJUSEMTL		"usemtl"	//the current line of the obj file defines the start of a new material
-#define OBJMESH			"g"			//the current line of the obj file defines the start of a new face
-#define OBJCOMMENT		"#"			//The current line of the obj file is a comment
-#define OBJVERT			"v"			//the current line of the obj file defines a vertex
-#define OBJTEX			"vt"		//the current line of the obj file defines texture coordinates
-#define OBJNORM			"vn"		//the current line of the obj file defines a normal
-#define OBJFACE			"f"			//the current line of the obj file defines a face
+#define OBJOBJECT "object" // the current line of the obj file defines the start of a new material
+#define OBJMTLLIB "mtllib"
+#define OBJUSEMTL "usemtl" // the current line of the obj file defines the start of a new material
+#define OBJMESH "g"        // the current line of the obj file defines the start of a new face
+#define OBJCOMMENT "#"     // The current line of the obj file is a comment
+#define OBJVERT "v"        // the current line of the obj file defines a vertex
+#define OBJTEX "vt"        // the current line of the obj file defines texture coordinates
+#define OBJNORM "vn"       // the current line of the obj file defines a normal
+#define OBJFACE "f"        // the current line of the obj file defines a face
 
-#define MTLNEW			"newmtl"
-#define MTLDIFFUSE		"Kd"
-#define MTLSPEC			"Ks"
-#define MTLSPECWT		"Ns"
-#define MTLTRANS		"d"
-#define MTLTRANSALT		"Tr"
-#define MTLILLUM		"illum"
-#define MTLDIFFUSEMAP	"map_Kd"
-#define MTLBUMPMAP		"map_bump"
-#define MTLBUMPMAPALT	"bump"
-
-
+#define MTLNEW "newmtl"
+#define MTLDIFFUSE "Kd"
+#define MTLSPEC "Ks"
+#define MTLSPECWT "Ns"
+#define MTLTRANS "d"
+#define MTLTRANSALT "Tr"
+#define MTLILLUM "illum"
+#define MTLDIFFUSEMAP "map_Kd"
+#define MTLBUMPMAP "map_bump"
+#define MTLBUMPMAPALT "bump"
 
 /*
-OBJSubMesh structs are used to temporarily keep the data loaded 
+OBJSubMesh structs are used to temporarily keep the data loaded
 in from the OBJ files, before being parsed into a series of
 Meshes
 */
-struct OBJSubMesh {
-	std::vector<int> texIndices;
-	std::vector<int> vertIndices;
-	std::vector<int> normIndices;
+struct OBJSubMesh
+{
+  std::vector<int> texIndices;
+  std::vector<int> vertIndices;
+  std::vector<int> normIndices;
 
-	int indexOffset;
-	string mtlType;
-	string mtlSrc;
+  int indexOffset;
+  string mtlType;
+  string mtlSrc;
 };
 
-struct MTLInfo {
-	string bump;
-	string diffuse;
+struct MTLInfo
+{
+  string bump;
+  string diffuse;
 
-	GLuint bumpNum;
-	GLuint diffuseNum;
+  GLuint bumpNum;
+  GLuint diffuseNum;
 
-	MTLInfo() {
-		bumpNum		= 0;
-		diffuseNum	= 0;
-	}
-	//this is all we care about...
+  MTLInfo()
+  {
+    bumpNum = 0;
+    diffuseNum = 0;
+  }
+  // this is all we care about...
 };
 
-class OBJMesh : public Mesh, public ChildMeshInterface	{
+class OBJMesh : public Mesh, public ChildMeshInterface
+{
 public:
-	OBJMesh(void){};
-	OBJMesh(std::string filename){LoadOBJMesh(filename);};
-	~OBJMesh(void){};
-	bool	LoadOBJMesh(std::string filename);
+  OBJMesh(void){};
+  OBJMesh(std::string filename)
+  {
+    LoadOBJMesh(filename);
+  };
+  ~OBJMesh(void){};
+  bool LoadOBJMesh(std::string filename);
 
-	virtual void Draw();
+  virtual void Draw();
 
 protected:
-	void	SetTexturesFromMTL(string &mtlFile, string &mtlType);
+  void SetTexturesFromMTL(string &mtlFile, string &mtlType);
 
-	void	FixTextures(MTLInfo &info);
+  void FixTextures(MTLInfo &info);
 
-	map <string, MTLInfo> materials;
+  map<string, MTLInfo> materials;
 };
 
 #endif

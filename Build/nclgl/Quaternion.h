@@ -22,58 +22,61 @@ _-_-_-_-_-_-_-|   /\_/\   NYANYANYAN
 -_-_-_-_-_-_-~|__( ^ .^) /
 _-_-_-_-_-_-_-""  ""   
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-#include <iostream>
-#include "common.h"
-#include "Matrix4.h"
 #include "Matrix3.h"
+#include "Matrix4.h"
+#include "common.h"
+#include <iostream>
 
 class Matrix4;
 
-class Quaternion	{
+class Quaternion
+{
 public:
-	Quaternion(void);
-	Quaternion(float x, float y, float z, float w);
+  Quaternion(void);
+  Quaternion(float x, float y, float z, float w);
 
-	~Quaternion(void);
+  ~Quaternion(void);
 
-	float x;
-	float y;
-	float z;
-	float w;
+  float x;
+  float y;
+  float z;
+  float w;
 
-	void	Normalise();
+  void Normalise();
 
-	Matrix4 ToMatrix4() const;
-	Matrix3 ToMatrix3() const;
+  Matrix4 ToMatrix4() const;
+  Matrix3 ToMatrix3() const;
 
-	Quaternion	Conjugate() const;
-	void		GenerateW();	//builds 4th component when loading in shortened, 3 component quaternions - great for network compression ;)
+  Quaternion Conjugate() const;
+  void GenerateW(); // builds 4th component when loading in shortened, 3 component quaternions - great for network compression ;)
 
-	static Quaternion EulerAnglesToQuaternion(float pitch, float yaw, float roll);
-	static Quaternion AxisAngleToQuaterion(const Vector3& vector, float degrees);
+  static Quaternion EulerAnglesToQuaternion(float pitch, float yaw, float roll);
+  static Quaternion AxisAngleToQuaterion(const Vector3 &vector, float degrees);
 
-	static void RotatePointByQuaternion(const Quaternion &q, Vector3 &point);
+  static void RotatePointByQuaternion(const Quaternion &q, Vector3 &point);
 
-	static Quaternion FromMatrix(const Matrix4 &m);
-	static Quaternion FromMatrix(const Matrix3 &m);
+  static Quaternion FromMatrix(const Matrix4 &m);
+  static Quaternion FromMatrix(const Matrix3 &m);
 
-	static float Dot(const Quaternion &a, const Quaternion &b);
+  static float Dot(const Quaternion &a, const Quaternion &b);
 
-	Quaternion operator *(const Quaternion &a) const;
-	Quaternion operator *(const Vector3 &a) const;
+  Quaternion operator*(const Quaternion &a) const;
+  Quaternion operator*(const Vector3 &a) const;
 
-	Quaternion operator+(const Quaternion &a) const {
-		return Quaternion(x + a.x, y + a.y, z + a.z, w + a.w);
-	}
+  Quaternion operator+(const Quaternion &a) const
+  {
+    return Quaternion(x + a.x, y + a.y, z + a.z, w + a.w);
+  }
 
-	Quaternion Interpolate(const Quaternion& pStart, const Quaternion& pEnd, float pFactor);
+  Quaternion Interpolate(const Quaternion &pStart, const Quaternion &pEnd, float pFactor);
 
-	inline friend std::ostream& operator<<(std::ostream& o, const Quaternion& q){
-		o << "Quat(" << q.x << "," << q.y << "," << q.z <<  "," << q.w << ")" << std::endl;
-		return o;
-	}
+  inline friend std::ostream &operator<<(std::ostream &o, const Quaternion &q)
+  {
+    o << "Quat(" << q.x << "," << q.y << "," << q.z << "," << q.w << ")" << std::endl;
+    return o;
+  }
 };

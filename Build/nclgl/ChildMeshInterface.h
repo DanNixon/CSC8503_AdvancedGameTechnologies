@@ -16,7 +16,7 @@ _-_-_-_-_-_-_-|   /\_/\   NYANYANYAN
 -_-_-_-_-_-_-~|__( ^ .^) /
 _-_-_-_-_-_-_-""  ""   
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 #include "common.h"
 #ifdef WEEK_2_CODE
 #pragma once
@@ -24,22 +24,26 @@ _-_-_-_-_-_-_-""  ""
 #include "Mesh.h"
 #include <vector>
 
-class ChildMeshInterface	{
+class ChildMeshInterface
+{
 public:
-	//Adds a child mesh to this mesh (only used by OBJ and MD5Mesh)
-	void ChildMeshInterface::AddChild(Mesh*m)	{
-		children.push_back(m);
-	}
+  // Adds a child mesh to this mesh (only used by OBJ and MD5Mesh)
+  void ChildMeshInterface::AddChild(Mesh *m)
+  {
+    children.push_back(m);
+  }
 
-	virtual ~ChildMeshInterface() {
-		for(unsigned int i = 0; i < children.size(); ++i) {
-			delete children.at(i);
-		}
-	}
+  virtual ~ChildMeshInterface()
+  {
+    for (unsigned int i = 0; i < children.size(); ++i)
+    {
+      delete children.at(i);
+    }
+  }
 
 protected:
-	//Some Meshes have children...
-	std::vector<Mesh*>children;
-	ChildMeshInterface(void){};
+  // Some Meshes have children...
+  std::vector<Mesh *> children;
+  ChildMeshInterface(void){};
 };
 #endif

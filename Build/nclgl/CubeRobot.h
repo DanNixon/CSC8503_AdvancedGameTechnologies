@@ -19,42 +19,44 @@ _-_-_-_-_-_-_-|   /\_/\   NYANYANYAN
 -_-_-_-_-_-_-~|__( ^ .^) /
 _-_-_-_-_-_-_-""  ""   
 
-*//////////////////////////////////////////////////////////////////////////////
+*/ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "SceneNode.h"
 #include "OBJMesh.h"
+#include "SceneNode.h"
 #include "common.h"
 
-class CubeRobot : public SceneNode	{
+class CubeRobot : public SceneNode
+{
 public:
-	CubeRobot(void);
-	virtual ~CubeRobot(void){};
+  CubeRobot(void);
+  virtual ~CubeRobot(void){};
 
-	//Overloaded from SceneNode, makes the CubeRobot dance!
-	virtual void	Update(float msec);
+  // Overloaded from SceneNode, makes the CubeRobot dance!
+  virtual void Update(float msec);
 
-	//CubeRobot relies on their being a cube Mesh - this creates that Mesh.
-	static void	CreateCube() {
-		OBJMesh*m = new OBJMesh();
-		m->LoadOBJMesh(MESHDIR"cube.obj");
-		cube = m; 
-	}
+  // CubeRobot relies on their being a cube Mesh - this creates that Mesh.
+  static void CreateCube()
+  {
+    OBJMesh *m = new OBJMesh();
+    m->LoadOBJMesh(MESHDIR "cube.obj");
+    cube = m;
+  }
 
-	//Deletes the CubeRobot cube Mesh.
-	static void DeleteCube(){
-		delete cube;
-	}
+  // Deletes the CubeRobot cube Mesh.
+  static void DeleteCube()
+  {
+    delete cube;
+  }
 
 protected:
-	static Mesh* cube;
-	//These are just handy pointers to the limbs, to make animating them easier
-	SceneNode*head;
+  static Mesh *cube;
+  // These are just handy pointers to the limbs, to make animating them easier
+  SceneNode *head;
 
-	SceneNode*leftArm;
-	SceneNode*rightArm;
+  SceneNode *leftArm;
+  SceneNode *rightArm;
 
-	SceneNode*leftLeg;
-	SceneNode*rightLeg;
+  SceneNode *leftLeg;
+  SceneNode *rightLeg;
 };
-
