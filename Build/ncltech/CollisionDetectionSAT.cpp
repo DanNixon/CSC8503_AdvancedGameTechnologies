@@ -5,8 +5,7 @@ CollisionDetectionSAT::CollisionDetectionSAT()
 {
 }
 
-void CollisionDetectionSAT::BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj2, CollisionShape *shape1,
-                                         CollisionShape *shape2)
+void CollisionDetectionSAT::BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj2, CollisionShape *shape1, CollisionShape *shape2)
 {
   m_vPossibleCollisionAxes.clear();
 
@@ -243,8 +242,7 @@ void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
     std::vector<Plane> *refAdjPlanes;
 
     // Determine which polygon is the reference and incident
-    bool flipped =
-        fabs(Vector3::Dot(m_BestColData._normal, normal1)) <= fabs(Vector3::Dot(m_BestColData._normal, normal2));
+    bool flipped = fabs(Vector3::Dot(m_BestColData._normal, normal1)) <= fabs(Vector3::Dot(m_BestColData._normal, normal2));
 
     if (flipped)
     {

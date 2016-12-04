@@ -52,8 +52,7 @@ void NCLDebug::DrawPointNDT(const Vector3 &pos, float point_radius, const Vector
 }
 
 // Draw Line with a given thickness
-void NCLDebug::GenDrawThickLine(bool ndt, const Vector3 &start, const Vector3 &end, float line_width,
-                                const Vector4 &colour)
+void NCLDebug::GenDrawThickLine(bool ndt, const Vector3 &start, const Vector3 &end, float line_width, const Vector4 &colour)
 {
   auto list = ndt ? &m_DrawListNDT : &m_DrawList;
 
@@ -196,8 +195,8 @@ void NCLDebug::DrawPolygonNDT(int n_verts, const Vector3 *verts, const Vector4 &
   }
 }
 
-void NCLDebug::DrawTextCs(const Vector4 &cs_pos, const float font_size, const string &text,
-                          const TextAlignment alignment, const Vector4 colour)
+void NCLDebug::DrawTextCs(const Vector4 &cs_pos, const float font_size, const string &text, const TextAlignment alignment,
+                          const Vector4 colour)
 {
   Vector2 screenSize = Window::GetWindow().GetScreenSize();
   Vector3 cs_size = Vector3(font_size / screenSize.x, font_size / screenSize.y, 0.0f);
@@ -236,8 +235,8 @@ void NCLDebug::DrawTextCs(const Vector4 &cs_pos, const float font_size, const st
 }
 
 // Draw Text WorldSpace
-void NCLDebug::DrawTextWs(const Vector3 &pos, const float font_size, const TextAlignment alignment,
-                          const Vector4 colour, const string text, ...)
+void NCLDebug::DrawTextWs(const Vector3 &pos, const float font_size, const TextAlignment alignment, const Vector4 colour,
+                          const string text, ...)
 {
   va_list args;
   va_start(args, text);
@@ -254,8 +253,8 @@ void NCLDebug::DrawTextWs(const Vector3 &pos, const float font_size, const TextA
   DrawTextCs(cs_pos, font_size, formatted_text, alignment, colour);
 }
 
-void NCLDebug::DrawTextWsNDT(const Vector3 &pos, const float font_size, const TextAlignment alignment,
-                             const Vector4 colour, const string text, ...)
+void NCLDebug::DrawTextWsNDT(const Vector3 &pos, const float font_size, const TextAlignment alignment, const Vector4 colour,
+                             const string text, ...)
 {
   va_list args;
   va_start(args, text);
@@ -426,8 +425,8 @@ void NCLDebug::SortDebugLists()
     float alpha = ((m_vLogEntries.size() - i) / (float(MAX_LOG_SIZE)));
     alpha = 1.0f - (alpha * alpha);
 
-    DrawTextCs(Vector4(-1.0f + cs_size_x * 0.5f, -1.0f + ((log_len - i - 1) * cs_size_y) + cs_size_y, 0.0f, 1.0f),
-               LOG_TEXT_SIZE, m_vLogEntries[idx].text, TEXTALIGN_LEFT, m_vLogEntries[idx].colour);
+    DrawTextCs(Vector4(-1.0f + cs_size_x * 0.5f, -1.0f + ((log_len - i - 1) * cs_size_y) + cs_size_y, 0.0f, 1.0f), LOG_TEXT_SIZE,
+               m_vLogEntries[idx].text, TEXTALIGN_LEFT, m_vLogEntries[idx].colour);
   }
 
   auto sort_lists = [](NCLDebug::DebugDrawList &list) {
@@ -490,8 +489,7 @@ void NCLDebug::SortDebugLists()
     {
       Vector3 round_offset =
           Vector3(cos(DegToRad(i * 22.5f)) * rounded_offset_x, sin(DegToRad(i * 22.5f)) * rounded_offset_y, 0.0f);
-      NextTri(invProjView *
-              Vector3(max_x + round_offset.x - rounded_offset_x, top_y + round_offset.y - rounded_offset_y, 0.0f));
+      NextTri(invProjView * Vector3(max_x + round_offset.x - rounded_offset_x, top_y + round_offset.y - rounded_offset_y, 0.0f));
     }
     NextTri(invProjView * Vector3(-1, top_y, 0.0f));
   }
@@ -513,8 +511,7 @@ void NCLDebug::SortDebugLists()
     {
       Vector3 round_offset =
           Vector3(cos(DegToRad(i * 22.5f)) * rounded_offset_x, sin(DegToRad(i * 22.5f)) * rounded_offset_y, 0.0f);
-      NextTri(invProjView *
-              Vector3(max_x + round_offset.x - rounded_offset_x, btm_y - round_offset.y + rounded_offset_y, 0.0f));
+      NextTri(invProjView * Vector3(max_x + round_offset.x - rounded_offset_x, btm_y - round_offset.y + rounded_offset_y, 0.0f));
     }
     NextTri(invProjView * Vector3(max_x, 1, 0.0f));
   }
@@ -530,8 +527,8 @@ void NCLDebug::DrawDebugLists()
 
   // Buffer all data into the single buffer object
   size_t max_size = 0;
-  max_size += m_DrawList._vPoints.size() + m_DrawList._vThickLines.size() + m_DrawList._vHairLines.size() +
-              m_DrawList._vTris.size();
+  max_size +=
+      m_DrawList._vPoints.size() + m_DrawList._vThickLines.size() + m_DrawList._vHairLines.size() + m_DrawList._vTris.size();
   max_size += m_DrawListNDT._vPoints.size() + m_DrawListNDT._vThickLines.size() + m_DrawListNDT._vHairLines.size() +
               m_DrawListNDT._vTris.size();
   max_size += m_vChars.size();
@@ -566,8 +563,7 @@ void NCLDebug::DrawDebugLists()
 
   auto buffer_drawlist = [&](NCLDebug::DebugDrawList &list, size_t *offsets) {
     if (!list._vPoints.empty())
-      glBufferSubData(GL_ARRAY_BUFFER, offsets[0] * sizeof(Vector4), list._vPoints.size() * sizeof(Vector4),
-                      &list._vPoints[0].x);
+      glBufferSubData(GL_ARRAY_BUFFER, offsets[0] * sizeof(Vector4), list._vPoints.size() * sizeof(Vector4), &list._vPoints[0].x);
     if (!list._vThickLines.empty())
       glBufferSubData(GL_ARRAY_BUFFER, offsets[1] * sizeof(Vector4), list._vThickLines.size() * sizeof(Vector4),
                       &list._vThickLines[0].x);
@@ -575,14 +571,12 @@ void NCLDebug::DrawDebugLists()
       glBufferSubData(GL_ARRAY_BUFFER, offsets[2] * sizeof(Vector4), list._vHairLines.size() * sizeof(Vector4),
                       &list._vHairLines[0].x);
     if (!list._vTris.empty())
-      glBufferSubData(GL_ARRAY_BUFFER, offsets[3] * sizeof(Vector4), list._vTris.size() * sizeof(Vector4),
-                      &list._vTris[0].x);
+      glBufferSubData(GL_ARRAY_BUFFER, offsets[3] * sizeof(Vector4), list._vTris.size() * sizeof(Vector4), &list._vTris[0].x);
   };
   buffer_drawlist(m_DrawList, &buffer_offsets[0]);
   buffer_drawlist(m_DrawListNDT, &buffer_offsets[4]);
   if (!m_vChars.empty())
-    glBufferSubData(GL_ARRAY_BUFFER, m_OffsetChars * sizeof(Vector4), m_vChars.size() * sizeof(Vector4),
-                    &m_vChars[0].x);
+    glBufferSubData(GL_ARRAY_BUFFER, m_OffsetChars * sizeof(Vector4), m_vChars.size() * sizeof(Vector4), &m_vChars[0].x);
 
   Vector2 screen_size = Window::GetWindow().GetScreenSize();
   float aspectRatio = screen_size.y / screen_size.x;
@@ -591,10 +585,8 @@ void NCLDebug::DrawDebugLists()
     if (m_pShaderPoints && list._vPoints.size() > 0)
     {
       glUseProgram(m_pShaderPoints->GetProgram());
-      glUniformMatrix4fv(glGetUniformLocation(m_pShaderPoints->GetProgram(), "uProjMtx"), 1, GL_FALSE,
-                         &m_ProjMtx.values[0]);
-      glUniformMatrix4fv(glGetUniformLocation(m_pShaderPoints->GetProgram(), "uViewMtx"), 1, GL_FALSE,
-                         &m_ViewMtx.values[0]);
+      glUniformMatrix4fv(glGetUniformLocation(m_pShaderPoints->GetProgram(), "uProjMtx"), 1, GL_FALSE, &m_ProjMtx.values[0]);
+      glUniformMatrix4fv(glGetUniformLocation(m_pShaderPoints->GetProgram(), "uViewMtx"), 1, GL_FALSE, &m_ViewMtx.values[0]);
 
       glDrawArrays(GL_POINTS, offsets[0] >> 1, list._vPoints.size() >> 1);
     }
@@ -683,8 +675,7 @@ void NCLDebug::LoadShaders()
   glGenBuffers(1, &m_glBuffer);
 
   // Load Font Texture
-  m_glFontTex =
-      SOIL_load_OGL_texture(TEXTUREDIR "font512.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_COMPRESS_TO_DXT);
+  m_glFontTex = SOIL_load_OGL_texture(TEXTUREDIR "font512.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_COMPRESS_TO_DXT);
   glBindTexture(GL_TEXTURE_2D, m_glFontTex);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

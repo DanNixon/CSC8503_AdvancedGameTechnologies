@@ -75,8 +75,8 @@ void ScreenPicker::UpdateFBO(int screen_width, int screen_height)
     m_pShaderPicker = new Shader(SHADERDIR "SceneRenderer/TechVertexShadow.glsl",
                                  SHADERDIR "SceneRenderer/TechFragScreenPicker_nsightfix.glsl");
 #else
-    m_pShaderPicker = new Shader(SHADERDIR "SceneRenderer/TechVertexShadow.glsl",
-                                 SHADERDIR "SceneRenderer/TechFragScreenPicker.glsl");
+    m_pShaderPicker =
+        new Shader(SHADERDIR "SceneRenderer/TechVertexShadow.glsl", SHADERDIR "SceneRenderer/TechFragScreenPicker.glsl");
 #endif
     glBindFragDataLocation(m_pShaderPicker->GetProgram(), 0, "OutFrag");
     if (!m_pShaderPicker->LinkProgram())
@@ -129,8 +129,7 @@ bool ScreenPicker::HandleMouseClicks(float dt)
     bool mouseInWindow = Window::GetWindow().GetMouseScreenPos(&mousepos);
     mousepos.y = m_TexHeight - mousepos.y; // Flip Y as opengl uses bottom left as origin
 
-    Vector3 clipspacepos =
-        Vector3(mousepos.x / (m_TexWidth * 0.5f) - 1.0f, mousepos.y / (m_TexHeight * 0.5f) - 1.0f, 0.0f);
+    Vector3 clipspacepos = Vector3(mousepos.x / (m_TexWidth * 0.5f) - 1.0f, mousepos.y / (m_TexHeight * 0.5f) - 1.0f, 0.0f);
 
     bool mouseDown = Window::GetMouse()->ButtonDown(MOUSE_LEFT);
     bool mouseHeld = Window::GetMouse()->ButtonHeld(MOUSE_LEFT);
@@ -242,8 +241,7 @@ void ScreenPicker::HandleObjectMouseMove(float dt, Vector3 &clip_space)
   m_pCurrentlyHeldObject->OnMouseMove(dt, newWorldSpacePos, worldMovement);
 }
 
-void ScreenPicker::RenderPickingScene(RenderList *scene_renderlist, const Matrix4 &proj_matrix,
-                                      const Matrix4 &view_matrix)
+void ScreenPicker::RenderPickingScene(RenderList *scene_renderlist, const Matrix4 &proj_matrix, const Matrix4 &view_matrix)
 {
   Matrix4 projview = proj_matrix * view_matrix;
   m_invViewProjMtx = Matrix4::Inverse(projview);
@@ -257,8 +255,7 @@ void ScreenPicker::RenderPickingScene(RenderList *scene_renderlist, const Matrix
 
   // Setup Shader
   glUseProgram(m_pShaderPicker->GetProgram());
-  glUniformMatrix4fv(glGetUniformLocation(m_pShaderPicker->GetProgram(), "uProjViewMtx"), 1, GL_FALSE,
-                     &projview.values[0]);
+  glUniformMatrix4fv(glGetUniformLocation(m_pShaderPicker->GetProgram(), "uProjViewMtx"), 1, GL_FALSE, &projview.values[0]);
 
   // Bind FBO
   glBindFramebuffer(GL_FRAMEBUFFER, m_PickerFBO);

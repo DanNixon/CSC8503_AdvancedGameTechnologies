@@ -30,7 +30,7 @@ class Object;
 // Return:
 //  True	- The physics engine should process the collision as normal
 //	False	- The physics engine should drop the collision pair and not do any further collision resolution/manifold
-//generation
+// generation
 //			  > This can be useful for AI to see if a player/agent is inside an area/collision volume
 typedef std::function<bool(PhysicsObject *this_obj, PhysicsObject *colliding_obj)> PhysicsCollisionCallback;
 
@@ -136,7 +136,7 @@ public:
     m_RestVelocityThresholdSquared = vel * vel;
   }
 
-  inline void SetGravitationTarget(PhysicsObject * obj)
+  inline void SetGravitationTarget(PhysicsObject *obj)
   {
     m_gravitationTarget = obj;
   }
@@ -247,10 +247,11 @@ protected:
   Object *m_parent; // Optional: Attached GameObject or NULL if none set
 
   bool m_AtRest;                        //!< Flag indicating if this object is at rest
-  float m_RestVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be stationary
-  float m_AverageSummedVelocity; //!< Exponential moving average of sum of magnitudes of linear and angular velocity
+  float m_RestVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be
+                                        //! stationary
+  float m_AverageSummedVelocity;        //!< Exponential moving average of sum of magnitudes of linear and angular velocity
 
-  PhysicsObject * m_gravitationTarget; //!< Physical object that this object is attracted to through gravity
+  PhysicsObject *m_gravitationTarget; //!< Physical object that this object is attracted to through gravity
 
   mutable bool m_wsTransformInvalidated;
   mutable Matrix4 m_wsTransform;

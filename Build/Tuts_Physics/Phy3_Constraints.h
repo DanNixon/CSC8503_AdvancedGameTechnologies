@@ -63,8 +63,8 @@ public:
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT);
 
     // Create Ground (..why not?)
-    Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f),
-                                                    false, 0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+    Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,
+                                                    false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 
     this->AddGameObject(ground);
 
@@ -90,9 +90,8 @@ public:
       this->AddGameObject(ball);
 
       // Add distance constraint between the two objects
-      PhysicsEngine::Instance()->AddConstraint(new SpringConstraint(handle->Physics(), ball->Physics(),
-                                                                    handle->Physics()->GetPosition(),
-                                                                    ball->Physics()->GetPosition(), 0.9f, 0.5f));
+      PhysicsEngine::Instance()->AddConstraint(new SpringConstraint(
+          handle->Physics(), ball->Physics(), handle->Physics()->GetPosition(), ball->Physics()->GetPosition(), 0.9f, 0.5f));
     }
 
     // Create Hanging Cube (Attached by corner)

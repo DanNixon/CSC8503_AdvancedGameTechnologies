@@ -440,17 +440,15 @@ bool SceneRenderer::ShadersLoad()
 {
   auto SHADERERROR = [&](const char *name) { NCLERROR("Could not link shader: %s", name); };
 
-  m_pShaderColNorm =
-      new Shader(SHADERDIR "SceneRenderer/TechVertexFull.glsl", SHADERDIR "SceneRenderer/TechFragDeferred.glsl");
+  m_pShaderColNorm = new Shader(SHADERDIR "SceneRenderer/TechVertexFull.glsl", SHADERDIR "SceneRenderer/TechFragDeferred.glsl");
   if (!m_pShaderColNorm->LinkProgram())
   {
     SHADERERROR("Default Deferred Render");
     return false;
   }
 
-  m_pShaderLightDir =
-      new Shader(SHADERDIR "Common/EmptyVertex.glsl", SHADERDIR "SceneRenderer/TechFragDeferredDirLight.glsl",
-                 SHADERDIR "Common/FullScreenQuadGeometry.glsl");
+  m_pShaderLightDir = new Shader(SHADERDIR "Common/EmptyVertex.glsl", SHADERDIR "SceneRenderer/TechFragDeferredDirLight.glsl",
+                                 SHADERDIR "Common/FullScreenQuadGeometry.glsl");
   if (!m_pShaderLightDir->LinkProgram())
   {
     SHADERERROR("Deferred Render Light Computation");
@@ -466,9 +464,8 @@ bool SceneRenderer::ShadersLoad()
     return false;
   }
 
-  m_pShaderPresentToWindow =
-      new Shader(SHADERDIR "Common/EmptyVertex.glsl", SHADERDIR "SceneRenderer/TechFragSuperSample.glsl",
-                 SHADERDIR "Common/FullScreenQuadGeometry.glsl");
+  m_pShaderPresentToWindow = new Shader(SHADERDIR "Common/EmptyVertex.glsl", SHADERDIR "SceneRenderer/TechFragSuperSample.glsl",
+                                        SHADERDIR "Common/FullScreenQuadGeometry.glsl");
   if (!m_pShaderPresentToWindow->LinkProgram())
   {
     SHADERERROR("Present to window / SuperSampling");

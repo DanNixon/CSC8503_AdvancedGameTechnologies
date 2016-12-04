@@ -42,8 +42,8 @@ void SphereCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vec
   /* There is infinite edges on a sphere so we MUST handle it seperately */
 }
 
-void SphereCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis,
-                                                 Vector3 *out_min, Vector3 *out_max) const
+void SphereCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
+                                                 Vector3 *out_max) const
 {
   Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
   Vector3 pos = wsTransform.GetPositionVector();

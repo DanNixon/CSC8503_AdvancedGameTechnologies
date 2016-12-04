@@ -104,8 +104,7 @@ public:
     ObjectMesh *target = new ObjectMesh("Target");
     target->SetMesh(CommonMeshes::Cube(), false);
     target->SetTexture(m_TargetTexture, false);
-    target->SetLocalTransform(Matrix4::Translation(Vector3(0.1f, 2.0f, 0.0f)) *
-                              Matrix4::Scale(Vector3(0.1f, 2.0f, 2.f)));
+    target->SetLocalTransform(Matrix4::Translation(Vector3(0.1f, 2.0f, 0.0f)) * Matrix4::Scale(Vector3(0.1f, 2.0f, 2.f)));
     target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
     target->SetBoundingRadius(4.0f);
     this->AddGameObject(target);

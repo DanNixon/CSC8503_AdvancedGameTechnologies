@@ -69,8 +69,7 @@ void RenderList::UpdateCameraWorldPos(const Vector3 &cameraPos)
 #pragma omp parallel for
     for (int i = 0; i < (int)list.size(); i++)
     {
-      list[i].cam_dist_sq =
-          (list[i].target_obj->GetWorldTransform().GetPositionVector() - m_CameraPos).LengthSquared() * mul;
+      list[i].cam_dist_sq = (list[i].target_obj->GetWorldTransform().GetPositionVector() - m_CameraPos).LengthSquared() * mul;
     }
   };
 

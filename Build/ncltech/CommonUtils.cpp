@@ -65,9 +65,8 @@ Object *CommonUtils::BuildSphereObject(const std::string &name, const Vector3 &p
   return pSphere;
 }
 
-Object *CommonUtils::BuildCuboidObject(const std::string &name, const Vector3 &pos, const Vector3 &halfdims,
-                                       bool physics_enabled, float inverse_mass, bool collidable, bool dragable,
-                                       const Vector4 &color)
+Object *CommonUtils::BuildCuboidObject(const std::string &name, const Vector3 &pos, const Vector3 &halfdims, bool physics_enabled,
+                                       float inverse_mass, bool collidable, bool dragable, const Vector4 &color)
 {
   ObjectMesh *pCuboid = dragable ? new ObjectMeshDragable(name) : new ObjectMesh(name);
 

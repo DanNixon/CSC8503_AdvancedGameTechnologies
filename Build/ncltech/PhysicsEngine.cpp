@@ -114,7 +114,8 @@ void PhysicsEngine::UpdatePhysics()
 
 void PhysicsEngine::SolveConstraints()
 {
-  // Optional step to allow constraints to precompute values based off current velocities before they are updated in the main loop below.
+  // Optional step to allow constraints to precompute values based off current velocities before they are updated in the
+  // main loop below.
   for (Manifold *m : m_vpManifolds)
     m->PreSolverStep(m_UpdateTimestep);
 
@@ -310,9 +311,8 @@ void PhysicsEngine::NarrowPhaseCollisions()
             if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS)
             {
               NCLDebug::DrawPointNDT(colData._pointOnPlane, 0.1f, Vector4(0.5f, 0.5f, 1.0f, 1.0f));
-              NCLDebug::DrawThickLineNDT(colData._pointOnPlane,
-                                         colData._pointOnPlane - colData._normal * colData._penetration, 0.05f,
-                                         Vector4(0.0f, 0.0f, 1.0f, 1.0f));
+              NCLDebug::DrawThickLineNDT(colData._pointOnPlane, colData._pointOnPlane - colData._normal * colData._penetration,
+                                         0.05f, Vector4(0.0f, 0.0f, 1.0f, 1.0f));
             }
 
             // Check to see if any of the objects have collision callbacks that dont

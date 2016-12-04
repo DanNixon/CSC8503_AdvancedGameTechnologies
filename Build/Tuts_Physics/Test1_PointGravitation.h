@@ -24,20 +24,21 @@ public:
 
     {
       Object *handle = CommonUtils::BuildSphereObject("", Vector3(-7.f, 7.f, -5.0f),        // Position
-        0.5f,                                 // Radius
-        true,                                 // Has Physics Object
-        1.0f / 1e12f,                               // Inverse Mass = 1 / 1kg mass
-        true,                                // Collisions enabled
-        true,                                 // Dragable by the user
-        CommonUtils::GenColour(0.45f, 0.5f)); // Color
+                                                      0.5f,                                 // Radius
+                                                      true,                                 // Has Physics Object
+                                                      1.0f / 1e12f,                         // Inverse Mass = 1 / 1kg mass
+                                                      true,                                 // Collisions enabled
+                                                      true,                                 // Dragable by the user
+                                                      CommonUtils::GenColour(0.45f, 0.5f)); // Color
 
-      m_ball1 = CommonUtils::BuildSphereObject("", Vector3(-4.f, 7.f, -5.0f),       // Position
-        0.5f,                                // Radius
-        true,                                // Has Physics Object
-        1.0f / 1e12f,//10.0f,                                // Inverse Mass = 1 / 1kg mass
-        true,                               // Collisions enabled
-        true,                                // Dragable by the user
-        CommonUtils::GenColour(0.5f, 1.0f)); // Color
+      m_ball1 =
+          CommonUtils::BuildSphereObject("", Vector3(-4.f, 7.f, -5.0f), // Position
+                                         0.5f,                          // Radius
+                                         true,                          // Has Physics Object
+                                         1.0f / 1e12f, // 10.0f,                                // Inverse Mass = 1 / 1kg mass
+                                         true,         // Collisions enabled
+                                         true,         // Dragable by the user
+                                         CommonUtils::GenColour(0.5f, 1.0f)); // Color
 
       this->AddGameObject(handle);
       this->AddGameObject(m_ball1);
@@ -46,21 +47,22 @@ public:
     }
 
     {
-      Object *handle = CommonUtils::BuildSphereObject("", Vector3(7.f, 7.f, -5.0f),        // Position
-        0.5f,                                 // Radius
-        true,                                 // Has Physics Object
-        0.0f,                               // Infinate Mass
-        true,                                // Collisions enabled
-        true,                                 // Dragable by the user
-        CommonUtils::GenColour(0.45f, 0.5f)); // Color
+      Object *handle = CommonUtils::BuildSphereObject("", Vector3(7.f, 7.f, -5.0f),         // Position
+                                                      0.5f,                                 // Radius
+                                                      true,                                 // Has Physics Object
+                                                      0.0f,                                 // Infinate Mass
+                                                      true,                                 // Collisions enabled
+                                                      true,                                 // Dragable by the user
+                                                      CommonUtils::GenColour(0.45f, 0.5f)); // Color
 
-      m_ball2 = CommonUtils::BuildSphereObject("", Vector3(4.f, 7.f, -5.0f),       // Position
-        0.5f,                                // Radius
-        true,                                // Has Physics Object
-        1.0f / 1e12f,//10.0f,                                // Inverse Mass = 1 / 1kg mass
-        true,                               // Collisions enabled
-        true,                                // Dragable by the user
-        CommonUtils::GenColour(0.5f, 1.0f)); // Color
+      m_ball2 =
+          CommonUtils::BuildSphereObject("", Vector3(4.f, 7.f, -5.0f), // Position
+                                         0.5f,                         // Radius
+                                         true,                         // Has Physics Object
+                                         1.0f / 1e12f, // 10.0f,                                // Inverse Mass = 1 / 1kg mass
+                                         true,         // Collisions enabled
+                                         true,         // Dragable by the user
+                                         CommonUtils::GenColour(0.5f, 1.0f)); // Color
 
       this->AddGameObject(handle);
       this->AddGameObject(m_ball2);
@@ -73,7 +75,7 @@ public:
   {
     Scene::OnUpdateScene(dt);
 
-    //m_ball1->Physics()->ApplyForce(Vector3(0.0f, 1.0f, 0.0f));
+    // m_ball1->Physics()->ApplyForce(Vector3(0.0f, 1.0f, 0.0f));
   }
 
 private:

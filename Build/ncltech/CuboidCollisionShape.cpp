@@ -68,12 +68,11 @@ void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vec
   }
 }
 
-void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis,
-                                                 Vector3 *out_min, Vector3 *out_max) const
+void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
+                                                 Vector3 *out_max) const
 {
   // Build World Transform
-  Matrix4 wsTransform =
-      currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
 
   // Convert world space axis into model space (Axis Aligned Cuboid)
   Matrix3 invNormalMatrix = Matrix3::Transpose(Matrix3(wsTransform));
@@ -96,8 +95,7 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
                                                        std::vector<Plane> *out_adjacent_planes) const
 {
   // Get the world-space transform
-  Matrix4 wsTransform =
-      currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
 
   // Get normal and inverse-normal matrices to transfom the collision axis to
   // and from modelspace
@@ -195,8 +193,7 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
 void CuboidCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
   // Just draw the cuboid hull-mesh at the position of our PhysicsObject
-  Matrix4 transform =
-      currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
   m_CubeHull.DebugDraw(transform);
 }
 

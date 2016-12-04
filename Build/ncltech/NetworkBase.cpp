@@ -25,17 +25,17 @@ bool NetworkBase::Initialize(uint16_t external_port_number, size_t max_peers)
   address.host = ENET_HOST_ANY;
   address.port = external_port_number;
 
-  m_pNetwork = enet_host_create(
-      (external_port_number == 0) ? NULL : &address, // the address at which other peers may connect to this
-                                                     // host. If NULL, then no peers may connect to the host.
-      max_peers,                                     // the maximum number of peers that should be allocated for the
-                                                     // host.
-      1,                                             // the maximum number of channels allowed; if 0, then this is
-                                                     // equivalent to ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT
-      0,  // downstream bandwidth of the host in bytes/second; if 0, ENet will
-          // assume unlimited bandwidth.
-      0); // upstream bandwidth of the host in bytes/second; if 0, ENet will
-          // assume unlimited bandwidth.
+  m_pNetwork =
+      enet_host_create((external_port_number == 0) ? NULL : &address, // the address at which other peers may connect to this
+                                                                      // host. If NULL, then no peers may connect to the host.
+                       max_peers, // the maximum number of peers that should be allocated for the
+                                  // host.
+                       1,         // the maximum number of channels allowed; if 0, then this is
+                                  // equivalent to ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT
+                       0,         // downstream bandwidth of the host in bytes/second; if 0, ENet will
+                                  // assume unlimited bandwidth.
+                       0);        // upstream bandwidth of the host in bytes/second; if 0, ENet will
+                                  // assume unlimited bandwidth.
 
   if (m_pNetwork == NULL)
   {
@@ -66,8 +66,7 @@ void NetworkBase::Release()
 // port 1234
 // - Note: ENetPeer pointer is used to identify the peer and is needed to
 // send/recieve packets to that computer
-ENetPeer *NetworkBase::ConnectPeer(uint8_t ip_part1, uint8_t ip_part2, uint8_t ip_part3, uint8_t ip_part4,
-                                   uint16_t port_number)
+ENetPeer *NetworkBase::ConnectPeer(uint8_t ip_part1, uint8_t ip_part2, uint8_t ip_part3, uint8_t ip_part4, uint16_t port_number)
 {
   if (m_pNetwork != NULL)
   {
@@ -95,8 +94,7 @@ ENetPeer *NetworkBase::ConnectPeer(uint8_t ip_part1, uint8_t ip_part2, uint8_t i
 // Enqueues data to be sent to peer computer over the network.
 // - Note: All enqueued packets will automatically be sent the next time
 // 'ServiceNetwork' is called
-void NetworkBase::EnqueuePacket(ENetPeer *peer, PacketTransportType transport_type, void *packet_data,
-                                size_t data_length)
+void NetworkBase::EnqueuePacket(ENetPeer *peer, PacketTransportType transport_type, void *packet_data, size_t data_length)
 {
   if (m_pNetwork != NULL)
   {

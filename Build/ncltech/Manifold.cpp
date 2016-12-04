@@ -133,11 +133,10 @@ void Manifold::UpdateConstraint(ContactPoint &contact)
     const float elasticity = sqrtf(m_pNodeA->GetElasticity() * m_pNodeB->GetElasticity());
 
     float elatisity_term =
-        elasticity *
-        Vector3::Dot(contact.collisionNormal, m_pNodeA->GetLinearVelocity() +
-                                                  Vector3::Cross(contact.relPosA, m_pNodeA->GetAngularVelocity()) -
-                                                  m_pNodeB->GetLinearVelocity() -
-                                                  Vector3::Cross(contact.relPosB, m_pNodeB->GetAngularVelocity()));
+        elasticity * Vector3::Dot(contact.collisionNormal, m_pNodeA->GetLinearVelocity() +
+                                                               Vector3::Cross(contact.relPosA, m_pNodeA->GetAngularVelocity()) -
+                                                               m_pNodeB->GetLinearVelocity() -
+                                                               Vector3::Cross(contact.relPosB, m_pNodeB->GetAngularVelocity()));
 
     if (elatisity_term < 0.0f)
     {
@@ -162,8 +161,7 @@ void Manifold::UpdateConstraint(ContactPoint &contact)
   }
 }
 
-void Manifold::AddContact(const Vector3 &globalOnA, const Vector3 &globalOnB, const Vector3 &_normal,
-                          const float &_penetration)
+void Manifold::AddContact(const Vector3 &globalOnA, const Vector3 &globalOnB, const Vector3 &_normal, const float &_penetration)
 {
   // Get relative offsets from each object centre of mass
   // Used to compute rotational velocity at the point of contact.

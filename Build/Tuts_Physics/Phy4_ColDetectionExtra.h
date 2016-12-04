@@ -67,8 +67,7 @@ public:
     GLuint dTex;
 
     dTex = SOIL_load_OGL_texture(TEXTUREDIR "raptor.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID,
-                                 SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB |
-                                     SOIL_FLAG_COMPRESS_TO_DXT);
+                                 SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
     glBindTexture(GL_TEXTURE_2D, dTex);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -117,9 +116,8 @@ public:
     SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
 
     // Create Ground
-    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.001f, 0.0f),
-                                                       Vector3(20.0f, 1.0f, 20.0f), false, 0.0f, false, false,
-                                                       Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.001f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false,
+                                                       0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
     // Create Player
     ObjectPlayer *player = new ObjectPlayer("Player1");

@@ -36,8 +36,8 @@ void TestScene::OnInitializeScene()
 
   //<--- SCENE CREATION --->
   // Create Ground
-  this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,
-                                        true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+  this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f, true,
+                                        false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
   // Create Player (See OnUpdateScene)
   m_pPlayer = BuildCuboidObject("Player1",                        // Optional: Name
@@ -156,14 +156,12 @@ void TestScene::OnUpdateScene(float dt)
 
     if (Window::GetKeyboard()->KeyDown(KEYBOARD_LEFT))
     {
-      pobj->SetOrientation(pobj->GetOrientation() *
-                           Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), rot_speed));
+      pobj->SetOrientation(pobj->GetOrientation() * Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), rot_speed));
     }
 
     if (Window::GetKeyboard()->KeyDown(KEYBOARD_RIGHT))
     {
-      pobj->SetOrientation(pobj->GetOrientation() *
-                           Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), -rot_speed));
+      pobj->SetOrientation(pobj->GetOrientation() * Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), -rot_speed));
     }
 
     // Also (and importantly), as the projMatrix/viewMatrix is all abstracted

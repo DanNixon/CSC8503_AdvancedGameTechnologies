@@ -58,15 +58,14 @@ public:
     SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
 
     // Create Ground
-    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f),
-                                                       Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false,
-                                                       Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,
+                                                       0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
     // ELASTICITY EXAMPLE -> Balls bouncing on a pad
     {
       // Sphere Bounce-Pad
-      Object *obj = CommonUtils::BuildCuboidObject("BouncePad", Vector3(-2.5f, 0.0f, 6.0f), Vector3(5.0f, 1.0f, 2.0f),
-                                                   true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+      Object *obj = CommonUtils::BuildCuboidObject("BouncePad", Vector3(-2.5f, 0.0f, 6.0f), Vector3(5.0f, 1.0f, 2.0f), true, 0.0f,
+                                                   true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
       obj->Physics()->SetFriction(1.0f);
       obj->Physics()->SetElasticity(1.0f);
       this->AddGameObject(obj);
@@ -75,8 +74,8 @@ public:
       for (int i = 0; i < 5; ++i)
       {
         Vector4 colour = CommonUtils::GenColour(0.7f + i * 0.05f, 1.0f);
-        Object *obj = CommonUtils::BuildSphereObject("", Vector3(-5.0f + i * 1.25f, 5.5f, 6.0f), 0.5f, true, 1.0f, true,
-                                                     true, colour);
+        Object *obj =
+            CommonUtils::BuildSphereObject("", Vector3(-5.0f + i * 1.25f, 5.5f, 6.0f), 0.5f, true, 1.0f, true, true, colour);
         obj->Physics()->SetFriction(0.1f);
         obj->Physics()->SetElasticity(i * 0.1f + 0.5f);
         this->AddGameObject(obj);
@@ -86,8 +85,8 @@ public:
     // FRICTION EXAMPLE -> Cubes sliding down a ramp
     {
       // Create Ramp
-      Object *ramp = CommonUtils::BuildCuboidObject("Ramp", Vector3(4.0f, 3.5f, -5.0f), Vector3(5.0f, 0.5f, 4.0f), true,
-                                                    0.0f, true, false, Vector4(1.0f, 0.7f, 1.0f, 1.0f));
+      Object *ramp = CommonUtils::BuildCuboidObject("Ramp", Vector3(4.0f, 3.5f, -5.0f), Vector3(5.0f, 0.5f, 4.0f), true, 0.0f,
+                                                    true, false, Vector4(1.0f, 0.7f, 1.0f, 1.0f));
       ramp->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 20.0f));
       ramp->Physics()->SetFriction(1.0f);
       this->AddGameObject(ramp);
@@ -96,8 +95,8 @@ public:
       for (int i = 0; i < 5; ++i)
       {
         Vector4 colour = Vector4(i * 0.25f, 0.7f, (2 - i) * 0.25f, 1.0f);
-        Object *cube = CommonUtils::BuildCuboidObject("", Vector3(8.0f, 6.0f, -7.0f + i * 1.1f),
-                                                      Vector3(0.5f, 0.5f, 0.5f), true, 1.f, true, true, colour);
+        Object *cube = CommonUtils::BuildCuboidObject("", Vector3(8.0f, 6.0f, -7.0f + i * 1.1f), Vector3(0.5f, 0.5f, 0.5f), true,
+                                                      1.f, true, true, colour);
         cube->Physics()->SetFriction((i + 1) * 0.05f); // Ranging from 0.05 - 0.25
         cube->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 200.0f));
         this->AddGameObject(cube);

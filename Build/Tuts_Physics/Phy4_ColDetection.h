@@ -52,6 +52,7 @@ normal are correct for all collisions. =]
 */ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <ncltech\AABBCollisionShape.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\NCLDebug.h>
@@ -59,7 +60,6 @@ normal are correct for all collisions. =]
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SphereCollisionShape.h>
-#include <ncltech\AABBCollisionShape.h>
 
 class Phy4_ColDetection : public Scene
 {
@@ -87,22 +87,21 @@ public:
     m_Rotating = true;
 
     // Create Ground (..why not?)
-    Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f),
-                                                    false, 0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+    Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,
+                                                    false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 
     this->AddGameObject(ground);
 
     // Create Sphere-Sphere Manifold Test
     {
       Object *sphere = CommonUtils::BuildSphereObject(
-          "orbiting_sphere1",
-          ss_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter overlap between spheres
-          0.5f,                                // Radius
-          true,                                // Has Physics Object
-          0.0f,                                // Infinite Mass
-          true,                                // Has Collision Shape
-          false,                               // Dragable by the user
-          CommonUtils::GenColour(0.3f, 0.5f)); // Color
+          "orbiting_sphere1", ss_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter overlap between spheres
+          0.5f,                                                    // Radius
+          true,                                                    // Has Physics Object
+          0.0f,                                                    // Infinite Mass
+          true,                                                    // Has Collision Shape
+          false,                                                   // Dragable by the user
+          CommonUtils::GenColour(0.3f, 0.5f));                     // Color
       this->AddGameObject(sphere);
 
       this->AddGameObject(CommonUtils::BuildSphereObject("",
@@ -130,8 +129,7 @@ public:
       this->AddGameObject(sphere);
 
       // TODO: testing
-      (*(sphere->Physics()->CollisionShapesBegin()))
-          ->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
+      (*(sphere->Physics()->CollisionShapesBegin()))->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
 
       // Second collision sphere shape (for testing)
       CollisionShape *secondSphereCollShape = new SphereCollisionShape(0.5f);
@@ -165,7 +163,7 @@ public:
       cuboid->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 30.0f));
 
       // TODO: testing
-      CollisionShape * shape = new AABBCollisionShape();
+      CollisionShape *shape = new AABBCollisionShape();
       shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 0.0f, 0.0f)));
       cuboid->Physics()->AddCollisionShape(shape);
 
@@ -194,8 +192,7 @@ public:
 
       // Offset (Orbit around origin of radius 'rscalar' taking 30 seconds to
       // complete orbit)
-      Vector3 offset =
-          Vector3(cosf(DegToRad(m_AccumTime * 12.f)) * rscalar, 0.0f, sinf(DegToRad(m_AccumTime * 12.f)) * rscalar);
+      Vector3 offset = Vector3(cosf(DegToRad(m_AccumTime * 12.f)) * rscalar, 0.0f, sinf(DegToRad(m_AccumTime * 12.f)) * rscalar);
 
       // Default Colour (not colliding)
       Vector4 col = CommonUtils::GenColour(0.3f, 0.5f);

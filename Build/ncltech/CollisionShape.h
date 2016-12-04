@@ -98,9 +98,8 @@ public:
   //	- Computes the face that is closest to parallel to that of the given axis,
   //    returning the face (as a list of vertices), face normal and the planes
   //    of all adjacent faces in order to clip against.
-  virtual void GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
-                                           std::list<Vector3> *out_face, Vector3 *out_normal,
-                                           std::vector<Plane> *out_adjacent_planes) const = 0;
+  virtual void GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis, std::list<Vector3> *out_face,
+                                           Vector3 *out_normal, std::vector<Plane> *out_adjacent_planes) const = 0;
 
 protected:
   Matrix4 m_LocalTransform; //!< Local transformation on this shape from the associated object in world space

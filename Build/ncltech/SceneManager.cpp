@@ -73,8 +73,7 @@ void SceneManager::JumpToScene(int idx)
   PhysicsEngine::Instance()->SetDefaults();
   InitializeDefaults();
   m_pScene->OnInitializeScene();
-  Window::GetWindow().SetWindowTitle("NCLTech - [%d/%d] %s", idx + 1, m_vpAllScenes.size(),
-                                     m_pScene->GetSceneName().c_str());
+  Window::GetWindow().SetWindowTitle("NCLTech - [%d/%d] %s", idx + 1, m_vpAllScenes.size(), m_pScene->GetSceneName().c_str());
 }
 
 void SceneManager::JumpToScene(const std::string &friendly_name)

@@ -73,8 +73,7 @@ public:
 
   void PrintOutputToStatusEntry(const Vector4 &colour, const std::string &name)
   {
-    NCLDebug::AddStatusEntry(colour, "%s%5.2fms [max:%5.2fms, min:%5.2fms]", name.c_str(), GetAvg(), GetHigh(),
-                             GetLow());
+    NCLDebug::AddStatusEntry(colour, "%s%5.2fms [max:%5.2fms, min:%5.2fms]", name.c_str(), GetAvg(), GetHigh(), GetLow());
   }
 
 protected:

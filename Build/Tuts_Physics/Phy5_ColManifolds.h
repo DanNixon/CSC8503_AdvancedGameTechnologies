@@ -105,23 +105,23 @@ public:
     m_Rotating = true;
 
     // Create Ground (..why not?)
-    Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f),
-                                                    false, 0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+    Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,
+                                                    false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 
     this->AddGameObject(ground);
 
     // Create Sphere-Sphere Manifold Test
     {
 
-      this->AddGameObject(CommonUtils::BuildSphereObject(
-          "orbiting_sphere1", ss_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter
-                                                                   // overlap between spheres
-          0.5f,                                                    // Radius
-          true,                                                    // Has Physics Object
-          0.0f,                                                    // Infinite Mass
-          true,                                                    // Has Collision Shape
-          false,                                                   // Dragable by the user
-          CommonUtils::GenColour(0.45f, 0.5f)));                   // Color
+      this->AddGameObject(CommonUtils::BuildSphereObject("orbiting_sphere1",
+                                                         ss_pos + Vector3(0.75f, 0.0f, 0.0f),   // Position leading to 0.25 meter
+                                                                                                // overlap between spheres
+                                                         0.5f,                                  // Radius
+                                                         true,                                  // Has Physics Object
+                                                         0.0f,                                  // Infinite Mass
+                                                         true,                                  // Has Collision Shape
+                                                         false,                                 // Dragable by the user
+                                                         CommonUtils::GenColour(0.45f, 0.5f))); // Color
 
       this->AddGameObject(CommonUtils::BuildSphereObject("",
                                                          ss_pos,                               // Position
@@ -136,16 +136,16 @@ public:
     // Create Sphere-Cuboid Manifold Test
     {
 
-      this->AddGameObject(CommonUtils::BuildSphereObject(
-          "orbiting_sphere2", sc_pos + Vector3(0.9f, 0.0f, 0.0f), // Position leading to 0.1 meter
-                                                                  // overlap on faces, and more on
-                                                                  // diagonals
-          0.5f,                                                   // Radius
-          true,                                                   // Has Physics Object
-          0.0f,                                                   // Infinite Mass
-          true,                                                   // Has Collision Shape
-          false,                                                  // Dragable by the user
-          CommonUtils::GenColour(0.45f, 0.5f)));                  // Color
+      this->AddGameObject(CommonUtils::BuildSphereObject("orbiting_sphere2",
+                                                         sc_pos + Vector3(0.9f, 0.0f, 0.0f),    // Position leading to 0.1 meter
+                                                                                                // overlap on faces, and more on
+                                                                                                // diagonals
+                                                         0.5f,                                  // Radius
+                                                         true,                                  // Has Physics Object
+                                                         0.0f,                                  // Infinite Mass
+                                                         true,                                  // Has Collision Shape
+                                                         false,                                 // Dragable by the user
+                                                         CommonUtils::GenColour(0.45f, 0.5f))); // Color
 
       this->AddGameObject(CommonUtils::BuildCuboidObject("",
                                                          sc_pos,                               // Position
@@ -160,16 +160,16 @@ public:
     // Create Cuboid-Cuboid Manifold Test
     {
 
-      this->AddGameObject(CommonUtils::BuildCuboidObject(
-          "rotating_cuboid1", cc_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter
-                                                                   // overlap on faces, and more on
-                                                                   // diagonals
-          Vector3(0.5f, 0.5f, 0.5f),                               // Half dimensions
-          true,                                                    // Has Physics Object
-          0.0f,                                                    // Infinite Mass
-          true,                                                    // Has Collision Shape
-          false,                                                   // Dragable by the user
-          CommonUtils::GenColour(0.45f, 0.5f)));                   // Color
+      this->AddGameObject(CommonUtils::BuildCuboidObject("rotating_cuboid1",
+                                                         cc_pos + Vector3(0.75f, 0.0f, 0.0f),   // Position leading to 0.25 meter
+                                                                                                // overlap on faces, and more on
+                                                                                                // diagonals
+                                                         Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
+                                                         true,                                  // Has Physics Object
+                                                         0.0f,                                  // Infinite Mass
+                                                         true,                                  // Has Collision Shape
+                                                         false,                                 // Dragable by the user
+                                                         CommonUtils::GenColour(0.45f, 0.5f))); // Color
 
       this->AddGameObject(CommonUtils::BuildCuboidObject("",
                                                          cc_pos,                               // Position
@@ -196,8 +196,7 @@ public:
       {
         // Move orbiting sphere1 around centre object at 45 degrees per second
         // with an orbiting radius of 75cm
-        orbiting_sphere1->Physics()->SetPosition(Vector3(ss_pos.x + cos(DegToRad(m_AccumTime * 45.0f) * 2.f) * 0.75f,
-                                                         ss_pos.y,
+        orbiting_sphere1->Physics()->SetPosition(Vector3(ss_pos.x + cos(DegToRad(m_AccumTime * 45.0f) * 2.f) * 0.75f, ss_pos.y,
                                                          ss_pos.z + sin(DegToRad(m_AccumTime * 45.0f) * 2.f) * 0.75f));
       }
 
@@ -206,8 +205,7 @@ public:
       {
         // Move orbiting sphere2 around centre object at 45 degrees per second
         // with an orbiting radius of 90cm
-        orbiting_sphere2->Physics()->SetPosition(Vector3(sc_pos.x + cos(DegToRad(m_AccumTime * 45.0f) * 2.f) * 0.9f,
-                                                         sc_pos.y,
+        orbiting_sphere2->Physics()->SetPosition(Vector3(sc_pos.x + cos(DegToRad(m_AccumTime * 45.0f) * 2.f) * 0.9f, sc_pos.y,
                                                          sc_pos.z + sin(DegToRad(m_AccumTime * 45.0f) * 2.f) * 0.9f));
       }
 

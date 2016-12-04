@@ -70,9 +70,8 @@ public:
   virtual void GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
                                      Vector3 *out_max) const override;
 
-  virtual void GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
-                                           std::list<Vector3> *out_face, Vector3 *out_normal,
-                                           std::vector<Plane> *out_adjacent_planes) const override;
+  virtual void GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis, std::list<Vector3> *out_face,
+                                           Vector3 *out_normal, std::vector<Plane> *out_adjacent_planes) const override;
 
 protected:
   // Constructs the static cube hull

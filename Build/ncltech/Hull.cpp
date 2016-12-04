@@ -112,8 +112,7 @@ void Hull::AddFace(const Vector3 &_normal, int nVerts, const int *verts)
     HullVertex *cVertStart = &m_vVertices[m_vEdges[new_face_ptr->edge_ids[i]].vStart];
     HullVertex *cVertEnd = &m_vVertices[m_vEdges[new_face_ptr->edge_ids[i]].vEnd];
 
-    auto foundLocStart =
-        std::find(cVertStart->enclosing_faces.begin(), cVertStart->enclosing_faces.end(), new_face.idx);
+    auto foundLocStart = std::find(cVertStart->enclosing_faces.begin(), cVertStart->enclosing_faces.end(), new_face.idx);
     if (foundLocStart == cVertStart->enclosing_faces.end())
     {
       cVertStart->enclosing_faces.push_back(new_face.idx);

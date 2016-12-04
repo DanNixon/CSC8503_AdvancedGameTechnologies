@@ -93,9 +93,8 @@ public:
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_MANIFOLD);
 
     // Create Ground
-    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f),
-                                                       Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false,
-                                                       Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,
+                                                       0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
     // SOLVER EXAMPLE -> Pyramid of cubes stacked on top of each other
     {
@@ -119,9 +118,9 @@ public:
         for (int x = 0; x <= y; ++x)
         {
           Vector4 colour = CommonUtils::GenColour(y * 0.2f, 1.0f);
-          Object *cube = CommonUtils::BuildCuboidObject(
-              "", Vector3(x - y * 0.5f, 0.5f + float(pyramid_stack_height - 1 - y), -0.5f), Vector3(0.5f, 0.5f, 0.5f),
-              true, 1.f, true, true, colour);
+          Object *cube =
+              CommonUtils::BuildCuboidObject("", Vector3(x - y * 0.5f, 0.5f + float(pyramid_stack_height - 1 - y), -0.5f),
+                                             Vector3(0.5f, 0.5f, 0.5f), true, 1.f, true, true, colour);
           cube->Physics()->SetFriction(1.0f);
           cube->Physics()->SetElasticity(0.0f);
           this->AddGameObject(cube);
