@@ -10,8 +10,6 @@ To simplify some of the methods such as getting the min/max vertices and acquiri
 class uses a cuboid 'Hull' object as it's basis. This keeps a list of all vertices, faces and their inter-connectivity,
 allowing easy access to adjacent faces which is required for retrieving the clipping planes later on.
 
-
-
         (\_/)
         ( '_')
      /""""""""""""\=========     -----D
@@ -27,6 +25,12 @@ allowing easy access to adjacent faces which is required for retrieving the clip
 
 class CuboidCollisionShape : public CollisionShape
 {
+protected:
+  static void ConstructCubeHull();
+
+protected:
+  static Hull m_CubeHull; //!< Static cube descriptor, as all cuboid instances will have the same underlying model format
+
 public:
   CuboidCollisionShape();
   CuboidCollisionShape(const Vector3 &halfdims);
@@ -88,11 +92,8 @@ public:
                                            Vector3 *out_normal, std::vector<Plane> *out_adjacent_planes) const override;
 
 protected:
-  // Constructs the static cube hull
-  static void ConstructCubeHull();
+  virtual void GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const;
 
 protected:
   Vector3 m_CuboidHalfDimensions;
-  static Hull m_CubeHull; // Static cube descriptor, as all cuboid instances
-                          // will have the same underlying model format
 };

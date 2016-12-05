@@ -3,6 +3,39 @@
 #include <nclgl/Matrix3.h>
 #include <nclgl/OGLRenderer.h>
 
+/**
+ * @brief Constructs the static cube hull
+ */
+void CuboidCollisionShape::ConstructCubeHull()
+{
+  // Vertices
+  m_CubeHull.AddVertex(Vector3(-1.0f, -1.0f, -1.0f)); // 0
+  m_CubeHull.AddVertex(Vector3(-1.0f, 1.0f, -1.0f));  // 1
+  m_CubeHull.AddVertex(Vector3(1.0f, 1.0f, -1.0f));   // 2
+  m_CubeHull.AddVertex(Vector3(1.0f, -1.0f, -1.0f));  // 3
+
+  m_CubeHull.AddVertex(Vector3(-1.0f, -1.0f, 1.0f)); // 4
+  m_CubeHull.AddVertex(Vector3(-1.0f, 1.0f, 1.0f));  // 5
+  m_CubeHull.AddVertex(Vector3(1.0f, 1.0f, 1.0f));   // 6
+  m_CubeHull.AddVertex(Vector3(1.0f, -1.0f, 1.0f));  // 7
+
+  // Indices ( MUST be provided in ccw winding order )
+  int face1[] = {0, 1, 2, 3};
+  int face2[] = {7, 6, 5, 4};
+  int face3[] = {5, 6, 2, 1};
+  int face4[] = {0, 3, 7, 4};
+  int face5[] = {6, 7, 3, 2};
+  int face6[] = {4, 5, 1, 0};
+
+  // Faces
+  m_CubeHull.AddFace(Vector3(0.0f, 0.0f, -1.0f), 4, face1);
+  m_CubeHull.AddFace(Vector3(0.0f, 0.0f, 1.0f), 4, face2);
+  m_CubeHull.AddFace(Vector3(0.0f, 1.0f, 0.0f), 4, face3);
+  m_CubeHull.AddFace(Vector3(0.0f, -1.0f, 0.0f), 4, face4);
+  m_CubeHull.AddFace(Vector3(1.0f, 0.0f, 0.0f), 4, face5);
+  m_CubeHull.AddFace(Vector3(-1.0f, 0.0f, 0.0f), 4, face6);
+}
+
 Hull CuboidCollisionShape::m_CubeHull = Hull();
 
 CuboidCollisionShape::CuboidCollisionShape()
@@ -54,8 +87,8 @@ void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vec
 {
   if (out_edges)
   {
-    Matrix4 transform =
-        currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(Vector3(m_CuboidHalfDimensions));
+    Matrix4 transform;
+    GetShapeWorldTransformation(currentObject, transform);
 
     for (unsigned int i = 0; i < m_CubeHull.GetNumEdges(); ++i)
     {
@@ -72,10 +105,11 @@ void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObj
                                                  Vector3 *out_max) const
 {
   // Build World Transform
-  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 transform;
+  GetShapeWorldTransformation(currentObject, transform);
 
   // Convert world space axis into model space (Axis Aligned Cuboid)
-  Matrix3 invNormalMatrix = Matrix3::Transpose(Matrix3(wsTransform));
+  Matrix3 invNormalMatrix = Matrix3::Transpose(Matrix3(transform));
   Vector3 local_axis = invNormalMatrix * axis;
   local_axis.Normalise();
 
@@ -85,9 +119,9 @@ void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObj
 
   // Return closest and furthest vertices in world-space
   if (out_min)
-    *out_min = wsTransform * m_CubeHull.GetVertex(vMin).pos;
+    *out_min = transform * m_CubeHull.GetVertex(vMin).pos;
   if (out_max)
-    *out_max = wsTransform * m_CubeHull.GetVertex(vMax).pos;
+    *out_max = transform * m_CubeHull.GetVertex(vMax).pos;
 }
 
 void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
@@ -95,11 +129,12 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
                                                        std::vector<Plane> *out_adjacent_planes) const
 {
   // Get the world-space transform
-  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
+  Matrix4 transform;
+  GetShapeWorldTransformation(currentObject, transform);
 
   // Get normal and inverse-normal matrices to transfom the collision axis to
   // and from modelspace
-  Matrix3 invNormalMatrix = Matrix3::Transpose(Matrix3(wsTransform));
+  Matrix3 invNormalMatrix = Matrix3::Transpose(Matrix3(transform));
   Matrix3 normalMatrix = Matrix3::Inverse(invNormalMatrix);
 
   Vector3 local_axis = invNormalMatrix * axis;
@@ -138,7 +173,7 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
     for (int vertIdx : best_face->vert_ids)
     {
       const HullVertex &vert = m_CubeHull.GetVertex(vertIdx);
-      out_face->push_back(wsTransform * vert.pos);
+      out_face->push_back(transform * vert.pos);
     }
   }
 
@@ -148,7 +183,7 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
   // adjacent faces along with the reference face itself.
   if (out_adjacent_planes)
   {
-    Vector3 wsPointOnPlane = wsTransform * m_CubeHull.GetVertex(m_CubeHull.GetEdge(best_face->edge_ids[0]).vStart).pos;
+    Vector3 wsPointOnPlane = transform * m_CubeHull.GetVertex(m_CubeHull.GetEdge(best_face->edge_ids[0]).vStart).pos;
 
     // First, form a plane around the reference face
     {
@@ -171,7 +206,7 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
     {
       const HullEdge &edge = m_CubeHull.GetEdge(edgeIdx);
 
-      wsPointOnPlane = wsTransform * m_CubeHull.GetVertex(edge.vStart).pos;
+      wsPointOnPlane = transform * m_CubeHull.GetVertex(edge.vStart).pos;
 
       for (int adjFaceIdx : edge.enclosing_faces)
       {
@@ -192,37 +227,14 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
 
 void CuboidCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
+  Matrix4 transform;
+  GetShapeWorldTransformation(currentObject, transform);
+
   // Just draw the cuboid hull-mesh at the position of our PhysicsObject
-  Matrix4 transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
   m_CubeHull.DebugDraw(transform);
 }
 
-void CuboidCollisionShape::ConstructCubeHull()
+void CuboidCollisionShape::GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const
 {
-  // Vertices
-  m_CubeHull.AddVertex(Vector3(-1.0f, -1.0f, -1.0f)); // 0
-  m_CubeHull.AddVertex(Vector3(-1.0f, 1.0f, -1.0f));  // 1
-  m_CubeHull.AddVertex(Vector3(1.0f, 1.0f, -1.0f));   // 2
-  m_CubeHull.AddVertex(Vector3(1.0f, -1.0f, -1.0f));  // 3
-
-  m_CubeHull.AddVertex(Vector3(-1.0f, -1.0f, 1.0f)); // 4
-  m_CubeHull.AddVertex(Vector3(-1.0f, 1.0f, 1.0f));  // 5
-  m_CubeHull.AddVertex(Vector3(1.0f, 1.0f, 1.0f));   // 6
-  m_CubeHull.AddVertex(Vector3(1.0f, -1.0f, 1.0f));  // 7
-
-  // Indices ( MUST be provided in ccw winding order )
-  int face1[] = {0, 1, 2, 3};
-  int face2[] = {7, 6, 5, 4};
-  int face3[] = {5, 6, 2, 1};
-  int face4[] = {0, 3, 7, 4};
-  int face5[] = {6, 7, 3, 2};
-  int face6[] = {4, 5, 1, 0};
-
-  // Faces
-  m_CubeHull.AddFace(Vector3(0.0f, 0.0f, -1.0f), 4, face1);
-  m_CubeHull.AddFace(Vector3(0.0f, 0.0f, 1.0f), 4, face2);
-  m_CubeHull.AddFace(Vector3(0.0f, 1.0f, 0.0f), 4, face3);
-  m_CubeHull.AddFace(Vector3(0.0f, -1.0f, 0.0f), 4, face4);
-  m_CubeHull.AddFace(Vector3(1.0f, 0.0f, 0.0f), 4, face5);
-  m_CubeHull.AddFace(Vector3(-1.0f, 0.0f, 0.0f), 4, face6);
+  transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
 }
