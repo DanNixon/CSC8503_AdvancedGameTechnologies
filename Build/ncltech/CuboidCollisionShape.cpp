@@ -57,7 +57,7 @@ void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vec
 }
 
 void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *min,
-                                                      Vector3 *max) const
+                                                 Vector3 *max) const
 {
   // Build World Transform
   Matrix4 transform;
@@ -80,8 +80,8 @@ void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObj
 }
 
 void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
-                                                            std::list<Vector3> *face, Vector3 *normal,
-                                                            std::vector<Plane> *adjacentPlanes) const
+                                                       std::list<Vector3> *face, Vector3 *normal,
+                                                       std::vector<Plane> *adjacentPlanes) const
 {
   // Get the world-space transform
   Matrix4 transform;

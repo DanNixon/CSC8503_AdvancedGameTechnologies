@@ -1,7 +1,7 @@
 #include "SortAndSweepBroadphase.h"
 
-SortAndSweepBroadphase::SortAndSweepBroadphase(const Vector3 & axis)
-  : IBroadphase()
+SortAndSweepBroadphase::SortAndSweepBroadphase(const Vector3 &axis)
+    : IBroadphase()
 {
   SetAxis(axis);
 }
@@ -10,7 +10,7 @@ SortAndSweepBroadphase::~SortAndSweepBroadphase()
 {
 }
 
-void SortAndSweepBroadphase::SetAxis(const Vector3 & axis)
+void SortAndSweepBroadphase::SetAxis(const Vector3 &axis)
 {
   m_axis = axis;
   m_axis.Normalise();
@@ -19,7 +19,7 @@ void SortAndSweepBroadphase::SetAxis(const Vector3 & axis)
 void SortAndSweepBroadphase::FindPotentialCollisionPairs(const std::vector<PhysicsObject *> &objects,
                                                          std::vector<CollisionPair> &collisionPairs)
 {
-  // TODO
+// TODO
 
 #if 0
   // Sort entities along x-axis

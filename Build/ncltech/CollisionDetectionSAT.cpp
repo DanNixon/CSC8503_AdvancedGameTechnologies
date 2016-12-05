@@ -5,7 +5,8 @@ CollisionDetectionSAT::CollisionDetectionSAT()
 {
 }
 
-void CollisionDetectionSAT::BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj2, ICollisionShape *shape1, ICollisionShape *shape2)
+void CollisionDetectionSAT::BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj2, ICollisionShape *shape1,
+                                         ICollisionShape *shape2)
 {
   m_vPossibleCollisionAxes.clear();
 

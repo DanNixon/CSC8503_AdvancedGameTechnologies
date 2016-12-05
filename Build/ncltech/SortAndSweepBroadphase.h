@@ -17,7 +17,7 @@ public:
   void SetAxis(const Vector3 &axis);
 
   virtual void FindPotentialCollisionPairs(const std::vector<PhysicsObject *> &objects,
-    std::vector<CollisionPair> &collisionPairs);
+                                           std::vector<CollisionPair> &collisionPairs);
 
 protected:
   Vector3 m_axis; //!< Axis along which testing is performed
