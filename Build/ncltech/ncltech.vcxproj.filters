@@ -116,6 +116,9 @@
     <ClCompile Include="BruteForceBroadphase.cpp">
       <Filter>src\Physics\CollisionDetection</Filter>
     </ClCompile>
+    <ClCompile Include="SortAndSweepBroadphase.cpp">
+      <Filter>src\Physics\CollisionDetection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -209,6 +212,9 @@
       <Filter>include\Physics\CollisionDetection</Filter>
     </ClInclude>
     <ClInclude Include="BruteForceBroadphase.h">
+      <Filter>include\Physics\CollisionDetection</Filter>
+    </ClInclude>
+    <ClInclude Include="SortAndSweepBroadphase.h">
       <Filter>include\Physics\CollisionDetection</Filter>
     </ClInclude>
   </ItemGroup>

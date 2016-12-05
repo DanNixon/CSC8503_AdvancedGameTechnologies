@@ -1,6 +1,7 @@
 #include "BruteForceBroadphase.h"
 
 BruteForceBroadphase::BruteForceBroadphase()
+    : IBroadphase()
 {
 }
 

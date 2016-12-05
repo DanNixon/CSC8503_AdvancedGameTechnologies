@@ -96,6 +96,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ScreenPicker.cpp" />
     <ClCompile Include="ObjectMesh.cpp" />
+    <ClCompile Include="SortAndSweepBroadphase.cpp" />
     <ClCompile Include="SphereCollisionShape.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +127,7 @@
     <ClInclude Include="SceneRenderer.h" />
     <ClInclude Include="ScreenPicker.h" />
     <ClInclude Include="SliderConstraint.h" />
+    <ClInclude Include="SortAndSweepBroadphase.h" />
     <ClInclude Include="SphereCollisionShape.h" />
     <ClInclude Include="SpringConstraint.h" />
     <ClInclude Include="TSingleton.h" />
