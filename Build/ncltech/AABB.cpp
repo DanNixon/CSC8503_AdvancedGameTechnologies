@@ -82,16 +82,6 @@ void AABB::SetLower(const Vector3 &lower)
   m_vVertices[7].pos.y = lower.y;
 }
 
-Vector3 AABB::GetUpper() const
-{
-  return Vector3(m_vVertices[6].pos.x, m_vVertices[6].pos.y, m_vVertices[6].pos.z);
-}
-
-Vector3 AABB::GetLower() const
-{
-  return Vector3(m_vVertices[0].pos.x, m_vVertices[0].pos.y, m_vVertices[0].pos.z);
-}
-
 bool AABB::Intersects(const AABB &other) const
 {
   // TODO

@@ -220,7 +220,7 @@ public:
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_B))
       m_Rotating = !m_Rotating;
 
-    uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
+    uint64_t drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
 
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Physics:");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Normals : %s (Press N to toggle)",

@@ -57,10 +57,13 @@ The general runtime consists of:
 #define TRUE 1
 #endif
 
-#define DEBUGDRAW_FLAGS_CONSTRAINT 0x1
-#define DEBUGDRAW_FLAGS_MANIFOLD 0x2
-#define DEBUGDRAW_FLAGS_COLLISIONVOLUMES 0x4
-#define DEBUGDRAW_FLAGS_COLLISIONNORMALS 0x8
+#define DEBUGDRAW_FLAGS_CONSTRAINT 1
+#define DEBUGDRAW_FLAGS_MANIFOLD 2
+#define DEBUGDRAW_FLAGS_COLLISIONVOLUMES 4
+#define DEBUGDRAW_FLAGS_COLLISIONNORMALS 8
+#define DEBUGDRAW_FLAGS_AABB 16
+#define DEBUGDRAW_FLAGS_LINEARVELOCITY 32
+#define DEBUGDRAW_FLAGS_LINEARFORCE 64
 
 /**
  * @brief Represents different integration schemes.
@@ -113,12 +116,12 @@ public:
     m_IsPaused = paused;
   }
 
-  uint GetDebugDrawFlags() const
+  uint64_t GetDebugDrawFlags() const
   {
     return m_DebugDrawFlags;
   }
 
-  void SetDebugDrawFlags(uint flags)
+  void SetDebugDrawFlags(uint64_t flags)
   {
     m_DebugDrawFlags = flags;
   }
@@ -217,7 +220,7 @@ protected:
 protected:
   bool m_IsPaused;
   float m_UpdateTimestep, m_UpdateAccum;
-  uint m_DebugDrawFlags;
+  uint64_t m_DebugDrawFlags;
 
   IntegrationType m_integrationType; //!< Type of integration performed in object updates
 
@@ -227,10 +230,10 @@ protected:
 
   float m_DampingFactor;
 
-  IBroadphase *m_broadphaseDetection;                    //!< Hanlder used to find broadphase collision pairs
+  IBroadphase *m_broadphaseDetection;                    //!< Handler used to find broadphase collision pairs
   std::vector<CollisionPair> m_BroadphaseCollisionPairs; //!< Set of collision paris found in broadphase
 
-  std::vector<PhysicsObject *> m_PhysicsObjects;
+  std::vector<PhysicsObject *> m_PhysicsObjects; //!< All physical objects in the simulation
 
   std::vector<Constraint *> m_vpConstraints; // Misc constraints applying to one or more physics objects
   std::vector<Manifold *> m_vpManifolds;     // Contact constraints between pairs of objects

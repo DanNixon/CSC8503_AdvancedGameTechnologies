@@ -156,7 +156,7 @@ void Hull::GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert,
     *out_max_vert = maxVertex;
 }
 
-void Hull::DebugDraw(const Matrix4 &transform) const
+void Hull::DebugDraw(const Matrix4 &transform, const Vector4 &faceColour, const Vector4 &edgeColour) const
 {
   // Draw all Hull Polygons
   for (const HullFace &face : m_vFaces)
@@ -164,15 +164,15 @@ void Hull::DebugDraw(const Matrix4 &transform) const
     // Render Polygon as triangle fan
     if (face.vert_ids.size() > 2)
     {
-      Vector3 polygon_start = transform * m_vVertices[face.vert_ids[0]].pos;
-      Vector3 polygon_last = transform * m_vVertices[face.vert_ids[1]].pos;
+      Vector3 polygonStart = transform * m_vVertices[face.vert_ids[0]].pos;
+      Vector3 polygonLast = transform * m_vVertices[face.vert_ids[1]].pos;
 
       for (size_t idx = 2; idx < face.vert_ids.size(); ++idx)
       {
-        Vector3 polygon_next = transform * m_vVertices[face.vert_ids[idx]].pos;
+        Vector3 polygonNext = transform * m_vVertices[face.vert_ids[idx]].pos;
 
-        NCLDebug::DrawTriangleNDT(polygon_start, polygon_last, polygon_next, Vector4(1.0f, 1.0f, 1.0f, 0.2f));
-        polygon_last = polygon_next;
+        NCLDebug::DrawTriangleNDT(polygonStart, polygonLast, polygonNext, faceColour);
+        polygonLast = polygonNext;
       }
     }
   }
@@ -181,6 +181,6 @@ void Hull::DebugDraw(const Matrix4 &transform) const
   for (const HullEdge &edge : m_vEdges)
   {
     NCLDebug::DrawThickLineNDT(transform * m_vVertices[edge.vStart].pos, transform * m_vVertices[edge.vEnd].pos, 0.02f,
-                               Vector4(1.0f, 0.2f, 1.0f, 1.0f));
+                               edgeColour);
   }
 }

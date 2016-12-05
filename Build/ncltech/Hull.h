@@ -107,7 +107,8 @@ public:
 
   void GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert) const;
 
-  void DebugDraw(const Matrix4 &transform) const;
+  virtual void DebugDraw(const Matrix4 &transform, const Vector4 &faceColour = Vector4(1.0f, 1.0f, 1.0f, 0.2f),
+                         const Vector4 &edgeColour = Vector4(1.0f, 0.2f, 1.0f, 1.0f)) const;
 
 protected:
   int ConstructNewEdge(int parent_face_idx, int vert_start, int vert_end); // Called by AddFace

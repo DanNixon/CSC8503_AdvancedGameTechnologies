@@ -71,6 +71,7 @@ public:
       , m_Rotating(true)
   {
   }
+
   float m_AccumTime;
   bool m_Rotating;
 
@@ -84,7 +85,7 @@ public:
     SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
     PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
-    PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES);
+    PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_AABB);
 
     m_AccumTime = 0.0f;
     m_Rotating = true;
@@ -216,7 +217,7 @@ public:
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_B))
       m_Rotating = !m_Rotating;
 
-    uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
+    uint64_t drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
 
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "Physics:");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Collision Volumes : %s (Press C to toggle)",

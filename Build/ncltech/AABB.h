@@ -21,8 +21,15 @@ public:
   void SetUpper(const Vector3 &upper);
   void SetLower(const Vector3 &lower);
 
-  Vector3 GetUpper() const;
-  Vector3 GetLower() const;
+  inline Vector3 GetUpper() const
+  {
+    return Vector3(m_vVertices[6].pos.x, m_vVertices[6].pos.y, m_vVertices[6].pos.z);
+  }
+
+  inline Vector3 GetLower() const
+  {
+    return Vector3(m_vVertices[0].pos.x, m_vVertices[0].pos.y, m_vVertices[0].pos.z);
+  }
 
   bool Intersects(const AABB &other) const;
 };

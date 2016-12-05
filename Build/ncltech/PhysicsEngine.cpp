@@ -317,24 +317,22 @@ void PhysicsEngine::DebugRender()
   if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_MANIFOLD)
   {
     for (Manifold *m : m_vpManifolds)
-    {
       m->DebugDraw();
-    }
   }
 
   // Draw all constraints
   if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_CONSTRAINT)
   {
     for (Constraint *c : m_vpConstraints)
-    {
       c->DebugDraw();
-    }
   }
 
-  // Draw all associated collision shapes
-  if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_COLLISIONVOLUMES)
+  // Draw all objects and collision shapes
+  for (PhysicsObject *obj : m_PhysicsObjects)
   {
-    for (PhysicsObject *obj : m_PhysicsObjects)
+    obj->DebugDraw(m_DebugDrawFlags);
+
+    if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_COLLISIONVOLUMES)
     {
       for (auto it = obj->CollisionShapesBegin(); it != obj->CollisionShapesEnd(); ++it)
         (*it)->DebugDraw(obj);

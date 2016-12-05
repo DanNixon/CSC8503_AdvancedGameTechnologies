@@ -1,5 +1,7 @@
 #include "SortAndSweepBroadphase.h"
 
+#include <algorithm>
+
 SortAndSweepBroadphase::SortAndSweepBroadphase(const Vector3 &axis)
     : IBroadphase()
 {
@@ -14,43 +16,39 @@ void SortAndSweepBroadphase::SetAxis(const Vector3 &axis)
 {
   m_axis = axis;
   m_axis.Normalise();
+
+  // Generate comparator
+  // TODO
+  m_sortComparator = [](PhysicsObject *a, PhysicsObject *b) { return a->GetAABB().GetLower().x < b->GetAABB().GetLower().x; };
 }
 
-void SortAndSweepBroadphase::FindPotentialCollisionPairs(const std::vector<PhysicsObject *> &objects,
+void SortAndSweepBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects,
                                                          std::vector<CollisionPair> &collisionPairs)
 {
-// TODO
+  // Sort entities along axis
+  std::sort(objects.begin(), objects.end(), m_sortComparator);
 
-#if 0
-  // Sort entities along x-axis
-  std::sort(m_entities.begin(), m_entities.end(),
-    [](Entity *a, Entity *b) { return a->boundingBox().lowerLeft()[0] < b->boundingBox().lowerLeft()[0]; });
-
-  std::vector<InterfaceDef> interfaces;
-
-  // Create a list of possible interfaces (broadphase)
-  for (EntityPtrListIter it = m_entities.begin(); it != m_entities.end(); ++it)
+  for (auto it = objects.begin(); it != objects.end(); ++it)
   {
-    // Ignore entities with no collide
-    if (!(*it)->collides())
-      continue;
+    float thisBoxRight = (*it)->GetAABB().GetUpper().x; // TODO
 
-    bool thisStationary = (*it)->stationary();
-    float thisBoxRight = (*it)->boundingBox().upperRight()[0];
-
-    for (auto iit = it + 1; iit != m_entities.end(); ++iit)
+    for (auto iit = it + 1; iit != objects.end(); ++iit)
     {
-      // Two stationary (fixed) entities can never collide
-      if (thisStationary && (*iit)->stationary())
+      // Skip pairs of two at rest objects
+      if ((*it)->IsAtRest() && (*iit)->IsAtRest())
         continue;
 
-      float testBoxLeft = (*iit)->boundingBox().lowerLeft()[0];
+      float testBoxLeft = (*iit)->GetAABB().GetLower().x; // TODO
 
-      // Test for overlap between the x-axis values of the bounding boxes
+      // Test for overlap between the axis values of the bounding boxes
       if (testBoxLeft < thisBoxRight)
-        // If intersections exists then these entities could have collided
-        interfaces.push_back(InterfaceDef(*it, *iit));
+      {
+        CollisionPair cp;
+        cp.pObjectA = *it;
+        cp.pObjectB = *iit;
+
+        collisionPairs.push_back(cp);
+      }
     }
   }
-#endif
 }

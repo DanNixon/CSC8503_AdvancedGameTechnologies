@@ -1,4 +1,5 @@
 #include "PhysicsObject.h"
+#include "NCLDebug.h"
 #include "PhysicsEngine.h"
 
 PhysicsObject::PhysicsObject()
@@ -8,6 +9,7 @@ PhysicsObject::PhysicsObject()
     , m_restVelocityThresholdSquared(0.001f)
     , m_averageSummedVelocity(0.0f)
     , m_gravitationTarget(nullptr)
+    , m_aabb()
     , m_position(0.0f, 0.0f, 0.0f)
     , m_linearVelocity(0.0f, 0.0f, 0.0f)
     , m_linearForce(0.0f, 0.0f, 0.0f)
@@ -20,6 +22,7 @@ PhysicsObject::PhysicsObject()
     , m_elasticity(0.9f)
     , m_onCollisionCallback(nullptr)
 {
+  m_aabb.SetHalfDimensions(Vector3(1.0f, 1.0f, 1.0f));
 }
 
 PhysicsObject::~PhysicsObject()
@@ -69,4 +72,22 @@ void PhysicsObject::DoAtRestTest()
   // Do test (only if at rest flag is not already set)
   if (!m_atRest && m_averageSummedVelocity <= m_restVelocityThresholdSquared)
     m_atRest = true;
+}
+
+void PhysicsObject::DebugDraw(uint64_t flags) const
+{
+  if (flags & DEBUGDRAW_FLAGS_AABB)
+  {
+    Matrix4 t = m_wsTransform;
+    t.ClearRotation();
+    m_aabb.DebugDraw(t, Vector4(0.8f, 1.0f, 1.0f, 0.25f), Vector4(0.4f, 0.8f, 1.0f, 1.0f));
+  }
+
+  if (flags & DEBUGDRAW_FLAGS_LINEARVELOCITY)
+    NCLDebug::DrawThickLineNDT(m_wsTransform.GetPositionVector(), m_wsTransform * m_linearVelocity, 0.02f,
+                               Vector4(0.0f, 1.0f, 0.0f, 1.0f));
+
+  if (flags & DEBUGDRAW_FLAGS_LINEARFORCE)
+    NCLDebug::DrawThickLineNDT(m_wsTransform.GetPositionVector(), m_wsTransform * m_linearForce, 0.02f,
+                               Vector4(0.0f, 0.0f, 1.0f, 1.0f));
 }

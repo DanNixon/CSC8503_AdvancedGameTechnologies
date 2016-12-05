@@ -9,7 +9,7 @@ BruteForceBroadphase::~BruteForceBroadphase()
 {
 }
 
-void BruteForceBroadphase::FindPotentialCollisionPairs(const std::vector<PhysicsObject *> &objects,
+void BruteForceBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects,
                                                        std::vector<CollisionPair> &collisionPairs)
 {
   PhysicsObject *obj1, *obj2;

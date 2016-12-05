@@ -255,8 +255,10 @@ public:
     m_atRest = false;
   }
 
+  virtual void DebugDraw(uint64_t flags) const;
+
 protected:
-  Object *m_parent; // Optional: Attached GameObject or NULL if none set
+  Object *m_parent; //!< Attached GameObject or NULL if none set
 
   bool m_atRest;                        //!< Flag indicating if this object is at rest
   float m_restVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be stationary

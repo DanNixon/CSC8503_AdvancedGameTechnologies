@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IBroadphase.h"
+#include <functional>
 #include <nclgl/Vector3.h>
 
 class SortAndSweepBroadphase : public IBroadphase
@@ -16,9 +17,9 @@ public:
 
   void SetAxis(const Vector3 &axis);
 
-  virtual void FindPotentialCollisionPairs(const std::vector<PhysicsObject *> &objects,
-                                           std::vector<CollisionPair> &collisionPairs);
+  virtual void FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects, std::vector<CollisionPair> &collisionPairs);
 
 protected:
-  Vector3 m_axis; //!< Axis along which testing is performed
+  Vector3 m_axis;                                                         //!< Axis along which testing is performed
+  std::function<bool(PhysicsObject *, PhysicsObject *)> m_sortComparator; //!< Comparator used for sorting along axis
 };

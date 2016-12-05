@@ -91,6 +91,7 @@ public:
     PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
     PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
     PhysicsEngine::Instance()->SetDampingFactor(1.0f);
+    PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_LINEARVELOCITY | DEBUGDRAW_FLAGS_LINEARFORCE);
 
     // Create Ground
     this->AddGameObject(CommonUtils::BuildCuboidObject("Ground",                          // Friendly ID/Name
