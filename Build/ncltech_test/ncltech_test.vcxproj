@@ -166,7 +166,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="unittest1.cpp" />
+    <ClCompile Include="IStateTest.cpp" />
+    <ClCompile Include="StateContainerTest.cpp" />
+    <ClCompile Include="StateMachineTest.cpp" />
+    <ClCompile Include="StateMachineUpdateFunctionalTest.cpp" />
+    <ClCompile Include="StateMachineUpdateTest.cpp" />
+    <ClCompile Include="AABBTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MockState.h" />
+    <ClInclude Include="MockStateMachine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

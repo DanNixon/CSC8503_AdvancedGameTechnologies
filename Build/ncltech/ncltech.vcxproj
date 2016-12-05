@@ -83,6 +83,7 @@
     <ClCompile Include="CommonMeshes.cpp" />
     <ClCompile Include="CommonUtils.cpp" />
     <ClCompile Include="CuboidCollisionShape.cpp" />
+    <ClCompile Include="IState.cpp" />
     <ClCompile Include="NetworkBase.cpp" />
     <ClCompile Include="ObjectMeshDragable.cpp" />
     <ClCompile Include="NCLDebug.cpp" />
@@ -99,6 +100,8 @@
     <ClCompile Include="ObjectMesh.cpp" />
     <ClCompile Include="SortAndSweepBroadphase.cpp" />
     <ClCompile Include="SphereCollisionShape.cpp" />
+    <ClCompile Include="StateContainer.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -106,6 +109,8 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BruteForceBroadphase.h" />
     <ClInclude Include="CollisionDetectionSAT.h" />
+    <ClInclude Include="CompletableActionState.h" />
+    <ClInclude Include="FunctionalState.h" />
     <ClInclude Include="ICollisionShape.h" />
     <ClInclude Include="CommonMeshes.h" />
     <ClInclude Include="CommonUtils.h" />
@@ -115,6 +120,7 @@
     <ClInclude Include="Hull.h" />
     <ClInclude Include="IBroadphase.h" />
     <ClInclude Include="CuboidCollisionShape.h" />
+    <ClInclude Include="IState.h" />
     <ClInclude Include="Manifold.h" />
     <ClInclude Include="NCLDebug.h" />
     <ClInclude Include="NetworkBase.h" />
@@ -132,6 +138,8 @@
     <ClInclude Include="SortAndSweepBroadphase.h" />
     <ClInclude Include="SphereCollisionShape.h" />
     <ClInclude Include="SpringConstraint.h" />
+    <ClInclude Include="StateContainer.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="TSingleton.h" />
     <ClInclude Include="PerfTimer.h" />
   </ItemGroup>

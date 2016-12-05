@@ -6,7 +6,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace ncltech_test
 {
-TEST_CLASS(UnitTest1)
+TEST_CLASS(AABBTest)
 {
 public:
   TEST_METHOD(TestMethod1)

@@ -5,8 +5,39 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{4b697d10-c0cc-4444-9a76-fdac3ea23f70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{43295a4f-b1d1-4947-90af-99d3d37b3090}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="unittest1.cpp" />
+    <ClCompile Include="IStateTest.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="StateContainerTest.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachineTest.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachineUpdateFunctionalTest.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachineUpdateTest.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AABBTest.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MockState.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="MockStateMachine.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
