@@ -1,5 +1,10 @@
 #include "Quaternion.h"
 
+#include <algorithm>
+
+using std::min;
+using std::max;
+
 Quaternion::Quaternion(void)
 {
   x = y = z = 0.0f;

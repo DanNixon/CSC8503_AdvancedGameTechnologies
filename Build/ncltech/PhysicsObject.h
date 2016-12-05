@@ -15,7 +15,9 @@ as velocity, position, mass etc..
 
 */ /////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include "CollisionShape.h"
+
+#include "AABB.h"
+#include "ICollisionShape.h"
 #include <functional>
 #include <nclgl\Matrix3.h>
 #include <nclgl\Quaternion.h>
@@ -45,82 +47,92 @@ public:
   //<--------- GETTERS ------------->
   inline bool IsAtRest() const
   {
-    return m_AtRest;
+    return m_atRest;
   }
 
   inline bool IsAwake() const
   {
-    return !m_AtRest;
+    return !m_atRest;
   }
 
   inline float GetRestVelocityThresholdSquared() const
   {
-    return m_RestVelocityThresholdSquared;
+    return m_restVelocityThresholdSquared;
+  }
+
+  inline AABB GetAABB() const
+  {
+    return m_aabb;
+  }
+
+  inline AABB &GetAABB()
+  {
+    return m_aabb;
   }
 
   inline float GetElasticity() const
   {
-    return m_Elasticity;
+    return m_elasticity;
   }
 
   inline float GetFriction() const
   {
-    return m_Friction;
+    return m_friction;
   }
 
   inline const Vector3 &GetPosition() const
   {
-    return m_Position;
+    return m_position;
   }
 
   inline const Vector3 &GetLinearVelocity() const
   {
-    return m_LinearVelocity;
+    return m_linearVelocity;
   }
 
   inline const Vector3 &GetForce() const
   {
-    return m_Force;
+    return m_linearForce;
   }
 
   inline float GetInverseMass() const
   {
-    return m_InvMass;
+    return m_inverseMass;
   }
 
   inline const Quaternion &GetOrientation() const
   {
-    return m_Orientation;
+    return m_orientation;
   }
 
   inline const Vector3 &GetAngularVelocity() const
   {
-    return m_AngularVelocity;
+    return m_angularVelocity;
   }
 
   inline const Vector3 &GetTorque() const
   {
-    return m_Torque;
+    return m_torque;
   }
 
   inline const Matrix3 &GetInverseInertia() const
   {
-    return m_InvInertia;
+    return m_inverseInertia;
   }
 
   inline size_t NumCollisionShapes() const
   {
-    return m_vCollisionShapes.size();
+    return m_collisionShapes.size();
   }
 
-  inline std::vector<CollisionShape *>::const_iterator CollisionShapesBegin() const
+  inline std::vector<ICollisionShape *>::const_iterator CollisionShapesBegin() const
   {
-    return m_vCollisionShapes.cbegin();
+    return m_collisionShapes.cbegin();
   }
 
-  inline std::vector<CollisionShape *>::const_iterator CollisionShapesEnd() const
+  inline std::vector<ICollisionShape *>::const_iterator CollisionShapesEnd() const
   {
-    return m_vCollisionShapes.cend();
+    return m_collisionShapes.cend();
   }
 
   inline Object *GetAssociatedObject() const
@@ -133,7 +145,7 @@ public:
   //<--------- SETTERS ------------->
   inline void SetRestVelocityThreshold(float vel)
   {
-    m_RestVelocityThresholdSquared = vel * vel;
+    m_restVelocityThresholdSquared = vel * vel;
   }
 
   inline void SetGravitationTarget(PhysicsObject *obj)
@@ -143,71 +155,71 @@ public:
 
   inline void SetElasticity(float elasticity)
   {
-    m_Elasticity = elasticity;
+    m_elasticity = elasticity;
   }
 
   inline void SetFriction(float friction)
   {
-    m_Friction = friction;
+    m_friction = friction;
   }
 
   inline void SetPosition(const Vector3 &v)
   {
-    m_Position = v;
+    m_position = v;
     m_wsTransformInvalidated = true;
-    m_AtRest = false;
+    m_atRest = false;
   }
 
   inline void SetLinearVelocity(const Vector3 &v)
   {
-    m_LinearVelocity = v;
+    m_linearVelocity = v;
   }
 
   inline void ApplyForce(const Vector3 &force)
   {
-    m_Force += force;
+    m_linearForce += force;
   }
 
   inline void ClearForces()
   {
-    m_Force.ToZero();
+    m_linearForce.ToZero();
   }
 
   inline void SetForce(const Vector3 &v)
   {
-    m_Force = v;
+    m_linearForce = v;
   }
 
   inline void SetInverseMass(const float &v)
   {
-    m_InvMass = v;
+    m_inverseMass = v;
   }
 
   inline void SetOrientation(const Quaternion &v)
   {
-    m_Orientation = v;
+    m_orientation = v;
     m_wsTransformInvalidated = true;
-    m_AtRest = false;
+    m_atRest = false;
   }
 
   inline void SetAngularVelocity(const Vector3 &v)
   {
-    m_AngularVelocity = v;
+    m_angularVelocity = v;
   }
 
   inline void SetTorque(const Vector3 &v)
   {
-    m_Torque = v;
+    m_torque = v;
   }
 
   inline void SetInverseInertia(const Matrix3 &v)
   {
-    m_InvInertia = v;
+    m_inverseInertia = v;
   }
 
-  inline void AddCollisionShape(CollisionShape *colShape)
+  inline void AddCollisionShape(ICollisionShape *colShape)
   {
-    m_vCollisionShapes.push_back(colShape);
+    m_collisionShapes.push_back(colShape);
   }
 
   // Called automatically when PhysicsObject is created through Object::CreatePhysicsNode()
@@ -219,16 +231,16 @@ public:
   //<---------- CALLBACKS ------------>
   inline void SetOnCollisionCallback(PhysicsCollisionCallback callback)
   {
-    m_OnCollisionCallback = callback;
+    m_onCollisionCallback = callback;
   }
 
   inline bool FireOnCollisionEvent(PhysicsObject *obj_a, PhysicsObject *obj_b)
   {
-    bool handleCollision = (m_OnCollisionCallback) ? m_OnCollisionCallback(obj_a, obj_b) : true;
+    bool handleCollision = (m_onCollisionCallback) ? m_onCollisionCallback(obj_a, obj_b) : true;
 
     // Wake up on collision
     if (handleCollision)
-      m_AtRest = false;
+      m_atRest = false;
 
     return handleCollision;
   }
@@ -240,38 +252,36 @@ public:
    */
   inline void WakeUp()
   {
-    m_AtRest = false;
+    m_atRest = false;
   }
 
 protected:
   Object *m_parent; // Optional: Attached GameObject or NULL if none set
 
-  bool m_AtRest;                        //!< Flag indicating if this object is at rest
-  float m_RestVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be
-                                        //! stationary
-  float m_AverageSummedVelocity;        //!< Exponential moving average of sum of magnitudes of linear and angular velocity
+  bool m_atRest;                        //!< Flag indicating if this object is at rest
+  float m_restVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be stationary
+  float m_averageSummedVelocity;        //!< Exponential moving average of sum of magnitudes of linear and angular velocity
 
   PhysicsObject *m_gravitationTarget; //!< Physical object that this object is attracted to through gravity
 
-  mutable bool m_wsTransformInvalidated;
-  mutable Matrix4 m_wsTransform;
+  mutable bool m_wsTransformInvalidated; //!< Flag indicating if the cached world space transoformation is invalid
+  mutable Matrix4 m_wsTransform;         //!< Cached world space transformation matrix
 
-  float m_Elasticity; //!< Value from 0-1 definiing how much the object bounces off other objects
-  float m_Friction;   //!< Value from 0-1 defining how much the object can slide off other objects
+  AABB m_aabb; //!< Axis aligned bounding box of this object
 
-  //<---------LINEAR-------------->
-  Vector3 m_Position;
-  Vector3 m_LinearVelocity;
-  Vector3 m_Force;
-  float m_InvMass;
+  float m_elasticity; //!< Value from 0-1 definiing how much the object bounces off other objects
+  float m_friction;   //!< Value from 0-1 defining how much the object can slide off other objects
 
-  //<----------ANGULAR-------------->
-  Quaternion m_Orientation;
-  Vector3 m_AngularVelocity;
-  Vector3 m_Torque;
-  Matrix3 m_InvInertia;
+  Vector3 m_position;       //!< Object position
+  Vector3 m_linearVelocity; //!< Linear velcoity
+  Vector3 m_linearForce;    //!< Linear force
+  float m_inverseMass;      //!< 1 / object mass
 
-  //<----------COLLISION------------>
-  std::vector<CollisionShape *> m_vCollisionShapes;
-  PhysicsCollisionCallback m_OnCollisionCallback;
+  Quaternion m_orientation;  //!< Object orientation
+  Vector3 m_angularVelocity; //!< Axis angular velocity
+  Vector3 m_torque;          //!< Axis torque
+  Matrix3 m_inverseInertia;  //!< Inverse intertia matrix
+
+  std::vector<ICollisionShape *> m_collisionShapes; //!< Collection of collision shapes in this object
+  PhysicsCollisionCallback m_onCollisionCallback;   //!< Collision callback
 };

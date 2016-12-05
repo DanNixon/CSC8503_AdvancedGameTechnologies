@@ -33,9 +33,6 @@ so you could represent your mesh as a series of pentagons, quads etc or any comb
 #include <nclgl\Vector3.h>
 #include <vector>
 
-struct HullEdge;
-struct HullFace;
-
 struct HullVertex
 {
   int idx;
@@ -65,11 +62,12 @@ class Hull
 {
 public:
   Hull();
-  ~Hull();
+  virtual ~Hull();
 
   void AddVertex(const Vector3 &v);
 
   void AddFace(const Vector3 &_normal, int nVerts, const int *verts);
+
   void AddFace(const Vector3 &_normal, const std::vector<int> &vert_ids)
   {
     AddFace(_normal, vert_ids.size(), &vert_ids[0]);
@@ -77,35 +75,39 @@ public:
 
   int FindEdge(int v0_idx, int v1_idx);
 
-  const HullVertex &GetVertex(int idx)
+  const HullVertex &GetVertex(int idx) const
   {
     return m_vVertices[idx];
   }
-  const HullEdge &GetEdge(int idx)
+
+  const HullEdge &GetEdge(int idx) const
   {
     return m_vEdges[idx];
   }
-  const HullFace &GetFace(int idx)
+
+  const HullFace &GetFace(int idx) const
   {
     return m_vFaces[idx];
   }
 
-  size_t GetNumVertices()
+  size_t GetNumVertices() const
   {
     return m_vVertices.size();
   }
-  size_t GetNumEdges()
+
+  size_t GetNumEdges() const
   {
     return m_vEdges.size();
   }
-  size_t GetNumFaces()
+
+  size_t GetNumFaces() const
   {
     return m_vFaces.size();
   }
 
-  void GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert);
+  void GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert) const;
 
-  void DebugDraw(const Matrix4 &transform);
+  void DebugDraw(const Matrix4 &transform) const;
 
 protected:
   int ConstructNewEdge(int parent_face_idx, int vert_start, int vert_end); // Called by AddFace

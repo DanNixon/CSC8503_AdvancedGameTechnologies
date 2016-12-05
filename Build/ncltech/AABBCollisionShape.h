@@ -1,8 +1,3 @@
-/******************************************************************************
-Class: AABBCollisionShape
-Author: Dan Nixon
-*/ /////////////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include "CuboidCollisionShape.h"
@@ -12,7 +7,7 @@ class AABBCollisionShape : public CuboidCollisionShape
 {
 public:
   AABBCollisionShape();
-  AABBCollisionShape(const Vector3 &halfdims);
+  AABBCollisionShape(const Vector3 &lowerLeft, const Vector3 &upperRight);
   virtual ~AABBCollisionShape();
 
   virtual void GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const override;

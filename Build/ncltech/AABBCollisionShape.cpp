@@ -1,16 +1,16 @@
 #include "AABBCollisionShape.h"
 #include "PhysicsObject.h"
-#include <nclgl/Matrix3.h>
-#include <nclgl/OGLRenderer.h>
 
 AABBCollisionShape::AABBCollisionShape()
     : CuboidCollisionShape()
 {
 }
 
-AABBCollisionShape::AABBCollisionShape(const Vector3 &halfdims)
-    : CuboidCollisionShape(halfdims)
+AABBCollisionShape::AABBCollisionShape(const Vector3 &lowerLeft, const Vector3 &upperRight)
+    : CuboidCollisionShape()
 {
+  SetLowerLeft(lowerLeft);
+  SetUpperRight(upperRight);
 }
 
 AABBCollisionShape::~AABBCollisionShape()
@@ -31,5 +31,5 @@ void AABBCollisionShape::GetShapeWorldTransformation(const PhysicsObject *curren
 {
   Matrix4 objectWs = currentObject->GetWorldSpaceTransform();
   objectWs.ClearRotation();
-  transform = objectWs * m_LocalTransform * Matrix4::Scale(m_CuboidHalfDimensions);
+  transform = objectWs * m_LocalTransform;
 }

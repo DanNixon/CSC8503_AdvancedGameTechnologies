@@ -4,39 +4,39 @@
 PhysicsObject::PhysicsObject()
     : m_parent(nullptr)
     , m_wsTransformInvalidated(true)
-    , m_AtRest(false)
-    , m_RestVelocityThresholdSquared(0.001f)
-    , m_AverageSummedVelocity(0.0f)
+    , m_atRest(false)
+    , m_restVelocityThresholdSquared(0.001f)
+    , m_averageSummedVelocity(0.0f)
     , m_gravitationTarget(nullptr)
-    , m_Position(0.0f, 0.0f, 0.0f)
-    , m_LinearVelocity(0.0f, 0.0f, 0.0f)
-    , m_Force(0.0f, 0.0f, 0.0f)
-    , m_InvMass(0.0f)
-    , m_Orientation(0.0f, 0.0f, 0.0f, 1.0f)
-    , m_AngularVelocity(0.0f, 0.0f, 0.0f)
-    , m_Torque(0.0f, 0.0f, 0.0f)
-    , m_InvInertia(Matrix3::ZeroMatrix)
-    , m_Friction(0.5f)
-    , m_Elasticity(0.9f)
-    , m_OnCollisionCallback(nullptr)
+    , m_position(0.0f, 0.0f, 0.0f)
+    , m_linearVelocity(0.0f, 0.0f, 0.0f)
+    , m_linearForce(0.0f, 0.0f, 0.0f)
+    , m_inverseMass(0.0f)
+    , m_orientation(0.0f, 0.0f, 0.0f, 1.0f)
+    , m_angularVelocity(0.0f, 0.0f, 0.0f)
+    , m_torque(0.0f, 0.0f, 0.0f)
+    , m_inverseInertia(Matrix3::ZeroMatrix)
+    , m_friction(0.5f)
+    , m_elasticity(0.9f)
+    , m_onCollisionCallback(nullptr)
 {
 }
 
 PhysicsObject::~PhysicsObject()
 {
   // Delete collision shapes
-  for (auto it = m_vCollisionShapes.begin(); it != m_vCollisionShapes.end(); ++it)
+  for (auto it = m_collisionShapes.begin(); it != m_collisionShapes.end(); ++it)
     delete *it;
 
-  m_vCollisionShapes.clear();
+  m_collisionShapes.clear();
 }
 
 const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
 {
   if (m_wsTransformInvalidated)
   {
-    m_wsTransform = m_Orientation.ToMatrix4();
-    m_wsTransform.SetPositionVector(m_Position);
+    m_wsTransform = m_orientation.ToMatrix4();
+    m_wsTransform.SetPositionVector(m_position);
 
     m_wsTransformInvalidated = false;
   }
@@ -56,17 +56,17 @@ const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
 void PhysicsObject::DoAtRestTest()
 {
   // Negative threshold disables test, don't bother calculating average or performing test
-  if (m_RestVelocityThresholdSquared <= 0.0f)
+  if (m_restVelocityThresholdSquared <= 0.0f)
     return;
 
-  // Vaue between 0 and 1, higher values discard old data faster
+  // Value between 0 and 1, higher values discard old data faster
   const float alpha = 0.7f;
 
   // Calculate exponential moving average
-  float v = m_LinearVelocity.LengthSquared() + m_AngularVelocity.LengthSquared();
-  m_AverageSummedVelocity += alpha * (v - m_AverageSummedVelocity);
+  float v = m_linearVelocity.LengthSquared() + m_angularVelocity.LengthSquared();
+  m_averageSummedVelocity += alpha * (v - m_averageSummedVelocity);
 
   // Do test (only if at rest flag is not already set)
-  if (!m_AtRest && m_AverageSummedVelocity <= m_RestVelocityThresholdSquared)
-    m_AtRest = true;
+  if (!m_atRest && m_averageSummedVelocity <= m_restVelocityThresholdSquared)
+    m_atRest = true;
 }

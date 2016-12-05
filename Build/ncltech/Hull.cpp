@@ -126,7 +126,7 @@ void Hull::AddFace(const Vector3 &_normal, int nVerts, const int *verts)
   }
 }
 
-void Hull::GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert)
+void Hull::GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert) const
 {
   float cCorrelation;
   int minVertex, maxVertex;
@@ -156,10 +156,10 @@ void Hull::GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert,
     *out_max_vert = maxVertex;
 }
 
-void Hull::DebugDraw(const Matrix4 &transform)
+void Hull::DebugDraw(const Matrix4 &transform) const
 {
   // Draw all Hull Polygons
-  for (HullFace &face : m_vFaces)
+  for (const HullFace &face : m_vFaces)
   {
     // Render Polygon as triangle fan
     if (face.vert_ids.size() > 2)
@@ -178,7 +178,7 @@ void Hull::DebugDraw(const Matrix4 &transform)
   }
 
   // Draw all Hull Edges
-  for (HullEdge &edge : m_vEdges)
+  for (const HullEdge &edge : m_vEdges)
   {
     NCLDebug::DrawThickLineNDT(transform * m_vVertices[edge.vStart].pos, transform * m_vVertices[edge.vEnd].pos, 0.02f,
                                Vector4(1.0f, 0.2f, 1.0f, 1.0f));

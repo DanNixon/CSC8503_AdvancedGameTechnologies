@@ -147,24 +147,24 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
     return;
 
   // Apply gravity
-  if (obj->m_InvMass > 0.0f)
+  if (obj->m_inverseMass > 0.0f)
   {
     if (obj->m_gravitationTarget == nullptr)
     {
       // Uniform directional gravity
-      obj->m_LinearVelocity += m_LinearGravity * m_UpdateTimestep;
+      obj->m_linearVelocity += m_LinearGravity * m_UpdateTimestep;
     }
     else
     {
-      Vector3 ab = obj->m_gravitationTarget->m_Position - obj->m_Position;
+      Vector3 ab = obj->m_gravitationTarget->m_position - obj->m_position;
       Vector3 abn = ab;
       abn.Normalise();
 
-      if (obj->m_gravitationTarget->m_InvMass > 0.0f)
+      if (obj->m_gravitationTarget->m_inverseMass > 0.0f)
       {
         // Handle gravity between points (target is pulled towards self)
         float r2 = ab.LengthSquared();
-        float f = m_PointGravitation / (r2 * obj->m_InvMass * obj->m_gravitationTarget->m_InvMass);
+        float f = m_PointGravitation / (r2 * obj->m_inverseMass * obj->m_gravitationTarget->m_inverseMass);
         obj->ApplyForce(abn * f);
         obj->m_gravitationTarget->ApplyForce(abn * -f);
         obj->m_gravitationTarget->WakeUp();
@@ -172,7 +172,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
       else
       {
         // Handle gravity between points (target is immovable)
-        obj->m_LinearVelocity += abn * -m_PointGravity * m_UpdateTimestep;
+        obj->m_linearVelocity += abn * -m_PointGravity * m_UpdateTimestep;
       }
     }
   }
@@ -182,23 +182,23 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
   case INTEGRATION_EXPLICIT_EULER:
   {
     // Update position
-    obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
+    obj->m_position += obj->m_linearVelocity * m_UpdateTimestep;
 
     // Update linear velocity (v = u + at)
-    obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
+    obj->m_linearVelocity += obj->m_linearForce * obj->m_inverseMass * m_UpdateTimestep;
 
     // Linear velocity damping
-    obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
+    obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
 
     // Update orientation
-    obj->m_Orientation = obj->m_Orientation + (obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f));
-    obj->m_Orientation.Normalise();
+    obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
+    obj->m_orientation.Normalise();
 
     // Update angular velocity
-    obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
+    obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
 
     // Angular velocity damping
-    obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
+    obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
 
     break;
   }
@@ -207,23 +207,23 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
   case INTEGRATION_SEMI_IMPLICIT_EULER:
   {
     // Update linear velocity (v = u + at)
-    obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
+    obj->m_linearVelocity += obj->m_linearForce * obj->m_inverseMass * m_UpdateTimestep;
 
     // Linear velocity damping
-    obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
+    obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
 
     // Update position
-    obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
+    obj->m_position += obj->m_linearVelocity * m_UpdateTimestep;
 
     // Update angular velocity
-    obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
+    obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
 
     // Angular velocity damping
-    obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
+    obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
 
     // Update orientation
-    obj->m_Orientation = obj->m_Orientation + (obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f));
-    obj->m_Orientation.Normalise();
+    obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
+    obj->m_orientation.Normalise();
 
     break;
   }
@@ -268,8 +268,8 @@ void PhysicsEngine::NarrowPhaseCollisions()
       {
         for (auto bIt = cp.pObjectB->CollisionShapesBegin(); bIt != cp.pObjectB->CollisionShapesEnd(); ++bIt)
         {
-          CollisionShape *shapeA = *aIt;
-          CollisionShape *shapeB = *bIt;
+          ICollisionShape *shapeA = *aIt;
+          ICollisionShape *shapeB = *bIt;
 
           colDetect.BeginNewPair(cp.pObjectA, cp.pObjectB, shapeA, shapeB);
 

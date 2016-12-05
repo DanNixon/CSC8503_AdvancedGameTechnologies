@@ -135,7 +135,7 @@ public:
       (*(sphere->Physics()->CollisionShapesBegin()))->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
 
       // Second collision sphere shape (for testing)
-      CollisionShape *secondSphereCollShape = new SphereCollisionShape(0.5f);
+      ICollisionShape *secondSphereCollShape = new SphereCollisionShape(0.5f);
       secondSphereCollShape->SetLocalTransform(Matrix4::Translation(Vector3(-0.25f, 0.0f, 0.0f)));
       sphere->Physics()->AddCollisionShape(secondSphereCollShape);
 
@@ -166,7 +166,7 @@ public:
       cuboid->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 30.0f));
 
       // TODO: testing
-      CollisionShape *shape = new AABBCollisionShape();
+      ICollisionShape *shape = new AABBCollisionShape();
       shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 0.0f, 0.0f)));
       cuboid->Physics()->AddCollisionShape(shape);
 

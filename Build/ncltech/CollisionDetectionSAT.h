@@ -42,20 +42,16 @@ them below:
 
 */ /////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include "CollisionShape.h"
+
+#include "ICollisionShape.h"
 #include "Manifold.h"
 #include "PhysicsObject.h"
 
 struct CollisionData
 {
-  // The direction of collision from obj1 to obj2
-  Vector3 _normal;
-
-  // The amount the objects penetrate eachother (negative overlap distance)
-  float _penetration;
-
-  // The point on obj1 where they overlap
-  Vector3 _pointOnPlane;
+  Vector3 _normal;       //!< The direction of collision from obj1 to obj2
+  float _penetration;    //!< The amount the objects penetrate eachother (negative overlap distance)
+  Vector3 _pointOnPlane; //!< The point on obj1 where they overlap
 };
 
 class CollisionDetectionSAT
@@ -65,7 +61,7 @@ public:
 
   // Start processing new (possible) collision pair
   // - Clear all previous collision data
-  void BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj2, CollisionShape *shape1, CollisionShape *shape2);
+  void BeginNewPair(PhysicsObject *obj1, PhysicsObject *obj2, ICollisionShape *shape1, ICollisionShape *shape2);
 
   // Seperating-Axis-Theorem
   // - Returns true if the objects are colliding or false otherwise
@@ -110,8 +106,8 @@ protected:
 private:
   const PhysicsObject *m_pObj1;
   const PhysicsObject *m_pObj2;
-  const CollisionShape *m_pShape1;
-  const CollisionShape *m_pShape2;
+  const ICollisionShape *m_pShape1;
+  const ICollisionShape *m_pShape2;
 
   std::vector<Vector3> m_vPossibleCollisionAxes;
 

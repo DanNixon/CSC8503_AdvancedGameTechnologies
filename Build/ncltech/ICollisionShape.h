@@ -1,5 +1,5 @@
 /******************************************************************************
-Class: CollisionShape
+Class: ICollisionShape
 Implements:
 Author: Pieran Marris      <p.marris@newcastle.ac.uk> and YOU!
 Description: 
@@ -41,15 +41,15 @@ struct CollisionEdge
   Vector3 _v1;
 };
 
-class CollisionShape
+class ICollisionShape
 {
 public:
-  CollisionShape()
+  ICollisionShape()
   {
     m_LocalTransform.ToIdentity();
   }
 
-  virtual ~CollisionShape()
+  virtual ~ICollisionShape()
   {
   }
 

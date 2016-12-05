@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABB.cpp" />
     <ClCompile Include="AABBCollisionShape.cpp" />
     <ClCompile Include="BruteForceBroadphase.cpp" />
     <ClCompile Include="CollisionDetectionSAT.cpp" />
@@ -100,19 +101,20 @@
     <ClCompile Include="SphereCollisionShape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.h" />
     <ClInclude Include="AABBCollisionShape.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BruteForceBroadphase.h" />
     <ClInclude Include="CollisionDetectionSAT.h" />
-    <ClInclude Include="CollisionShape.h" />
+    <ClInclude Include="ICollisionShape.h" />
     <ClInclude Include="CommonMeshes.h" />
     <ClInclude Include="CommonUtils.h" />
     <ClInclude Include="Constraint.h" />
-    <ClInclude Include="CuboidCollisionShape.h" />
     <ClInclude Include="DistanceConstraint.h" />
     <ClInclude Include="HingeConstraint.h" />
     <ClInclude Include="Hull.h" />
     <ClInclude Include="IBroadphase.h" />
+    <ClInclude Include="CuboidCollisionShape.h" />
     <ClInclude Include="Manifold.h" />
     <ClInclude Include="NCLDebug.h" />
     <ClInclude Include="NetworkBase.h" />

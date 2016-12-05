@@ -10,8 +10,6 @@ A sphere object is one of the easiest 3D shapes to model, as for collision purpo
 it also can only ever have one contact point. This makes alot of the returns quite trival compared to the cuboid that requires alot of
 setting up and adjanency information.
 
-
-
        (\_/)
        ( '_')
      /""""""""""""\=========     -----D
@@ -21,9 +19,9 @@ setting up and adjanency information.
 */ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "CollisionShape.h"
+#include "ICollisionShape.h"
 
-class SphereCollisionShape : public CollisionShape
+class SphereCollisionShape : public ICollisionShape
 {
 public:
   SphereCollisionShape();
@@ -35,7 +33,8 @@ public:
   {
     m_Radius = radius;
   }
-  float GetRadius() const
+
+  inline float GetRadius() const
   {
     return m_Radius;
   }

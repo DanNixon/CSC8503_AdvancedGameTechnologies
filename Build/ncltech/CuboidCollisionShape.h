@@ -1,99 +1,56 @@
-/******************************************************************************
-Class: CuboidCollisionShape
-Implements: CollisionShape
-Author: Pieran Marris      <p.marris@newcastle.ac.uk> and YOU!
-Description: 
-
-Extends CollisionShape to represent a cuboid geometric shape.
-
-To simplify some of the methods such as getting the min/max vertices and acquiring the reference face, this 
-class uses a cuboid 'Hull' object as it's basis. This keeps a list of all vertices, faces and their inter-connectivity,
-allowing easy access to adjacent faces which is required for retrieving the clipping planes later on.
-
-        (\_/)
-        ( '_')
-     /""""""""""""\=========     -----D
-    /"""""""""""""""""""""""\
-....\_@____@____@____@____@_/
-
-*/ /////////////////////////////////////////////////////////////////////////////
-
 #pragma once
 
-#include "CollisionShape.h"
-#include "Hull.h"
+#include "AABB.h"
+#include "ICollisionShape.h"
 
-class CuboidCollisionShape : public CollisionShape
+class CuboidCollisionShape : public ICollisionShape
 {
-protected:
-  static void ConstructCubeHull();
-
-protected:
-  static Hull m_CubeHull; //!< Static cube descriptor, as all cuboid instances will have the same underlying model format
-
 public:
-  CuboidCollisionShape();
-  CuboidCollisionShape(const Vector3 &halfdims);
+  CuboidCollisionShape(const Vector3 &halfDims = Vector3(0.5f, 0.5f, 0.5f));
   virtual ~CuboidCollisionShape();
 
-  // Set Cuboid Dimensions
-  void SetHalfWidth(float half_width)
+  void SetHalfDims(const Vector3 &halfDims)
   {
-    m_CuboidHalfDimensions.x = fabs(half_width);
+    m_hull.SetHalfDimensions(halfDims);
   }
 
-  void SetHalfHeight(float half_height)
+  void SetLowerLeft(const Vector3 &lowerLeft)
   {
-    m_CuboidHalfDimensions.y = fabs(half_height);
+    m_hull.SetLower(lowerLeft);
   }
 
-  void SetHalfDepth(float half_depth)
+  void SetUpperRight(const Vector3 &upperRight)
   {
-    m_CuboidHalfDimensions.z = fabs(half_depth);
+    m_hull.SetUpper(upperRight);
   }
 
-  // Get Cuboid Dimensions
-  const Vector3 &GetHalfDims() const
+  Vector3 LowerLeft() const
   {
-    return m_CuboidHalfDimensions;
+    return m_hull.GetLower();
   }
 
-  float GetHalfWidth() const
+  Vector3 UpperRight() const
   {
-    return m_CuboidHalfDimensions.x;
+    return m_hull.GetUpper();
   }
 
-  float GetHalfHeight() const
-  {
-    return m_CuboidHalfDimensions.y;
-  }
-
-  float GetHalfDepth() const
-  {
-    return m_CuboidHalfDimensions.z;
-  }
-
-  // Debug Collision Shape
-  virtual void DebugDraw(const PhysicsObject *currentObject) const override;
-
-  // Build Inertia Matrix for rotational mass
   virtual Matrix3 BuildInverseInertia(float invMass) const override;
 
-  // Generic Collision Detection Routines
-  //  - Used in CollisionDetectionSAT to identify if two shapes overlap
-  virtual void GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const override;
+  virtual void GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *axes) const override;
 
-  virtual void GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *out_edges) const override;
+  virtual void GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *edges) const override;
 
-  virtual void GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
-                                     Vector3 *out_max) const override;
+  virtual void GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *min,
+                                     Vector3 *max) const override;
 
-  virtual void GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis, std::list<Vector3> *out_face,
-                                           Vector3 *out_normal, std::vector<Plane> *out_adjacent_planes) const override;
+  virtual void GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis, std::list<Vector3> *face,
+                                           Vector3 *normal, std::vector<Plane> *adjacentPlanes) const override;
+
+  virtual void DebugDraw(const PhysicsObject *currentObject) const override;
 
 protected:
   virtual void GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const;
 
 protected:
-  Vector3 m_CuboidHalfDimensions;
+  AABB m_hull;
 };
