@@ -6,6 +6,9 @@
 #include <nclgl\Window.h>
 #include <omp.h>
 
+// TODO
+#include "BruteForceBroadphase.h"
+
 void PhysicsEngine::SetDefaults()
 {
   m_DebugDrawFlags = NULL;
@@ -20,13 +23,20 @@ void PhysicsEngine::SetDefaults()
 }
 
 PhysicsEngine::PhysicsEngine()
+  : m_broadphaseDetection(nullptr)
 {
   SetDefaults();
+
+  // TODO: move out of here
+  m_broadphaseDetection = new BruteForceBroadphase();
 }
 
 PhysicsEngine::~PhysicsEngine()
 {
   RemoveAllPhysicsObjects();
+
+  if (m_broadphaseDetection != nullptr)
+    delete m_broadphaseDetection;
 }
 
 void PhysicsEngine::AddPhysicsObject(PhysicsObject *obj)
@@ -100,8 +110,11 @@ void PhysicsEngine::UpdatePhysics()
     delete m;
   m_vpManifolds.clear();
 
-  // Check for collisions
-  BroadPhaseCollisions();
+  // Broadphase collision detection
+  m_BroadphaseCollisionPairs.clear();
+  m_broadphaseDetection->FindPotentialCollisionPairs(m_PhysicsObjects, m_BroadphaseCollisionPairs);
+
+  // Narrowphase collision detection
   NarrowPhaseCollisions();
 
   // Solve collision constraints
@@ -239,43 +252,6 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 
   // Mark cached world transform as invalid
   obj->m_wsTransformInvalidated = true;
-}
-
-void PhysicsEngine::BroadPhaseCollisions()
-{
-  m_BroadphaseCollisionPairs.clear();
-
-  PhysicsObject *obj1, *obj2;
-  //	The broadphase needs to build a list of all potentially colliding objects
-  // in the world,
-  //	which then get accurately assesed in narrowphase. If this is too coarse
-  // then the system slows down with
-  //	the complexity of narrowphase collision checking, if this is too fine then
-  // collisions may be missed.
-
-  //	Brute force approach.
-  //  - For every object A, assume it could collide with every other object..
-  //    even if they are on the opposite sides of the world.
-  if (m_PhysicsObjects.size() > 0)
-  {
-    for (size_t i = 0; i < m_PhysicsObjects.size() - 1; ++i)
-    {
-      for (size_t j = i + 1; j < m_PhysicsObjects.size(); ++j)
-      {
-        obj1 = m_PhysicsObjects[i];
-        obj2 = m_PhysicsObjects[j];
-
-        // Check they both atleast have collision shapes
-        if (obj1->NumCollisionShapes() > 0 && obj2->NumCollisionShapes() > 0 && (obj1->IsAwake() || obj2->IsAwake()))
-        {
-          CollisionPair cp;
-          cp.pObjectA = obj1;
-          cp.pObjectB = obj2;
-          m_BroadphaseCollisionPairs.push_back(cp);
-        }
-      }
-    }
-  }
 }
 
 void PhysicsEngine::NarrowPhaseCollisions()

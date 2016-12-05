@@ -113,6 +113,9 @@
     <ClCompile Include="AABBCollisionShape.cpp">
       <Filter>src\Physics\CollisionShapes</Filter>
     </ClCompile>
+    <ClCompile Include="BruteForceBroadphase.cpp">
+      <Filter>src\Physics\CollisionDetection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -201,6 +204,12 @@
     </ClInclude>
     <ClInclude Include="AABBCollisionShape.h">
       <Filter>include\Physics\CollisionShapes</Filter>
+    </ClInclude>
+    <ClInclude Include="IBroadphase.h">
+      <Filter>include\Physics\CollisionDetection</Filter>
+    </ClInclude>
+    <ClInclude Include="BruteForceBroadphase.h">
+      <Filter>include\Physics\CollisionDetection</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

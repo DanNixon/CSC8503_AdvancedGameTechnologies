@@ -43,6 +43,7 @@ The general runtime consists of:
 
 #pragma once
 #include "Constraint.h"
+#include "IBroadphase.h"
 #include "Manifold.h"
 #include "PhysicsObject.h"
 #include "TSingleton.h"
@@ -70,15 +71,6 @@ enum IntegrationType
   INTEGRATION_SEMI_IMPLICIT_EULER,
   INTEGRATION_RUNGE_KUTTA_2,
   INTEGRATION_RUNGE_KUTTA_4
-};
-
-/**
- * @brief Forms the output of the broadphase collision detection
- */
-struct CollisionPair
-{
-  PhysicsObject *pObjectA;
-  PhysicsObject *pObjectB;
 };
 
 class PhysicsEngine : public TSingleton<PhysicsEngine>
@@ -142,6 +134,26 @@ public:
   }
 
   /**
+   * @brief Gets the broadphase collision detection handler.
+   * @return Pointer to broadphase handler
+   */
+  inline IBroadphase *GetBroadphase()
+  {
+    return m_broadphaseDetection;
+  }
+
+  /**
+   * @brief Sets the broadphase collision detection handler.
+   * @param bp Pointer to broadphase handler
+   *
+   * Handler that is set at engine deconstruction will be deleted.
+   */
+  void SetBroadphase(IBroadphase *bp)
+  {
+    m_broadphaseDetection = bp;
+  }
+
+  /**
    * @brief Gets the current integration scheme.
    * @return Integration scheme
    */
@@ -193,9 +205,6 @@ protected:
   // The actual time-independant update function
   void UpdatePhysics();
 
-  // Handles broadphase collision detection
-  void BroadPhaseCollisions();
-
   // Handles narrowphase collision detection
   void NarrowPhaseCollisions();
 
@@ -218,7 +227,8 @@ protected:
 
   float m_DampingFactor;
 
-  std::vector<CollisionPair> m_BroadphaseCollisionPairs;
+  IBroadphase *m_broadphaseDetection;                    //!< Hanlder used to find broadphase collision pairs
+  std::vector<CollisionPair> m_BroadphaseCollisionPairs; //!< Set of collision paris found in broadphase
 
   std::vector<PhysicsObject *> m_PhysicsObjects;
 
