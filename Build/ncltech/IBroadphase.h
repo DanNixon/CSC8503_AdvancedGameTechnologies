@@ -15,5 +15,6 @@ struct CollisionPair
 class IBroadphase
 {
 public:
-  virtual void FindPotentialCollisionPairs(const std::vector<PhysicsObject *> & objects, std::vector<CollisionPair> & collisionPairs) = 0;
+  virtual void FindPotentialCollisionPairs(const std::vector<PhysicsObject *> &objects,
+                                           std::vector<CollisionPair> &collisionPairs) = 0;
 };

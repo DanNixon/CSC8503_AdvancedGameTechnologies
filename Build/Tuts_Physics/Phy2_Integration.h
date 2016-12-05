@@ -40,6 +40,7 @@ https://www.khanacademy.org/math/calculus-home/integration-applications-calc/rec
 */ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonMeshes.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\NCLDebug.h>
@@ -87,8 +88,9 @@ public:
     SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
     SceneManager::Instance()->GetCamera()->SetYaw(0.0f);
 
-    PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f)); // No Gravity
-    PhysicsEngine::Instance()->SetDampingFactor(1.0f);                // No Damping
+    PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
+    PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
+    PhysicsEngine::Instance()->SetDampingFactor(1.0f);
 
     // Create Ground
     this->AddGameObject(CommonUtils::BuildCuboidObject("Ground",                          // Friendly ID/Name

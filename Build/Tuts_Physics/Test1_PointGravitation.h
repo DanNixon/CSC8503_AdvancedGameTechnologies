@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PhysicsEngine.h>
@@ -19,6 +20,7 @@ public:
     SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 10.0f));
     SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
+    PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT);
     PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
 

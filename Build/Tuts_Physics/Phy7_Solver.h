@@ -70,6 +70,7 @@ If you have got this working, then:
 */ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PhysicsEngine.h>
@@ -90,6 +91,7 @@ public:
     SceneManager::Instance()->GetCamera()->SetYaw(-160.f);
     SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
 
+    PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_MANIFOLD);
 
     // Create Ground

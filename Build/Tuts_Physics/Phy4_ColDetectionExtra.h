@@ -37,6 +37,7 @@ would suffer knowing it was all for nothing if it were deleted.
 
 #include "ObjectPlayer.h"
 #include <nclgl\OBJMesh.h>
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\CuboidCollisionShape.h>
 #include <ncltech\NCLDebug.h>
@@ -109,6 +110,7 @@ public:
 
   virtual void OnInitializeScene() override
   {
+    PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES);
 
     SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 15.0f));

@@ -37,6 +37,7 @@ bounce at different heights :)
 */ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PhysicsEngine.h>
@@ -56,6 +57,8 @@ public:
     SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 15.0f));
     SceneManager::Instance()->GetCamera()->SetYaw(-10.f);
     SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
+
+    PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
 
     // Create Ground
     this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,

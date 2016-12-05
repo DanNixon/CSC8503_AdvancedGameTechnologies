@@ -6,9 +6,6 @@
 #include <nclgl\Window.h>
 #include <omp.h>
 
-// TODO
-#include "BruteForceBroadphase.h"
-
 void PhysicsEngine::SetDefaults()
 {
   m_DebugDrawFlags = NULL;
@@ -23,12 +20,9 @@ void PhysicsEngine::SetDefaults()
 }
 
 PhysicsEngine::PhysicsEngine()
-  : m_broadphaseDetection(nullptr)
+    : m_broadphaseDetection(nullptr)
 {
   SetDefaults();
-
-  // TODO: move out of here
-  m_broadphaseDetection = new BruteForceBroadphase();
 }
 
 PhysicsEngine::~PhysicsEngine()
