@@ -2,128 +2,128 @@
 
 #include "PathEdge.h"
 
-  /**
-   * @brief Creates a new A* path planner.
-   * @param nodes Vector of nodes in graph
-   */
-  AStar::AStar(const std::vector<PathNode *> &nodes)
+/**
+ * @brief Creates a new A* path planner.
+ * @param nodes Vector of nodes in graph
+ */
+AStar::AStar(const std::vector<PathNode *> &nodes)
+{
+  // Create node data
+  for (auto it = nodes.begin(); it != nodes.end(); ++it)
+    m_nodeData[*it] = new QueueablePathNode(*it);
+}
+
+AStar::~AStar()
+{
+}
+
+/**
+ * @brief Clears open and closed lists and computed path and resets node
+ *        data.
+ */
+void AStar::reset()
+{
+  // Clear caches
+  m_openList = PathNodePriorityQueue();
+  m_closedList.clear();
+  m_path.clear();
+
+  // Reset node data
+  for (auto it = m_nodeData.begin(); it != m_nodeData.end(); ++it)
   {
-    // Create node data
-    for (auto it = nodes.begin(); it != nodes.end(); ++it)
-      m_nodeData[*it] = new QueueablePathNode(*it);
+    it->second->parent = nullptr;
+    it->second->fScore = std::numeric_limits<float>::max();
+    it->second->gScore = std::numeric_limits<float>::max();
   }
+}
 
-  AStar::~AStar()
+/**
+ * @brief Finds the shortest path between two nodes.
+ * @param start Starting node
+ * @param end Target node
+ * @return True if path finding was successful
+ */
+bool AStar::findPath(PathNode *start, PathNode *end)
+{
+  // Clear caches
+  reset();
+
+  // Add start node to open list
+  m_nodeData[start]->gScore = 0.0f;
+  m_nodeData[start]->fScore = m_nodeData[start]->node->h(*end);
+  m_openList.push(m_nodeData[start]);
+
+  bool success = false;
+  while (!m_openList.empty())
   {
-  }
+    QueueablePathNode *p = m_openList.top();
 
-  /**
-   * @brief Clears open and closed lists and computed path and resets node
-   *        data.
-   */
-  void AStar::reset()
-  {
-    // Clear caches
-    m_openList = PathNodePriorityQueue();
-    m_closedList.clear();
-    m_path.clear();
+    // Move this node to the closed list
+    m_openList.pop();
+    m_closedList.push_back(p);
 
-    // Reset node data
-    for (auto it = m_nodeData.begin(); it != m_nodeData.end(); ++it)
+    // Check if this is the end node
+    if (p->node == end)
     {
-      it->second->parent = nullptr;
-      it->second->fScore = std::numeric_limits<float>::max();
-      it->second->gScore = std::numeric_limits<float>::max();
+      success = true;
+      break;
     }
-  }
 
-  /**
-   * @brief Finds the shortest path between two nodes.
-   * @param start Starting node
-   * @param end Target node
-   * @return True if path finding was successful
-   */
-  bool AStar::findPath(PathNode *start, PathNode *end)
-  {
-    // Clear caches
-    reset();
-
-    // Add start node to open list
-    m_nodeData[start]->gScore = 0.0f;
-    m_nodeData[start]->fScore = m_nodeData[start]->node->h(*end);
-    m_openList.push(m_nodeData[start]);
-
-    bool success = false;
-    while (!m_openList.empty())
+    // For each node connected to the next node
+    for (size_t i = 0; i < p->node->numConnections(); i++)
     {
-      QueueablePathNode *p = m_openList.top();
+      PathEdge *pq = p->node->edge(i);
 
-      // Move this node to the closed list
-      m_openList.pop();
-      m_closedList.push_back(p);
+      // Skip an edge that cannot be traversed
+      if (!pq->traversable())
+        continue;
 
-      // Check if this is the end node
-      if (p->node == end)
+      QueueablePathNode *q = m_nodeData[pq->otherNode(p->node)];
+
+      // Calculate new scores
+      float gScore = p->gScore + pq->cost();
+      float fScore = gScore + q->node->h(*end);
+
+      // Search for this node on open and closed lists
+      auto closedIt = std::find(m_closedList.begin(), m_closedList.end(), q);
+      auto openIt = m_openList.find(q);
+
+      if (closedIt != m_closedList.end() || openIt != m_openList.end())
       {
-        success = true;
-        break;
-      }
-
-      // For each node connected to the next node
-      for (size_t i = 0; i < p->node->numConnections(); i++)
-      {
-        PathEdge *pq = p->node->edge(i);
-
-        // Skip an edge that cannot be traversed
-        if (!pq->traversable())
-          continue;
-
-        QueueablePathNode *q = m_nodeData[pq->otherNode(p->node)];
-
-        // Calculate new scores
-        float gScore = p->gScore + pq->cost();
-        float fScore = gScore + q->node->h(*end);
-
-        // Search for this node on open and closed lists
-        auto closedIt = std::find(m_closedList.begin(), m_closedList.end(), q);
-        auto openIt = m_openList.find(q);
-
-        if (closedIt != m_closedList.end() || openIt != m_openList.end())
+        // Check if this path is more efficient that the previous best
+        if (q->gScore > gScore)
         {
-          // Check if this path is more efficient that the previous best
-          if (q->gScore > gScore)
-          {
-            q->parent = p;
-            q->gScore = gScore;
-            q->fScore = fScore;
-            m_openList.update();
-          }
-        }
-        else
-        {
-          // Add this path to the open list if it has yet to be considered
           q->parent = p;
           q->gScore = gScore;
           q->fScore = fScore;
-          m_openList.push(q);
+          m_openList.update();
         }
       }
-    }
-
-    // If successful then reconstruct the best path
-    if (success)
-    {
-      // Add nodes to path
-      QueueablePathNode *n = m_closedList.back();
-      while (n)
+      else
       {
-        m_path.push_back(n->node);
-        n = n->parent;
+        // Add this path to the open list if it has yet to be considered
+        q->parent = p;
+        q->gScore = gScore;
+        q->fScore = fScore;
+        m_openList.push(q);
       }
+    }
+  }
 
-      // Reverse path to be ordered start to end
-      std::reverse(m_path.begin(), m_path.end());
+  // If successful then reconstruct the best path
+  if (success)
+  {
+    // Add nodes to path
+    QueueablePathNode *n = m_closedList.back();
+    while (n)
+    {
+      m_path.push_back(n->node);
+      n = n->parent;
     }
 
-    return success;
+    // Reverse path to be ordered start to end
+    std::reverse(m_path.begin(), m_path.end());
   }
+
+  return success;
+}

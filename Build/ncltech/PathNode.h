@@ -6,44 +6,44 @@
 
 #include "PhysicsObject.h"
 
-  class PathEdge;
+class PathEdge;
+
+/**
+ * @class PathNode
+ * @brief Represents a node in a map.
+ * @author Dan Nixon
+ */
+class PathNode : public PhysicsObject
+{
+public:
+  PathNode(const Vector3 &position = Vector3());
+  virtual ~PathNode();
 
   /**
-   * @class PathNode
-   * @brief Represents a node in a map.
-   * @author Dan Nixon
+   * @brief Gets the number of connections from this node.
+   * @return Number of connections
    */
-  class PathNode : public PhysicsObject
+  inline size_t numConnections() const
   {
-  public:
-    PathNode(const Vector3 &position = Vector3());
-    virtual ~PathNode();
+    return m_connections.size();
+  }
 
-    /**
-     * @brief Gets the number of connections from this node.
-     * @return Number of connections
-     */
-    inline size_t numConnections() const
-    {
-      return m_connections.size();
-    }
+  /**
+   * @brief Gets an edge connecting this node to another.
+   * @param i Index of edge to retrieve
+   * @return Pointer to edge
+   */
+  inline PathEdge *edge(size_t i)
+  {
+    return m_connections[i];
+  }
 
-    /**
-     * @brief Gets an edge connecting this node to another.
-     * @param i Index of edge to retrieve
-     * @return Pointer to edge
-     */
-    inline PathEdge *edge(size_t i)
-    {
-      return m_connections[i];
-    }
+  bool IsOnList(const std::vector<PathNode *> &list);
 
-    bool IsOnList(const std::vector<PathNode *> &list);
+  virtual float h(const PathNode &other) const;
 
-    virtual float h(const PathNode &other) const;
+private:
+  friend class PathEdge;
 
-  private:
-    friend class PathEdge;
-
-    std::vector<PathEdge *> m_connections; //!< Edges of this node
-  };
+  std::vector<PathEdge *> m_connections; //!< Edges of this node
+};

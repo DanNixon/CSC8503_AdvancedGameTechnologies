@@ -7,61 +7,61 @@
 #include "PathNodePriorityQueue.h"
 #include "QueueablePathNode.h"
 
+/**
+ * @class AStar
+ * @brief Implementaton of the A* path finding algorithm.
+ * @author Dan Nixon
+ */
+class AStar
+{
+public:
+  AStar(const std::vector<PathNode *> &nodes);
+  virtual ~AStar();
+
+  void reset();
+  bool findPath(PathNode *start, PathNode *end);
+
   /**
-   * @class AStar
-   * @brief Implementaton of the A* path finding algorithm.
-   * @author Dan Nixon
+   * @brief Gets the open list.
+   * @return Open list
    */
-  class AStar
+  inline PathNodePriorityQueue openList() const
   {
-  public:
-    AStar(const std::vector<PathNode *> &nodes);
-    virtual ~AStar();
+    return m_openList;
+  }
 
-    void reset();
-    bool findPath(PathNode *start, PathNode *end);
+  /**
+   * @brief Gets the closed list.
+   * @return Closed list
+   */
+  inline std::vector<QueueablePathNode *> closedList() const
+  {
+    return m_closedList;
+  }
 
-    /**
-     * @brief Gets the open list.
-     * @return Open list
-     */
-    inline PathNodePriorityQueue openList() const
-    {
-      return m_openList;
-    }
+  /**
+   * @brief Gets the computed path.
+   * @return Path
+   */
+  inline std::vector<PathNode *> path() const
+  {
+    return m_path;
+  }
 
-    /**
-     * @brief Gets the closed list.
-     * @return Closed list
-     */
-    inline std::vector<QueueablePathNode *> closedList() const
-    {
-      return m_closedList;
-    }
+  /**
+   * @brief Gets the cost of the full path.
+   * @return Path cost
+   */
+  inline float pathCost() const
+  {
+    return m_closedList.back()->gScore;
+  }
 
-    /**
-     * @brief Gets the computed path.
-     * @return Path
-     */
-    inline std::vector<PathNode *> path() const
-    {
-      return m_path;
-    }
+private:
+  std::map<PathNode *, QueueablePathNode *> m_nodeData;
 
-    /**
-     * @brief Gets the cost of the full path.
-     * @return Path cost
-     */
-    inline float pathCost() const
-    {
-      return m_closedList.back()->gScore;
-    }
+  PathNodePriorityQueue m_openList;              //!< Open list
+  std::vector<QueueablePathNode *> m_closedList; //!< Closed list
 
-  private:
-    std::map<PathNode *, QueueablePathNode *> m_nodeData;
-
-    PathNodePriorityQueue m_openList;              //!< Open list
-    std::vector<QueueablePathNode *> m_closedList; //!< Closed list
-
-    std::vector<PathNode *> m_path; //!< Computed path
-  };
+  std::vector<PathNode *> m_path; //!< Computed path
+};

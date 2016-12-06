@@ -6,7 +6,7 @@
 
 #include <sstream>
 
-//TODO
+// TODO
 #define DOXYGEN_SKIP
 
 /**

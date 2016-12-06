@@ -30,71 +30,71 @@ template <typename T> struct greater_ptr : std::binary_function<bool, const T *,
   }
 };
 
+/**
+ * @class PathNodePriorityQueue
+ * @brief Wrapper around a vector that provides a priority queue.
+ * @author Dan Nixon
+ */
+class PathNodePriorityQueue : public std::vector<QueueablePathNode *>
+{
+public:
   /**
-   * @class PathNodePriorityQueue
-   * @brief Wrapper around a vector that provides a priority queue.
-   * @author Dan Nixon
+   * @brief Creates a new queue.
    */
-  class PathNodePriorityQueue : public std::vector<QueueablePathNode *>
+  PathNodePriorityQueue()
+      : std::vector<QueueablePathNode *>()
+      , m_comp()
   {
-  public:
-    /**
-     * @brief Creates a new queue.
-     */
-    PathNodePriorityQueue()
-        : std::vector<QueueablePathNode *>()
-        , m_comp()
-    {
-      std::make_heap(begin(), end(), m_comp);
-    }
+    std::make_heap(begin(), end(), m_comp);
+  }
 
-    /**
-     * @brief Adds a new node to the queue.
-     * @param item Node to add
-     */
-    void push(QueueablePathNode *item)
-    {
-      push_back(item);
-      std::push_heap(begin(), end(), m_comp);
-    }
+  /**
+   * @brief Adds a new node to the queue.
+   * @param item Node to add
+   */
+  void push(QueueablePathNode *item)
+  {
+    push_back(item);
+    std::push_heap(begin(), end(), m_comp);
+  }
 
-    /**
-     * @brief Removes the node at the top of the list.
-     */
-    void pop()
-    {
-      std::pop_heap(begin(), end(), m_comp);
-      pop_back();
-    }
+  /**
+   * @brief Removes the node at the top of the list.
+   */
+  void pop()
+  {
+    std::pop_heap(begin(), end(), m_comp);
+    pop_back();
+  }
 
-    /**
-     * @brief Returns the node at the top of the list.
-     * @return Highest node
-     */
-    QueueablePathNode *top() const
-    {
-      return front();
-    }
+  /**
+   * @brief Returns the node at the top of the list.
+   * @return Highest node
+   */
+  QueueablePathNode *top() const
+  {
+    return front();
+  }
 
-    /**
-     * @brief Searches for a node in the queue.
-     * @param item Node to find
-     * @return Const iterator to item
-     */
-    std::vector<QueueablePathNode *>::const_iterator find(QueueablePathNode *item) const
-    {
-      return std::find(cbegin(), cend(), item);
-    }
+  /**
+   * @brief Searches for a node in the queue.
+   * @param item Node to find
+   * @return Const iterator to item
+   */
+  std::vector<QueueablePathNode *>::const_iterator find(QueueablePathNode *item) const
+  {
+    return std::find(cbegin(), cend(), item);
+  }
 
-    /**
-     * @brief Updates positions of nodes in the queue to preserve the queue
-     *        priority.
-     */
-    void update()
-    {
-      std::make_heap(begin(), end(), m_comp);
-    }
+  /**
+   * @brief Updates positions of nodes in the queue to preserve the queue
+   *        priority.
+   */
+  void update()
+  {
+    std::make_heap(begin(), end(), m_comp);
+  }
 
-  private:
-    greater_ptr<QueueablePathNode> m_comp; //!< Sorting comparator
-  };
+private:
+  greater_ptr<QueueablePathNode> m_comp; //!< Sorting comparator
+};

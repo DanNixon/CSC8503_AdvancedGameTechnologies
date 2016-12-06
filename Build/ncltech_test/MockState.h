@@ -4,73 +4,73 @@
 
 #include "MockStateMachine.h"
 
-    /**
-     * @class MockState
-     * @brief Mock state used for testing state machine.
-     * @author Dan Nixon
-     * @see MockStateMachine
-     */
-    class MockState : public IState
+/**
+ * @class MockState
+ * @brief Mock state used for testing state machine.
+ * @author Dan Nixon
+ * @see MockStateMachine
+ */
+class MockState : public IState
+{
+public:
+  /**
+   * @copydoc IState::IState
+   * @param transferOn Value to transfer on
+   * @param transferTo State to transfer to
+   */
+  MockState(const std::string &name, IState *parent, StateMachine *machine, int transferOn, const std::string &transferTo)
+      : IState(name, parent, machine)
+      , m_transferOn(transferOn)
+      , m_transferTo(transferTo)
+  {
+  }
+
+  /**
+   * @copydoc IState::testTransferFrom
+   */
+  IState *testTransferFrom() const
+  {
+    MockStateMachine *machine = dynamic_cast<MockStateMachine *>(m_machine);
+
+    int i = machine->value;
+
+    if (machine->value == m_transferOn)
     {
-    public:
-      /**
-       * @copydoc IState::IState
-       * @param transferOn Value to transfer on
-       * @param transferTo State to transfer to
-       */
-      MockState(const std::string &name, IState *parent, StateMachine *machine, int transferOn, const std::string &transferTo)
-          : IState(name, parent, machine)
-          , m_transferOn(transferOn)
-          , m_transferTo(transferTo)
-      {
-      }
+      auto branch = m_machine->rootState()->findState(m_transferTo);
+      return branch.back();
+    }
 
-      /**
-       * @copydoc IState::testTransferFrom
-       */
-      IState *testTransferFrom() const
-      {
-        MockStateMachine *machine = dynamic_cast<MockStateMachine *>(m_machine);
+    return nullptr;
+  }
 
-        int i = machine->value;
+  /**
+   * @copydoc IState::onEntry
+   */
+  virtual void onEntry(IState *last)
+  {
+    MockStateMachine *machine = dynamic_cast<MockStateMachine *>(m_machine);
+    machine->entryStack.push_back(this);
+  }
 
-        if (machine->value == m_transferOn)
-        {
-          auto branch = m_machine->rootState()->findState(m_transferTo);
-          return branch.back();
-        }
+  /**
+   * @copydoc IState::onExit
+   */
+  virtual void onExit(IState *next)
+  {
+    MockStateMachine *machine = dynamic_cast<MockStateMachine *>(m_machine);
+    machine->exitStack.push_back(this);
+  }
 
-        return nullptr;
-      }
+  /**
+   * @copydoc IState::onOperate
+   */
+  virtual void onOperate()
+  {
+    MockStateMachine *machine = dynamic_cast<MockStateMachine *>(m_machine);
+    machine->operatedStack.push_back(this);
+  }
 
-      /**
-       * @copydoc IState::onEntry
-       */
-      virtual void onEntry(IState *last)
-      {
-        MockStateMachine *machine = dynamic_cast<MockStateMachine *>(m_machine);
-        machine->entryStack.push_back(this);
-      }
-
-      /**
-       * @copydoc IState::onExit
-       */
-      virtual void onExit(IState *next)
-      {
-        MockStateMachine *machine = dynamic_cast<MockStateMachine *>(m_machine);
-        machine->exitStack.push_back(this);
-      }
-
-      /**
-       * @copydoc IState::onOperate
-       */
-      virtual void onOperate()
-      {
-        MockStateMachine *machine = dynamic_cast<MockStateMachine *>(m_machine);
-        machine->operatedStack.push_back(this);
-      }
-
-    private:
-      int m_transferOn;
-      std::string m_transferTo;
-    };
+private:
+  int m_transferOn;
+  std::string m_transferTo;
+};
