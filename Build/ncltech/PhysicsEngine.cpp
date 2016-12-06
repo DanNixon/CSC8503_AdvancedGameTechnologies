@@ -108,6 +108,9 @@ void PhysicsEngine::UpdatePhysics()
   m_BroadphaseCollisionPairs.clear();
   m_broadphaseDetection->FindPotentialCollisionPairs(m_PhysicsObjects, m_BroadphaseCollisionPairs);
 
+  // TODO
+  std::cout << m_BroadphaseCollisionPairs.size() << '\n';
+
   // Narrowphase collision detection
   NarrowPhaseCollisions();
 

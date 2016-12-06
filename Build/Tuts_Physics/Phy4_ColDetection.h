@@ -53,7 +53,7 @@ normal are correct for all collisions. =]
 #pragma once
 
 #include <ncltech\AABBCollisionShape.h>
-#include <ncltech\BruteForceBroadphase.h>
+#include <ncltech\SortAndSweepBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\NCLDebug.h>
@@ -84,7 +84,7 @@ public:
     SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
     SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
-    PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
+    PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase(Vector3(1.0f, 0.0f, 0.0f)));
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_AABB);
 
     m_AccumTime = 0.0f;
@@ -94,7 +94,7 @@ public:
     Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,
                                                     false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 
-    this->AddGameObject(ground);
+    //this->AddGameObject(ground);
 
     // Create Sphere-Sphere Manifold Test
     {

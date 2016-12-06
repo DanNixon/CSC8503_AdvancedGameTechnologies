@@ -22,7 +22,7 @@ PhysicsObject::PhysicsObject()
     , m_elasticity(0.9f)
     , m_onCollisionCallback(nullptr)
 {
-  m_aabb.SetHalfDimensions(Vector3(1.0f, 1.0f, 1.0f));
+  m_aabb.SetHalfDimensions(Vector3(0.5f, 0.5f, 0.5f));
 }
 
 PhysicsObject::~PhysicsObject()
