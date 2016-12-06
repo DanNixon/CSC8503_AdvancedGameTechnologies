@@ -78,13 +78,16 @@
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="AABBCollisionShape.cpp" />
+    <ClCompile Include="AStar.cpp" />
     <ClCompile Include="BruteForceBroadphase.cpp" />
     <ClCompile Include="CollisionDetectionSAT.cpp" />
     <ClCompile Include="CommonMeshes.cpp" />
     <ClCompile Include="CommonUtils.cpp" />
     <ClCompile Include="CuboidCollisionShape.cpp" />
+    <ClCompile Include="Edge.cpp" />
     <ClCompile Include="IState.cpp" />
     <ClCompile Include="NetworkBase.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="ObjectMeshDragable.cpp" />
     <ClCompile Include="NCLDebug.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -106,10 +109,12 @@
   <ItemGroup>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="AABBCollisionShape.h" />
+    <ClInclude Include="AStar.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BruteForceBroadphase.h" />
     <ClInclude Include="CollisionDetectionSAT.h" />
     <ClInclude Include="CompletableActionState.h" />
+    <ClInclude Include="Edge.h" />
     <ClInclude Include="FunctionalState.h" />
     <ClInclude Include="ICollisionShape.h" />
     <ClInclude Include="CommonMeshes.h" />
@@ -124,11 +129,14 @@
     <ClInclude Include="Manifold.h" />
     <ClInclude Include="NCLDebug.h" />
     <ClInclude Include="NetworkBase.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="NodePriorityQueue.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectMesh.h" />
     <ClInclude Include="ObjectMeshDragable.h" />
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="QueueableNode.h" />
     <ClInclude Include="RenderList.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

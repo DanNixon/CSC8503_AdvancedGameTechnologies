@@ -6,15 +6,8 @@
 #include "MockStateMachine.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace Simulation::AI;
 
 // clang-format off
-namespace Simulation
-{
-namespace AI
-{
-namespace Test
-{
 #ifndef DOXYGEN_SKIP
 TEST_CLASS(StateMachineUpdateFunctionalTest)
 {
@@ -324,6 +317,3 @@ public:
   }
 };
 #endif /* DOXYGEN_SKIP */
-}
-}
-}

@@ -57,11 +57,17 @@
     <Filter Include="src\Physics\Geometry">
       <UniqueIdentifier>{fffc8121-ff8e-446f-b110-65033772b405}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\AI">
+    <Filter Include="src\FSM">
       <UniqueIdentifier>{8ec0a8c4-452b-4d0d-a684-38d26206190b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\AI">
+    <Filter Include="include\FSM">
       <UniqueIdentifier>{a5342b1c-6a71-4861-9030-6c43a6f92b67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\PathPlanning">
+      <UniqueIdentifier>{38d80e1a-c2a4-402d-a620-d94661720ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\PathPlanning">
+      <UniqueIdentifier>{c0489657-25af-4881-9dcc-258083fa3ca4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -135,13 +141,22 @@
       <Filter>src\Physics\CollisionShapes</Filter>
     </ClCompile>
     <ClCompile Include="IState.cpp">
-      <Filter>src\AI</Filter>
+      <Filter>src\FSM</Filter>
     </ClCompile>
     <ClCompile Include="StateContainer.cpp">
-      <Filter>src\AI</Filter>
+      <Filter>src\FSM</Filter>
     </ClCompile>
     <ClCompile Include="StateMachine.cpp">
-      <Filter>src\AI</Filter>
+      <Filter>src\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="AStar.cpp">
+      <Filter>src\PathPlanning</Filter>
+    </ClCompile>
+    <ClCompile Include="Edge.cpp">
+      <Filter>src\PathPlanning</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>src\PathPlanning</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -245,19 +260,34 @@
       <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
     <ClInclude Include="CompletableActionState.h">
-      <Filter>include\AI</Filter>
+      <Filter>include\FSM</Filter>
     </ClInclude>
     <ClInclude Include="FunctionalState.h">
-      <Filter>include\AI</Filter>
+      <Filter>include\FSM</Filter>
     </ClInclude>
     <ClInclude Include="IState.h">
-      <Filter>include\AI</Filter>
+      <Filter>include\FSM</Filter>
     </ClInclude>
     <ClInclude Include="StateContainer.h">
-      <Filter>include\AI</Filter>
+      <Filter>include\FSM</Filter>
     </ClInclude>
     <ClInclude Include="StateMachine.h">
-      <Filter>include\AI</Filter>
+      <Filter>include\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="AStar.h">
+      <Filter>include\PathPlanning</Filter>
+    </ClInclude>
+    <ClInclude Include="Edge.h">
+      <Filter>include\PathPlanning</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>include\PathPlanning</Filter>
+    </ClInclude>
+    <ClInclude Include="NodePriorityQueue.h">
+      <Filter>include\PathPlanning</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueableNode.h">
+      <Filter>include\PathPlanning</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

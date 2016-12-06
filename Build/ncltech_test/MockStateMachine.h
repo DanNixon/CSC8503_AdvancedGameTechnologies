@@ -2,12 +2,6 @@
 
 #include <ncltech/StateMachine.h>
 
-namespace Simulation
-{
-namespace AI
-{
-  namespace Test
-  {
     /**
      * @class MockStateMachine
      * @brief Mock state machine used for testing with MockState.
@@ -32,6 +26,3 @@ namespace AI
       IStatePtrList exitStack;     //!< States that have had onExit() called
       IStatePtrList operatedStack; //!< States that have had onOperate() called
     };
-  }
-}
-}

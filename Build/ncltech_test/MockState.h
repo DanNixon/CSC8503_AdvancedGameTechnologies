@@ -4,12 +4,6 @@
 
 #include "MockStateMachine.h"
 
-namespace Simulation
-{
-namespace AI
-{
-  namespace Test
-  {
     /**
      * @class MockState
      * @brief Mock state used for testing state machine.
@@ -80,6 +74,3 @@ namespace AI
       int m_transferOn;
       std::string m_transferTo;
     };
-  }
-}
-}

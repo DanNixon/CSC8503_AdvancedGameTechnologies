@@ -6,12 +6,6 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // clang-format off
-namespace Simulation
-{
-namespace AI
-{
-namespace Test
-{
 #ifndef DOXYGEN_SKIP
 TEST_CLASS(StateMachineUpdateTest)
 {
@@ -143,6 +137,3 @@ public:
   }
 };
 #endif /* DOXYGEN_SKIP */
-}
-}
-}
