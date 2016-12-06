@@ -70,12 +70,15 @@ public:
 
     // Execute behaviours
     state->SetActivation(true);
-    m.Operate();
+    m.Operate(20.0f);
     state->SetActivation(false);
     
     // Test data modifications
     std::vector<int> expected = {2, 7, 99, 42, 9, 12};
     Assert::IsTrue(expected == data);
+
+    // Test time in state
+    Assert::AreEqual(20.0f, state->TimeInState());
   }
 
   TEST_METHOD(IState_TransferToTests)
@@ -88,16 +91,19 @@ public:
     state1->SetActivation(true);
 
     state1->AddTransferFromTest([]() { return nullptr; });
-    m.Update();
+    m.Update(10.0f);
     Assert::IsTrue(m.ActiveStateBranch().back() == state1);
 
     state1->AddTransferFromTest([state2]() { return state2; });
-    m.Update();
+    m.Update(17.0f);
     Assert::IsTrue(m.ActiveStateBranch().back() == state2);
 
     state2->AddTransferFromTest([state1]() { return state1; });
-    m.Update();
+    m.Update(42.0f);
     Assert::IsTrue(m.ActiveStateBranch().back() == state1);
+
+    Assert::AreEqual(42.0f, state1->TimeInState());
+    Assert::AreEqual(17.0f, state2->TimeInState());
   }
 
   TEST_METHOD(IState_TransferFromTests)
@@ -109,15 +115,18 @@ public:
 
     state1->SetActivation(true);
 
-    m.Update();
+    m.Update(100.0f);
     Assert::IsTrue(m.ActiveStateBranch().back() == state1);
 
     state2->AddTransferToTest([]() { return true; });
-    m.Update();
+    m.Update(170.0f);
     Assert::IsTrue(m.ActiveStateBranch().back() == state2);
 
     state1->AddTransferToTest([]() { return true; });
-    m.Update();
+    m.Update(420.0f);
     Assert::IsTrue(m.ActiveStateBranch().back() == state1);
+
+    Assert::AreEqual(420.0f, state1->TimeInState());
+    Assert::AreEqual(170.0f, state2->TimeInState());
   }
 };

@@ -5,6 +5,8 @@
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
+#include <ncltech\SortAndSweepBroadphase.h>
+
 using namespace CommonUtils;
 
 TestScene::TestScene(const std::string &friendly_name)
@@ -20,8 +22,7 @@ TestScene::~TestScene()
 
 void TestScene::OnInitializeScene()
 {
-  // Disable the physics engine (We will be starting this later!)
-  PhysicsEngine::Instance()->SetPaused(true);
+  PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
 
   // Set the camera position
   SceneManager::Instance()->GetCamera()->SetPosition(Vector3(15.0f, 10.0f, -15.0f));

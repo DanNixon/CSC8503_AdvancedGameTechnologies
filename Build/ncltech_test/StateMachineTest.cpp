@@ -1,6 +1,6 @@
 #include <CppUnitTest.h>
 
-#include "MockStateMachine.h"
+#include <ncltech/StateMachine.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

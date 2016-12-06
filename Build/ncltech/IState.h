@@ -62,6 +62,11 @@ public:
     return m_parent->ActiveChild() == this;
   }
 
+  inline float TimeInState() const
+  {
+    return m_timeInState;
+  }
+
   void AddTransferFromTest(TransferFromTest test);
   void AddTransferToTest(TransferToTest test);
   void AddOnEntryBehaviour(OnEntryBehaviour behaviour);
@@ -86,6 +91,8 @@ protected:
   const std::string m_name; //!< Name of this state
   StateMachine *m_machine;  //!< State machine that holds this state
   IState *m_parent;         //!< Parent state
+
+  float m_timeInState; //!< Time spent in the current state
 
   std::vector<TransferFromTest> m_transferFromTests;
   std::vector<TransferToTest> m_transferToTests;

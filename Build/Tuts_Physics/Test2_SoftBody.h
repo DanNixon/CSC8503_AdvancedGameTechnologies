@@ -63,8 +63,8 @@ public:
           if (j > 0)
           {
             Object *o = softBodyNodes[softBodyNodes.size() - xNodeCount - 2];
-            PhysicsEngine::Instance()->AddConstraint(
-              new DistanceConstraint(node->Physics(), o->Physics(), node->Physics()->GetPosition(), o->Physics()->GetPosition()));
+            PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(
+                node->Physics(), o->Physics(), node->Physics()->GetPosition(), o->Physics()->GetPosition()));
           }
         }
         // Add constraint to pole

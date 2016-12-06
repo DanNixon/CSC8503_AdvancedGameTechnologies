@@ -4,7 +4,7 @@
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
 
-#include "EmptyScene.h"
+#include "CourseworkScene.h"
 #include "TestScene.h"
 
 const Vector4 status_colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -53,8 +53,7 @@ void Initialize()
 
   // Enqueue All Scenes
   SceneManager::Instance()->EnqueueScene(new TestScene("GameTech #1 - Framework Sandbox!"));
-  SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #2 - Peace and quiet"));
-  SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #3 - More peace and quiet"));
+  SceneManager::Instance()->EnqueueScene(new CourseworkScene("GameTech coursework"));
 }
 
 // Print Debug Info

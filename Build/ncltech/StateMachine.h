@@ -32,21 +32,22 @@ public:
   }
 
   /**
-   * @brief Performs updates of the state machine by checking for transition
-   *        conditions then performing operations over all active states.
+   * @brief Performs updates of the state machine by checking for transition conditions then performing operations over all active
+   * states.
+   * @param dt Time since the last call to this function
    * @return True if a state change took place
-   * @see StateMachine:transfer()
-   * @see StateMachine:operate()
+   * @see StateMachine:Transfer()
+   * @see StateMachine:Operate()
    */
-  inline bool Update()
+  inline bool Update(float dt = 0.0f)
   {
     bool stateChange = Transfer();
-    Operate();
+    Operate(dt);
     return stateChange;
   }
 
   virtual bool Transfer();
-  virtual void Operate();
+  virtual void Operate(float dt = 0.0f);
 
 private:
   IState m_root; //!< Root state

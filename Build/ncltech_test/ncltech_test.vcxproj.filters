@@ -48,9 +48,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MockStateMachine.h">
-      <Filter>FSM</Filter>
-    </ClInclude>
     <ClInclude Include="TestDataGenerator.h">
       <Filter>PathPlanning</Filter>
     </ClInclude>

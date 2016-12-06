@@ -178,7 +178,6 @@
     <ClCompile Include="TestDataGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MockStateMachine.h" />
     <ClInclude Include="TestDataGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

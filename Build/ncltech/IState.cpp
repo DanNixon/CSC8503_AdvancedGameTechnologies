@@ -107,8 +107,7 @@ IStatePtrList IState::Branch(bool reverse)
  * @brief Sets the activation of this state and its ancestors.
  * @param active If this state is active or not
  * @param terminateAt Ancestor at which to stop modifying activation
- * @param delta The change of state (last state if active=true, next state if
- *              active=false)
+ * @param delta The change of state (last state if active=true, next state if active=false)
  */
 void IState::SetActivation(bool active, IState *terminateAt, IState *delta)
 {
@@ -168,6 +167,9 @@ bool IState::TestTransferTo() const
  */
 void IState::OnEntry(IState *last)
 {
+  // Reset state duration timer
+  m_timeInState = 0.0f;
+
   for (auto it = m_onEntryBehaviours.begin(); it != m_onEntryBehaviours.end(); ++it)
     it->operator()(last);
 }

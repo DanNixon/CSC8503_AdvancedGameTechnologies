@@ -92,14 +92,15 @@ bool StateMachine::Transfer()
 }
 
 /**
- * @brief Performs operations associated with the currently active branch of
- *        the state tree.
+ * @brief Performs operations associated with the currently active branch of the state tree.
+ * @param dt Time since the last call to this function
  */
-void StateMachine::Operate()
+void StateMachine::Operate(float dt)
 {
   IState *node = m_root.ActiveChild();
   while (node != nullptr)
   {
+    node->m_timeInState += dt;
     node->OnOperate();
     node = node->ActiveChild();
   }
