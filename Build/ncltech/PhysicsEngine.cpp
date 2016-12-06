@@ -146,110 +146,109 @@ void PhysicsEngine::SolveConstraints()
 
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 {
-  // Skip if object is at rest
-  if (obj->IsAtRest())
-    return;
-
-  // Apply gravity
-  if (obj->m_inverseMass > 0.0f)
+  if (obj->IsAwake())
   {
-    if (obj->m_gravitationTarget == nullptr)
+    // Apply gravity
+    if (obj->m_inverseMass > 0.0f)
     {
-      // Uniform directional gravity
-      obj->m_linearVelocity += m_LinearGravity * m_UpdateTimestep;
-    }
-    else
-    {
-      Vector3 ab = obj->m_gravitationTarget->m_position - obj->m_position;
-      Vector3 abn = ab;
-      abn.Normalise();
-
-      if (obj->m_gravitationTarget->m_inverseMass > 0.0f)
+      if (obj->m_gravitationTarget == nullptr)
       {
-        // Handle gravity between points (target is pulled towards self)
-        float r2 = ab.LengthSquared();
-        float f = m_PointGravitation / (r2 * obj->m_inverseMass * obj->m_gravitationTarget->m_inverseMass);
-        obj->ApplyForce(abn * f);
-        obj->m_gravitationTarget->ApplyForce(abn * -f);
-        obj->m_gravitationTarget->WakeUp();
+        // Uniform directional gravity
+        obj->m_linearVelocity += m_LinearGravity * m_UpdateTimestep;
       }
       else
       {
-        // Handle gravity between points (target is immovable)
-        obj->m_linearVelocity += abn * -m_PointGravity * m_UpdateTimestep;
+        Vector3 ab = obj->m_gravitationTarget->m_position - obj->m_position;
+        Vector3 abn = ab;
+        abn.Normalise();
+
+        if (obj->m_gravitationTarget->m_inverseMass > 0.0f)
+        {
+          // Handle gravity between points (target is pulled towards self)
+          float r2 = ab.LengthSquared();
+          float f = m_PointGravitation / (r2 * obj->m_inverseMass * obj->m_gravitationTarget->m_inverseMass);
+          obj->ApplyForce(abn * f);
+          obj->m_gravitationTarget->ApplyForce(abn * -f);
+          obj->m_gravitationTarget->WakeUp();
+        }
+        else
+        {
+          // Handle gravity between points (target is immovable)
+          obj->m_linearVelocity += abn * -m_PointGravity * m_UpdateTimestep;
+        }
       }
     }
-  }
 
-  switch (m_integrationType)
-  {
-  case INTEGRATION_EXPLICIT_EULER:
-  {
-    // Update position
-    obj->m_position += obj->m_linearVelocity * m_UpdateTimestep;
+    switch (m_integrationType)
+    {
+    case INTEGRATION_EXPLICIT_EULER:
+    {
+      // Update position
+      obj->m_position += obj->m_linearVelocity * m_UpdateTimestep;
 
-    // Update linear velocity (v = u + at)
-    obj->m_linearVelocity += obj->m_linearForce * obj->m_inverseMass * m_UpdateTimestep;
+      // Update linear velocity (v = u + at)
+      obj->m_linearVelocity += obj->m_linearForce * obj->m_inverseMass * m_UpdateTimestep;
 
-    // Linear velocity damping
-    obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
+      // Linear velocity damping
+      obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
 
-    // Update orientation
-    obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
-    obj->m_orientation.Normalise();
+      // Update orientation
+      obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
+      obj->m_orientation.Normalise();
 
-    // Update angular velocity
-    obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
+      // Update angular velocity
+      obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
 
-    // Angular velocity damping
-    obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
+      // Angular velocity damping
+      obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
 
-    break;
-  }
+      break;
+    }
 
-  default:
-  case INTEGRATION_SEMI_IMPLICIT_EULER:
-  {
-    // Update linear velocity (v = u + at)
-    obj->m_linearVelocity += obj->m_linearForce * obj->m_inverseMass * m_UpdateTimestep;
+    default:
+    case INTEGRATION_SEMI_IMPLICIT_EULER:
+    {
+      // Update linear velocity (v = u + at)
+      obj->m_linearVelocity += obj->m_linearForce * obj->m_inverseMass * m_UpdateTimestep;
 
-    // Linear velocity damping
-    obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
+      // Linear velocity damping
+      obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
 
-    // Update position
-    obj->m_position += obj->m_linearVelocity * m_UpdateTimestep;
+      // Update position
+      obj->m_position += obj->m_linearVelocity * m_UpdateTimestep;
 
-    // Update angular velocity
-    obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
+      // Update angular velocity
+      obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
 
-    // Angular velocity damping
-    obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
+      // Angular velocity damping
+      obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
 
-    // Update orientation
-    obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
-    obj->m_orientation.Normalise();
+      // Update orientation
+      obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
+      obj->m_orientation.Normalise();
 
-    break;
-  }
+      break;
+    }
 
-  case INTEGRATION_RUNGE_KUTTA_2:
-  {
-    // TODO
-    break;
-  }
+    case INTEGRATION_RUNGE_KUTTA_2:
+    {
+      // TODO
+      break;
+    }
 
-  case INTEGRATION_RUNGE_KUTTA_4:
-  {
-    // TODO
-    break;
-  }
+    case INTEGRATION_RUNGE_KUTTA_4:
+    {
+      // TODO
+      break;
+    }
+    }
+
+    // Mark cached world transform as invalid
+    obj->m_wsTransformInvalidated = true;
   }
 
   // Test for rest conditions
   obj->DoAtRestTest();
-
-  // Mark cached world transform as invalid
-  obj->m_wsTransformInvalidated = true;
 }
 
 void PhysicsEngine::NarrowPhaseCollisions()

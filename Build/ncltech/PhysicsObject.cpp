@@ -82,9 +82,8 @@ void PhysicsObject::DoAtRestTest()
   float v = m_linearVelocity.LengthSquared() + m_angularVelocity.LengthSquared();
   m_averageSummedVelocity += alpha * (v - m_averageSummedVelocity);
 
-  // Do test (only if at rest flag is not already set)
-  if (!m_atRest && m_averageSummedVelocity <= m_restVelocityThresholdSquared)
-    m_atRest = true;
+  // Do test
+  m_atRest = m_averageSummedVelocity <= m_restVelocityThresholdSquared;
 }
 
 void PhysicsObject::DebugDraw(uint64_t flags) const
