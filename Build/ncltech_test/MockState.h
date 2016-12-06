@@ -24,8 +24,7 @@ namespace AI
        * @param transferOn Value to transfer on
        * @param transferTo State to transfer to
        */
-      MockState(const std::string &name, IState *parent, StateMachine *machine, int transferOn,
-                const std::string &transferTo)
+      MockState(const std::string &name, IState *parent, StateMachine *machine, int transferOn, const std::string &transferTo)
           : IState(name, parent, machine)
           , m_transferOn(transferOn)
           , m_transferTo(transferTo)

@@ -53,13 +53,13 @@ normal are correct for all collisions. =]
 #pragma once
 
 #include <ncltech\AABBCollisionShape.h>
-#include <ncltech\SortAndSweepBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
+#include <ncltech\SortAndSweepBroadphase.h>
 #include <ncltech\SphereCollisionShape.h>
 
 class Phy4_ColDetection : public Scene
@@ -85,7 +85,8 @@ public:
     SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
     PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase(Vector3(1.0f, 0.0f, 0.0f)));
-    PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_AABB);
+    PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES |
+                                                 DEBUGDRAW_FLAGS_AABB);
 
     m_AccumTime = 0.0f;
     m_Rotating = true;
@@ -94,7 +95,7 @@ public:
     Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,
                                                     false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 
-    //this->AddGameObject(ground);
+    // this->AddGameObject(ground);
 
     // Create Sphere-Sphere Manifold Test
     {

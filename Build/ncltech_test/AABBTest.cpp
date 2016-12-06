@@ -6,14 +6,10 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace ncltech_test
 {
-TEST_CLASS(AABBTest)
-{
-public:
-  TEST_METHOD(TestMethod1)
-  {
-    // TODO
-    AABB a;
-    a.GetNumEdges();
-  }
-};
+TEST_CLASS(AABBTest){public : TEST_METHOD(TestMethod1){// TODO
+                                                       AABB a;
+a.GetNumEdges();
+}
+}
+;
 }

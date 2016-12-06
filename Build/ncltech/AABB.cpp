@@ -82,7 +82,7 @@ void AABB::SetLower(const Vector3 &lower)
   m_vVertices[7].pos.y = lower.y;
 }
 
-AABB AABB::Transform(const Matrix4 & transformation) const
+AABB AABB::Transform(const Matrix4 &transformation) const
 {
   Matrix4 t(transformation);
   t.ClearRotation();

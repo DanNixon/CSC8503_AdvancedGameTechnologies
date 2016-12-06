@@ -8,6 +8,5 @@ public:
   BruteForceBroadphase();
   virtual ~BruteForceBroadphase();
 
-  virtual void FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects,
-                                           std::vector<CollisionPair> &collisionPairs);
+  virtual void FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects, std::vector<CollisionPair> &collisionPairs);
 };
