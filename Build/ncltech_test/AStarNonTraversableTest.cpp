@@ -4,10 +4,7 @@
 #include <ncltech/PathEdge.h>
 #include <ncltech/PathNode.h>
 
-#include <sstream>
-
-// TODO
-#define DOXYGEN_SKIP
+#include "TestDataGenerator.h"
 
 /**
  * @def FP_ACC
@@ -18,16 +15,15 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // clang-format off
-#ifndef DOXYGEN_SKIP
 TEST_CLASS(AStarNonTraversableTest)
 {
 public:
   TEST_METHOD(AStarNonTraversable_StartAndEndNodeIdentical)
   {
     // Load test graph
-    std::vector<Node *> nodes;
-    std::vector<Edge *> edges;
-    GraphLoader::LoadGraph(nodes, edges, "../../../../resources/test_graph.dat");
+    std::vector<PathNode *> nodes;
+    std::vector<PathEdge *> edges;
+    GenerateTestDataSet1(nodes, edges);
 
     // Set weights
     nodes[3]->edge(2)->setTraversable(false);
@@ -40,7 +36,7 @@ public:
     Assert::AreEqual(0.0f, pathFinder.pathCost(), FP_ACC);
 
     // Assert path
-    std::vector<Node *> &path = pathFinder.path();
+    std::vector<PathNode *> &path = pathFinder.path();
     Assert::AreEqual((size_t)1, path.size());
     Assert::IsTrue(nodes[3] == path[0]);
   }
@@ -48,9 +44,9 @@ public:
   TEST_METHOD(AStarNonTraversable_TestPath_1_fwd)
   {
     // Load test graph
-    std::vector<Node *> nodes;
-    std::vector<Edge *> edges;
-    GraphLoader::LoadGraph(nodes, edges, "../../../../resources/test_graph.dat");
+    std::vector<PathNode *> nodes;
+    std::vector<PathEdge *> edges;
+    GenerateTestDataSet1(nodes, edges);
 
     // Set weights
     edges[2]->setTraversable(false);
@@ -64,7 +60,7 @@ public:
     Assert::AreEqual(2.82842f, pathFinder.pathCost(), FP_ACC);
 
     // Assert path
-    std::vector<Node *> &path = pathFinder.path();
+    std::vector<PathNode *> &path = pathFinder.path();
     Assert::AreEqual((size_t)3, path.size());
     Assert::IsTrue(nodes[3] == path[0]);
     Assert::IsTrue(nodes[7] == path[1]);
@@ -74,9 +70,9 @@ public:
   TEST_METHOD(AStarNonTraversable_TestPath_1_rev)
   {
     // Load test graph
-    std::vector<Node *> nodes;
-    std::vector<Edge *> edges;
-    GraphLoader::LoadGraph(nodes, edges, "../../../../resources/test_graph.dat");
+    std::vector<PathNode *> nodes;
+    std::vector<PathEdge *> edges;
+    GenerateTestDataSet1(nodes, edges);
 
     // Set weights
     edges[2]->setTraversable(false);
@@ -90,7 +86,7 @@ public:
     Assert::AreEqual(2.82842f, pathFinder.pathCost(), FP_ACC);
 
     // Assert path
-    std::vector<Node *> &path = pathFinder.path();
+    std::vector<PathNode *> &path = pathFinder.path();
     Assert::AreEqual((size_t)3, path.size());
     Assert::IsTrue(nodes[5] == path[0]);
     Assert::IsTrue(nodes[7] == path[1]);
@@ -100,9 +96,9 @@ public:
   TEST_METHOD(AStarNonTraversable_TestPath_2_fwd)
   {
     // Load test graph
-    std::vector<Node *> nodes;
-    std::vector<Edge *> edges;
-    GraphLoader::LoadGraph(nodes, edges, "../../../../resources/test_graph.dat");
+    std::vector<PathNode *> nodes;
+    std::vector<PathEdge *> edges;
+    GenerateTestDataSet1(nodes, edges);
 
     // Set weights
     edges[7]->setTraversable(false);
@@ -118,7 +114,7 @@ public:
     Assert::AreEqual(3.82842f, pathFinder.pathCost(), FP_ACC);
 
     // Assert path
-    std::vector<Node *> &path = pathFinder.path();
+    std::vector<PathNode *> &path = pathFinder.path();
     Assert::AreEqual((size_t)4, path.size());
     Assert::IsTrue(nodes[6] == path[0]);
     Assert::IsTrue(nodes[7] == path[1]);
@@ -129,9 +125,9 @@ public:
   TEST_METHOD(AStarNonTraversable_TestPath_2_rev)
   {
     // Load test graph
-    std::vector<Node *> nodes;
-    std::vector<Edge *> edges;
-    GraphLoader::LoadGraph(nodes, edges, "../../../../resources/test_graph.dat");
+    std::vector<PathNode *> nodes;
+    std::vector<PathEdge *> edges;
+    GenerateTestDataSet1(nodes, edges);
 
     // Set weights
     edges[7]->setTraversable(false);
@@ -147,7 +143,7 @@ public:
     Assert::AreEqual(3.82842f, pathFinder.pathCost(), FP_ACC);
 
     // Assert path
-    std::vector<Node *> &path = pathFinder.path();
+    std::vector<PathNode *> &path = pathFinder.path();
     Assert::AreEqual((size_t)4, path.size());
     Assert::IsTrue(nodes[1] == path[0]);
     Assert::IsTrue(nodes[5] == path[1]);
@@ -158,9 +154,9 @@ public:
   TEST_METHOD(AStarNonTraversable_TestPath_3_fwd)
   {
     // Load test graph
-    std::vector<Node *> nodes;
-    std::vector<Edge *> edges;
-    GraphLoader::LoadGraph(nodes, edges, "../../../../resources/test_graph.dat");
+    std::vector<PathNode *> nodes;
+    std::vector<PathEdge *> edges;
+    GenerateTestDataSet1(nodes, edges);
 
     // Set weights
     edges[12]->setTraversable(false);
@@ -175,7 +171,7 @@ public:
     Assert::AreEqual(3.41421f, pathFinder.pathCost(), FP_ACC);
 
     // Assert path
-    std::vector<Node *> &path = pathFinder.path();
+    std::vector<PathNode *> &path = pathFinder.path();
     Assert::AreEqual((size_t)4, path.size());
     Assert::IsTrue(nodes[8] == path[0]);
     Assert::IsTrue(nodes[5] == path[1]);
@@ -186,9 +182,9 @@ public:
   TEST_METHOD(AStarNonTraversable_TestPath_3_rev)
   {
     // Load test graph
-    std::vector<Node *> nodes;
-    std::vector<Edge *> edges;
-    GraphLoader::LoadGraph(nodes, edges, "../../../../resources/test_graph.dat");
+    std::vector<PathNode *> nodes;
+    std::vector<PathEdge *> edges;
+    GenerateTestDataSet1(nodes, edges);
 
     // Set weights
     edges[12]->setTraversable(false);
@@ -203,7 +199,7 @@ public:
     Assert::AreEqual(3.41421f, pathFinder.pathCost(), FP_ACC);
 
     // Assert path
-    std::vector<Node *> &path = pathFinder.path();
+    std::vector<PathNode *> &path = pathFinder.path();
     Assert::AreEqual((size_t)4, path.size());
     Assert::IsTrue(nodes[0] == path[0]);
     Assert::IsTrue(nodes[1] == path[1]);
@@ -214,9 +210,9 @@ public:
   TEST_METHOD(AStarNonTraversable_TestPath_4_fwd)
   {
     // Load test graph
-    std::vector<Node *> nodes;
-    std::vector<Edge *> edges;
-    GraphLoader::LoadGraph(nodes, edges, "../../../../resources/test_graph.dat");
+    std::vector<PathNode *> nodes;
+    std::vector<PathEdge *> edges;
+    GenerateTestDataSet1(nodes, edges);
 
     // Set weights
     edges[9]->setTraversable(false);
@@ -231,7 +227,7 @@ public:
     Assert::AreEqual(1.2f, pathFinder.pathCost(), FP_ACC);
 
     // Assert path
-    std::vector<Node *> &path = pathFinder.path();
+    std::vector<PathNode *> &path = pathFinder.path();
     Assert::AreEqual((size_t)4, path.size());
     Assert::IsTrue(nodes[7] == path[0]);
     Assert::IsTrue(nodes[6] == path[1]);
@@ -242,9 +238,9 @@ public:
   TEST_METHOD(AStarNonTraversable_TestPath_4_rev)
   {
     // Load test graph
-    std::vector<Node *> nodes;
-    std::vector<Edge *> edges;
-    GraphLoader::LoadGraph(nodes, edges, "../../../../resources/test_graph.dat");
+    std::vector<PathNode *> nodes;
+    std::vector<PathEdge *> edges;
+    GenerateTestDataSet1(nodes, edges);
 
     // Set weights
     edges[9]->setTraversable(false);
@@ -259,7 +255,7 @@ public:
     Assert::AreEqual(1.2f, pathFinder.pathCost(), FP_ACC);
 
     // Assert path
-    std::vector<Node *> &path = pathFinder.path();
+    std::vector<PathNode *> &path = pathFinder.path();
     Assert::AreEqual((size_t)4, path.size());
     Assert::IsTrue(nodes[4] == path[0]);
     Assert::IsTrue(nodes[3] == path[1]);
@@ -267,4 +263,3 @@ public:
     Assert::IsTrue(nodes[7] == path[3]);
   }
 };
-#endif /* DOXYGEN_SKIP */

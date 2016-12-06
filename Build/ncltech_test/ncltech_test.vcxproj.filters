@@ -49,6 +49,9 @@
     <ClCompile Include="PathEdgeTest.cpp">
       <Filter>PathPlanning</Filter>
     </ClCompile>
+    <ClCompile Include="TestDataGenerator.cpp">
+      <Filter>PathPlanning</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockState.h">
@@ -56,6 +59,9 @@
     </ClInclude>
     <ClInclude Include="MockStateMachine.h">
       <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="TestDataGenerator.h">
+      <Filter>PathPlanning</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

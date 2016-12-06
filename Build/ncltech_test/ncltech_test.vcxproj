@@ -177,10 +177,12 @@
     <ClCompile Include="StateMachineUpdateFunctionalTest.cpp" />
     <ClCompile Include="StateMachineUpdateTest.cpp" />
     <ClCompile Include="AABBTest.cpp" />
+    <ClCompile Include="TestDataGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockState.h" />
     <ClInclude Include="MockStateMachine.h" />
+    <ClInclude Include="TestDataGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
