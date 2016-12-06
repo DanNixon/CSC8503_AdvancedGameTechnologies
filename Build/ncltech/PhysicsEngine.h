@@ -81,6 +81,9 @@ class PhysicsEngine : public TSingleton<PhysicsEngine>
   friend class TSingleton<PhysicsEngine>;
 
 public:
+  const uint8_t MAX_UPDATES_PER_FRAME = 5;
+
+public:
   // Reset Default Values like gravity/timestep - called when scene is switched
   // out
   void SetDefaults();
@@ -154,6 +157,15 @@ public:
   void SetBroadphase(IBroadphase *bp)
   {
     m_broadphaseDetection = bp;
+  }
+
+  /**
+   * @brief Gets the number of broadphase collision paris generted in this update (over all possible frames).
+   * @return Number of broadphase collision pairs
+   */
+  inline size_t NumBroadphaseTests() const
+  {
+    return m_broadphaseCollisionPairCount;
   }
 
   /**
@@ -232,6 +244,7 @@ protected:
 
   IBroadphase *m_broadphaseDetection;                    //!< Handler used to find broadphase collision pairs
   std::vector<CollisionPair> m_BroadphaseCollisionPairs; //!< Set of collision paris found in broadphase
+  size_t m_broadphaseCollisionPairCount;
 
   std::vector<PhysicsObject *> m_PhysicsObjects; //!< All physical objects in the simulation
 

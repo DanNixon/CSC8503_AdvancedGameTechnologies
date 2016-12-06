@@ -55,4 +55,17 @@ public:
   {
     return Vector2(x + a.x, y + a.y);
   }
+
+  inline float operator[](int i) const
+  {
+    switch (i)
+    {
+    case 0:
+      return x;
+    case 1:
+      return y;
+    default:
+      return 0.0f;
+    }
+  }
 };

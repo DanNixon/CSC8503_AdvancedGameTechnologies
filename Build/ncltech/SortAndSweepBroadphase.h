@@ -20,6 +20,8 @@ public:
   virtual void FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects, std::vector<CollisionPair> &collisionPairs);
 
 protected:
-  Vector3 m_axis;                                                         //!< Axis along which testing is performed
+  Vector3 m_axis;  //!< Axis along which testing is performed
+  int m_axisIndex; //!< Index of axis along which testing is performed
+
   std::function<bool(PhysicsObject *, PhysicsObject *)> m_sortComparator; //!< Comparator used for sorting along axis
 };

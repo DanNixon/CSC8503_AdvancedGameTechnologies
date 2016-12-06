@@ -14,13 +14,20 @@ SortAndSweepBroadphase::~SortAndSweepBroadphase()
 
 void SortAndSweepBroadphase::SetAxis(const Vector3 &axis)
 {
+  // Determine axis
   m_axis = axis;
   m_axis.Normalise();
 
+  if (abs(m_axis.x) > 0.9f)
+    m_axisIndex = 0;
+  else if (abs(m_axis.y) > 0.9f)
+    m_axisIndex = 1;
+  else if (abs(m_axis.z) > 0.9f)
+    m_axisIndex = 2;
+
   // Generate comparator
-  // TODO
-  m_sortComparator = [](PhysicsObject *a, PhysicsObject *b) {
-    return a->GetWorldSpaceAABB().GetLower().x < b->GetWorldSpaceAABB().GetLower().x;
+  m_sortComparator = [this](PhysicsObject *a, PhysicsObject *b) {
+    return a->GetWorldSpaceAABB().GetLower()[this->m_axisIndex] < b->GetWorldSpaceAABB().GetLower()[this->m_axisIndex];
   };
 }
 
@@ -32,7 +39,7 @@ void SortAndSweepBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObje
 
   for (auto it = objects.begin(); it != objects.end(); ++it)
   {
-    float thisBoxRight = (*it)->GetWorldSpaceAABB().GetUpper().x; // TODO
+    float thisBoxRight = (*it)->GetWorldSpaceAABB().GetUpper()[m_axisIndex];
 
     for (auto iit = it + 1; iit != objects.end(); ++iit)
     {
@@ -40,7 +47,7 @@ void SortAndSweepBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObje
       if ((*it)->IsAtRest() && (*iit)->IsAtRest())
         continue;
 
-      float testBoxLeft = (*iit)->GetWorldSpaceAABB().GetLower().x; // TODO
+      float testBoxLeft = (*iit)->GetWorldSpaceAABB().GetLower()[m_axisIndex];
 
       // Test for overlap between the axis values of the bounding boxes
       if (testBoxLeft < thisBoxRight)

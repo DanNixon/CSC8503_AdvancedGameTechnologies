@@ -75,18 +75,22 @@ void PhysicsEngine::RemoveAllPhysicsObjects()
 
 void PhysicsEngine::Update(float deltaTime)
 {
-  const int max_updates_per_frame = 5;
+  m_broadphaseCollisionPairCount = 0;
 
   if (!m_IsPaused)
   {
     m_UpdateAccum += deltaTime;
-    for (int i = 0; (m_UpdateAccum >= m_UpdateTimestep) && i < max_updates_per_frame; ++i)
+
+    for (uint8_t i = 0; (m_UpdateAccum >= m_UpdateTimestep) && i < MAX_UPDATES_PER_FRAME; ++i)
     {
       m_UpdateAccum -= m_UpdateTimestep;
+
+      // Additional check here incase physics was paused mid-update and the contents of the physics need to be displayed
       if (!m_IsPaused)
-        UpdatePhysics(); // Additional check here incase physics was paused
-                         // mid-update and the contents of the physics need to
-                         // be displayed
+      {
+        UpdatePhysics();
+        m_broadphaseCollisionPairCount += m_BroadphaseCollisionPairs.size();
+      }
     }
 
     if (m_UpdateAccum >= m_UpdateTimestep)
