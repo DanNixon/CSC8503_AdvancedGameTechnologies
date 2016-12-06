@@ -1,8 +1,8 @@
 #include "CppUnitTest.h"
 
 #include <ncltech/AStar.h>
-#include <ncltech/Edge.h>
-#include <ncltech/Node.h>
+#include <ncltech/PathEdge.h>
+#include <ncltech/PathNode.h>
 
 #include <sstream>
 

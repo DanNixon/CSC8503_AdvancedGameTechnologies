@@ -2,23 +2,23 @@
 
 #include <vector>
 
-#include "Node.h"
+#include "PathNode.h"
 
   /**
-   * @class QueueableNode
+   * @class QueueablePathNode
    * @brief Wrapper around a Node for use in AStar.
    * @author Dan Nixon
    *
    * Contains comparators for priority queue and a pointer to a parent node.
    */
-  class QueueableNode
+  class QueueablePathNode
   {
   public:
     /**
      * @brief Creates a new wrapper.
      * @param n Wrapped node
      */
-    QueueableNode(Node *n)
+    QueueablePathNode(PathNode *n)
         : node(n)
         , parent(nullptr)
         , fScore(std::numeric_limits<float>::max())
@@ -26,7 +26,7 @@
     {
     }
 
-    virtual ~QueueableNode()
+    virtual ~QueueablePathNode()
     {
     }
 
@@ -35,9 +35,9 @@
      * @param list List to check
      * @return True if node was found on list
      */
-    bool IsOnList(const std::vector<QueueableNode *> &list)
+    bool IsOnList(const std::vector<QueueablePathNode *> &list)
     {
-      return std::find_if(list.begin(), list.end(), [this](QueueableNode *n) { return n->node == (Node*)this; }) != list.end();
+      return std::find_if(list.begin(), list.end(), [this](QueueablePathNode *n) { return n->node == (PathNode*)this; }) != list.end();
     }
 
     /**
@@ -46,7 +46,7 @@
      * @return True if this node has an F value greater than than that of
      *         other.
      */
-    bool operator>(const QueueableNode &other) const
+    bool operator>(const QueueablePathNode &other) const
     {
       return this->fScore > other.fScore;
     }
@@ -57,7 +57,7 @@
      * @return True if this node has an F value greater than of equal to that
      *         of other.
      */
-    bool operator>=(const QueueableNode &other) const
+    bool operator>=(const QueueablePathNode &other) const
     {
       return this->fScore >= other.fScore;
     }
@@ -67,7 +67,7 @@
      * @param other Node wrapper being compared with
      * @return True if this node has an F value less than that of other.
      */
-    bool operator<(const QueueableNode &other) const
+    bool operator<(const QueueablePathNode &other) const
     {
       return this->fScore < other.fScore;
     }
@@ -78,14 +78,14 @@
      * @return True if this node has an F value less than or equal to that of
      *         other.
      */
-    bool operator<=(const QueueableNode &other) const
+    bool operator<=(const QueueablePathNode &other) const
     {
       return this->fScore <= other.fScore;
     }
 
   public:
-    Node *node;            //!< Wrapped Node
-    QueueableNode *parent; //!< Parent Node in path
+    PathNode *node;            //!< Wrapped Node
+    QueueablePathNode *parent; //!< Parent Node in path
     float fScore;          //!< F score of wrapped node
     float gScore;          //!< G score of wrapped node
   };

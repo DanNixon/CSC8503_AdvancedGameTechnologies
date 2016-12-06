@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <functional>
 
-#include "QueueableNode.h"
+#include "QueueablePathNode.h"
 
 /**
  * @struct greater_ptr
@@ -31,18 +31,18 @@ template <typename T> struct greater_ptr : std::binary_function<bool, const T *,
 };
 
   /**
-   * @class NodePriorityQueue
+   * @class PathNodePriorityQueue
    * @brief Wrapper around a vector that provides a priority queue.
    * @author Dan Nixon
    */
-  class NodePriorityQueue : public std::vector<QueueableNode *>
+  class PathNodePriorityQueue : public std::vector<QueueablePathNode *>
   {
   public:
     /**
      * @brief Creates a new queue.
      */
-    NodePriorityQueue()
-        : std::vector<QueueableNode *>()
+    PathNodePriorityQueue()
+        : std::vector<QueueablePathNode *>()
         , m_comp()
     {
       std::make_heap(begin(), end(), m_comp);
@@ -52,7 +52,7 @@ template <typename T> struct greater_ptr : std::binary_function<bool, const T *,
      * @brief Adds a new node to the queue.
      * @param item Node to add
      */
-    void push(QueueableNode *item)
+    void push(QueueablePathNode *item)
     {
       push_back(item);
       std::push_heap(begin(), end(), m_comp);
@@ -71,7 +71,7 @@ template <typename T> struct greater_ptr : std::binary_function<bool, const T *,
      * @brief Returns the node at the top of the list.
      * @return Highest node
      */
-    QueueableNode *top() const
+    QueueablePathNode *top() const
     {
       return front();
     }
@@ -81,7 +81,7 @@ template <typename T> struct greater_ptr : std::binary_function<bool, const T *,
      * @param item Node to find
      * @return Const iterator to item
      */
-    std::vector<QueueableNode *>::const_iterator find(QueueableNode *item) const
+    std::vector<QueueablePathNode *>::const_iterator find(QueueablePathNode *item) const
     {
       return std::find(cbegin(), cend(), item);
     }
@@ -96,5 +96,5 @@ template <typename T> struct greater_ptr : std::binary_function<bool, const T *,
     }
 
   private:
-    greater_ptr<QueueableNode> m_comp; //!< Sorting comparator
+    greater_ptr<QueueablePathNode> m_comp; //!< Sorting comparator
   };

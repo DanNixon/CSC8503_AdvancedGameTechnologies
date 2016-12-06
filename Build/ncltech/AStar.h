@@ -3,9 +3,9 @@
 #include <map>
 #include <vector>
 
-#include "Node.h"
-#include "NodePriorityQueue.h"
-#include "QueueableNode.h"
+#include "PathNode.h"
+#include "PathNodePriorityQueue.h"
+#include "QueueablePathNode.h"
 
   /**
    * @class AStar
@@ -15,17 +15,17 @@
   class AStar
   {
   public:
-    AStar(const std::vector<Node *> &nodes);
+    AStar(const std::vector<PathNode *> &nodes);
     virtual ~AStar();
 
     void reset();
-    bool findPath(Node *start, Node *end);
+    bool findPath(PathNode *start, PathNode *end);
 
     /**
      * @brief Gets the open list.
      * @return Open list
      */
-    inline NodePriorityQueue openList() const
+    inline PathNodePriorityQueue openList() const
     {
       return m_openList;
     }
@@ -34,7 +34,7 @@
      * @brief Gets the closed list.
      * @return Closed list
      */
-    inline std::vector<QueueableNode *> closedList() const
+    inline std::vector<QueueablePathNode *> closedList() const
     {
       return m_closedList;
     }
@@ -43,7 +43,7 @@
      * @brief Gets the computed path.
      * @return Path
      */
-    inline std::vector<Node *> path() const
+    inline std::vector<PathNode *> path() const
     {
       return m_path;
     }
@@ -58,10 +58,10 @@
     }
 
   private:
-    std::map<Node *, QueueableNode *> m_nodeData;
+    std::map<PathNode *, QueueablePathNode *> m_nodeData;
 
-    NodePriorityQueue m_openList;              //!< Open list
-    std::vector<QueueableNode *> m_closedList; //!< Closed list
+    PathNodePriorityQueue m_openList;              //!< Open list
+    std::vector<QueueablePathNode *> m_closedList; //!< Closed list
 
-    std::vector<Node *> m_path; //!< Computed path
+    std::vector<PathNode *> m_path; //!< Computed path
   };

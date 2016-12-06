@@ -1,32 +1,23 @@
 #pragma once
 
-#include "Node.h"
+#include "PathNode.h"
 
   /**
-   * @class Edge
+   * @class PathEdge
    * @brief Represents a connection between two nodes.
    * @author Dan Nixon
    */
-  class Edge
+  class PathEdge
   {
   public:
-    Edge(Node *a, Node *b, const std::string &id = std::string());
-    virtual ~Edge();
-
-    /**
-     * @brief Gets the ID of the arc.
-     * @return String ID
-     */
-    inline std::string id() const
-    {
-      return m_id;
-    }
+    PathEdge(PathNode *a, PathNode *b);
+    virtual ~PathEdge();
 
     /**
      * @brief Gets the first node.
      * @return First node
      */
-    inline Node *nodeA()
+    inline PathNode *nodeA()
     {
       return m_nodeA;
     }
@@ -35,12 +26,12 @@
      * @brief Gets the second node.
      * @return Second node
      */
-    inline Node *nodeB()
+    inline PathNode *nodeB()
     {
       return m_nodeB;
     }
 
-    Node *otherNode(Node *node);
+    PathNode *otherNode(PathNode *node);
 
     /**
      * @brief Tests if this edge is traversable.
@@ -55,7 +46,7 @@
      * @brief Gets the static cost of traversing this edge.
      * @return Static cost
      */
-    virtual float staticCost() const = 0;
+    virtual float staticCost() const;
 
     /**
      * @brief Gets the weight coefficient of traversing this edge.
@@ -85,20 +76,19 @@
      *
      * Edges are on a path if both nodes are on the path and are a distance of 1 apart.
      */
-    bool IsOnPath(const std::vector<Node *> &path)
+    bool IsOnPath(const std::vector<PathNode *> &path)
     {
       auto aIt = std::find(path.begin(), path.end(), m_nodeA);
       auto bIt = std::find(path.begin(), path.end(), m_nodeB);
       return (aIt != path.end() && bIt != path.end() && std::abs(std::distance(aIt, bIt)) == 1);
     }
 
-    bool operator==(const Edge &other) const;
-    bool operator!=(const Edge &other) const;
+    bool operator==(const PathEdge &other) const;
+    bool operator!=(const PathEdge &other) const;
 
   private:
-    std::string m_id; //!< String ID of the edge
-    Node *m_nodeA;    //!< First node
-    Node *m_nodeB;    //!< Second node
+    PathNode *m_nodeA;    //!< First node
+    PathNode *m_nodeB;    //!< Second node
 
   protected:
     bool m_traversable; //!< Flag indicating if this edge can be traversed

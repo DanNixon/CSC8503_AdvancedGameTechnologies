@@ -152,10 +152,10 @@
     <ClCompile Include="AStar.cpp">
       <Filter>src\PathPlanning</Filter>
     </ClCompile>
-    <ClCompile Include="Edge.cpp">
+    <ClCompile Include="PathNode.cpp">
       <Filter>src\PathPlanning</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
+    <ClCompile Include="PathEdge.cpp">
       <Filter>src\PathPlanning</Filter>
     </ClCompile>
   </ItemGroup>
@@ -277,16 +277,16 @@
     <ClInclude Include="AStar.h">
       <Filter>include\PathPlanning</Filter>
     </ClInclude>
-    <ClInclude Include="Edge.h">
+    <ClInclude Include="PathNode.h">
       <Filter>include\PathPlanning</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
+    <ClInclude Include="PathEdge.h">
       <Filter>include\PathPlanning</Filter>
     </ClInclude>
-    <ClInclude Include="NodePriorityQueue.h">
+    <ClInclude Include="QueueablePathNode.h">
       <Filter>include\PathPlanning</Filter>
     </ClInclude>
-    <ClInclude Include="QueueableNode.h">
+    <ClInclude Include="PathNodePriorityQueue.h">
       <Filter>include\PathPlanning</Filter>
     </ClInclude>
   </ItemGroup>

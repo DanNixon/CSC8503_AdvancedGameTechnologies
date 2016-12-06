@@ -43,10 +43,10 @@
     <ClCompile Include="AStarWeightedTest.cpp">
       <Filter>PathPlanning</Filter>
     </ClCompile>
-    <ClCompile Include="EdgeTest.cpp">
+    <ClCompile Include="PriorityQueueTest.cpp">
       <Filter>PathPlanning</Filter>
     </ClCompile>
-    <ClCompile Include="PriorityQueueTest.cpp">
+    <ClCompile Include="PathEdgeTest.cpp">
       <Filter>PathPlanning</Filter>
     </ClCompile>
   </ItemGroup>

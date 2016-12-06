@@ -1,52 +1,54 @@
 #include "CppUnitTest.h"
 
-#include <ncltech/NodePriorityQueue.h>
-#include <ncltech/QueueableNode.h>
+#include <ncltech/PathNodePriorityQueue.h>
+#include <ncltech/QueueablePathNode.h>
 
 #include <sstream>
-
-// TODO
-#define DOXYGEN_SKIP
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // clang-format off
-#ifndef DOXYGEN_SKIP
 TEST_CLASS(PriorityQueueTest)
 {
 public:
   TEST_METHOD(PriorityQueue_Pred)
   {
-    Node * n1 = new Node("n1", Vector3());
-    Node * n2 = new Node("n2", Vector3());
+    PathNode * n1 = new PathNode();
+    PathNode * n2 = new PathNode();
 
-    QueueableNode * qn1 = new QueueableNode(n1);
-    QueueableNode * qn2 = new QueueableNode(n2);
+    QueueablePathNode * qn1 = new QueueablePathNode(n1);
+    QueueablePathNode * qn2 = new QueueablePathNode(n2);
 
     qn1->fScore = 10;
     qn2->fScore = 5;
 
-    auto pred = greater_ptr<QueueableNode>();
+    auto pred = greater_ptr<QueueablePathNode>();
 
     Assert::IsTrue(pred(qn1, qn2));
     Assert::IsFalse(pred(qn2, qn1));
+
+    delete n1;
+    delete n2;
+
+    delete qn1;
+    delete qn2;
   }
 
   TEST_METHOD(PriorityQueue_PriorityOrder)
   {
-    Node * n1 = new Node("n1", Vector3());
-    Node * n2 = new Node("n2", Vector3());
-    Node * n3 = new Node("n3", Vector3());
+    PathNode * n1 = new PathNode();
+    PathNode * n2 = new PathNode();
+    PathNode * n3 = new PathNode();
 
-    QueueableNode * qn1 = new QueueableNode(n1);
-    QueueableNode * qn2 = new QueueableNode(n2);
-    QueueableNode * qn3 = new QueueableNode(n3);
+    QueueablePathNode * qn1 = new QueueablePathNode(n1);
+    QueueablePathNode * qn2 = new QueueablePathNode(n2);
+    QueueablePathNode * qn3 = new QueueablePathNode(n3);
 
     qn1->fScore = 10;
     qn2->fScore = 5;
     qn3->fScore = 20;
 
-    NodePriorityQueue q;
+    PathNodePriorityQueue q;
     q.push(qn1);
     q.push(qn2);
     q.push(qn3);
@@ -56,23 +58,31 @@ public:
     Assert::IsTrue(q.top() == qn1);
     q.pop();
     Assert::IsTrue(q.top() == qn3);
+
+    delete n1;
+    delete n2;
+    delete n3;
+
+    delete qn1;
+    delete qn2;
+    delete qn3;
   }
 
   TEST_METHOD(PriorityQueue_ModifyFScore)
   {
-    Node * n1 = new Node("n1", Vector3());
-    Node * n2 = new Node("n2", Vector3());
-    Node * n3 = new Node("n3", Vector3());
+    PathNode * n1 = new PathNode();
+    PathNode * n2 = new PathNode();
+    PathNode * n3 = new PathNode();
 
-    QueueableNode * qn1 = new QueueableNode(n1);
-    QueueableNode * qn2 = new QueueableNode(n2);
-    QueueableNode * qn3 = new QueueableNode(n3);
+    QueueablePathNode * qn1 = new QueueablePathNode(n1);
+    QueueablePathNode * qn2 = new QueueablePathNode(n2);
+    QueueablePathNode * qn3 = new QueueablePathNode(n3);
 
     qn1->fScore = 10.0f;
     qn2->fScore = 5.0f;
     qn3->fScore = 20.0f;
 
-    NodePriorityQueue q;
+    PathNodePriorityQueue q;
     q.push(qn1);
     q.push(qn2);
     q.push(qn3);
@@ -85,6 +95,13 @@ public:
     Assert::IsTrue(q.top() == qn2);
     q.pop();
     Assert::IsTrue(q.top() == qn1);
+
+    delete n1;
+    delete n2;
+    delete n3;
+
+    delete qn1;
+    delete qn2;
+    delete qn3;
   }
 };
-#endif /* DOXYGEN_SKIP */

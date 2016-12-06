@@ -1,43 +1,19 @@
 #include "CppUnitTest.h"
 
-#include <ncltech/Edge.h>
-#include <ncltech/Node.h>
-
-#include <sstream>
-
-// TODO
-#define DOXYGEN_SKIP
+#include <ncltech/PathEdge.h>
+#include <ncltech/PathNode.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // clang-format off
-#ifndef DOXYGEN_SKIP
-TEST_CLASS(EdgeTest)
+TEST_CLASS(PathEdgeTest)
 {
 public:
-  TEST_METHOD(Edge_DefaultName)
-  {
-    Node n1("n1");
-    Node n2("n2");
-    Edge e(&n1, &n2);
-    Assert::AreEqual(std::string("n1-n2"), e.id());
-  }
-
-  TEST_METHOD(Edge_Test_Create)
-  {
-    Node n1("n1");
-    Node n2("n2");
-    Edge e(&n1, &n2, "e1");
-    Assert::AreEqual(std::string("e1"), e.id());
-    Assert::IsTrue(&n1 == e.nodeA());
-    Assert::IsTrue(&n2 == e.nodeB());
-  }
-
   TEST_METHOD(Edge_Test_CostWeight)
   {
-    Node n1("n1", Vector3(10.0f, 0.0f, 0.0f));
-    Node n2("n2", Vector3(0.0f, 5.0f, 0.0f));
-    Edge e(&n1, &n2, "e1");
+    PathNode n1(Vector3(10.0f, 0.0f, 0.0f));
+    PathNode n2(Vector3(0.0f, 5.0f, 0.0f));
+    PathEdge e(&n1, &n2);
 
     // With default weight = 1
     Assert::AreEqual(1.0f, e.weight());
@@ -61,14 +37,14 @@ public:
 
   TEST_METHOD(Edge_Equality)
   {
-    Node n1("n1");
-    Node n2("n2");
-    Node n3("n3");
+    PathNode n1;
+    PathNode n2;
+    PathNode n3;
 
-    Edge e1(&n1, &n2);
-    Edge e2(&n1, &n2);
-    Edge e3(&n2, &n1);
-    Edge e4(&n1, &n3);
+    PathEdge e1(&n1, &n2);
+    PathEdge e2(&n1, &n2);
+    PathEdge e3(&n2, &n1);
+    PathEdge e4(&n1, &n3);
 
     Assert::IsTrue(e1 == e2);
     Assert::IsTrue(e1 == e3);
@@ -81,4 +57,3 @@ public:
     Assert::IsTrue(e1 != e4);
   }
 };
-#endif /* DOXYGEN_SKIP */

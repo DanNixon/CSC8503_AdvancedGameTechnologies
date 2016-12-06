@@ -169,7 +169,7 @@
     <ClCompile Include="AStarNonTraversableTest.cpp" />
     <ClCompile Include="AStarTest.cpp" />
     <ClCompile Include="AStarWeightedTest.cpp" />
-    <ClCompile Include="EdgeTest.cpp" />
+    <ClCompile Include="PathEdgeTest.cpp" />
     <ClCompile Include="IStateTest.cpp" />
     <ClCompile Include="PriorityQueueTest.cpp" />
     <ClCompile Include="StateContainerTest.cpp" />

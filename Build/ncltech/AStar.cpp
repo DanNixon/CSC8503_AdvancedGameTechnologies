@@ -1,16 +1,16 @@
 #include "AStar.h"
 
-#include "Edge.h"
+#include "PathEdge.h"
 
   /**
    * @brief Creates a new A* path planner.
    * @param nodes Vector of nodes in graph
    */
-  AStar::AStar(const std::vector<Node *> &nodes)
+  AStar::AStar(const std::vector<PathNode *> &nodes)
   {
     // Create node data
     for (auto it = nodes.begin(); it != nodes.end(); ++it)
-      m_nodeData[*it] = new QueueableNode(*it);
+      m_nodeData[*it] = new QueueablePathNode(*it);
   }
 
   AStar::~AStar()
@@ -24,7 +24,7 @@
   void AStar::reset()
   {
     // Clear caches
-    m_openList = NodePriorityQueue();
+    m_openList = PathNodePriorityQueue();
     m_closedList.clear();
     m_path.clear();
 
@@ -43,7 +43,7 @@
    * @param end Target node
    * @return True if path finding was successful
    */
-  bool AStar::findPath(Node *start, Node *end)
+  bool AStar::findPath(PathNode *start, PathNode *end)
   {
     // Clear caches
     reset();
@@ -56,7 +56,7 @@
     bool success = false;
     while (!m_openList.empty())
     {
-      QueueableNode *p = m_openList.top();
+      QueueablePathNode *p = m_openList.top();
 
       // Move this node to the closed list
       m_openList.pop();
@@ -72,13 +72,13 @@
       // For each node connected to the next node
       for (size_t i = 0; i < p->node->numConnections(); i++)
       {
-        Edge *pq = p->node->edge(i);
+        PathEdge *pq = p->node->edge(i);
 
         // Skip an edge that cannot be traversed
         if (!pq->traversable())
           continue;
 
-        QueueableNode *q = m_nodeData[pq->otherNode(p->node)];
+        QueueablePathNode *q = m_nodeData[pq->otherNode(p->node)];
 
         // Calculate new scores
         float gScore = p->gScore + pq->cost();
@@ -114,7 +114,7 @@
     if (success)
     {
       // Add nodes to path
-      QueueableNode *n = m_closedList.back();
+      QueueablePathNode *n = m_closedList.back();
       while (n)
       {
         m_path.push_back(n->node);
