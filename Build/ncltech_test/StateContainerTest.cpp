@@ -8,7 +8,6 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // clang-format off
-#ifndef DOXYGEN_SKIP
 TEST_CLASS(StateContainerTest)
 {
 public:
@@ -65,4 +64,3 @@ public:
     Assert::IsTrue(s121 == branch[2]);
   }
 };
-#endif /* DOXYGEN_SKIP */

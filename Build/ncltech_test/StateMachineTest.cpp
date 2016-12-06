@@ -1,12 +1,11 @@
 #include <CppUnitTest.h>
 
-#include "MockState.h"
 #include "MockStateMachine.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // clang-format off
-#ifndef DOXYGEN_SKIP
+#if 0 // TODO
 TEST_CLASS(StateMachineTest)
 {
 public:

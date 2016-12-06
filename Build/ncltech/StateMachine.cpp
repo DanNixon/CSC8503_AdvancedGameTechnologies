@@ -60,14 +60,14 @@ bool StateMachine::transfer()
   IState *oldState = branch.back();
   bool stateChange = false;
 
-  for (IStatePtrListIter brIt = branch.begin(); brIt != branch.end(); ++brIt)
+  for (auto brIt = branch.begin(); brIt != branch.end(); ++brIt)
   {
     IState *transferState = (*brIt)->testTransferFrom();
 
     if (transferState == nullptr)
     {
       IStatePtrList siblings = (*brIt)->parent()->children();
-      for (IStatePtrListIter sibIt = siblings.begin(); sibIt != siblings.end(); ++sibIt)
+      for (auto sibIt = siblings.begin(); sibIt != siblings.end(); ++sibIt)
       {
         if ((*sibIt != *brIt) && (*sibIt)->testTransferTo())
         {

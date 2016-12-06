@@ -25,9 +25,6 @@
     <ClCompile Include="StateMachineTest.cpp">
       <Filter>FSM</Filter>
     </ClCompile>
-    <ClCompile Include="StateMachineUpdateFunctionalTest.cpp">
-      <Filter>FSM</Filter>
-    </ClCompile>
     <ClCompile Include="StateMachineUpdateTest.cpp">
       <Filter>FSM</Filter>
     </ClCompile>
@@ -54,9 +51,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MockState.h">
-      <Filter>FSM</Filter>
-    </ClInclude>
     <ClInclude Include="MockStateMachine.h">
       <Filter>FSM</Filter>
     </ClInclude>

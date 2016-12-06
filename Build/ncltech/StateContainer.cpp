@@ -33,7 +33,7 @@ StateContainer::StateContainer()
 
 StateContainer::~StateContainer()
 {
-  for (IStatePtrListIter it = m_children.begin(); it != m_children.end(); ++it)
+  for (auto it = m_children.begin(); it != m_children.end(); ++it)
     delete *it;
 }
 

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <functional>
 
 class StateMachine;
 
@@ -15,24 +16,18 @@ class StateMachine;
 typedef std::vector<IState *> IStatePtrList;
 
 /**
- * @typedef IStatePtrListIter
- * @brief Iterator over a list of pointers to IState instances.
- */
-typedef IStatePtrList::iterator IStatePtrListIter;
-
-/**
- * @typedef IStatePtrListConstIter
- * @brief Iterator over a const list of pointers to IState instances.
- */
-typedef IStatePtrList::const_iterator IStatePtrListConstIter;
-
-/**
  * @class IState
  * @brief Represents a state in a state machine.
- * @author Dan Nixon
  */
 class IState : public StateContainer
 {
+public:
+  typedef std::function<IState *()> TransferFromTest;
+  typedef std::function<bool()> TransferToTest;
+  typedef std::function<void(IState *)> OnEntryBehaviour;
+  typedef std::function<void(IState *)> OnExitBehaviour;
+  typedef std::function<void()> OnOperateBehaviour;
+
 public:
   static IState *ClosestCommonAncestor(IState *a, IState *b);
 
@@ -86,50 +81,21 @@ public:
 protected:
   friend class StateMachine;
 
-  /**
-   * @brief Test for transfer conditions from this state to another.
-   * @return The IState to transfer to, nullptr if no transfer conditions are
-   *         met
-   */
-  virtual IState *testTransferFrom() const
-  {
-    return nullptr;
-  }
+  IState *testTransferFrom() const;
+  bool testTransferTo() const;
 
-  /**
-  * @brief Test for transfer conditions from a sibling state to this state.
-  * @return True if the transfer conditions are met.
-  */
-  virtual bool testTransferTo() const
-  {
-    return false;
-  }
-
-  /**
-   * @brief Performs actions required when entering this state.
-   * @param last Last state to be active
-   */
-  virtual void onEntry(IState *last)
-  {
-  }
-
-  /**
-   * @brief Performs actions required when leaving this state.
-   * @param next State that is going to be entered next
-   */
-  virtual void onExit(IState *next)
-  {
-  }
-
-  /**
-   * @brief Perform the operations that define the behaviour of this state.
-   */
-  virtual void onOperate()
-  {
-  }
+  void onEntry(IState *last);
+  void onExit(IState *next);
+  void onOperate();
 
 protected:
   const std::string m_name; //!< Name of this state
   StateMachine *m_machine;  //!< State machine that holds this state
   IState *m_parent;         //!< Parent state
+
+  std::vector<TransferFromTest> m_transferFromTests;
+  std::vector<TransferToTest> m_transferToTests;
+  std::vector<OnEntryBehaviour> m_onEntryBehaviours;
+  std::vector<OnExitBehaviour> m_onExitBehaviours;
+  std::vector<OnOperateBehaviour> m_onOperateBehaviours;
 };

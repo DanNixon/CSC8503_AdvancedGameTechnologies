@@ -174,13 +174,11 @@
     <ClCompile Include="PriorityQueueTest.cpp" />
     <ClCompile Include="StateContainerTest.cpp" />
     <ClCompile Include="StateMachineTest.cpp" />
-    <ClCompile Include="StateMachineUpdateFunctionalTest.cpp" />
     <ClCompile Include="StateMachineUpdateTest.cpp" />
     <ClCompile Include="AABBTest.cpp" />
     <ClCompile Include="TestDataGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MockState.h" />
     <ClInclude Include="MockStateMachine.h" />
     <ClInclude Include="TestDataGenerator.h" />
   </ItemGroup>

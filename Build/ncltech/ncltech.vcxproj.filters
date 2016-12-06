@@ -259,9 +259,6 @@
     <ClInclude Include="AABBCollisionShape.h">
       <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
-    <ClInclude Include="FunctionalState.h">
-      <Filter>include\FSM</Filter>
-    </ClInclude>
     <ClInclude Include="IState.h">
       <Filter>include\FSM</Filter>
     </ClInclude>
@@ -285,6 +282,9 @@
     </ClInclude>
     <ClInclude Include="PathNodePriorityQueue.h">
       <Filter>include\PathPlanning</Filter>
+    </ClInclude>
+    <ClInclude Include="IBehaviour.h">
+      <Filter>include\FSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

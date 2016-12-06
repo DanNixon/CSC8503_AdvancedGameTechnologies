@@ -8,7 +8,6 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // clang-format off
-#ifndef DOXYGEN_SKIP
 TEST_CLASS(IStateTest)
 {
 public:
@@ -52,5 +51,6 @@ public:
     Assert::IsTrue(nullptr == IState::ClosestCommonAncestor(s11, s22));
     Assert::IsTrue(nullptr == IState::ClosestCommonAncestor(s22, s1));
   }
+
+  // TODO: more tests
 };
-#endif /* DOXYGEN_SKIP */
