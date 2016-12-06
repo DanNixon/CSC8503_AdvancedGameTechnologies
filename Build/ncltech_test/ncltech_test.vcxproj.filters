@@ -25,9 +25,6 @@
     <ClCompile Include="StateMachineTest.cpp">
       <Filter>FSM</Filter>
     </ClCompile>
-    <ClCompile Include="StateMachineUpdateTest.cpp">
-      <Filter>FSM</Filter>
-    </ClCompile>
     <ClCompile Include="AABBTest.cpp">
       <Filter>Physics</Filter>
     </ClCompile>

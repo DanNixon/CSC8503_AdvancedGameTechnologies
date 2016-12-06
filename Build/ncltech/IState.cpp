@@ -51,6 +51,36 @@ IState::~IState()
 {
 }
 
+void IState::AddTransferFromTest(TransferFromTest test)
+{
+  if (test)
+    m_transferFromTests.push_back(test);
+}
+
+void IState::AddTransferToTest(TransferToTest test)
+{
+  if (test)
+    m_transferToTests.push_back(test);
+}
+
+void IState::AddOnEntryBehaviour(OnEntryBehaviour behaviour)
+{
+  if (behaviour)
+    m_onEntryBehaviours.push_back(behaviour);
+}
+
+void IState::AddOnExitBehaviour(OnExitBehaviour behaviour)
+{
+  if (behaviour)
+    m_onExitBehaviours.push_back(behaviour);
+}
+
+void IState::AddOnOperateBehaviour(OnOperateBehaviour behaviour)
+{
+  if (behaviour)
+    m_onOperateBehaviours.push_back(behaviour);
+}
+
 /**
  * @brief Gets the branch of the state tree that leads to this node.
  * @param reverse If the branch order should be reversed
@@ -99,9 +129,9 @@ void IState::setActivation(bool active, IState *terminateAt, IState *delta)
 }
 
 /**
-* @brief Test for transfer conditions from this state to another.
-* @return The IState to transfer to, nullptr if no transfer conditions are met
-*/
+ * @brief Test for transfer conditions from this state to another.
+ * @return The IState to transfer to, nullptr if no transfer conditions are met
+ */
 IState *IState::testTransferFrom() const
 {
   IState *retVal = nullptr;
@@ -118,9 +148,9 @@ IState *IState::testTransferFrom() const
 }
 
 /**
-* @brief Test for transfer conditions from a sibling state to this state.
-* @return True if the transfer conditions are met.
-*/
+ * @brief Test for transfer conditions from a sibling state to this state.
+ * @return True if the transfer conditions are met.
+ */
 bool IState::testTransferTo() const
 {
   for (auto it = m_transferToTests.begin(); it != m_transferToTests.end(); ++it)

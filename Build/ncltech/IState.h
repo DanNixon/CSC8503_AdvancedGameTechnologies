@@ -62,21 +62,15 @@ public:
     return m_parent->activeChild() == this;
   }
 
+  void AddTransferFromTest(TransferFromTest test);
+  void AddTransferToTest(TransferToTest test);
+  void AddOnEntryBehaviour(OnEntryBehaviour behaviour);
+  void AddOnExitBehaviour(OnExitBehaviour behaviour);
+  void AddOnOperateBehaviour(OnOperateBehaviour behaviour);
+
   IStatePtrList branch(bool reverse = false);
 
   void setActivation(bool active, IState *terminateAt = nullptr, IState *delta = nullptr);
-
-  /**
-   * @brief Outputs a state to a stream.
-   * @param o Stream to output to
-   * @param s IState to output
-   * @return Stream
-   */
-  inline friend std::ostream &operator<<(std::ostream &o, const IState &s)
-  {
-    o << "IState(" << std::string(s.m_name) << ")";
-    return o;
-  }
 
 protected:
   friend class StateMachine;

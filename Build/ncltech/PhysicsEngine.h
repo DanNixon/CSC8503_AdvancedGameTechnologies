@@ -84,8 +84,7 @@ public:
   const uint8_t MAX_UPDATES_PER_FRAME = 5;
 
 public:
-  // Reset Default Values like gravity/timestep - called when scene is switched
-  // out
+  // Reset Default Values like gravity/timestep - called when scene is switched out
   void SetDefaults();
 
   // Add/Remove Physics Objects

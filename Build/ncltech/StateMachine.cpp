@@ -50,8 +50,7 @@ IStatePtrList StateMachine::activeStateBranch()
 }
 
 /**
- * @brief Performs transfer checks for each level of the active state branch
- *        and switches states if needed.
+ * @brief Performs transfer checks for each level of the active state branch and switches states if needed.
  * @return True if a state change took place
  */
 bool StateMachine::transfer()
