@@ -2,10 +2,10 @@
 
 #include "StateContainer.h"
 
+#include <functional>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <functional>
 
 class StateMachine;
 

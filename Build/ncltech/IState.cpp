@@ -102,9 +102,9 @@ void IState::setActivation(bool active, IState *terminateAt, IState *delta)
 * @brief Test for transfer conditions from this state to another.
 * @return The IState to transfer to, nullptr if no transfer conditions are met
 */
-IState * IState::testTransferFrom() const
+IState *IState::testTransferFrom() const
 {
-  IState * retVal = nullptr;
+  IState *retVal = nullptr;
 
   for (auto it = m_transferFromTests.begin(); it != m_transferFromTests.end(); ++it)
   {
@@ -136,27 +136,27 @@ bool IState::testTransferTo() const
  * @brief Performs actions required when entering this state.
  * @param last Last state to be active
  */
-void IState::onEntry(IState * last)
+void IState::onEntry(IState *last)
 {
   for (auto it = m_onEntryBehaviours.begin(); it != m_onEntryBehaviours.end(); ++it)
     it->operator()(last);
 }
 
- /**
-  * @brief Performs actions required when leaving this state.
-  * @param next State that is going to be entered next
-  */
- void IState::onExit(IState * next)
- {
-   for (auto it = m_onExitBehaviours.begin(); it != m_onExitBehaviours.end(); ++it)
-     it->operator()(next);
- }
+/**
+ * @brief Performs actions required when leaving this state.
+ * @param next State that is going to be entered next
+ */
+void IState::onExit(IState *next)
+{
+  for (auto it = m_onExitBehaviours.begin(); it != m_onExitBehaviours.end(); ++it)
+    it->operator()(next);
+}
 
- /**
-  * @brief Perform the operations that define the behaviour of this state.
-  */
- void IState::onOperate()
- {
-   for (auto it = m_onOperateBehaviours.begin(); it != m_onOperateBehaviours.end(); ++it)
-     it->operator()();
- }
+/**
+ * @brief Perform the operations that define the behaviour of this state.
+ */
+void IState::onOperate()
+{
+  for (auto it = m_onOperateBehaviours.begin(); it != m_onOperateBehaviours.end(); ++it)
+    it->operator()();
+}
