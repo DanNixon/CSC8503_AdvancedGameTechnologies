@@ -65,10 +65,7 @@ public:
     return m_aabb;
   }
 
-  inline AABB &GetAABB()
-  {
-    return m_aabb;
-  }
+  AABB GetWorldSpaceAABB() const;
 
   inline float GetElasticity() const
   {
@@ -148,6 +145,12 @@ public:
     m_restVelocityThresholdSquared = vel * vel;
   }
 
+  inline void SetAABB(const AABB &aabb)
+  {
+    m_aabb = aabb;
+    m_wsAabbInvalidated = true;
+  }
+
   inline void SetGravitationTarget(PhysicsObject *obj)
   {
     m_gravitationTarget = obj;
@@ -167,6 +170,7 @@ public:
   {
     m_position = v;
     m_wsTransformInvalidated = true;
+    m_wsAabbInvalidated = true;
     m_atRest = false;
   }
 
@@ -269,7 +273,9 @@ protected:
   mutable bool m_wsTransformInvalidated; //!< Flag indicating if the cached world space transoformation is invalid
   mutable Matrix4 m_wsTransform;         //!< Cached world space transformation matrix
 
-  AABB m_aabb; //!< Axis aligned bounding box of this object
+  AABB m_aabb;                      //!< Axis aligned bounding box of this object
+  mutable bool m_wsAabbInvalidated; //!< Flag indicating if the cached world space transoformed AABB is invalid
+  mutable AABB m_wsAabb;            //!< Axis aligned bounding box of this object in world space
 
   float m_elasticity; //!< Value from 0-1 definiing how much the object bounces off other objects
   float m_friction;   //!< Value from 0-1 defining how much the object can slide off other objects

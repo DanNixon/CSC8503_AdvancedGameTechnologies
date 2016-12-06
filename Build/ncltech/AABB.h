@@ -31,5 +31,7 @@ public:
     return Vector3(m_vVertices[0].pos.x, m_vVertices[0].pos.y, m_vVertices[0].pos.z);
   }
 
+  AABB Transform(const Matrix4 &transformation) const;
+
   bool Intersects(const AABB &other) const;
 };

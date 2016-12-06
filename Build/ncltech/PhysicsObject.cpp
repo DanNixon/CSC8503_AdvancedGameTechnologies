@@ -5,6 +5,7 @@
 PhysicsObject::PhysicsObject()
     : m_parent(nullptr)
     , m_wsTransformInvalidated(true)
+    , m_wsAabbInvalidated(true)
     , m_atRest(false)
     , m_restVelocityThresholdSquared(0.001f)
     , m_averageSummedVelocity(0.0f)
@@ -32,6 +33,18 @@ PhysicsObject::~PhysicsObject()
     delete *it;
 
   m_collisionShapes.clear();
+}
+
+AABB PhysicsObject::GetWorldSpaceAABB() const
+{
+  if (m_wsAabbInvalidated)
+  {
+    m_wsAabb = m_aabb.Transform(GetWorldSpaceTransform());
+
+    m_wsAabbInvalidated = false;
+  }
+
+  return m_wsAabb;
 }
 
 const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const

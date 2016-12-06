@@ -108,7 +108,7 @@ public:
           CommonUtils::GenColour(0.3f, 0.5f));                     // Color
       this->AddGameObject(sphere);
 
-      this->AddGameObject(CommonUtils::BuildSphereObject("",
+      this->AddGameObject(CommonUtils::BuildSphereObject("orbiting_sphere1.1",
                                                          ss_pos,                                // Position
                                                          0.5f,                                  // Radius
                                                          true,                                  // Has Physics Object
@@ -140,7 +140,7 @@ public:
       secondSphereCollShape->SetLocalTransform(Matrix4::Translation(Vector3(-0.25f, 0.0f, 0.0f)));
       sphere->Physics()->AddCollisionShape(secondSphereCollShape);
 
-      this->AddGameObject(CommonUtils::BuildCuboidObject("",
+      this->AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid2.2",
                                                          sc_pos,                                // Position
                                                          Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
                                                          true,                                  // Has Physics Object
@@ -154,7 +154,7 @@ public:
     {
 
       Object *cuboid = CommonUtils::BuildCuboidObject(
-          "rotating_cuboid1",
+          "rotating_cuboid3",
           cc_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter overlap on faces, and more on diagonals
           Vector3(0.5f, 0.5f, 0.5f),           // Half dimensions
           true,                                // Has Physics Object
@@ -171,7 +171,7 @@ public:
       shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 0.0f, 0.0f)));
       cuboid->Physics()->AddCollisionShape(shape);
 
-      this->AddGameObject(CommonUtils::BuildCuboidObject("",
+      this->AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid3.3",
                                                          cc_pos,                                // Position
                                                          Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
                                                          true,                                  // Has Physics Object
@@ -209,7 +209,7 @@ public:
       if (orbiting_sphere2 != NULL)
         orbiting_sphere2->Physics()->SetPosition(sc_pos + offset);
 
-      Object *rotating_cuboid1 = this->FindGameObject("rotating_cuboid1");
+      Object *rotating_cuboid1 = this->FindGameObject("rotating_cuboid3");
       if (rotating_cuboid1 != NULL)
         rotating_cuboid1->Physics()->SetPosition(cc_pos + offset);
     }

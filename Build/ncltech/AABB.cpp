@@ -82,6 +82,18 @@ void AABB::SetLower(const Vector3 &lower)
   m_vVertices[7].pos.y = lower.y;
 }
 
+AABB AABB::Transform(const Matrix4 & transformation) const
+{
+  Matrix4 t(transformation);
+  t.ClearRotation();
+
+  AABB retVal = AABB();
+  retVal.SetLower(t * GetLower());
+  retVal.SetUpper(t * GetUpper());
+
+  return retVal;
+}
+
 bool AABB::Intersects(const AABB &other) const
 {
   // TODO
