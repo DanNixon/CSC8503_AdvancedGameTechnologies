@@ -52,7 +52,7 @@ public:
    * @brief Adds a new node to the queue.
    * @param item Node to add
    */
-  void push(QueueablePathNode *item)
+  void Push(QueueablePathNode *item)
   {
     push_back(item);
     std::push_heap(begin(), end(), m_comp);
@@ -61,7 +61,7 @@ public:
   /**
    * @brief Removes the node at the top of the list.
    */
-  void pop()
+  void Pop()
   {
     std::pop_heap(begin(), end(), m_comp);
     pop_back();
@@ -71,7 +71,7 @@ public:
    * @brief Returns the node at the top of the list.
    * @return Highest node
    */
-  QueueablePathNode *top() const
+  QueueablePathNode *Top() const
   {
     return front();
   }
@@ -81,7 +81,7 @@ public:
    * @param item Node to find
    * @return Const iterator to item
    */
-  std::vector<QueueablePathNode *>::const_iterator find(QueueablePathNode *item) const
+  std::vector<QueueablePathNode *>::const_iterator Find(QueueablePathNode *item) const
   {
     return std::find(cbegin(), cend(), item);
   }
@@ -90,7 +90,7 @@ public:
    * @brief Updates positions of nodes in the queue to preserve the queue
    *        priority.
    */
-  void update()
+  void Update()
   {
     std::make_heap(begin(), end(), m_comp);
   }

@@ -16,23 +16,23 @@ public:
     PathEdge e(&n1, &n2);
 
     // With default weight = 1
-    Assert::AreEqual(1.0f, e.weight());
-    Assert::AreEqual(11.18f, e.staticCost(), 0.01f);
-    Assert::AreEqual(11.18f, e.cost(), 0.01f);
+    Assert::AreEqual(1.0f, e.Weight());
+    Assert::AreEqual(11.18f, e.StaticCost(), 0.01f);
+    Assert::AreEqual(11.18f, e.Cost(), 0.01f);
 
-    e.setWeight(0.1f);
+    e.SetWeight(0.1f);
 
     // With weight = 0.1
-    Assert::AreEqual(0.1f, e.weight());
-    Assert::AreEqual(11.18f, e.staticCost(), 0.01f);
-    Assert::AreEqual(1.118f, e.cost(), 0.01f);
+    Assert::AreEqual(0.1f, e.Weight());
+    Assert::AreEqual(11.18f, e.StaticCost(), 0.01f);
+    Assert::AreEqual(1.118f, e.Cost(), 0.01f);
 
-    e.setWeight(5.0f);
+    e.SetWeight(5.0f);
 
     // With weight = 5
-    Assert::AreEqual(5.0f, e.weight());
-    Assert::AreEqual(11.18f, e.staticCost(), 0.01f);
-    Assert::AreEqual(55.90f, e.cost(), 0.01f);
+    Assert::AreEqual(5.0f, e.Weight());
+    Assert::AreEqual(11.18f, e.StaticCost(), 0.01f);
+    Assert::AreEqual(55.90f, e.Cost(), 0.01f);
   }
 
   TEST_METHOD(Edge_Equality)

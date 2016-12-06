@@ -23,7 +23,7 @@ public:
    * @brief Gets the number of connections from this node.
    * @return Number of connections
    */
-  inline size_t numConnections() const
+  inline size_t NumConnections() const
   {
     return m_connections.size();
   }
@@ -33,14 +33,14 @@ public:
    * @param i Index of edge to retrieve
    * @return Pointer to edge
    */
-  inline PathEdge *edge(size_t i)
+  inline PathEdge *Edge(size_t i)
   {
     return m_connections[i];
   }
 
   bool IsOnList(const std::vector<PathNode *> &list);
 
-  virtual float h(const PathNode &other) const;
+  virtual float HeuristicValue(const PathNode &other) const;
 
 private:
   friend class PathEdge;

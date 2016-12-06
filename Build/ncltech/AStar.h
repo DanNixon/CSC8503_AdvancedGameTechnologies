@@ -18,14 +18,14 @@ public:
   AStar(const std::vector<PathNode *> &nodes);
   virtual ~AStar();
 
-  void reset();
-  bool findPath(PathNode *start, PathNode *end);
+  void Reset();
+  bool FindPath(PathNode *start, PathNode *end);
 
   /**
    * @brief Gets the open list.
    * @return Open list
    */
-  inline PathNodePriorityQueue openList() const
+  inline PathNodePriorityQueue OpenList() const
   {
     return m_openList;
   }
@@ -34,7 +34,7 @@ public:
    * @brief Gets the closed list.
    * @return Closed list
    */
-  inline std::vector<QueueablePathNode *> closedList() const
+  inline std::vector<QueueablePathNode *> ClosedList() const
   {
     return m_closedList;
   }
@@ -43,7 +43,7 @@ public:
    * @brief Gets the computed path.
    * @return Path
    */
-  inline std::vector<PathNode *> path() const
+  inline std::vector<PathNode *> Path() const
   {
     return m_path;
   }
@@ -52,7 +52,7 @@ public:
    * @brief Gets the cost of the full path.
    * @return Path cost
    */
-  inline float pathCost() const
+  inline float PathCost() const
   {
     return m_closedList.back()->gScore;
   }

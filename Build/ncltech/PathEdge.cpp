@@ -28,7 +28,7 @@ PathEdge::~PathEdge()
  * @return Pointer to the other node on the edge, nullptr if node is not on
  *         this edge
  */
-PathNode *PathEdge::otherNode(PathNode *node)
+PathNode *PathEdge::OtherNode(PathNode *node)
 {
   PathNode *retVal = nullptr;
 
@@ -40,7 +40,7 @@ PathNode *PathEdge::otherNode(PathNode *node)
   return retVal;
 }
 
-float PathEdge::staticCost() const
+float PathEdge::StaticCost() const
 {
   return (m_nodeA->GetWorldSpaceTransform().GetPositionVector() - m_nodeB->GetWorldSpaceTransform().GetPositionVector()).Length();
 }
@@ -49,7 +49,7 @@ float PathEdge::staticCost() const
  * @brief Sets if this edge can be traversed.
  * @param traversable True if this edge can be traversed
  */
-void PathEdge::setTraversable(bool traversable)
+void PathEdge::SetTraversable(bool traversable)
 {
   m_traversable = traversable;
 }
@@ -58,7 +58,7 @@ void PathEdge::setTraversable(bool traversable)
  * @brief Sets the traversal weighting of this edge.
  * @param weight Edge weight
  */
-void PathEdge::setWeight(float weight)
+void PathEdge::SetWeight(float weight)
 {
   m_weight = weight;
 }

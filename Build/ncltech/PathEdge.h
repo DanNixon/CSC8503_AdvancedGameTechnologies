@@ -17,7 +17,7 @@ public:
    * @brief Gets the first node.
    * @return First node
    */
-  inline PathNode *nodeA()
+  inline PathNode *NodeA()
   {
     return m_nodeA;
   }
@@ -26,18 +26,18 @@ public:
    * @brief Gets the second node.
    * @return Second node
    */
-  inline PathNode *nodeB()
+  inline PathNode *NodeB()
   {
     return m_nodeB;
   }
 
-  PathNode *otherNode(PathNode *node);
+  PathNode *OtherNode(PathNode *node);
 
   /**
    * @brief Tests if this edge is traversable.
    * @return True if this edge can be traversed
    */
-  inline bool traversable() const
+  inline bool Traversable() const
   {
     return m_traversable;
   }
@@ -46,13 +46,13 @@ public:
    * @brief Gets the static cost of traversing this edge.
    * @return Static cost
    */
-  virtual float staticCost() const;
+  virtual float StaticCost() const;
 
   /**
    * @brief Gets the weight coefficient of traversing this edge.
    * @return Edge weight
    */
-  inline float weight() const
+  inline float Weight() const
   {
     return m_weight;
   }
@@ -61,13 +61,13 @@ public:
    * @brief Gets the weighted cost of traversing this edge.
    * @return Weighted cost
    */
-  inline float cost() const
+  inline float Cost() const
   {
-    return staticCost() * m_weight;
+    return StaticCost() * m_weight;
   }
 
-  void setTraversable(bool traversable);
-  void setWeight(float weight);
+  void SetTraversable(bool traversable);
+  void SetWeight(float weight);
 
   /**
    * @brief Checks of an Edge is on a path.

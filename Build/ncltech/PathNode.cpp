@@ -33,7 +33,7 @@ bool PathNode::IsOnList(const std::vector<PathNode *> &list)
  * @param other Other node
  * @return Heuristic cost
  */
-float PathNode::h(const PathNode &other) const
+float PathNode::HeuristicValue(const PathNode &other) const
 {
   return (GetWorldSpaceTransform().GetPositionVector() - other.GetWorldSpaceTransform().GetPositionVector()).Length();
 }

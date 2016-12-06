@@ -21,7 +21,7 @@ AStar::~AStar()
  * @brief Clears open and closed lists and computed path and resets node
  *        data.
  */
-void AStar::reset()
+void AStar::Reset()
 {
   // Clear caches
   m_openList = PathNodePriorityQueue();
@@ -43,23 +43,23 @@ void AStar::reset()
  * @param end Target node
  * @return True if path finding was successful
  */
-bool AStar::findPath(PathNode *start, PathNode *end)
+bool AStar::FindPath(PathNode *start, PathNode *end)
 {
   // Clear caches
-  reset();
+  Reset();
 
   // Add start node to open list
   m_nodeData[start]->gScore = 0.0f;
-  m_nodeData[start]->fScore = m_nodeData[start]->node->h(*end);
-  m_openList.push(m_nodeData[start]);
+  m_nodeData[start]->fScore = m_nodeData[start]->node->HeuristicValue(*end);
+  m_openList.Push(m_nodeData[start]);
 
   bool success = false;
   while (!m_openList.empty())
   {
-    QueueablePathNode *p = m_openList.top();
+    QueueablePathNode *p = m_openList.Top();
 
     // Move this node to the closed list
-    m_openList.pop();
+    m_openList.Pop();
     m_closedList.push_back(p);
 
     // Check if this is the end node
@@ -70,23 +70,23 @@ bool AStar::findPath(PathNode *start, PathNode *end)
     }
 
     // For each node connected to the next node
-    for (size_t i = 0; i < p->node->numConnections(); i++)
+    for (size_t i = 0; i < p->node->NumConnections(); i++)
     {
-      PathEdge *pq = p->node->edge(i);
+      PathEdge *pq = p->node->Edge(i);
 
       // Skip an edge that cannot be traversed
-      if (!pq->traversable())
+      if (!pq->Traversable())
         continue;
 
-      QueueablePathNode *q = m_nodeData[pq->otherNode(p->node)];
+      QueueablePathNode *q = m_nodeData[pq->OtherNode(p->node)];
 
       // Calculate new scores
-      float gScore = p->gScore + pq->cost();
-      float fScore = gScore + q->node->h(*end);
+      float gScore = p->gScore + pq->Cost();
+      float fScore = gScore + q->node->HeuristicValue(*end);
 
       // Search for this node on open and closed lists
       auto closedIt = std::find(m_closedList.begin(), m_closedList.end(), q);
-      auto openIt = m_openList.find(q);
+      auto openIt = m_openList.Find(q);
 
       if (closedIt != m_closedList.end() || openIt != m_openList.end())
       {
@@ -96,7 +96,7 @@ bool AStar::findPath(PathNode *start, PathNode *end)
           q->Parent = p;
           q->gScore = gScore;
           q->fScore = fScore;
-          m_openList.update();
+          m_openList.Update();
         }
       }
       else
@@ -105,7 +105,7 @@ bool AStar::findPath(PathNode *start, PathNode *end)
         q->Parent = p;
         q->gScore = gScore;
         q->fScore = fScore;
-        m_openList.push(q);
+        m_openList.Push(q);
       }
     }
   }

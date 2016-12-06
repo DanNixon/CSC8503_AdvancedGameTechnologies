@@ -49,15 +49,15 @@ public:
     qn3->fScore = 20;
 
     PathNodePriorityQueue q;
-    q.push(qn1);
-    q.push(qn2);
-    q.push(qn3);
+    q.Push(qn1);
+    q.Push(qn2);
+    q.Push(qn3);
 
-    Assert::IsTrue(q.top() == qn2);
-    q.pop();
-    Assert::IsTrue(q.top() == qn1);
-    q.pop();
-    Assert::IsTrue(q.top() == qn3);
+    Assert::IsTrue(q.Top() == qn2);
+    q.Pop();
+    Assert::IsTrue(q.Top() == qn1);
+    q.Pop();
+    Assert::IsTrue(q.Top() == qn3);
 
     delete n1;
     delete n2;
@@ -83,18 +83,18 @@ public:
     qn3->fScore = 20.0f;
 
     PathNodePriorityQueue q;
-    q.push(qn1);
-    q.push(qn2);
-    q.push(qn3);
+    q.Push(qn1);
+    q.Push(qn2);
+    q.Push(qn3);
 
     qn3->fScore = 2.0f;
-    q.update();
+    q.Update();
 
-    Assert::IsTrue(q.top() == qn3);
-    q.pop();
-    Assert::IsTrue(q.top() == qn2);
-    q.pop();
-    Assert::IsTrue(q.top() == qn1);
+    Assert::IsTrue(q.Top() == qn3);
+    q.Pop();
+    Assert::IsTrue(q.Top() == qn2);
+    q.Pop();
+    Assert::IsTrue(q.Top() == qn1);
 
     delete n1;
     delete n2;
