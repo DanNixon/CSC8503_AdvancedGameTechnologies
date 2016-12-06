@@ -44,7 +44,7 @@ higher mark will require the implementation of optional elements.
 
 - [x] You must implement a Newtonian solver capable of updating the linear and
       angular motion of 3-dimensional objects.
-- [ ] You must implement gravity, acting in the direction of the planet's
+- [x] You must implement gravity, acting in the direction of the planet's
       centre of mass.
 - [x] You must implement a 'Rest' state under which objects are not subject to
       physics updates (including gravity). This Rest state should end (the
@@ -53,7 +53,7 @@ higher mark will require the implementation of optional elements.
       into the environment from the camera's PoV with the 'J' key (the camera
       must be able to move and turn, as in the CSC8502 coursework). This
       projectile will be subject to Newtonian physics.
-- [ ] You must implement basic collision detection and response algorithms
+- [x] You must implement basic collision detection and response algorithms
       which explicitly handle the following cases: sphere/sphere, sphere/plane,
       sphere/axis-aligned bounding box.
 - [ ] You must add simple test scenarios into the environment which permit the
@@ -122,7 +122,7 @@ higher mark will require the implementation of optional elements.
 - [ ] You might implement a high score board which is broadcast by the server
       to the client on termination of the simulation, indicating the top ten
       recorded scores.
-- [ ] You might introduce broadphase culling to optimise your physics
+- [x] You might introduce broadphase culling to optimise your physics
       computation. More marks will be awarded for more sophisticated
       approaches.
 - [ ] You might implement some form of artificial intelligence for your client
