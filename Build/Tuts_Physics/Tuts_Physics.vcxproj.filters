@@ -10,6 +10,7 @@
     <ClInclude Include="Phy5_ColManifolds.h" />
     <ClInclude Include="Phy6_ColResponse.h" />
     <ClInclude Include="Test1_PointGravitation.h" />
+    <ClInclude Include="Test2_SoftBody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
