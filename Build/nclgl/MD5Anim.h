@@ -72,7 +72,7 @@ components of the joint, if any, are updated in this animation.
 struct MD5AnimJoint
 {
   std::string name; // Name of this joint
-  int parent;       // Index of the parent of this joint
+  int Parent;       // Index of the parent of this joint
   int flags;        // bitmask used to determine which components update
   int frameIndex;   // First float in the changes array that effects joint
 };

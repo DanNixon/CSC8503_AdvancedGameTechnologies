@@ -5,7 +5,7 @@ SceneNode::SceneNode(Mesh *mesh, Vector4 colour)
   awake = true;
   this->mesh = mesh;
   this->colour = colour;
-  parent = NULL;
+  Parent = NULL;
   boundingRadius = 100.0f;
   distanceFromCamera = 0.0f;
 
@@ -23,7 +23,7 @@ SceneNode::~SceneNode(void)
 void SceneNode::AddChild(SceneNode *s)
 {
   children.push_back(s);
-  s->parent = this;
+  s->Parent = this;
 }
 
 bool SceneNode::CompareByCameraDistance(SceneNode *a, SceneNode *b)
@@ -38,9 +38,9 @@ bool SceneNode::CompareByZ(SceneNode *a, SceneNode *b)
 
 void SceneNode::Update(float msec)
 {
-  if (parent)
+  if (Parent)
   {
-    worldTransform = parent->worldTransform * transform;
+    worldTransform = Parent->worldTransform * transform;
   }
   else
   {

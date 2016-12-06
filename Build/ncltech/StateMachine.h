@@ -20,13 +20,13 @@ public:
   StateMachine();
   virtual ~StateMachine();
 
-  IStatePtrList activeStateBranch();
+  IStatePtrList ActiveStateBranch();
 
   /**
    * @brief Gets the root state for the state machine.
    * @return Root state
    */
-  IState *rootState()
+  IState *RootState()
   {
     return &m_root;
   }
@@ -38,15 +38,15 @@ public:
    * @see StateMachine:transfer()
    * @see StateMachine:operate()
    */
-  inline bool update()
+  inline bool Update()
   {
-    bool stateChange = transfer();
-    operate();
+    bool stateChange = Transfer();
+    Operate();
     return stateChange;
   }
 
-  virtual bool transfer();
-  virtual void operate();
+  virtual bool Transfer();
+  virtual void Operate();
 
 private:
   IState m_root; //!< Root state

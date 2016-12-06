@@ -14,10 +14,10 @@ public:
   TEST_METHOD(StateContainer_hasChildren)
   {
     StateContainer container;
-    Assert::IsFalse(container.hasChildren());
+    Assert::IsFalse(container.HasChildren());
 
-    container.addChild(new IState("state1", nullptr, nullptr));
-    Assert::IsTrue(container.hasChildren());
+    container.AddChild(new IState("state1", nullptr, nullptr));
+    Assert::IsTrue(container.HasChildren());
   }
 
   TEST_METHOD(StateContainer_activation)
@@ -29,19 +29,19 @@ public:
     IState * s121 = new IState("state1.2.1", s12, nullptr);
     IState * s2 = new IState("state2", nullptr, nullptr);
     IState * s21 = new IState("state2.1", s2, nullptr);
-    container.addChild(s1);
-    container.addChild(s2);
+    container.AddChild(s1);
+    container.AddChild(s2);
 
     // Test activation
-    s12->setActivation(true);
-    Assert::IsTrue(s12 == s1->activeChild());
-    Assert::IsNull(s12->activeChild());
+    s12->SetActivation(true);
+    Assert::IsTrue(s12 == s1->ActiveChild());
+    Assert::IsNull(s12->ActiveChild());
 
     // Test deactivation
-    s12->setActivation(false);
-    Assert::IsNull(container.activeChild());
-    Assert::IsNull(s1->activeChild());
-    Assert::IsNull(s12->activeChild());
+    s12->SetActivation(false);
+    Assert::IsNull(container.ActiveChild());
+    Assert::IsNull(s1->ActiveChild());
+    Assert::IsNull(s12->ActiveChild());
   }
 
   TEST_METHOD(StateContainer_findState)
@@ -53,10 +53,10 @@ public:
     IState * s121 = new IState("state1.2.1", s12, nullptr);
     IState * s2 = new IState("state2", nullptr, nullptr);
     IState * s21 = new IState("state2.1", s2, nullptr);
-    container.addChild(s1);
-    container.addChild(s2);
+    container.AddChild(s1);
+    container.AddChild(s2);
 
-    std::vector<IState *> branch = container.findState("state1/state1.2/state1.2.1");
+    std::vector<IState *> branch = container.FindState("state1/state1.2/state1.2.1");
 
     Assert::AreEqual((size_t) 3, branch.size());
     Assert::IsTrue(s1 == branch[0]);

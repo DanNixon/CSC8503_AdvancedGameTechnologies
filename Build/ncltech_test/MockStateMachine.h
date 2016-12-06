@@ -17,7 +17,7 @@ public:
   virtual void operate()
   {
     operatedStack.clear();
-    StateMachine::operate();
+    StateMachine::Operate();
   }
 
 public:

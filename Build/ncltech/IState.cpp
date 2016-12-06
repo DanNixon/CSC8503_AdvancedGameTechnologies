@@ -8,8 +8,8 @@
  */
 IState *IState::ClosestCommonAncestor(IState *a, IState *b)
 {
-  IStatePtrList branchA = a->branch();
-  IStatePtrList branchB = b->branch();
+  IStatePtrList branchA = a->Branch();
+  IStatePtrList branchB = b->Branch();
 
   auto ia = branchA.begin();
   auto ib = branchB.begin();
@@ -38,13 +38,13 @@ IState *IState::ClosestCommonAncestor(IState *a, IState *b)
  * @param parent Parent state
  * @param machine The state machine to which this state belongs
  */
-IState::IState(const std::string &name, IState *parent, StateMachine *machine)
+IState::IState(const std::string &name, IState *Parent, StateMachine *machine)
     : m_name(name)
     , m_machine(machine)
-    , m_parent(parent)
+    , m_parent(Parent)
 {
-  if (parent)
-    parent->m_children.push_back(this);
+  if (Parent)
+    Parent->m_children.push_back(this);
 }
 
 IState::~IState()
@@ -86,7 +86,7 @@ void IState::AddOnOperateBehaviour(OnOperateBehaviour behaviour)
  * @param reverse If the branch order should be reversed
  * @return State tree branch
  */
-IStatePtrList IState::branch(bool reverse)
+IStatePtrList IState::Branch(bool reverse)
 {
   IStatePtrList branch;
 
@@ -110,29 +110,29 @@ IStatePtrList IState::branch(bool reverse)
  * @param delta The change of state (last state if active=true, next state if
  *              active=false)
  */
-void IState::setActivation(bool active, IState *terminateAt, IState *delta)
+void IState::SetActivation(bool active, IState *terminateAt, IState *delta)
 {
   if (terminateAt == this)
     return;
 
   if (!active)
-    onExit(delta);
+    OnExit(delta);
 
   if (m_parent)
   {
     m_parent->m_active = active ? this : nullptr;
-    m_parent->setActivation(active, terminateAt);
+    m_parent->SetActivation(active, terminateAt);
   }
 
   if (active)
-    onEntry(delta);
+    OnEntry(delta);
 }
 
 /**
  * @brief Test for transfer conditions from this state to another.
  * @return The IState to transfer to, nullptr if no transfer conditions are met
  */
-IState *IState::testTransferFrom() const
+IState *IState::TestTransferFrom() const
 {
   IState *retVal = nullptr;
 
@@ -151,7 +151,7 @@ IState *IState::testTransferFrom() const
  * @brief Test for transfer conditions from a sibling state to this state.
  * @return True if the transfer conditions are met.
  */
-bool IState::testTransferTo() const
+bool IState::TestTransferTo() const
 {
   for (auto it = m_transferToTests.begin(); it != m_transferToTests.end(); ++it)
   {
@@ -166,7 +166,7 @@ bool IState::testTransferTo() const
  * @brief Performs actions required when entering this state.
  * @param last Last state to be active
  */
-void IState::onEntry(IState *last)
+void IState::OnEntry(IState *last)
 {
   for (auto it = m_onEntryBehaviours.begin(); it != m_onEntryBehaviours.end(); ++it)
     it->operator()(last);
@@ -176,7 +176,7 @@ void IState::onEntry(IState *last)
  * @brief Performs actions required when leaving this state.
  * @param next State that is going to be entered next
  */
-void IState::onExit(IState *next)
+void IState::OnExit(IState *next)
 {
   for (auto it = m_onExitBehaviours.begin(); it != m_onExitBehaviours.end(); ++it)
     it->operator()(next);
@@ -185,7 +185,7 @@ void IState::onExit(IState *next)
 /**
  * @brief Perform the operations that define the behaviour of this state.
  */
-void IState::onOperate()
+void IState::OnOperate()
 {
   for (auto it = m_onOperateBehaviours.begin(); it != m_onOperateBehaviours.end(); ++it)
     it->operator()();

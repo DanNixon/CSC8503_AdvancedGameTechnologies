@@ -20,7 +20,7 @@ public:
    */
   QueueablePathNode(PathNode *n)
       : node(n)
-      , parent(nullptr)
+      , Parent(nullptr)
       , fScore(std::numeric_limits<float>::max())
       , gScore(std::numeric_limits<float>::max())
   {
@@ -86,7 +86,7 @@ public:
 
 public:
   PathNode *node;            //!< Wrapped Node
-  QueueablePathNode *parent; //!< Parent Node in path
+  QueueablePathNode *Parent; //!< Parent Node in path
   float fScore;              //!< F score of wrapped node
   float gScore;              //!< G score of wrapped node
 };

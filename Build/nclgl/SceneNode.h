@@ -121,7 +121,7 @@ public:
 protected:
   Matrix4 worldTransform;
   Matrix4 transform;
-  SceneNode *parent;
+  SceneNode *Parent;
   float distanceFromCamera;
   float boundingRadius;
   Vector4 colour;

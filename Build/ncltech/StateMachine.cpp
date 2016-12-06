@@ -35,15 +35,15 @@ StateMachine::~StateMachine()
  * @brief Gets the active branch of the state tree.
  * @return Branch of active states
  */
-IStatePtrList StateMachine::activeStateBranch()
+IStatePtrList StateMachine::ActiveStateBranch()
 {
   IStatePtrList branch;
 
-  IState *node = m_root.activeChild();
+  IState *node = m_root.ActiveChild();
   while (node != nullptr)
   {
     branch.push_back(node);
-    node = node->activeChild();
+    node = node->ActiveChild();
   }
 
   return branch;
@@ -53,22 +53,22 @@ IStatePtrList StateMachine::activeStateBranch()
  * @brief Performs transfer checks for each level of the active state branch and switches states if needed.
  * @return True if a state change took place
  */
-bool StateMachine::transfer()
+bool StateMachine::Transfer()
 {
-  IStatePtrList branch = activeStateBranch();
+  IStatePtrList branch = ActiveStateBranch();
   IState *oldState = branch.back();
   bool stateChange = false;
 
   for (auto brIt = branch.begin(); brIt != branch.end(); ++brIt)
   {
-    IState *transferState = (*brIt)->testTransferFrom();
+    IState *transferState = (*brIt)->TestTransferFrom();
 
     if (transferState == nullptr)
     {
-      IStatePtrList siblings = (*brIt)->parent()->children();
+      IStatePtrList siblings = (*brIt)->Parent()->Children();
       for (auto sibIt = siblings.begin(); sibIt != siblings.end(); ++sibIt)
       {
-        if ((*sibIt != *brIt) && (*sibIt)->testTransferTo())
+        if ((*sibIt != *brIt) && (*sibIt)->TestTransferTo())
         {
           transferState = *sibIt;
           break;
@@ -81,8 +81,8 @@ bool StateMachine::transfer()
       stateChange = true;
 
       IState *commonAncestor = IState::ClosestCommonAncestor(oldState, transferState);
-      oldState->setActivation(false, commonAncestor, transferState);
-      transferState->setActivation(true, commonAncestor, oldState);
+      oldState->SetActivation(false, commonAncestor, transferState);
+      transferState->SetActivation(true, commonAncestor, oldState);
 
       break;
     }
@@ -95,12 +95,12 @@ bool StateMachine::transfer()
  * @brief Performs operations associated with the currently active branch of
  *        the state tree.
  */
-void StateMachine::operate()
+void StateMachine::Operate()
 {
-  IState *node = m_root.activeChild();
+  IState *node = m_root.ActiveChild();
   while (node != nullptr)
   {
-    node->onOperate();
-    node = node->activeChild();
+    node->OnOperate();
+    node = node->ActiveChild();
   }
 }

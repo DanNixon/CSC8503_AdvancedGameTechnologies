@@ -42,27 +42,26 @@ StateContainer::~StateContainer()
  * @name Path to state
  * @return State branch
  */
-IStatePtrList StateContainer::findState(const std::string &name, char delim)
+IStatePtrList StateContainer::FindState(const std::string &name, char delim)
 {
   IStatePtrList branch;
   std::vector<std::string> names = Split(name, delim);
   std::reverse(names.begin(), names.end());
-  findStateImpl(names, branch);
+  FindStateImpl(names, branch);
   return branch;
 }
 
 /**
  * @brief Performs recursive search for a state within this sub tree.
- * @param names Reference to vector of names of states in branch in reverse
- *              order
+ * @param names Reference to vector of names of states in branch in reverse order
  * @param branch Reference to the vector containing branch states
  * @return True if search was succesfull
  */
-bool StateContainer::findStateImpl(std::vector<std::string> &names, IStatePtrList &branch)
+bool StateContainer::FindStateImpl(std::vector<std::string> &names, IStatePtrList &branch)
 {
   // Find child by name
   const std::string name(names.back());
-  auto it = std::find_if(m_children.begin(), m_children.end(), [name](IState *i) { return i->name() == name; });
+  auto it = std::find_if(m_children.begin(), m_children.end(), [name](IState *i) { return i->Name() == name; });
 
   // Fail if child not found
   if (it == m_children.end())
@@ -73,8 +72,8 @@ bool StateContainer::findStateImpl(std::vector<std::string> &names, IStatePtrLis
   names.pop_back();
 
   // If found sttae has children and there are still names to find then search further
-  if ((*it)->hasChildren() && !names.empty())
-    return (*it)->findStateImpl(names, branch);
+  if ((*it)->HasChildren() && !names.empty())
+    return (*it)->FindStateImpl(names, branch);
   else
     return true;
 }

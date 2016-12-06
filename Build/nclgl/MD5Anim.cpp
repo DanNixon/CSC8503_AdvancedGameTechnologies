@@ -161,7 +161,7 @@ void MD5Anim::LoadMD5AnimHierarchy(std::ifstream &from, unsigned int &count)
       // positions (which should both be '"'
       joints[count].name = tempLine.substr(1, tempLine.find('"', 1) - 1);
 
-      from >> joints[count].parent;
+      from >> joints[count].Parent;
       from >> joints[count].flags;
       from >> joints[count].frameIndex;
 
@@ -418,7 +418,7 @@ void MD5Anim::TransformSkeleton(MD5Skeleton &skel, unsigned int frameNum)
     MD5Joint &skelJoint = skel.joints[i];
 
     // I'm fairly sure this doesn't ever actually change...
-    skelJoint.parent = joints[i].parent;
+    skelJoint.Parent = joints[i].Parent;
     skelJoint.forceWorld = false;
 
     // We'll set its position and orientation to the transformed baseframe variables
@@ -435,7 +435,7 @@ void MD5Anim::TransformSkeleton(MD5Skeleton &skel, unsigned int frameNum)
 
     // If the joint has no parent (determined by a negative parent variable) we need to
     // transform the joint's transform to the correct rotation, using the conversion matrix
-    if (skelJoint.parent < 0)
+    if (skelJoint.Parent < 0)
     { // Base Joint, so we're done
       skelJoint.transform = MD5FileData::conversionMatrix * skelJoint.localTransform;
     }
@@ -445,8 +445,8 @@ void MD5Anim::TransformSkeleton(MD5Skeleton &skel, unsigned int frameNum)
       // parent transform. Note that we don't have to transform it by the conversion matrix
       // again, as the parent node will already contain it, due to being propagated from
       // the root node. Matrices are fun!
-      MD5Joint &parent = skel.joints[skelJoint.parent];
-      skelJoint.transform = parent.transform * skelJoint.localTransform;
+      MD5Joint &Parent = skel.joints[skelJoint.Parent];
+      skelJoint.transform = Parent.transform * skelJoint.localTransform;
     }
   }
 }

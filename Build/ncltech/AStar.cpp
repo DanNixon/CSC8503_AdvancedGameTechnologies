@@ -31,7 +31,7 @@ void AStar::reset()
   // Reset node data
   for (auto it = m_nodeData.begin(); it != m_nodeData.end(); ++it)
   {
-    it->second->parent = nullptr;
+    it->second->Parent = nullptr;
     it->second->fScore = std::numeric_limits<float>::max();
     it->second->gScore = std::numeric_limits<float>::max();
   }
@@ -93,7 +93,7 @@ bool AStar::findPath(PathNode *start, PathNode *end)
         // Check if this path is more efficient that the previous best
         if (q->gScore > gScore)
         {
-          q->parent = p;
+          q->Parent = p;
           q->gScore = gScore;
           q->fScore = fScore;
           m_openList.update();
@@ -102,7 +102,7 @@ bool AStar::findPath(PathNode *start, PathNode *end)
       else
       {
         // Add this path to the open list if it has yet to be considered
-        q->parent = p;
+        q->Parent = p;
         q->gScore = gScore;
         q->fScore = fScore;
         m_openList.push(q);
@@ -118,7 +118,7 @@ bool AStar::findPath(PathNode *start, PathNode *end)
     while (n)
     {
       m_path.push_back(n->node);
-      n = n->parent;
+      n = n->Parent;
     }
 
     // Reverse path to be ordered start to end

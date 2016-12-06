@@ -32,14 +32,14 @@ public:
   static IState *ClosestCommonAncestor(IState *a, IState *b);
 
 public:
-  IState(const std::string &name, IState *parent, StateMachine *machine);
+  IState(const std::string &name, IState *Parent, StateMachine *machine);
   virtual ~IState();
 
   /**
    * @brief Gets the name of this IState.
    * @return IState name
    */
-  inline std::string name() const
+  inline std::string Name() const
   {
     return m_name;
   }
@@ -48,7 +48,7 @@ public:
    * @brief Returns the parent state of this state.
    * @return Parent state
    */
-  inline IState *parent() const
+  inline IState *Parent() const
   {
     return m_parent;
   }
@@ -57,9 +57,9 @@ public:
    * @brief Checks if this IState is active.
    * @return True if this IState is active
    */
-  inline bool isActive() const
+  inline bool IsActive() const
   {
-    return m_parent->activeChild() == this;
+    return m_parent->ActiveChild() == this;
   }
 
   void AddTransferFromTest(TransferFromTest test);
@@ -68,19 +68,19 @@ public:
   void AddOnExitBehaviour(OnExitBehaviour behaviour);
   void AddOnOperateBehaviour(OnOperateBehaviour behaviour);
 
-  IStatePtrList branch(bool reverse = false);
+  IStatePtrList Branch(bool reverse = false);
 
-  void setActivation(bool active, IState *terminateAt = nullptr, IState *delta = nullptr);
+  void SetActivation(bool active, IState *terminateAt = nullptr, IState *delta = nullptr);
 
 protected:
   friend class StateMachine;
 
-  IState *testTransferFrom() const;
-  bool testTransferTo() const;
+  IState *TestTransferFrom() const;
+  bool TestTransferTo() const;
 
-  void onEntry(IState *last);
-  void onExit(IState *next);
-  void onOperate();
+  void OnEntry(IState *last);
+  void OnExit(IState *next);
+  void OnOperate();
 
 protected:
   const std::string m_name; //!< Name of this state

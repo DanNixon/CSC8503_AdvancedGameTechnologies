@@ -112,7 +112,7 @@ class SceneRenderer : public OGLRenderer
 {
 public:
   // Initialize the SceneRenderer and all OpenGL components
-  virtual void InitializeOGLContext(Window &parent) override;
+  virtual void InitializeOGLContext(Window &Parent) override;
 
   // Render Current Scene
   virtual void RenderScene() override;

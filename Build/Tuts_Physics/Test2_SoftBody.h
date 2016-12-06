@@ -2,7 +2,6 @@
 
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
-#include <ncltech\NCLDebug.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
@@ -26,6 +25,7 @@ public:
                                                   true, CommonUtils::GenColour(0.45f, 0.5f));
     this->AddGameObject(pole);
 
+    // Generate soft body cloth mesh
     const float xNodeSpacing = 1.5f;
     const float yNodeSpacing = 2.0f;
 

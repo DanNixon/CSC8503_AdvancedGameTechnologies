@@ -99,7 +99,7 @@ public:
   OGLRenderer();
   virtual ~OGLRenderer(void);
 
-  virtual void InitializeOGLContext(Window &parent);
+  virtual void InitializeOGLContext(Window &Parent);
 
   virtual void RenderScene() = 0;
   virtual void UpdateScene(float msec);

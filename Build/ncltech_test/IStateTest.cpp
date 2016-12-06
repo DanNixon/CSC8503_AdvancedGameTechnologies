@@ -18,9 +18,9 @@ public:
     IState * s12 = new IState("state1.2", s1, nullptr);
     IState * s121 = new IState("state1.2.1", s12, nullptr);
 
-    Assert::IsTrue(IStatePtrList{ s1, s12, s121 } == s121->branch());
-    Assert::IsTrue(IStatePtrList{ s1, s12, s121 } == s121->branch(false));
-    Assert::IsTrue(IStatePtrList{ s121, s12, s1 } == s121->branch(true));
+    Assert::IsTrue(IStatePtrList{ s1, s12, s121 } == s121->Branch());
+    Assert::IsTrue(IStatePtrList{ s1, s12, s121 } == s121->Branch(false));
+    Assert::IsTrue(IStatePtrList{ s121, s12, s1 } == s121->Branch(true));
   }
 
   TEST_METHOD(IState_ClosestCommonAncestor)
@@ -58,7 +58,7 @@ public:
     std::vector<int> data;
 
     StateMachine m;
-    IState * state = new IState("test_state", m.rootState(), &m);
+    IState * state = new IState("test_state", m.RootState(), &m);
 
     // Test behaviours
     state->AddOnEntryBehaviour([&data](IState *) {data.push_back(2); });
@@ -69,9 +69,9 @@ public:
     state->AddOnOperateBehaviour([&data]() {data.push_back(42); });
 
     // Execute behaviours
-    state->setActivation(true);
-    m.operate();
-    state->setActivation(false);
+    state->SetActivation(true);
+    m.Operate();
+    state->SetActivation(false);
     
     // Test data modifications
     std::vector<int> expected = {2, 7, 99, 42, 9, 12};
@@ -82,42 +82,42 @@ public:
   {
     StateMachine m;
 
-    IState * state1 = new IState("test_state_1", m.rootState(), &m);
-    IState * state2 = new IState("test_state_2", m.rootState(), &m);
+    IState * state1 = new IState("test_state_1", m.RootState(), &m);
+    IState * state2 = new IState("test_state_2", m.RootState(), &m);
 
-    state1->setActivation(true);
+    state1->SetActivation(true);
 
     state1->AddTransferFromTest([]() { return nullptr; });
-    m.update();
-    Assert::IsTrue(m.activeStateBranch().back() == state1);
+    m.Update();
+    Assert::IsTrue(m.ActiveStateBranch().back() == state1);
 
     state1->AddTransferFromTest([state2]() { return state2; });
-    m.update();
-    Assert::IsTrue(m.activeStateBranch().back() == state2);
+    m.Update();
+    Assert::IsTrue(m.ActiveStateBranch().back() == state2);
 
     state2->AddTransferFromTest([state1]() { return state1; });
-    m.update();
-    Assert::IsTrue(m.activeStateBranch().back() == state1);
+    m.Update();
+    Assert::IsTrue(m.ActiveStateBranch().back() == state1);
   }
 
   TEST_METHOD(IState_TransferFromTests)
   {
     StateMachine m;
 
-    IState * state1 = new IState("test_state_1", m.rootState(), &m);
-    IState * state2 = new IState("test_state_2", m.rootState(), &m);
+    IState * state1 = new IState("test_state_1", m.RootState(), &m);
+    IState * state2 = new IState("test_state_2", m.RootState(), &m);
 
-    state1->setActivation(true);
+    state1->SetActivation(true);
 
-    m.update();
-    Assert::IsTrue(m.activeStateBranch().back() == state1);
+    m.Update();
+    Assert::IsTrue(m.ActiveStateBranch().back() == state1);
 
     state2->AddTransferToTest([]() { return true; });
-    m.update();
-    Assert::IsTrue(m.activeStateBranch().back() == state2);
+    m.Update();
+    Assert::IsTrue(m.ActiveStateBranch().back() == state2);
 
     state1->AddTransferToTest([]() { return true; });
-    m.update();
-    Assert::IsTrue(m.activeStateBranch().back() == state1);
+    m.Update();
+    Assert::IsTrue(m.ActiveStateBranch().back() == state1);
   }
 };

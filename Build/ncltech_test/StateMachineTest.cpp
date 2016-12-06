@@ -12,32 +12,32 @@ public:
   {
     StateMachine m;
 
-    IState * s1 = new IState("state1", m.rootState(), &m);
+    IState * s1 = new IState("state1", m.RootState(), &m);
     IState * s11 = new IState("state1.1", s1, &m);
     IState * s12 = new IState("state1.2", s1, &m);
     IState * s121 = new IState("state1.2.1", s12, &m);
-    IState * s2 = new IState("state2", m.rootState(), &m);
+    IState * s2 = new IState("state2", m.RootState(), &m);
     IState * s21 = new IState("state2.1", s2, &m);
 
     // Test activation
-    s12->setActivation(true);
-    Assert::IsTrue(s1 == m.rootState()->activeChild());
-    Assert::IsTrue(s12 == s1->activeChild());
-    Assert::IsNull(s12->activeChild());
+    s12->SetActivation(true);
+    Assert::IsTrue(s1 == m.RootState()->ActiveChild());
+    Assert::IsTrue(s12 == s1->ActiveChild());
+    Assert::IsNull(s12->ActiveChild());
 
     // Test active branch
-    s121->setActivation(true);
-    std::vector<IState *> branch = m.activeStateBranch();
+    s121->SetActivation(true);
+    std::vector<IState *> branch = m.ActiveStateBranch();
     Assert::AreEqual((size_t) 3, branch.size());
     Assert::IsTrue(s1 == branch[0]);
     Assert::IsTrue(s12 == branch[1]);
     Assert::IsTrue(s121 == branch[2]);
 
     // Test deactivation
-    s121->setActivation(false);
-    Assert::IsNull(m.rootState()->activeChild());
-    Assert::IsNull(s1->activeChild());
-    Assert::IsNull(s12->activeChild());
+    s121->SetActivation(false);
+    Assert::IsNull(m.RootState()->ActiveChild());
+    Assert::IsNull(s1->ActiveChild());
+    Assert::IsNull(s12->ActiveChild());
   }
 
   TEST_METHOD(StateMachine_BranchToString)

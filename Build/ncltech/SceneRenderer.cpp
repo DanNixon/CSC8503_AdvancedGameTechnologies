@@ -5,9 +5,9 @@
 #include "PhysicsEngine.h"
 #include "ScreenPicker.h"
 
-void SceneRenderer::InitializeOGLContext(Window &parent)
+void SceneRenderer::InitializeOGLContext(Window &Parent)
 {
-  OGLRenderer::InitializeOGLContext(parent);
+  OGLRenderer::InitializeOGLContext(Parent);
 
   InitialiseGL();
 }

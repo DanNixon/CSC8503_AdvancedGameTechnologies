@@ -335,7 +335,7 @@ int MD5FileData::LoadMD5Joints(std::ifstream &from)
       jointNames.push_back(tempLine.substr(1, tempLine.find('"', 1) - 1));
       bindPose.joints[loaded].name = &jointNames.back();
 
-      from >> bindPose.joints[loaded].parent;
+      from >> bindPose.joints[loaded].Parent;
       from >> skipChar; // first vec beginning bracket
       from >> bindPose.joints[loaded].position.x;
       from >> bindPose.joints[loaded].position.y;

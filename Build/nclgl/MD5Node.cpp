@@ -135,7 +135,7 @@ bool MD5Node::GetParentLocalOrientation(const string &name, Quaternion &t)
   {
     return false;
   }
-  int pIndex = currentSkeleton.joints[index].parent;
+  int pIndex = currentSkeleton.joints[index].Parent;
   if (index < 0)
   {
     return false;
@@ -158,7 +158,7 @@ bool MD5Node::GetParentLocalTransform(const string &name, Matrix4 &t)
   {
     return false;
   }
-  int pIndex = currentSkeleton.joints[index].parent;
+  int pIndex = currentSkeleton.joints[index].Parent;
   if (index < 0)
   {
     return false;
@@ -175,7 +175,7 @@ bool MD5Node::GetParentWorldTransform(const string &name, Matrix4 &t)
   {
     return false;
   }
-  int pIndex = currentSkeleton.joints[index].parent;
+  int pIndex = currentSkeleton.joints[index].Parent;
   if (index < 0)
   {
     return false;
@@ -220,9 +220,9 @@ void MD5Node::ApplyTransformsToHierarchy(int startingNode)
 
     MD5Joint *p = NULL;
 
-    if (j.parent >= 0)
+    if (j.Parent >= 0)
     {
-      p = &currentSkeleton.joints[j.parent];
+      p = &currentSkeleton.joints[j.Parent];
 
       if (!j.forceWorld)
       {
@@ -263,14 +263,14 @@ void MD5Node::DebugDrawSkeleton()
   {
     skeletonVertices[i * 2] = currentSkeleton.joints[i].transform.GetPositionVector();
 
-    if (currentSkeleton.joints[i].parent == -1)
+    if (currentSkeleton.joints[i].Parent == -1)
     { // No parent, but to keep this simple we'll copy the position again...
       skeletonVertices[(i * 2) + 1] = currentSkeleton.joints[i].transform.GetPositionVector();
       ;
     }
     else
     {
-      skeletonVertices[(i * 2) + 1] = currentSkeleton.joints[currentSkeleton.joints[i].parent].transform.GetPositionVector();
+      skeletonVertices[(i * 2) + 1] = currentSkeleton.joints[currentSkeleton.joints[i].Parent].transform.GetPositionVector();
       ;
     }
   }

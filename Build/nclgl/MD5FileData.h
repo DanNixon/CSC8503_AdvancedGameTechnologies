@@ -76,7 +76,7 @@ well as making it slightly more efficient to transform the mesh.
 struct MD5Joint
 {
   string *name; // Pointer to the name of this joint
-  int parent;   // Index into the joint array of parent
+  int Parent;   // Index into the joint array of parent
   int forceWorld;
   Vector3 position;       // Position relative to parent joint
   Quaternion orientation; // Orientation relative to parent joint
