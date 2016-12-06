@@ -113,7 +113,6 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BruteForceBroadphase.h" />
     <ClInclude Include="CollisionDetectionSAT.h" />
-    <ClInclude Include="CompletableActionState.h" />
     <ClInclude Include="PathEdge.h" />
     <ClInclude Include="FunctionalState.h" />
     <ClInclude Include="ICollisionShape.h" />

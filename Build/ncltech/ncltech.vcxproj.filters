@@ -259,9 +259,6 @@
     <ClInclude Include="AABBCollisionShape.h">
       <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
-    <ClInclude Include="CompletableActionState.h">
-      <Filter>include\FSM</Filter>
-    </ClInclude>
     <ClInclude Include="FunctionalState.h">
       <Filter>include\FSM</Filter>
     </ClInclude>
