@@ -81,7 +81,7 @@ higher mark will require the implementation of optional elements.
       example of this principle in practise should be testable within the
       simulation (e.g., a bunny rabbit mesh represented, physically, as a few
       spheres)
-- [ ] At any point, a player should be able to end their session by pressing
+- [x] At any point, a player should be able to end their session by pressing
       the 'X' key. The program should exit cleanly.
 
 ## Coursework Part B: Advanced Features

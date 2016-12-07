@@ -62,11 +62,22 @@ public:
     return m_vpAllScenes.size();
   }
 
+  inline bool ExitFlag() const
+  {
+    return m_ExitFlag;
+  }
+
+  inline void SetExitFlag(bool exit)
+  {
+    m_ExitFlag = exit;
+  }
+
 protected:
   SceneManager();
   virtual ~SceneManager();
 
 protected:
+  bool m_ExitFlag;
   uint m_SceneIdx;
   std::vector<Scene *> m_vpAllScenes;
 };

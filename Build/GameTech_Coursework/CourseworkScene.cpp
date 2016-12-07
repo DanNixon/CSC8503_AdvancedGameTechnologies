@@ -28,7 +28,13 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
     {
       IState *exitState = new IState("exit", m_playerStateMachine.RootState(), &m_playerStateMachine);
       exitState->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_X); });
-      exitState->AddOnOperateBehaviour([]() { NCLDebug::Log("TODO: exit here"); }); // TODO
+      exitState->AddOnEntryBehaviour([](IState *) {
+        NCLDebug::Log("Bye Bye~");
+      });
+      exitState->AddOnOperateBehaviour([exitState]() {
+        if (exitState->TimeInState() > 1.0f)
+          SceneManager::Instance()->SetExitFlag(true);
+      });
     }
 
     // Shooting spheres
