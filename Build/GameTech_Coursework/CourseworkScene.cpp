@@ -14,24 +14,40 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
     : Scene(friendlyName)
     , m_planet(nullptr)
 {
-  IState *idle = new IState("idle", m_playerStateMachine.RootState(), &m_playerStateMachine);
-  idle->SetActivation(true);
-
+  // Debug draw state machine
   {
-    IState *shootBall = new IState("shootBall", m_playerStateMachine.RootState(), &m_playerStateMachine);
-    shootBall->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
+      // TODO
+  }
 
-    IState *preShoot = new IState("preShoot", shootBall, &m_playerStateMachine);
-    shootBall->AddOnEntryBehaviour([preShoot](IState *) { preShoot->SetActivation(true, preShoot->Parent()); });
+  // Player state machine
+  {
+    m_playerStateMachineDefaultState = new IState("idle", m_playerStateMachine.RootState(), &m_playerStateMachine);
+    m_playerStateMachineDefaultState->SetActivation(true);
 
-    IState *shoot = new IState("shoot", shootBall, &m_playerStateMachine);
-    shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
+    // Exit conditions
+    {
+      IState *exitState = new IState("exit", m_playerStateMachine.RootState(), &m_playerStateMachine);
+      exitState->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_X); });
+      exitState->AddOnOperateBehaviour([]() { NCLDebug::Log("TODO: exit here"); }); // TODO
+    }
 
-    shoot->AddOnEntryBehaviour([idle](IState *s) {
-      float timeHeld = s->TimeInState();
-      NCLDebug::Log("TODO: shoot ball here (power %f)", timeHeld);
-    });
-    shoot->AddTransferFromTest([idle]() { return idle; });
+    // Shooting spheres
+    {
+      IState *shootBall = new IState("shootBall", m_playerStateMachine.RootState(), &m_playerStateMachine);
+      shootBall->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
+
+      IState *preShoot = new IState("preShoot", shootBall, &m_playerStateMachine);
+      shootBall->AddOnEntryBehaviour([preShoot](IState *) { preShoot->SetActivation(true, preShoot->Parent()); });
+
+      IState *shoot = new IState("shoot", shootBall, &m_playerStateMachine);
+      shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
+
+      shoot->AddOnEntryBehaviour([](IState *s) {
+        float timeHeld = s->TimeInState();
+        NCLDebug::Log("TODO: shoot ball here (power %f)", timeHeld);
+      });
+      shoot->AddTransferFromTest([this]() { return this->m_playerStateMachineDefaultState; });
+    }
   }
 }
 

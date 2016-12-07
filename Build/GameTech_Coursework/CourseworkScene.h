@@ -15,7 +15,9 @@ public:
   virtual void OnUpdateScene(float dt) override;
 
 protected:
+  StateMachine m_debugDrawStateMachine;
   StateMachine m_playerStateMachine;
+  IState *m_playerStateMachineDefaultState;
 
   Object *m_planet;
 };
