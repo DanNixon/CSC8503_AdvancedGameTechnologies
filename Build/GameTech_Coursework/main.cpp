@@ -124,7 +124,8 @@ int main()
   Window::GetWindow().GetTimer()->GetTimedMS();
 
   // Create main game-loop
-  while (Window::GetWindow().UpdateWindow() && !SceneManager::Instance()->ExitFlag() &&!Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE))
+  while (Window::GetWindow().UpdateWindow() && !SceneManager::Instance()->ExitFlag() &&
+         !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE))
   {
     // Start Timing
     float dt = Window::GetWindow().GetTimer()->GetTimedMS() * 0.001f; // How many milliseconds since last update?

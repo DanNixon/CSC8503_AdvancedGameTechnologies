@@ -52,6 +52,9 @@ public:
   Matrix3 ToMatrix3() const;
 
   Quaternion Conjugate() const;
+  Quaternion Inverse() const;
+  float Magnitude() const;
+
   void GenerateW(); // builds 4th component when loading in shortened, 3 component quaternions - great for network compression ;)
 
   static Quaternion EulerAnglesToQuaternion(float pitch, float yaw, float roll);

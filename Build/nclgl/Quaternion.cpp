@@ -173,6 +173,19 @@ Quaternion Quaternion::AxisAngleToQuaterion(const Vector3 &vector, float degrees
   return q;
 }
 
+void Quaternion::RotatePointByQuaternion(const Quaternion &q, Vector3 &point)
+{
+  const Quaternion inv(q.Inverse());
+  Quaternion pos(point.x, point.y, point.z, 0.0f);
+
+  pos = pos * inv;
+  pos = q * pos;
+
+  point.x = pos.x;
+  point.y = pos.y;
+  point.z = pos.z;
+}
+
 void Quaternion::GenerateW()
 {
   w = 1.0f - (x * x) - (y * y) - (z * z);
@@ -189,6 +202,26 @@ void Quaternion::GenerateW()
 Quaternion Quaternion::Conjugate() const
 {
   return Quaternion(-x, -y, -z, w);
+}
+
+Quaternion Quaternion::Inverse() const
+{
+  Quaternion q = Conjugate();
+
+  float m = q.Magnitude();
+  m *= m;
+
+  if (m == 0.0f)
+    m = 1.0f;
+  else
+    m = 1.0f / m;
+
+  return Quaternion(q.x * m, q.y * m, q.z * m, q.w * m);
+}
+
+float Quaternion::Magnitude() const
+{
+  return sqrt(x * x + y * y + z * z + w * w);
 }
 
 Quaternion Quaternion::FromMatrix(const Matrix4 &m)

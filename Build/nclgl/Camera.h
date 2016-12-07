@@ -48,6 +48,7 @@ public:
   {
     return position;
   }
+
   // Sets position in world space
   void SetPosition(Vector3 val)
   {
@@ -59,6 +60,7 @@ public:
   {
     return yaw;
   }
+
   // Sets yaw, in degrees
   void SetYaw(float y)
   {
@@ -70,11 +72,14 @@ public:
   {
     return pitch;
   }
+
   // Sets pitch, in degrees
   void SetPitch(float p)
   {
     pitch = p;
   }
+
+  Quaternion GetOrientation() const;
 
 protected:
   float yaw;

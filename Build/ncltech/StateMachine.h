@@ -32,8 +32,19 @@ public:
   }
 
   /**
+   * @brief Sets the state returned to when this state machine is reset.
+   * @param defaultState Pointer to default state
+   */
+  void SetDefaultState(IState *defaultState)
+  {
+    m_defaultState = defaultState;
+  }
+
+  void Reset();
+
+  /**
    * @brief Performs updates of the state machine by checking for transition conditions then performing operations over all active
-   * states.
+   *        states.
    * @param dt Time since the last call to this function
    * @return True if a state change took place
    * @see StateMachine:Transfer()
@@ -50,5 +61,6 @@ public:
   virtual void Operate(float dt = 0.0f);
 
 private:
-  IState m_root; //!< Root state
+  IState m_root;          //!< Root state
+  IState *m_defaultState; //!< Default state
 };

@@ -8,7 +8,7 @@
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
 
-#define PLANET_RADIUS 1000.0f
+#define PLANET_RADIUS 100.0f
 
 CourseworkScene::CourseworkScene(const std::string &friendlyName)
     : Scene(friendlyName)
@@ -21,16 +21,16 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
 
   // Player state machine
   {
-    m_playerStateMachineDefaultState = new IState("idle", m_playerStateMachine.RootState(), &m_playerStateMachine);
-    m_playerStateMachineDefaultState->SetActivation(true);
+    // Idle (default) state
+    IState *idle = new IState("idle", m_playerStateMachine.RootState(), &m_playerStateMachine);
+    idle->SetActivation(true);
+    m_playerStateMachine.SetDefaultState(idle);
 
     // Exit conditions
     {
       IState *exitState = new IState("exit", m_playerStateMachine.RootState(), &m_playerStateMachine);
       exitState->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_X); });
-      exitState->AddOnEntryBehaviour([](IState *) {
-        NCLDebug::Log("Bye Bye~");
-      });
+      exitState->AddOnEntryBehaviour([](IState *) { NCLDebug::Log("Bye Bye~"); });
       exitState->AddOnOperateBehaviour([exitState]() {
         if (exitState->TimeInState() > 1.0f)
           SceneManager::Instance()->SetExitFlag(true);
@@ -50,9 +50,12 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
 
       shoot->AddOnEntryBehaviour([](IState *s) {
         float timeHeld = s->TimeInState();
-        NCLDebug::Log("TODO: shoot ball here (power %f)", timeHeld);
+        Vector3 force(0.0f, 0.0f, -timeHeld);
+        Quaternion::RotatePointByQuaternion(SceneManager::Instance()->GetCamera()->GetOrientation(), force);
+        // TODO
+        NCLDebug::Log("TODO: shoot ball here (%f, %f, %f)", force.x, force.y, force.z);
       });
-      shoot->AddTransferFromTest([this]() { return this->m_playerStateMachineDefaultState; });
+      shoot->AddTransferFromTest([idle]() { return idle; });
     }
   }
 }
@@ -63,6 +66,7 @@ CourseworkScene::~CourseworkScene()
 
 void CourseworkScene::OnInitializeScene()
 {
+  // Set broadphase method
   PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
 
   // Set the camera position
@@ -70,7 +74,11 @@ void CourseworkScene::OnInitializeScene()
   SceneManager::Instance()->GetCamera()->SetYaw(0.0f);
   SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
 
-  // Planet
+  // Reset state machines
+  m_debugDrawStateMachine.Reset();
+  m_playerStateMachine.Reset();
+
+  // Planet object
   m_planet = CommonUtils::BuildSphereObject("planet", Vector3(0.0f, 0.0f, 0.0f), PLANET_RADIUS, true, 0.0f, true, false,
                                             Vector4(0.2f, 0.5f, 1.0f, 1.0f));
   AddGameObject(m_planet);

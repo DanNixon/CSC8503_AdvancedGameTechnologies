@@ -24,6 +24,7 @@ std::string StateMachine::BranchToString(const IStatePtrList &branch, char delim
 
 StateMachine::StateMachine()
     : m_root("", nullptr, this)
+    , m_defaultState(nullptr)
 {
 }
 
@@ -47,6 +48,15 @@ IStatePtrList StateMachine::ActiveStateBranch()
   }
 
   return branch;
+}
+
+/**
+ * @brief Resets this state machine back to the default state.
+ */
+void StateMachine::Reset()
+{
+  if (m_defaultState != nullptr && m_defaultState->m_machine == this)
+    m_defaultState->SetActivation(true);
 }
 
 /**
