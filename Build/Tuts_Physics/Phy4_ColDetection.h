@@ -132,7 +132,6 @@ public:
 
     // Create Cuboid-Cuboid Manifold Test
     {
-
       Object *cuboid =
           CommonUtils::BuildCuboidObject("rotating_cuboid3", cc_pos + Vector3(0.75f, 0.0f, 0.0f), Vector3(0.5f, 0.5f, 0.5f), true,
                                          0.0f, true, false, CommonUtils::GenColour(0.3f, 0.5f));
@@ -174,7 +173,13 @@ public:
 
       Object *rotating_cuboid1 = this->FindGameObject("rotating_cuboid3");
       if (rotating_cuboid1 != NULL)
+      {
         rotating_cuboid1->Physics()->SetPosition(cc_pos + offset);
+
+        // Rotate the cube about y axis
+        Quaternion q = rotating_cuboid1->Physics()->GetOrientation();
+        rotating_cuboid1->Physics()->SetOrientation(q * Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 1.0f));
+      }
     }
 
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_B))
