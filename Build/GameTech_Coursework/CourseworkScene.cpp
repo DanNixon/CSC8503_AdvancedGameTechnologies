@@ -121,5 +121,6 @@ void CourseworkScene::OnCleanupScene()
 
 void CourseworkScene::OnUpdateScene(float dt)
 {
+  m_debugDrawStateMachine.Update(dt);
   m_playerStateMachine.Update(dt);
 }
