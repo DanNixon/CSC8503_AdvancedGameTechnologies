@@ -131,6 +131,11 @@ void CourseworkScene::OnCleanupScene()
 {
   Scene::OnCleanupScene();
 
+  // Reset state machines
+  m_debugDrawStateMachine.Reset();
+  m_playerStateMachine.Reset();
+
+  // Cleanup object pointers
   m_planet = nullptr;
 }
 
