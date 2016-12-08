@@ -123,11 +123,9 @@
   <ItemGroup>
     <ClCompile Include="CourseworkScene.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CourseworkScene.h" />
-    <ClInclude Include="TestScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

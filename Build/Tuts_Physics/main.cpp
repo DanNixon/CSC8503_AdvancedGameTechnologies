@@ -11,6 +11,7 @@
 #include "Phy5_ColManifolds.h"
 #include "Phy6_ColResponse.h"
 #include "Phy7_Solver.h"
+#include "TestScene.h"
 #include "Test1_PointGravitation.h"
 #include "Test2_SoftBody.h"
 
@@ -66,6 +67,7 @@ void Initialize()
   SceneManager::Instance()->EnqueueScene(new Phy5_ColManifolds("Physics Tut #5 - Collision Manifolds"));
   SceneManager::Instance()->EnqueueScene(new Phy6_ColResponse("Physics Tut #6 - Collision Response"));
   SceneManager::Instance()->EnqueueScene(new Phy7_Solver("Physics Tut #7 - Global Solver"));
+  SceneManager::Instance()->EnqueueScene(new TestScene("GameTech #1 - Framework Sandbox!"));
   SceneManager::Instance()->EnqueueScene(new Test1_PointGravitation("Test #1 - Point Gravitation"));
   SceneManager::Instance()->EnqueueScene(new Test2_SoftBody("Test #2 - Soft Body"));
 }

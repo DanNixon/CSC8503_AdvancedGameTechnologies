@@ -1,30 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="CourseworkScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
+    <ClCompile Include="CourseworkScene.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestScene.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="CourseworkScene.h">
-      <Filter>include</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="include">
-      <UniqueIdentifier>{8cd2a1b5-a5a6-4d8a-a9e8-7d3b38d777e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{ffae575f-54d9-46ce-a71c-aaa01a80d86b}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="CourseworkScene.h" />
   </ItemGroup>
 </Project>

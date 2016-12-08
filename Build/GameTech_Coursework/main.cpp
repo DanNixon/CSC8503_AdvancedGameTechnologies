@@ -5,7 +5,6 @@
 #include <ncltech\SceneManager.h>
 
 #include "CourseworkScene.h"
-#include "TestScene.h"
 
 const Vector4 status_colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 const Vector4 status_colour_header = Vector4(0.8f, 0.9f, 1.0f, 1.0f);
@@ -52,7 +51,6 @@ void Initialize()
     Quit(true, "Renderer failed to initialise!");
 
   // Enqueue All Scenes
-  SceneManager::Instance()->EnqueueScene(new TestScene("GameTech #1 - Framework Sandbox!"));
   SceneManager::Instance()->EnqueueScene(new CourseworkScene("GameTech coursework"));
 }
 

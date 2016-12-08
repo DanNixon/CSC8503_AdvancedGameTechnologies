@@ -96,9 +96,11 @@
     <ClInclude Include="Phy7_Solver.h" />
     <ClInclude Include="Test1_PointGravitation.h" />
     <ClInclude Include="Test2_SoftBody.h" />
+    <ClInclude Include="TestScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
