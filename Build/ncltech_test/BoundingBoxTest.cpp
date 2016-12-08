@@ -13,7 +13,7 @@ public:
   TEST_METHOD(TestMethod1)
   {
     // TODO
-    AABB a;
+    BoundingBox a;
     a.GetNumEdges();
   }
 };
