@@ -49,7 +49,7 @@ higher mark will require the implementation of optional elements.
 - [x] You must implement a 'Rest' state under which objects are not subject to
       physics updates (including gravity). This Rest state should end (the
       object should 'wake up') when an object suffers a collision.
-- [ ] You must add the capability to launch a textured, spherical projectile
+- [x] You must add the capability to launch a textured, spherical projectile
       into the environment from the camera's PoV with the 'J' key (the camera
       must be able to move and turn, as in the CSC8502 coursework). This
       projectile will be subject to Newtonian physics.
@@ -88,13 +88,13 @@ higher mark will require the implementation of optional elements.
 
 ### Compulsory
 
-- [ ] You will enhance your physics simulation to include a more sophisticated
+- [x] You will enhance your physics simulation to include a more sophisticated
       collision detection and response approach, such as separating-axis
       theorem and manifolds. More marks will be awarded for an even more
-      advanced approach (e.g.  GJK/EPA). Introduce additional objects of a more
-      complex collision shape to the environment to demonstrate this
-      functionality, which begin hovering at rest, and awaken when collided
-      with.
+      advanced approach (e.g.  GJK/EPA).
+- [ ] Introduce additional objects of a more complex collision shape to the
+      environment to demonstrate this functionality, which begin hovering at
+      rest, and awaken when collided with.
 - [ ] You will implement networking code to support a client-controlled entity
       within your environment. The client will execute on the same computer as
       your simulation (which will be considered the server), and will
