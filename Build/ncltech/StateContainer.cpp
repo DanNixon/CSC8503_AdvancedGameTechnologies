@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <sstream>
 
-#include "IState.h"
+#include "State.h"
 
 /**
 * @brief Splits a string by a delimiter.
@@ -61,7 +61,7 @@ bool StateContainer::FindStateImpl(std::vector<std::string> &names, IStatePtrLis
 {
   // Find child by name
   const std::string name(names.back());
-  auto it = std::find_if(m_children.begin(), m_children.end(), [name](IState *i) { return i->Name() == name; });
+  auto it = std::find_if(m_children.begin(), m_children.end(), [name](State *i) { return i->Name() == name; });
 
   // Fail if child not found
   if (it == m_children.end())

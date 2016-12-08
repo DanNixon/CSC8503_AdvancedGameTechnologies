@@ -140,9 +140,6 @@
     <ClCompile Include="AABBCollisionShape.cpp">
       <Filter>src\Physics\CollisionShapes</Filter>
     </ClCompile>
-    <ClCompile Include="IState.cpp">
-      <Filter>src\FSM</Filter>
-    </ClCompile>
     <ClCompile Include="StateContainer.cpp">
       <Filter>src\FSM</Filter>
     </ClCompile>
@@ -157,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="PathEdge.cpp">
       <Filter>src\PathPlanning</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>src\FSM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,9 +259,6 @@
     <ClInclude Include="AABBCollisionShape.h">
       <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
-    <ClInclude Include="IState.h">
-      <Filter>include\FSM</Filter>
-    </ClInclude>
     <ClInclude Include="StateContainer.h">
       <Filter>include\FSM</Filter>
     </ClInclude>
@@ -282,6 +279,9 @@
     </ClInclude>
     <ClInclude Include="PathNodePriorityQueue.h">
       <Filter>include\PathPlanning</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>include\FSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

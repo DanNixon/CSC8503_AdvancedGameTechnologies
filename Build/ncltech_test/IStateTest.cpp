@@ -1,6 +1,6 @@
 #include <CppUnitTest.h>
 
-#include <ncltech/IState.h>
+#include <ncltech/State.h>
 #include <ncltech/StateContainer.h>
 #include <ncltech/StateMachine.h>
 
@@ -14,9 +14,9 @@ TEST_CLASS(IStateTest)
 public:
   TEST_METHOD(IState_Branch)
   {
-    IState * s1 = new IState("state1", nullptr, nullptr);
-    IState * s12 = new IState("state1.2", s1, nullptr);
-    IState * s121 = new IState("state1.2.1", s12, nullptr);
+    State * s1 = new State("state1", nullptr, nullptr);
+    State * s12 = new State("state1.2", s1, nullptr);
+    State * s121 = new State("state1.2.1", s12, nullptr);
 
     Assert::IsTrue(IStatePtrList{ s1, s12, s121 } == s121->Branch());
     Assert::IsTrue(IStatePtrList{ s1, s12, s121 } == s121->Branch(false));
@@ -25,32 +25,32 @@ public:
 
   TEST_METHOD(IState_ClosestCommonAncestor)
   {
-    IState * s1 = new IState("state1", nullptr, nullptr);
-    IState * s11 = new IState("state1.1", s1, nullptr);
-    IState * s12 = new IState("state1.2", s1, nullptr);
-    IState * s121 = new IState("state1.2.1", s12, nullptr);
-    IState * s122 = new IState("state1.2.2", s12, nullptr);
+    State * s1 = new State("state1", nullptr, nullptr);
+    State * s11 = new State("state1.1", s1, nullptr);
+    State * s12 = new State("state1.2", s1, nullptr);
+    State * s121 = new State("state1.2.1", s12, nullptr);
+    State * s122 = new State("state1.2.2", s12, nullptr);
 
-    Assert::IsTrue(s12 == IState::ClosestCommonAncestor(s122, s121));
-    Assert::IsTrue(s1 == IState::ClosestCommonAncestor(s122, s11));
-    Assert::IsTrue(s1 == IState::ClosestCommonAncestor(s121, s11));
-    Assert::IsTrue(s1 == IState::ClosestCommonAncestor(s121, s1));
-    Assert::IsTrue(s1 == IState::ClosestCommonAncestor(s1, s1));
+    Assert::IsTrue(s12 == State::ClosestCommonAncestor(s122, s121));
+    Assert::IsTrue(s1 == State::ClosestCommonAncestor(s122, s11));
+    Assert::IsTrue(s1 == State::ClosestCommonAncestor(s121, s11));
+    Assert::IsTrue(s1 == State::ClosestCommonAncestor(s121, s1));
+    Assert::IsTrue(s1 == State::ClosestCommonAncestor(s1, s1));
   }
 
   TEST_METHOD(IState_ClosestCommonAncestor_noCommonAncestory)
   {
-    IState * s1 = new IState("state1", nullptr, nullptr);
-    IState * s11 = new IState("state1.1", s1, nullptr);
+    State * s1 = new State("state1", nullptr, nullptr);
+    State * s11 = new State("state1.1", s1, nullptr);
 
-    IState * s2 = new IState("state2", nullptr, nullptr);
-    IState * s22 = new IState("state2.2", s2, nullptr);
-    IState * s221 = new IState("state2.2.1", s22, nullptr);
-    IState * s222 = new IState("state2.2.2", s22, nullptr);
+    State * s2 = new State("state2", nullptr, nullptr);
+    State * s22 = new State("state2.2", s2, nullptr);
+    State * s221 = new State("state2.2.1", s22, nullptr);
+    State * s222 = new State("state2.2.2", s22, nullptr);
 
-    Assert::IsTrue(nullptr == IState::ClosestCommonAncestor(s11, s221));
-    Assert::IsTrue(nullptr == IState::ClosestCommonAncestor(s11, s22));
-    Assert::IsTrue(nullptr == IState::ClosestCommonAncestor(s22, s1));
+    Assert::IsTrue(nullptr == State::ClosestCommonAncestor(s11, s221));
+    Assert::IsTrue(nullptr == State::ClosestCommonAncestor(s11, s22));
+    Assert::IsTrue(nullptr == State::ClosestCommonAncestor(s22, s1));
   }
 
   TEST_METHOD(IState_Behaviours)
@@ -58,13 +58,13 @@ public:
     std::vector<int> data;
 
     StateMachine m;
-    IState * state = new IState("test_state", m.RootState(), &m);
+    State * state = new State("test_state", m.RootState(), &m);
 
     // Test behaviours
-    state->AddOnEntryBehaviour([&data](IState *) {data.push_back(2); });
-    state->AddOnEntryBehaviour([&data](IState *) {data.push_back(7); });
-    state->AddOnExitBehaviour([&data](IState *) {data.push_back(9); });
-    state->AddOnExitBehaviour([&data](IState *) {data.push_back(12); });
+    state->AddOnEntryBehaviour([&data](State *) {data.push_back(2); });
+    state->AddOnEntryBehaviour([&data](State *) {data.push_back(7); });
+    state->AddOnExitBehaviour([&data](State *) {data.push_back(9); });
+    state->AddOnExitBehaviour([&data](State *) {data.push_back(12); });
     state->AddOnOperateBehaviour([&data]() {data.push_back(99); });
     state->AddOnOperateBehaviour([&data]() {data.push_back(42); });
 
@@ -85,8 +85,8 @@ public:
   {
     StateMachine m;
 
-    IState * state1 = new IState("test_state_1", m.RootState(), &m);
-    IState * state2 = new IState("test_state_2", m.RootState(), &m);
+    State * state1 = new State("test_state_1", m.RootState(), &m);
+    State * state2 = new State("test_state_2", m.RootState(), &m);
 
     state1->SetActivation(true);
 
@@ -110,8 +110,8 @@ public:
   {
     StateMachine m;
 
-    IState * state1 = new IState("test_state_1", m.RootState(), &m);
-    IState * state2 = new IState("test_state_2", m.RootState(), &m);
+    State * state1 = new State("test_state_1", m.RootState(), &m);
+    State * state2 = new State("test_state_2", m.RootState(), &m);
 
     state1->SetActivation(true);
 

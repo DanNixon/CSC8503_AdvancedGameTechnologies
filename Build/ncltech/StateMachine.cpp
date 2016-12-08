@@ -40,7 +40,7 @@ IStatePtrList StateMachine::ActiveStateBranch()
 {
   IStatePtrList branch;
 
-  IState *node = m_root.ActiveChild();
+  State *node = m_root.ActiveChild();
   while (node != nullptr)
   {
     branch.push_back(node);
@@ -66,12 +66,12 @@ void StateMachine::Reset()
 bool StateMachine::Transfer()
 {
   IStatePtrList branch = ActiveStateBranch();
-  IState *oldState = branch.back();
+  State *oldState = branch.back();
   bool stateChange = false;
 
   for (auto brIt = branch.begin(); brIt != branch.end(); ++brIt)
   {
-    IState *transferState = (*brIt)->TestTransferFrom();
+    State *transferState = (*brIt)->TestTransferFrom();
 
     if (transferState == nullptr)
     {
@@ -90,7 +90,7 @@ bool StateMachine::Transfer()
     {
       stateChange = true;
 
-      IState *commonAncestor = IState::ClosestCommonAncestor(oldState, transferState);
+      State *commonAncestor = State::ClosestCommonAncestor(oldState, transferState);
       oldState->SetActivation(false, commonAncestor, transferState);
       transferState->SetActivation(true, commonAncestor, oldState);
 
@@ -107,7 +107,7 @@ bool StateMachine::Transfer()
  */
 void StateMachine::Operate(float dt)
 {
-  IState *node = m_root.ActiveChild();
+  State *node = m_root.ActiveChild();
   while (node != nullptr)
   {
     node->m_timeInState += dt;

@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "IState.h"
+#include "State.h"
 
 /**
  * @class StateMachine
@@ -26,7 +26,7 @@ public:
    * @brief Gets the root state for the state machine.
    * @return Root state
    */
-  IState *RootState()
+  State *RootState()
   {
     return &m_root;
   }
@@ -35,7 +35,7 @@ public:
    * @brief Sets the state returned to when this state machine is reset.
    * @param defaultState Pointer to default state
    */
-  void SetDefaultState(IState *defaultState)
+  void SetDefaultState(State *defaultState)
   {
     m_defaultState = defaultState;
   }
@@ -61,6 +61,6 @@ public:
   virtual void Operate(float dt = 0.0f);
 
 private:
-  IState m_root;          //!< Root state
-  IState *m_defaultState; //!< Default state
+  State m_root;          //!< Root state
+  State *m_defaultState; //!< Default state
 };

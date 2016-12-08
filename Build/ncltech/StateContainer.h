@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-class IState;
+class State;
 
 /**
  * @class StateContainer
@@ -19,7 +19,7 @@ public:
   StateContainer();
   virtual ~StateContainer();
 
-  std::vector<IState *> FindState(const std::string &path, char delim = '/');
+  std::vector<State *> FindState(const std::string &path, char delim = '/');
 
   /**
    * @brief Checks if this node has child states.
@@ -34,7 +34,7 @@ public:
    * @brief Adds a child state.
    * @param child State to add
    */
-  inline void AddChild(IState *child)
+  inline void AddChild(State *child)
   {
     m_children.push_back(child);
   }
@@ -43,7 +43,7 @@ public:
    * @brief Gets the active child state of this node.
    * @return Active child state
    */
-  inline IState *ActiveChild() const
+  inline State *ActiveChild() const
   {
     return m_active;
   }
@@ -53,7 +53,7 @@ public:
    * @param state State to test
    * @return True if state is active
    */
-  inline bool IsChildActive(const IState *state) const
+  inline bool IsChildActive(const State *state) const
   {
     return m_active == state;
   }
@@ -62,15 +62,15 @@ public:
    * @brief Gets a reference to the vector containing child states.
    * @return Reference to children vector
    */
-  inline std::vector<IState *> Children()
+  inline std::vector<State *> Children()
   {
     return m_children;
   }
 
 private:
-  bool FindStateImpl(std::vector<std::string> &names, std::vector<IState *> &branch);
+  bool FindStateImpl(std::vector<std::string> &names, std::vector<State *> &branch);
 
 protected:
-  IState *m_active;                 //!< Active state
-  std::vector<IState *> m_children; //!< Child states
+  State *m_active;                 //!< Active state
+  std::vector<State *> m_children; //!< Child states
 };

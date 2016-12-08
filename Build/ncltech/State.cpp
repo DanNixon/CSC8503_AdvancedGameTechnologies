@@ -1,4 +1,4 @@
-#include "IState.h"
+#include "State.h"
 
 /**
  * @brief Finds the closest common ancestor of two states.
@@ -6,7 +6,7 @@
  * @param b Second state
  * @return Closest ancestor, nullptr if no common ancestor
  */
-IState *IState::ClosestCommonAncestor(IState *a, IState *b)
+State *State::ClosestCommonAncestor(State *a, State *b)
 {
   IStatePtrList branchA = a->Branch();
   IStatePtrList branchB = b->Branch();
@@ -14,7 +14,7 @@ IState *IState::ClosestCommonAncestor(IState *a, IState *b)
   auto ia = branchA.begin();
   auto ib = branchB.begin();
 
-  IState *commonAncestor = nullptr;
+  State *commonAncestor = nullptr;
 
   // Taverse down common sections of each branch until the branches diverge
   while (*ia == *ib)
@@ -38,7 +38,7 @@ IState *IState::ClosestCommonAncestor(IState *a, IState *b)
  * @param parent Parent state
  * @param machine The state machine to which this state belongs
  */
-IState::IState(const std::string &name, IState *Parent, StateMachine *machine)
+State::State(const std::string &name, State *Parent, StateMachine *machine)
     : m_name(name)
     , m_machine(machine)
     , m_parent(Parent)
@@ -47,35 +47,35 @@ IState::IState(const std::string &name, IState *Parent, StateMachine *machine)
     Parent->m_children.push_back(this);
 }
 
-IState::~IState()
+State::~State()
 {
 }
 
-void IState::AddTransferFromTest(TransferFromTest test)
+void State::AddTransferFromTest(TransferFromTest test)
 {
   if (test)
     m_transferFromTests.push_back(test);
 }
 
-void IState::AddTransferToTest(TransferToTest test)
+void State::AddTransferToTest(TransferToTest test)
 {
   if (test)
     m_transferToTests.push_back(test);
 }
 
-void IState::AddOnEntryBehaviour(OnEntryBehaviour behaviour)
+void State::AddOnEntryBehaviour(OnEntryBehaviour behaviour)
 {
   if (behaviour)
     m_onEntryBehaviours.push_back(behaviour);
 }
 
-void IState::AddOnExitBehaviour(OnExitBehaviour behaviour)
+void State::AddOnExitBehaviour(OnExitBehaviour behaviour)
 {
   if (behaviour)
     m_onExitBehaviours.push_back(behaviour);
 }
 
-void IState::AddOnOperateBehaviour(OnOperateBehaviour behaviour)
+void State::AddOnOperateBehaviour(OnOperateBehaviour behaviour)
 {
   if (behaviour)
     m_onOperateBehaviours.push_back(behaviour);
@@ -86,14 +86,14 @@ void IState::AddOnOperateBehaviour(OnOperateBehaviour behaviour)
  * @param reverse If the branch order should be reversed
  * @return State tree branch
  */
-IStatePtrList IState::Branch(bool reverse)
+IStatePtrList State::Branch(bool reverse)
 {
   IStatePtrList branch;
 
-  IState *node = this;
+  State *node = this;
   while (node != nullptr)
   {
-    branch.push_back(dynamic_cast<IState *>(node));
+    branch.push_back(dynamic_cast<State *>(node));
     node = node->m_parent;
   }
 
@@ -109,7 +109,7 @@ IStatePtrList IState::Branch(bool reverse)
  * @param terminateAt Ancestor at which to stop modifying activation
  * @param delta The change of state (last state if active=true, next state if active=false)
  */
-void IState::SetActivation(bool active, IState *terminateAt, IState *delta)
+void State::SetActivation(bool active, State *terminateAt, State *delta)
 {
   if (terminateAt == this)
     return;
@@ -131,9 +131,9 @@ void IState::SetActivation(bool active, IState *terminateAt, IState *delta)
  * @brief Test for transfer conditions from this state to another.
  * @return The IState to transfer to, nullptr if no transfer conditions are met
  */
-IState *IState::TestTransferFrom() const
+State *State::TestTransferFrom() const
 {
-  IState *retVal = nullptr;
+  State *retVal = nullptr;
 
   for (auto it = m_transferFromTests.begin(); it != m_transferFromTests.end(); ++it)
   {
@@ -150,7 +150,7 @@ IState *IState::TestTransferFrom() const
  * @brief Test for transfer conditions from a sibling state to this state.
  * @return True if the transfer conditions are met.
  */
-bool IState::TestTransferTo() const
+bool State::TestTransferTo() const
 {
   for (auto it = m_transferToTests.begin(); it != m_transferToTests.end(); ++it)
   {
@@ -165,7 +165,7 @@ bool IState::TestTransferTo() const
  * @brief Performs actions required when entering this state.
  * @param last Last state to be active
  */
-void IState::OnEntry(IState *last)
+void State::OnEntry(State *last)
 {
   // Reset state duration timer
   m_timeInState = 0.0f;
@@ -178,7 +178,7 @@ void IState::OnEntry(IState *last)
  * @brief Performs actions required when leaving this state.
  * @param next State that is going to be entered next
  */
-void IState::OnExit(IState *next)
+void State::OnExit(State *next)
 {
   for (auto it = m_onExitBehaviours.begin(); it != m_onExitBehaviours.end(); ++it)
     it->operator()(next);
@@ -187,7 +187,7 @@ void IState::OnExit(IState *next)
 /**
  * @brief Perform the operations that define the behaviour of this state.
  */
-void IState::OnOperate()
+void State::OnOperate()
 {
   for (auto it = m_onOperateBehaviours.begin(); it != m_onOperateBehaviours.end(); ++it)
     it->operator()();

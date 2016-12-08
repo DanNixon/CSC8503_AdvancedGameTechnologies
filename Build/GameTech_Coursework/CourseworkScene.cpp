@@ -3,10 +3,10 @@
 #include <nclgl\Vector4.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
-#include <ncltech\IState.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
+#include <ncltech\State.h>
 
 #define PLANET_RADIUS 100.0f
 
@@ -16,21 +16,49 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
 {
   // Debug draw state machine
   {
-      // TODO
+    const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
+
+    State *normal = new State("normal", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    normal->AddOnEntryBehaviour([](State *) { NCLDebug::Log("Physics view: normal"); });
+    // TODO
+
+    State *view1 = new State("view1", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    view1->AddOnEntryBehaviour([](State *) { NCLDebug::Log("Physics view: view1"); });
+    // TODO
+
+    State *view2 = new State("view2", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    view2->AddOnEntryBehaviour([](State *) { NCLDebug::Log("Physics view: view2"); });
+    // TODO
+
+    // State transfers
+    normal->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, view1]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? view1 : nullptr;
+    });
+
+    view1->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, view2]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? view2 : nullptr;
+    });
+
+    view2->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, normal]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? normal : nullptr;
+    });
+
+    // Default state
+    m_debugDrawStateMachine.SetDefaultState(normal);
   }
 
   // Player state machine
   {
     // Idle (default) state
-    IState *idle = new IState("idle", m_playerStateMachine.RootState(), &m_playerStateMachine);
+    State *idle = new State("idle", m_playerStateMachine.RootState(), &m_playerStateMachine);
     idle->SetActivation(true);
     m_playerStateMachine.SetDefaultState(idle);
 
     // Exit conditions
     {
-      IState *exitState = new IState("exit", m_playerStateMachine.RootState(), &m_playerStateMachine);
+      State *exitState = new State("exit", m_playerStateMachine.RootState(), &m_playerStateMachine);
       exitState->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_X); });
-      exitState->AddOnEntryBehaviour([](IState *) { NCLDebug::Log("Bye Bye~"); });
+      exitState->AddOnEntryBehaviour([](State *) { NCLDebug::Log("Bye Bye~"); });
       exitState->AddOnOperateBehaviour([exitState]() {
         if (exitState->TimeInState() > 1.0f)
           SceneManager::Instance()->SetExitFlag(true);
@@ -39,16 +67,16 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
 
     // Shooting spheres
     {
-      IState *shootBall = new IState("shootBall", m_playerStateMachine.RootState(), &m_playerStateMachine);
+      State *shootBall = new State("shootBall", m_playerStateMachine.RootState(), &m_playerStateMachine);
       shootBall->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
 
-      IState *preShoot = new IState("preShoot", shootBall, &m_playerStateMachine);
-      shootBall->AddOnEntryBehaviour([preShoot](IState *) { preShoot->SetActivation(true, preShoot->Parent()); });
+      State *preShoot = new State("preShoot", shootBall, &m_playerStateMachine);
+      shootBall->AddOnEntryBehaviour([preShoot](State *) { preShoot->SetActivation(true, preShoot->Parent()); });
 
-      IState *shoot = new IState("shoot", shootBall, &m_playerStateMachine);
+      State *shoot = new State("shoot", shootBall, &m_playerStateMachine);
       shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
 
-      shoot->AddOnEntryBehaviour([](IState *s) {
+      shoot->AddOnEntryBehaviour([](State *s) {
         float timeHeld = s->TimeInState();
         Vector3 force(0.0f, 0.0f, -timeHeld);
         Quaternion::RotatePointByQuaternion(SceneManager::Instance()->GetCamera()->GetOrientation(), force);

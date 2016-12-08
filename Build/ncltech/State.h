@@ -13,27 +13,27 @@ class StateMachine;
  * @typedef IStatePtrList
  * @brief List of pointers to IState instances.
  */
-typedef std::vector<IState *> IStatePtrList;
+typedef std::vector<State *> IStatePtrList;
 
 /**
- * @class IState
+ * @class State
  * @brief Represents a state in a state machine.
  */
-class IState : public StateContainer
+class State : public StateContainer
 {
 public:
-  typedef std::function<IState *()> TransferFromTest;
+  typedef std::function<State *()> TransferFromTest;
   typedef std::function<bool()> TransferToTest;
-  typedef std::function<void(IState *)> OnEntryBehaviour;
-  typedef std::function<void(IState *)> OnExitBehaviour;
+  typedef std::function<void(State *)> OnEntryBehaviour;
+  typedef std::function<void(State *)> OnExitBehaviour;
   typedef std::function<void()> OnOperateBehaviour;
 
 public:
-  static IState *ClosestCommonAncestor(IState *a, IState *b);
+  static State *ClosestCommonAncestor(State *a, State *b);
 
 public:
-  IState(const std::string &name, IState *Parent, StateMachine *machine);
-  virtual ~IState();
+  State(const std::string &name, State *Parent, StateMachine *machine);
+  virtual ~State();
 
   /**
    * @brief Gets the name of this IState.
@@ -48,7 +48,7 @@ public:
    * @brief Returns the parent state of this state.
    * @return Parent state
    */
-  inline IState *Parent() const
+  inline State *Parent() const
   {
     return m_parent;
   }
@@ -75,22 +75,22 @@ public:
 
   IStatePtrList Branch(bool reverse = false);
 
-  void SetActivation(bool active, IState *terminateAt = nullptr, IState *delta = nullptr);
+  void SetActivation(bool active, State *terminateAt = nullptr, State *delta = nullptr);
 
 protected:
   friend class StateMachine;
 
-  IState *TestTransferFrom() const;
+  State *TestTransferFrom() const;
   bool TestTransferTo() const;
 
-  void OnEntry(IState *last);
-  void OnExit(IState *next);
+  void OnEntry(State *last);
+  void OnExit(State *next);
   void OnOperate();
 
 protected:
   const std::string m_name; //!< Name of this state
   StateMachine *m_machine;  //!< State machine that holds this state
-  IState *m_parent;         //!< Parent state
+  State *m_parent;         //!< Parent state
 
   float m_timeInState; //!< Time spent in the current state
 
