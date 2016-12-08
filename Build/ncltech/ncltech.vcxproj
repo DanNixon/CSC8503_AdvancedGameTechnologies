@@ -84,6 +84,7 @@
     <ClCompile Include="CommonMeshes.cpp" />
     <ClCompile Include="CommonUtils.cpp" />
     <ClCompile Include="CuboidCollisionShape.cpp" />
+    <ClCompile Include="OctreeBroadphase.cpp" />
     <ClCompile Include="PathEdge.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="NetworkBase.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="AStar.h" />
     <ClInclude Include="BruteForceBroadphase.h" />
     <ClInclude Include="CollisionDetectionSAT.h" />
+    <ClInclude Include="OctreeBroadphase.h" />
     <ClInclude Include="PathEdge.h" />
     <ClInclude Include="ICollisionShape.h" />
     <ClInclude Include="CommonMeshes.h" />

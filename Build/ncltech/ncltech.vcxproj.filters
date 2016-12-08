@@ -158,6 +158,9 @@
     <ClCompile Include="BoundingBox.cpp">
       <Filter>src\Physics\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="OctreeBroadphase.cpp">
+      <Filter>src\Physics\CollisionDetection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -279,6 +282,9 @@
     </ClInclude>
     <ClInclude Include="BoundingBox.h">
       <Filter>include\Physics\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="OctreeBroadphase.h">
+      <Filter>include\Physics\CollisionDetection</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
