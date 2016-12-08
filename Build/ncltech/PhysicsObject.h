@@ -274,9 +274,9 @@ protected:
   mutable bool m_wsTransformInvalidated; //!< Flag indicating if the cached world space transoformation is invalid
   mutable Matrix4 m_wsTransform;         //!< Cached world space transformation matrix
 
-  BoundingBox m_localBoundingBox;           //!< Model orientated bounding box in model space
+  BoundingBox m_localBoundingBox;   //!< Model orientated bounding box in model space
   mutable bool m_wsAabbInvalidated; //!< Flag indicating if the cached world space transoformed AABB is invalid
-  mutable BoundingBox m_wsAabb;            //!< Axis aligned bounding box of this object in world space
+  mutable BoundingBox m_wsAabb;     //!< Axis aligned bounding box of this object in world space
 
   float m_elasticity; //!< Value from 0-1 definiing how much the object bounces off other objects
   float m_friction;   //!< Value from 0-1 defining how much the object can slide off other objects

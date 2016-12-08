@@ -16,25 +16,25 @@ public:
   BoundingBox(bool generateHull = true);
   virtual ~BoundingBox();
 
-  void ExpandToFit(const Vector3 & point);
+  void ExpandToFit(const Vector3 &point);
   void SetHalfDimensions(const Vector3 &halfDims);
 
-  Vector3 & Lower()
+  Vector3 &Lower()
   {
     return m_lower;
   }
 
-  const Vector3 & Lower() const
+  const Vector3 &Lower() const
   {
     return m_lower;
   }
 
-  Vector3 & Upper()
+  Vector3 &Upper()
   {
     return m_upper;
   }
 
-  const Vector3 & Upper() const
+  const Vector3 &Upper() const
   {
     return m_upper;
   }

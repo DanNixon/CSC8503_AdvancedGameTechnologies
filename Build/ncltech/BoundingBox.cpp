@@ -10,8 +10,8 @@ const int BoundingBox::RIGHT_FACE[] = {6, 7, 3, 2};
 const int BoundingBox::LEFT_FACE[] = {4, 5, 1, 0};
 
 BoundingBox::BoundingBox(bool generateHull)
-  : m_lower(FLT_MAX, FLT_MAX, FLT_MAX)
-  , m_upper(-FLT_MAX, -FLT_MAX, -FLT_MAX)
+    : m_lower(FLT_MAX, FLT_MAX, FLT_MAX)
+    , m_upper(-FLT_MAX, -FLT_MAX, -FLT_MAX)
 {
   if (generateHull)
   {
