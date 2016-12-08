@@ -51,8 +51,14 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
   {
     // Idle (default) state
     State *idle = new State("idle", m_playerStateMachine.RootState(), &m_playerStateMachine);
-    idle->SetActivation(true);
-    m_playerStateMachine.SetDefaultState(idle);
+
+    // Reset state
+    State *reset = new State("reset", m_playerStateMachine.RootState(), &m_playerStateMachine);
+    m_playerStateMachine.SetDefaultState(reset);
+    reset->AddTransferFromTest([idle]() { return idle; });
+    reset->AddOnEntryBehaviour([](State *) {
+      NCLDebug::Log("TODO: clear balls");
+    });
 
     // Exit conditions
     {
@@ -71,17 +77,24 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
       shootBall->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
 
       State *preShoot = new State("preShoot", shootBall, &m_playerStateMachine);
+      preShoot->AddOnEntryBehaviour([](State *) { NCLDebug::Log("Hold J to power up."); NCLDebug::Log("Release J to fire ball!"); });
       shootBall->AddOnEntryBehaviour([preShoot](State *) { preShoot->SetActivation(true, preShoot->Parent()); });
 
       State *shoot = new State("shoot", shootBall, &m_playerStateMachine);
       shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
 
-      shoot->AddOnEntryBehaviour([](State *s) {
-        float timeHeld = s->TimeInState();
-        Vector3 force(0.0f, 0.0f, -timeHeld);
-        Quaternion::RotatePointByQuaternion(SceneManager::Instance()->GetCamera()->GetOrientation(), force);
-        // TODO
-        NCLDebug::Log("TODO: shoot ball here (%f, %f, %f)", force.x, force.y, force.z);
+      shoot->AddOnEntryBehaviour([this](State *s) {
+        Camera * camera = SceneManager::Instance()->GetCamera();
+
+        Vector3 velocity(0.0f, 0.0f, -s->TimeInState()  * 10.0f);
+        Quaternion::RotatePointByQuaternion(camera->GetOrientation(), velocity);
+
+        Object * sphere = CommonUtils::BuildSphereObject("player_shot_sphere", camera->GetPosition(), 1.0f, true, 1.0f, true, false, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+        sphere->Physics()->SetLinearVelocity(velocity);
+        this->m_shotSpheres.push(sphere);
+        this->AddGameObject(sphere);
+
+        NCLDebug::Log("Shot ball with velocity (%f, %f, %f)", velocity.x, velocity.y, velocity.z);
       });
       shoot->AddTransferFromTest([idle]() { return idle; });
     }
