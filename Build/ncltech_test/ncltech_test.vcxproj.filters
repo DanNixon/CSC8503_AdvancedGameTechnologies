@@ -25,9 +25,6 @@
     <ClCompile Include="StateMachineTest.cpp">
       <Filter>FSM</Filter>
     </ClCompile>
-    <ClCompile Include="AABBTest.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
     <ClCompile Include="AStarNonTraversableTest.cpp">
       <Filter>PathPlanning</Filter>
     </ClCompile>
@@ -45,6 +42,9 @@
     </ClCompile>
     <ClCompile Include="TestDataGenerator.cpp">
       <Filter>PathPlanning</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBoxTest.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

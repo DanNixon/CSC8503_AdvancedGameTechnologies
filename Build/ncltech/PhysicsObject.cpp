@@ -10,7 +10,7 @@ PhysicsObject::PhysicsObject()
     , m_restVelocityThresholdSquared(0.001f)
     , m_averageSummedVelocity(0.0f)
     , m_gravitationTarget(nullptr)
-    , m_aabb()
+    , m_localBoundingBox()
     , m_position(0.0f, 0.0f, 0.0f)
     , m_linearVelocity(0.0f, 0.0f, 0.0f)
     , m_linearForce(0.0f, 0.0f, 0.0f)
@@ -23,7 +23,8 @@ PhysicsObject::PhysicsObject()
     , m_elasticity(0.9f)
     , m_onCollisionCallback(nullptr)
 {
-  m_aabb.SetHalfDimensions(Vector3(0.5f, 0.5f, 0.5f));
+  m_localBoundingBox.SetHalfDimensions(Vector3(0.5f, 0.5f, 0.5f));
+  m_localBoundingBox.UpdateHull();
 }
 
 PhysicsObject::~PhysicsObject()
@@ -35,11 +36,14 @@ PhysicsObject::~PhysicsObject()
   m_collisionShapes.clear();
 }
 
-AABB PhysicsObject::GetWorldSpaceAABB() const
+BoundingBox PhysicsObject::GetWorldSpaceAABB() const
 {
   if (m_wsAabbInvalidated)
   {
-    m_wsAabb = m_aabb.Transform(GetWorldSpaceTransform());
+    // TODO
+    Matrix4 t(GetWorldSpaceTransform());
+    t.ClearRotation();
+    m_wsAabb = m_localBoundingBox.Transform(t);
 
     m_wsAabbInvalidated = false;
   }
@@ -89,11 +93,7 @@ void PhysicsObject::DoAtRestTest()
 void PhysicsObject::DebugDraw(uint64_t flags) const
 {
   if (flags & DEBUGDRAW_FLAGS_AABB)
-  {
-    Matrix4 t = m_wsTransform;
-    t.ClearRotation();
-    m_aabb.DebugDraw(t, Vector4(0.8f, 1.0f, 1.0f, 0.25f), Vector4(0.4f, 0.8f, 1.0f, 1.0f));
-  }
+    GetWorldSpaceAABB().DebugDraw(Matrix4(), Vector4(0.8f, 1.0f, 1.0f, 0.25f), Vector4(0.4f, 0.8f, 1.0f, 1.0f));
 
   if (flags & DEBUGDRAW_FLAGS_LINEARVELOCITY)
     NCLDebug::DrawThickLineNDT(m_wsTransform.GetPositionVector(), m_wsTransform * m_linearVelocity, 0.02f,

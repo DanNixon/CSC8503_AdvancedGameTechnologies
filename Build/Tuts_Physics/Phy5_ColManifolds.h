@@ -8,8 +8,6 @@ This demo scene creates a series of collision tests, hopefully showing accurate
 collision manifolds (surface area of the touching region). The three examples 
 cover all the possibilities of sphere-cuboid collision shapes.
 
-
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::: IF YOUR BORED! :::
 ::::::::::::::::::::::

@@ -16,7 +16,7 @@ as velocity, position, mass etc..
 */ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "AABB.h"
+#include "BoundingBox.h"
 #include "ICollisionShape.h"
 #include <functional>
 #include <nclgl\Matrix3.h>
@@ -60,12 +60,12 @@ public:
     return m_restVelocityThresholdSquared;
   }
 
-  inline AABB GetAABB() const
+  inline BoundingBox GetLocalBoundingBox() const
   {
-    return m_aabb;
+    return m_localBoundingBox;
   }
 
-  AABB GetWorldSpaceAABB() const;
+  BoundingBox GetWorldSpaceAABB() const;
 
   inline float GetElasticity() const
   {
@@ -145,9 +145,10 @@ public:
     m_restVelocityThresholdSquared = vel * vel;
   }
 
-  inline void SetAABB(const AABB &aabb)
+  inline void SetLocalBoundingBox(const BoundingBox &bb)
   {
-    m_aabb = aabb;
+    m_localBoundingBox = bb;
+    m_localBoundingBox.UpdateHull();
     m_wsAabbInvalidated = true;
   }
 
@@ -273,9 +274,9 @@ protected:
   mutable bool m_wsTransformInvalidated; //!< Flag indicating if the cached world space transoformation is invalid
   mutable Matrix4 m_wsTransform;         //!< Cached world space transformation matrix
 
-  AABB m_aabb;                      //!< Axis aligned bounding box of this object
+  BoundingBox m_localBoundingBox;           //!< Model orientated bounding box in model space
   mutable bool m_wsAabbInvalidated; //!< Flag indicating if the cached world space transoformed AABB is invalid
-  mutable AABB m_wsAabb;            //!< Axis aligned bounding box of this object in world space
+  mutable BoundingBox m_wsAabb;            //!< Axis aligned bounding box of this object in world space
 
   float m_elasticity; //!< Value from 0-1 definiing how much the object bounces off other objects
   float m_friction;   //!< Value from 0-1 defining how much the object can slide off other objects

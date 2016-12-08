@@ -301,19 +301,19 @@ void SceneRenderer::RenderShadowMaps()
       bb.ExpandToFit(invCamProjView * Vector3(1.0f, 1.0f, far_depth));
 
       // Rotate bounding box so it's orientated in the lights direction
-      Vector3 centre = (bb._max + bb._min) * 0.5f;
+      Vector3 centre = (bb.Upper() + bb.Lower()) * 0.5f;
       Matrix4 localView = view * Matrix4::Translation(-centre);
 
       bb = bb.Transform(localView);
-      bb._min.z = min(bb._min.z, -m_pScene->GetWorldRadius());
-      bb._max.z = max(bb._max.z, m_pScene->GetWorldRadius());
+      bb.Lower().z = min(bb.Lower().z, -m_pScene->GetWorldRadius());
+      bb.Upper().z = max(bb.Upper().z, m_pScene->GetWorldRadius());
 
       // Build Light Projection
-      m_ShadowProj[i] = Matrix4::Orthographic(bb._max.z, bb._min.z, bb._min.x, bb._max.x, bb._max.y, bb._min.y);
+      m_ShadowProj[i] = Matrix4::Orthographic(bb.Upper().z, bb.Lower().z, bb.Lower().x, bb.Upper().x, bb.Upper().y, bb.Lower().y);
       m_ShadowProjView[i] = m_ShadowProj[i] * localView;
 
       // Construct Shadow RenderList
-      Vector3 top_mid = centre + view * Vector3(0.0f, 0.0f, bb._max.z);
+      Vector3 top_mid = centre + view * Vector3(0.0f, 0.0f, bb.Upper().z);
       Frustum f;
       f.FromMatrix(m_ShadowProjView[i]);
       m_apShadowRenderLists[i]->UpdateCameraWorldPos(top_mid);

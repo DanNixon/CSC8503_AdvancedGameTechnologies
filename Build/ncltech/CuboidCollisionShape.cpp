@@ -5,7 +5,7 @@
 
 CuboidCollisionShape::CuboidCollisionShape(const Vector3 &halfDims)
 {
-  m_hull.SetHalfDimensions(halfDims);
+  SetHalfDims(halfDims);
 }
 
 CuboidCollisionShape::~CuboidCollisionShape()

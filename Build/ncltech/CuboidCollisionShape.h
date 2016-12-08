@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AABB.h"
+#include "BoundingBox.h"
 #include "ICollisionShape.h"
 
 class CuboidCollisionShape : public ICollisionShape
@@ -12,26 +12,29 @@ public:
   void SetHalfDims(const Vector3 &halfDims)
   {
     m_hull.SetHalfDimensions(halfDims);
+    m_hull.UpdateHull();
   }
 
   void SetLowerLeft(const Vector3 &lowerLeft)
   {
-    m_hull.SetLower(lowerLeft);
+    m_hull.Lower() = lowerLeft;
+    m_hull.UpdateHull();
   }
 
   void SetUpperRight(const Vector3 &upperRight)
   {
-    m_hull.SetUpper(upperRight);
+    m_hull.Upper() = upperRight;
+    m_hull.UpdateHull();
   }
 
   Vector3 LowerLeft() const
   {
-    return m_hull.GetLower();
+    return m_hull.Lower();
   }
 
   Vector3 UpperRight() const
   {
-    return m_hull.GetUpper();
+    return m_hull.Upper();
   }
 
   virtual Matrix3 BuildInverseInertia(float invMass) const override;
@@ -52,5 +55,5 @@ protected:
   virtual void GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const;
 
 protected:
-  AABB m_hull;
+  BoundingBox m_hull;
 };

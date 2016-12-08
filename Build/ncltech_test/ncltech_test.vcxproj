@@ -174,7 +174,7 @@
     <ClCompile Include="PriorityQueueTest.cpp" />
     <ClCompile Include="StateContainerTest.cpp" />
     <ClCompile Include="StateMachineTest.cpp" />
-    <ClCompile Include="AABBTest.cpp" />
+    <ClCompile Include="BoundingBoxTest.cpp" />
     <ClCompile Include="TestDataGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>

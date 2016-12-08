@@ -76,7 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AABB.cpp" />
+    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="AABBCollisionShape.cpp" />
     <ClCompile Include="AStar.cpp" />
     <ClCompile Include="BruteForceBroadphase.cpp" />
@@ -107,10 +107,9 @@
     <ClCompile Include="StateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AABB.h" />
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="AABBCollisionShape.h" />
     <ClInclude Include="AStar.h" />
-    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BruteForceBroadphase.h" />
     <ClInclude Include="CollisionDetectionSAT.h" />
     <ClInclude Include="PathEdge.h" />

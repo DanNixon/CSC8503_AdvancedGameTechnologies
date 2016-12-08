@@ -131,9 +131,6 @@
     <ClCompile Include="Hull.cpp">
       <Filter>src\Physics\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="AABB.cpp">
-      <Filter>src\Physics\Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="CuboidCollisionShape.cpp">
       <Filter>src\Physics\CollisionShapes</Filter>
     </ClCompile>
@@ -158,6 +155,9 @@
     <ClCompile Include="State.cpp">
       <Filter>src\FSM</Filter>
     </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>src\Physics\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -168,9 +168,6 @@
     </ClInclude>
     <ClInclude Include="TSingleton.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="BoundingBox.h">
-      <Filter>include\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="CommonMeshes.h">
       <Filter>include\Graphics</Filter>
@@ -250,9 +247,6 @@
     <ClInclude Include="Hull.h">
       <Filter>include\Physics\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="AABB.h">
-      <Filter>include\Physics\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="CuboidCollisionShape.h">
       <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
@@ -282,6 +276,9 @@
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>include\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBox.h">
+      <Filter>include\Physics\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
