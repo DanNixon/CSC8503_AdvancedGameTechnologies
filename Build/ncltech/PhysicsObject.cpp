@@ -40,11 +40,7 @@ BoundingBox PhysicsObject::GetWorldSpaceAABB() const
 {
   if (m_wsAabbInvalidated)
   {
-    // TODO
-    Matrix4 t(GetWorldSpaceTransform());
-    t.ClearRotation();
-    m_wsAabb = m_localBoundingBox.Transform(t);
-
+    m_wsAabb = m_localBoundingBox.Transform(GetWorldSpaceTransform());
     m_wsAabbInvalidated = false;
   }
 

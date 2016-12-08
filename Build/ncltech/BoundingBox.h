@@ -13,7 +13,7 @@ public:
   static const int LEFT_FACE[];
 
 public:
-  BoundingBox();
+  BoundingBox(bool generateHull = true);
   virtual ~BoundingBox();
 
   void ExpandToFit(const Vector3 & point);
@@ -46,6 +46,6 @@ public:
   void UpdateHull();
 
 protected:
-  Vector3 m_lower;
-  Vector3 m_upper;
+  Vector3 m_lower; //!< Lower vertex of bounding box
+  Vector3 m_upper; //!< Upper vertex of bounding box
 };

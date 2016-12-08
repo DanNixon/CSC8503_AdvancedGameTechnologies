@@ -53,6 +53,7 @@ normal are correct for all collisions. =]
 #pragma once
 
 #include <ncltech\AABBCollisionShape.h>
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\NCLDebug.h>
@@ -60,7 +61,6 @@ normal are correct for all collisions. =]
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
-#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\SphereCollisionShape.h>
 
 class Phy4_ColDetection : public Scene
@@ -92,49 +92,33 @@ public:
     m_AccumTime = 0.0f;
     m_Rotating = true;
 
-    // Create Ground (..why not?)
+    // Create Ground
     Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,
                                                     false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
-
     // this->AddGameObject(ground);
 
     // Create Sphere-Sphere Manifold Test
     {
-      Object *sphere = CommonUtils::BuildSphereObject(
-          "orbiting_sphere1", ss_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter overlap between spheres
-          0.5f,                                                    // Radius
-          true,                                                    // Has Physics Object
-          0.0f,                                                    // Infinite Mass
-          true,                                                    // Has Collision Shape
-          false,                                                   // Dragable by the user
-          CommonUtils::GenColour(0.3f, 0.5f));                     // Color
+      Object *sphere = CommonUtils::BuildSphereObject("orbiting_sphere1", ss_pos + Vector3(0.75f, 0.0f, 0.0f), 0.5f, true, 0.0f,
+                                                      false, false, CommonUtils::GenColour(0.3f, 0.5f));
+
+      // Testing
+      ICollisionShape *shape = new AABBCollisionShape();
+      sphere->Physics()->AddCollisionShape(shape);
+
       this->AddGameObject(sphere);
 
-      this->AddGameObject(CommonUtils::BuildSphereObject("orbiting_sphere1.1",
-                                                         ss_pos,                                // Position
-                                                         0.5f,                                  // Radius
-                                                         true,                                  // Has Physics Object
-                                                         0.0f,                                  // Infinite Mass
-                                                         true,                                  // Has Collision Shape
-                                                         true,                                  // Dragable by the user
-                                                         CommonUtils::GenColour(0.55f, 1.0f))); // Color
+      this->AddGameObject(CommonUtils::BuildSphereObject("orbiting_sphere1.1", ss_pos, 0.5f, true, 0.0f, true, true,
+                                                         CommonUtils::GenColour(0.55f, 1.0f)));
     }
 
     // Create Sphere-Cuboid Manifold Test
     {
-
-      Object *sphere = CommonUtils::BuildSphereObject(
-          "orbiting_sphere2",
-          sc_pos + Vector3(0.9f, 0.0f, 0.0f),  // Position leading to 0.1 meter overlap on faces, and more on diagonals
-          0.5f,                                // Radius
-          true,                                // Has Physics Object
-          0.0f,                                // Infinite Mass
-          true,                                // Has Collision Shape
-          false,                               // Dragable by the user
-          CommonUtils::GenColour(0.3f, 0.5f)); // Color
+      Object *sphere = CommonUtils::BuildSphereObject("orbiting_sphere2", sc_pos + Vector3(0.9f, 0.0f, 0.0f), 0.5f, true, 0.0f,
+                                                      true, false, CommonUtils::GenColour(0.3f, 0.5f));
       this->AddGameObject(sphere);
 
-      // TODO: testing
+      // Testing
       (*(sphere->Physics()->CollisionShapesBegin()))->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
 
       // Second collision sphere shape (for testing)
@@ -142,45 +126,22 @@ public:
       secondSphereCollShape->SetLocalTransform(Matrix4::Translation(Vector3(-0.25f, 0.0f, 0.0f)));
       sphere->Physics()->AddCollisionShape(secondSphereCollShape);
 
-      this->AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid2.2",
-                                                         sc_pos,                                // Position
-                                                         Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
-                                                         true,                                  // Has Physics Object
-                                                         0.0f,                                  // Infinite Mass
-                                                         true,                                  // Has Collision Shape
-                                                         true,                                  // Dragable by the user
-                                                         CommonUtils::GenColour(0.55f, 1.0f))); // Color
+      this->AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid2.2", sc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true,
+                                                         true, CommonUtils::GenColour(0.55f, 1.0f)));
     }
 
     // Create Cuboid-Cuboid Manifold Test
     {
 
-      Object *cuboid = CommonUtils::BuildCuboidObject(
-          "rotating_cuboid3",
-          cc_pos + Vector3(0.75f, 0.0f, 0.0f), // Position leading to 0.25 meter overlap on faces, and more on diagonals
-          Vector3(0.5f, 0.5f, 0.5f),           // Half dimensions
-          true,                                // Has Physics Object
-          0.0f,                                // Infinite Mass
-          false,                               // Add a shape later
-          false,                               // Dragable by the user
-          CommonUtils::GenColour(0.3f, 0.5f)); // Color
+      Object *cuboid =
+          CommonUtils::BuildCuboidObject("rotating_cuboid3", cc_pos + Vector3(0.75f, 0.0f, 0.0f), Vector3(0.5f, 0.5f, 0.5f), true,
+                                         0.0f, true, false, CommonUtils::GenColour(0.3f, 0.5f));
       this->AddGameObject(cuboid);
 
       cuboid->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 30.0f));
 
-      // TODO: testing
-      ICollisionShape *shape = new AABBCollisionShape();
-      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 0.0f, 0.0f)));
-      cuboid->Physics()->AddCollisionShape(shape);
-
-      this->AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid3.3",
-                                                         cc_pos,                                // Position
-                                                         Vector3(0.5f, 0.5f, 0.5f),             // Half dimensions
-                                                         true,                                  // Has Physics Object
-                                                         0.0f,                                  // Infinite Mass
-                                                         true,                                  // Has Collision Shape
-                                                         true,                                  // Dragable by the user
-                                                         CommonUtils::GenColour(0.55f, 1.0f))); // Color
+      this->AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid3.3", cc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true,
+                                                         true, CommonUtils::GenColour(0.55f, 1.0f)));
     }
   }
 

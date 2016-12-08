@@ -290,7 +290,7 @@ void SceneRenderer::RenderShadowMaps()
       float far_depth = compute_depth(factor_f);
 
       // Build Bounding Box around frustum section
-      BoundingBox bb;
+      BoundingBox bb(false);
       bb.ExpandToFit(invCamProjView * Vector3(-1.0f, -1.0f, near_depth));
       bb.ExpandToFit(invCamProjView * Vector3(-1.0f, 1.0f, near_depth));
       bb.ExpandToFit(invCamProjView * Vector3(1.0f, -1.0f, near_depth));

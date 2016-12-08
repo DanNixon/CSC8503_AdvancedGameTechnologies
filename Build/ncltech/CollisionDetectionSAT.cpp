@@ -66,11 +66,11 @@ void CollisionDetectionSAT::FindAllPossibleCollisionAxes()
 
   // Get the position of collision shape 1 if needed
   if (shape1IsSphere)
-    shape1Position = (m_pShape1->GetLocalTransform() * m_pObj1->GetWorldSpaceTransform()).GetPositionVector();
+    shape1Position = (m_pObj1->GetWorldSpaceTransform() * m_pShape1->GetLocalTransform()).GetPositionVector();
 
   // Get the position of collision shape 2 if needed
   if (shape2IsSphere)
-    shape2Position = (m_pShape2->GetLocalTransform() * m_pObj2->GetWorldSpaceTransform()).GetPositionVector();
+    shape2Position = (m_pObj2->GetWorldSpaceTransform() * m_pShape2->GetLocalTransform()).GetPositionVector();
 
   // Handle sphere-sphere
   if (shape1IsSphere && shape2IsSphere)

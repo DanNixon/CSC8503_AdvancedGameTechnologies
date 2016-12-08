@@ -9,25 +9,33 @@ const int BoundingBox::BOTTOM_FACE[] = {0, 3, 7, 4};
 const int BoundingBox::RIGHT_FACE[] = {6, 7, 3, 2};
 const int BoundingBox::LEFT_FACE[] = {4, 5, 1, 0};
 
-BoundingBox::BoundingBox()
+BoundingBox::BoundingBox(bool generateHull)
+  : m_lower(FLT_MAX, FLT_MAX, FLT_MAX)
+  , m_upper(-FLT_MAX, -FLT_MAX, -FLT_MAX)
 {
-  // Vertices
-  AddVertex(Vector3(-1.0f, -1.0f, -1.0f)); // 0 lll
-  AddVertex(Vector3(-1.0f, 1.0f, -1.0f));  // 1 lul
-  AddVertex(Vector3(1.0f, 1.0f, -1.0f));   // 2 uul
-  AddVertex(Vector3(1.0f, -1.0f, -1.0f));  // 3 ull
-  AddVertex(Vector3(-1.0f, -1.0f, 1.0f));  // 4 llu
-  AddVertex(Vector3(-1.0f, 1.0f, 1.0f));   // 5 luu
-  AddVertex(Vector3(1.0f, 1.0f, 1.0f));    // 6 uuu
-  AddVertex(Vector3(1.0f, -1.0f, 1.0f));   // 7 ulu
+  if (generateHull)
+  {
+    // Vertices
+    AddVertex(Vector3(-1.0f, -1.0f, -1.0f)); // 0 lll
+    AddVertex(Vector3(-1.0f, 1.0f, -1.0f));  // 1 lul
+    AddVertex(Vector3(1.0f, 1.0f, -1.0f));   // 2 uul
+    AddVertex(Vector3(1.0f, -1.0f, -1.0f));  // 3 ull
+    AddVertex(Vector3(-1.0f, -1.0f, 1.0f));  // 4 llu
+    AddVertex(Vector3(-1.0f, 1.0f, 1.0f));   // 5 luu
+    AddVertex(Vector3(1.0f, 1.0f, 1.0f));    // 6 uuu
+    AddVertex(Vector3(1.0f, -1.0f, 1.0f));   // 7 ulu
 
-  // Faces
-  AddFace(Vector3(0.0f, 0.0f, -1.0f), 4, FAR_FACE);
-  AddFace(Vector3(0.0f, 0.0f, 1.0f), 4, NEAR_FACE);
-  AddFace(Vector3(0.0f, 1.0f, 0.0f), 4, TOP_FACE);
-  AddFace(Vector3(0.0f, -1.0f, 0.0f), 4, BOTTOM_FACE);
-  AddFace(Vector3(1.0f, 0.0f, 0.0f), 4, RIGHT_FACE);
-  AddFace(Vector3(-1.0f, 0.0f, 0.0f), 4, LEFT_FACE);
+    // Faces
+    AddFace(Vector3(0.0f, 0.0f, -1.0f), 4, FAR_FACE);
+    AddFace(Vector3(0.0f, 0.0f, 1.0f), 4, NEAR_FACE);
+    AddFace(Vector3(0.0f, 1.0f, 0.0f), 4, TOP_FACE);
+    AddFace(Vector3(0.0f, -1.0f, 0.0f), 4, BOTTOM_FACE);
+    AddFace(Vector3(1.0f, 0.0f, 0.0f), 4, RIGHT_FACE);
+    AddFace(Vector3(-1.0f, 0.0f, 0.0f), 4, LEFT_FACE);
+
+    // Update hull vertex positions
+    UpdateHull();
+  }
 }
 
 BoundingBox::~BoundingBox()
@@ -53,9 +61,18 @@ void BoundingBox::SetHalfDimensions(const Vector3 &halfDims)
 
 BoundingBox BoundingBox::Transform(const Matrix4 &transformation) const
 {
-  BoundingBox retVal = BoundingBox();
-  retVal.m_lower = transformation * m_lower;
-  retVal.m_upper = transformation * m_upper;
+  BoundingBox retVal;
+
+  retVal.ExpandToFit(transformation * Vector3(m_lower.x, m_lower.y, m_lower.z));
+  retVal.ExpandToFit(transformation * Vector3(m_upper.x, m_lower.y, m_lower.z));
+  retVal.ExpandToFit(transformation * Vector3(m_lower.x, m_upper.y, m_lower.z));
+  retVal.ExpandToFit(transformation * Vector3(m_upper.x, m_upper.y, m_lower.z));
+
+  retVal.ExpandToFit(transformation * Vector3(m_lower.x, m_lower.y, m_upper.z));
+  retVal.ExpandToFit(transformation * Vector3(m_upper.x, m_lower.y, m_upper.z));
+  retVal.ExpandToFit(transformation * Vector3(m_lower.x, m_upper.y, m_upper.z));
+  retVal.ExpandToFit(transformation * Vector3(m_upper.x, m_upper.y, m_upper.z));
+
   retVal.UpdateHull();
 
   return retVal;
