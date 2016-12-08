@@ -90,7 +90,7 @@ protected:
 protected:
   const std::string m_name; //!< Name of this state
   StateMachine *m_machine;  //!< State machine that holds this state
-  State *m_parent;         //!< Parent state
+  State *m_parent;          //!< Parent state
 
   float m_timeInState; //!< Time spent in the current state
 

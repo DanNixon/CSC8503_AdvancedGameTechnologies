@@ -11,9 +11,9 @@
 #include "Phy5_ColManifolds.h"
 #include "Phy6_ColResponse.h"
 #include "Phy7_Solver.h"
-#include "TestScene.h"
 #include "Test1_PointGravitation.h"
 #include "Test2_SoftBody.h"
+#include "TestScene.h"
 
 const Vector4 status_colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 const Vector4 status_colour_header = Vector4(0.8f, 0.9f, 1.0f, 1.0f);
