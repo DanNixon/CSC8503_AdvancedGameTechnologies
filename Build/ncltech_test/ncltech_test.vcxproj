@@ -170,7 +170,7 @@
     <ClCompile Include="AStarTest.cpp" />
     <ClCompile Include="AStarWeightedTest.cpp" />
     <ClCompile Include="PathEdgeTest.cpp" />
-    <ClCompile Include="IStateTest.cpp" />
+    <ClCompile Include="StateTest.cpp" />
     <ClCompile Include="PriorityQueueTest.cpp" />
     <ClCompile Include="StateContainerTest.cpp" />
     <ClCompile Include="StateMachineTest.cpp" />

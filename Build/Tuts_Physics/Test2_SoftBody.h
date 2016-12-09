@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\PhysicsEngine.h>

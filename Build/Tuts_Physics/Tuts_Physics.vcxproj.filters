@@ -12,6 +12,7 @@
     <ClInclude Include="Test1_PointGravitation.h" />
     <ClInclude Include="Test2_SoftBody.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="Test3_Target.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

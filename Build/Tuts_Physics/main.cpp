@@ -13,6 +13,7 @@
 #include "Phy7_Solver.h"
 #include "Test1_PointGravitation.h"
 #include "Test2_SoftBody.h"
+#include "Test3_Target.h"
 #include "TestScene.h"
 
 const Vector4 status_colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -70,6 +71,7 @@ void Initialize()
   SceneManager::Instance()->EnqueueScene(new TestScene("GameTech #1 - Framework Sandbox!"));
   SceneManager::Instance()->EnqueueScene(new Test1_PointGravitation("Test #1 - Point Gravitation"));
   SceneManager::Instance()->EnqueueScene(new Test2_SoftBody("Test #2 - Soft Body"));
+  SceneManager::Instance()->EnqueueScene(new Test3_Target("Test #3 - Target"));
 }
 
 // Print Debug Info

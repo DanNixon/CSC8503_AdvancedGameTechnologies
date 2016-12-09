@@ -9,10 +9,10 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // clang-format off
-TEST_CLASS(IStateTest)
+TEST_CLASS(StateTest)
 {
 public:
-  TEST_METHOD(IState_Branch)
+  TEST_METHOD(State_Branch)
   {
     State * s1 = new State("state1", nullptr, nullptr);
     State * s12 = new State("state1.2", s1, nullptr);
@@ -23,7 +23,7 @@ public:
     Assert::IsTrue(IStatePtrList{ s121, s12, s1 } == s121->Branch(true));
   }
 
-  TEST_METHOD(IState_ClosestCommonAncestor)
+  TEST_METHOD(State_ClosestCommonAncestor)
   {
     State * s1 = new State("state1", nullptr, nullptr);
     State * s11 = new State("state1.1", s1, nullptr);
@@ -38,7 +38,7 @@ public:
     Assert::IsTrue(s1 == State::ClosestCommonAncestor(s1, s1));
   }
 
-  TEST_METHOD(IState_ClosestCommonAncestor_noCommonAncestory)
+  TEST_METHOD(State_ClosestCommonAncestor_noCommonAncestory)
   {
     State * s1 = new State("state1", nullptr, nullptr);
     State * s11 = new State("state1.1", s1, nullptr);
@@ -53,7 +53,7 @@ public:
     Assert::IsTrue(nullptr == State::ClosestCommonAncestor(s22, s1));
   }
 
-  TEST_METHOD(IState_Behaviours)
+  TEST_METHOD(State_Behaviours)
   {
     std::vector<int> data;
 
@@ -81,7 +81,7 @@ public:
     Assert::AreEqual(20.0f, state->TimeInState());
   }
 
-  TEST_METHOD(IState_TransferToTests)
+  TEST_METHOD(State_TransferToTests)
   {
     StateMachine m;
 
@@ -106,7 +106,7 @@ public:
     Assert::AreEqual(17.0f, state2->TimeInState());
   }
 
-  TEST_METHOD(IState_TransferFromTests)
+  TEST_METHOD(State_TransferFromTests)
   {
     StateMachine m;
 

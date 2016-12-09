@@ -96,6 +96,7 @@
     <ClInclude Include="Phy7_Solver.h" />
     <ClInclude Include="Test1_PointGravitation.h" />
     <ClInclude Include="Test2_SoftBody.h" />
+    <ClInclude Include="Test3_Target.h" />
     <ClInclude Include="TestScene.h" />
   </ItemGroup>
   <ItemGroup>
