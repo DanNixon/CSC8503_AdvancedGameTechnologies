@@ -20,7 +20,7 @@ public:
   StateMachine();
   virtual ~StateMachine();
 
-  IStatePtrList ActiveStateBranch();
+  IStatePtrList ActiveStateBranch() const;
 
   /**
    * @brief Gets the root state for the state machine.

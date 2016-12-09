@@ -161,6 +161,9 @@
     <ClCompile Include="OctreeBroadphase.cpp">
       <Filter>src\Physics\CollisionDetection</Filter>
     </ClCompile>
+    <ClCompile Include="NetSyncStateMachine.cpp">
+      <Filter>src\FSM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -285,6 +288,9 @@
     </ClInclude>
     <ClInclude Include="OctreeBroadphase.h">
       <Filter>include\Physics\CollisionDetection</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSyncStateMachine.h">
+      <Filter>include\FSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

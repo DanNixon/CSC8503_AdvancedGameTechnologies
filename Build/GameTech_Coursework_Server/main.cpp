@@ -1,50 +1,19 @@
-/******************************************************************************
-Class: Net1_Client
-Implements:
-Author: Pieran Marris <p.marris@newcastle.ac.uk> and YOU!
-Description:
-
-:README:
-- In order to run this demo, we also need to run "Tuts_Network_Client" at the same time.
-- To do this:-
-	1. right click on the entire solution (top of the solution exporerer) and go to properties
-	2. Go to Common Properties -> Statup Project
-	3. Select Multiple Statup Projects
-	4. Select 'Start with Debugging' for both "Tuts_Network_Client" and "Tuts_Network_Server"
-
-- Now when you run the program it will build and run both projects at the same time. =]
-- You can also optionally spawn more instances by right clicking on the specific project
-and going to Debug->Start New Instance.
-
-FOR MORE NETWORKING INFORMATION SEE "Tuts_Network_Client -> Net1_Client.h"
-
-		(\_/)
-		( '_')
-	 /""""""""""""\=========     -----D
-	/"""""""""""""""""""""""\
-....\_@____@____@____@____@_/
-
-*/ /////////////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include <enet\enet.h>
+#include <iphlpapi.h>
 #include <nclgl\GameTimer.h>
 #include <nclgl\Vector3.h>
 #include <nclgl\common.h>
 #include <ncltech\NetworkBase.h>
 
-// Needed to get computer adapter IPv4 addresses via windows
-#include <iphlpapi.h>
 #pragma comment(lib, "IPHLPAPI.lib")
 
 #define SERVER_PORT 1234
-#define UPDATE_TIMESTEP (1.0f / 30.0f) // send 30 position updates per second
 
 NetworkBase server;
 GameTimer timer;
-float accum_time = 0.0f;
-float rotation = 0.0f;
+GameTimer txTimer;
 
 void Win32_PrintAllAdapterIPAddresses();
 
@@ -63,8 +32,7 @@ int main(int arcg, char **argv)
     return EXIT_FAILURE;
   }
 
-  // Initialize Server on Port 1234, with a possible 32 clients connected at any time
-  if (!server.Initialize(SERVER_PORT, 32))
+  if (!server.Initialize(SERVER_PORT, 4))
   {
     fprintf(stderr, "An error occurred while trying to create an ENet server host.\n");
     onExit(EXIT_FAILURE);
@@ -78,10 +46,7 @@ int main(int arcg, char **argv)
   while (true)
   {
     float dt = timer.GetTimedMS() * 0.001f;
-    accum_time += dt;
-    rotation += 0.5f * PI * dt;
 
-    // Handle All Incoming Packets and Send any enqued packets
     server.ServiceNetwork(dt, [&](const ENetEvent &evnt) {
       switch (evnt.type)
       {
@@ -100,31 +65,16 @@ int main(int arcg, char **argv)
       }
     });
 
-    // Broadcast update packet to all connected clients at a rate of UPDATE_TIMESTEP updates per second
-    if (accum_time >= UPDATE_TIMESTEP)
+    if (txTimer.GetTimedMS() > 1000.0f)
     {
-
-      // Packet data
-      // - At the moment this is just a position update that rotates around the
-      // origin of the world
-      //   though this can be any variable, structure or class you wish. Just
-      //   remember that everything
-      //   you send takes up valuable network bandwidth so no sending every
-      //   PhysicsObject struct each frame ;)
-      accum_time = 0.0f;
-      Vector3 pos = Vector3(cos(rotation) * 2.0f, 1.5f, sin(rotation) * 2.0f);
-
-      // Create the packet and broadcast it (unreliable transport) to all
-      // clients
-      ENetPacket *position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
-      enet_host_broadcast(server.m_pNetwork, 0, position_update);
+      // ENetPacket *position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
+      // enet_host_broadcast(server.m_pNetwork, 0, position_update);
     }
 
     Sleep(0);
   }
 
-  system("pause");
-  server.Release();
+  onExit(0);
 }
 
 // Yay Win32 code >.>

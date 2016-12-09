@@ -36,7 +36,7 @@ StateMachine::~StateMachine()
  * @brief Gets the active branch of the state tree.
  * @return Branch of active states
  */
-IStatePtrList StateMachine::ActiveStateBranch()
+IStatePtrList StateMachine::ActiveStateBranch() const
 {
   IStatePtrList branch;
 
