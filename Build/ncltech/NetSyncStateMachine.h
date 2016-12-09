@@ -2,10 +2,12 @@
 
 #include "StateMachine.h"
 
+#include "NetworkBase.h"
+
 class NetSyncStateMachine : public StateMachine
 {
 public:
-  struct StateMachineUpdatePacket
+  struct StateMachineUpdatePacket : public NetPacket
   {
     char nextStateName[1024];
   };
@@ -15,9 +17,9 @@ public:
   virtual ~NetSyncStateMachine();
 
   bool NeedsNetworkSync() const;
-  void BuildNetworkSyncPacket(StateMachineUpdatePacket &pkt) const;
+  void BuildNetworkSyncPacket(StateMachineUpdatePacket &pkt);
   bool ProcessNetworkSyncPacket(const StateMachineUpdatePacket &pkt);
 
 private:
-  State *m_lastKnownState; //!< Pointer to the last known active state
+  State *m_lastSyncState;
 };

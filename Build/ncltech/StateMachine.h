@@ -14,13 +14,13 @@
 class StateMachine
 {
 public:
-  static std::string BranchToString(const IStatePtrList &branch, char delim = '/');
+  static std::string BranchToString(const StatePtrList &branch, char delim = '/');
 
 public:
   StateMachine();
   virtual ~StateMachine();
 
-  IStatePtrList ActiveStateBranch() const;
+  StatePtrList ActiveStateBranch() const;
 
   /**
    * @brief Gets the root state for the state machine.
@@ -60,7 +60,7 @@ public:
   virtual bool Transfer();
   virtual void Operate(float dt = 0.0f);
 
-private:
+protected:
   State m_root;          //!< Root state
   State *m_defaultState; //!< Default state
 };

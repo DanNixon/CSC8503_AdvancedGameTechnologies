@@ -46,6 +46,9 @@
     <ClCompile Include="StateTest.cpp">
       <Filter>FSM</Filter>
     </ClCompile>
+    <ClCompile Include="NetSyncStateMachineTest.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestDataGenerator.h">

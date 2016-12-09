@@ -94,13 +94,13 @@ ENetPeer *NetworkBase::ConnectPeer(uint8_t ip_part1, uint8_t ip_part2, uint8_t i
 // Enqueues data to be sent to peer computer over the network.
 // - Note: All enqueued packets will automatically be sent the next time
 // 'ServiceNetwork' is called
-void NetworkBase::EnqueuePacket(ENetPeer *peer, PacketTransportType transport_type, void *packet_data, size_t data_length)
+void NetworkBase::EnqueuePacket(ENetPeer *peer, enet_uint32 flags, void *packet_data, size_t data_length)
 {
   if (m_pNetwork != NULL)
   {
     if (peer != NULL)
     {
-      ENetPacket *packet = enet_packet_create(packet_data, data_length, transport_type);
+      ENetPacket *packet = enet_packet_create(packet_data, data_length, flags);
       enet_peer_send(peer, 0, packet);
     }
     else

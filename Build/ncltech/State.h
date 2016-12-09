@@ -13,7 +13,7 @@ class StateMachine;
  * @typedef IStatePtrList
  * @brief List of pointers to IState instances.
  */
-typedef std::vector<State *> IStatePtrList;
+typedef std::vector<State *> StatePtrList;
 
 /**
  * @class State
@@ -73,7 +73,7 @@ public:
   void AddOnExitBehaviour(OnExitBehaviour behaviour);
   void AddOnOperateBehaviour(OnOperateBehaviour behaviour);
 
-  IStatePtrList Branch(bool reverse = false);
+  StatePtrList Branch(bool reverse = false);
 
   void SetActivation(bool active, State *terminateAt = nullptr, State *delta = nullptr);
 

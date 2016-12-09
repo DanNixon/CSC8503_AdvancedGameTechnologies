@@ -42,9 +42,9 @@ StateContainer::~StateContainer()
  * @name Path to state
  * @return State branch
  */
-IStatePtrList StateContainer::FindState(const std::string &name, char delim)
+StatePtrList StateContainer::FindState(const std::string &name, char delim)
 {
-  IStatePtrList branch;
+  StatePtrList branch;
   std::vector<std::string> names = Split(name, delim);
   std::reverse(names.begin(), names.end());
   FindStateImpl(names, branch);
@@ -57,7 +57,7 @@ IStatePtrList StateContainer::FindState(const std::string &name, char delim)
  * @param branch Reference to the vector containing branch states
  * @return True if search was succesfull
  */
-bool StateContainer::FindStateImpl(std::vector<std::string> &names, IStatePtrList &branch)
+bool StateContainer::FindStateImpl(std::vector<std::string> &names, StatePtrList &branch)
 {
   // Find child by name
   const std::string name(names.back());

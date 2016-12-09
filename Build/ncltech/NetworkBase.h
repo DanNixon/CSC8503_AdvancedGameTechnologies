@@ -45,23 +45,20 @@ For more information see: http://enet.bespin.org/Features.html
 */ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
 #include <enet\enet.h>
 #include <functional>
 #include <stdint.h>
 
-enum PacketTransportType
+enum NetPacketType : uint8_t
 {
-  // Packet will be sent, but may be lost in transit
-  // - Best for regular updates that are time-sensitive e.g games updates
-  // - See UDP Protocol
-  PACKET_TRANSPORT_UNRELABLE = 0,
+  PACKET_TYPE_PING,
+  PACKET_TYPE_FSM
+};
 
-  // Packet will be sent and tracked, resending after timeout if peer has not
-  // recieved it yet
-  // - Best for data that MUST reach the client, no matter how long (or how many
-  // attempts) it takes
-  // - See TCP Protocol
-  PACKET_TRANSPORT_RELIABLE = ENET_PACKET_FLAG_RELIABLE
+struct NetPacket
+{
+  NetPacketType type;
 };
 
 class NetworkBase
@@ -93,7 +90,7 @@ public:
   // Enqueues data to be sent to peer computer over the network.
   // - Note: All enqueued packets will automatically be sent the next time
   // 'ServiceNetwork' is called
-  void EnqueuePacket(ENetPeer *peer, PacketTransportType transport_type, void *packet_data, size_t data_length);
+  void EnqueuePacket(ENetPeer *peer, enet_uint32 flags, void *packet_data, size_t data_length);
 
   // Processes all incoming packets and sends all enqueued outgoing packets
   // - All incoming packets and network events will be parsed through the given

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <nclgl\Mesh.h>
+#include <ncltech\NetSyncStateMachine.h>
 #include <ncltech\Scene.h>
-#include <ncltech\StateMachine.h>
 #include <queue>
 
 class CourseworkScene : public Scene
@@ -16,8 +16,8 @@ public:
   virtual void OnUpdateScene(float dt) override;
 
 protected:
-  StateMachine m_debugDrawStateMachine; //!< State machine controlling debug draw
-  StateMachine m_playerStateMachine;    //!< State machine controlling player behaviour
+  StateMachine m_debugDrawStateMachine;     //!< State machine controlling debug draw
+  NetSyncStateMachine m_playerStateMachine; //!< State machine controlling player behaviour
 
   Object *m_planet;                   //!< Planet object
   std::queue<Object *> m_shotSpheres; //!< Queue of spheres shot by the player

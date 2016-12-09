@@ -8,8 +8,8 @@
  */
 State *State::ClosestCommonAncestor(State *a, State *b)
 {
-  IStatePtrList branchA = a->Branch();
-  IStatePtrList branchB = b->Branch();
+  StatePtrList branchA = a->Branch();
+  StatePtrList branchB = b->Branch();
 
   auto ia = branchA.begin();
   auto ib = branchB.begin();
@@ -86,9 +86,9 @@ void State::AddOnOperateBehaviour(OnOperateBehaviour behaviour)
  * @param reverse If the branch order should be reversed
  * @return State tree branch
  */
-IStatePtrList State::Branch(bool reverse)
+StatePtrList State::Branch(bool reverse)
 {
-  IStatePtrList branch;
+  StatePtrList branch;
 
   State *node = this;
   while (node != nullptr)

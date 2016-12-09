@@ -41,6 +41,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ncltech_test", "ncltech_tes
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameTech_Coursework_Server", "GameTech_Coursework_Server\GameTech_Coursework_Server.vcxproj", "{95FA7750-EF9F-447E-8EE8-E321207C2DAC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{98D6B51B-CB0A-4389-ADC6-24082B967C3F} = {98D6B51B-CB0A-4389-ADC6-24082B967C3F}
+		{9FD1ABBA-7FDF-451C-BF1F-030F93B1AE7E} = {9FD1ABBA-7FDF-451C-BF1F-030F93B1AE7E}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

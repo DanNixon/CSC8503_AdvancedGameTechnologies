@@ -75,22 +75,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\ExternalLibs\ENET\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(SolutionDir)\$(Configuration);$(SolutionDir)\ExternalLibs\GLEW\lib;$(SolutionDir)\ExternalLibs\SOIL\$(Configuration);$(SolutionDir)\ExternalLibs\ENET;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\ExternalLibs\ENET\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(SolutionDir)\$(Configuration);$(SolutionDir)\ExternalLibs\GLEW\lib;$(SolutionDir)\ExternalLibs\SOIL\$(Configuration);$(SolutionDir)\ExternalLibs\ENET;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\ExternalLibs\ENET\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(SolutionDir)\$(Configuration);$(SolutionDir)\ExternalLibs\GLEW\lib;$(SolutionDir)\ExternalLibs\SOIL\$(Configuration);$(SolutionDir)\ExternalLibs\ENET;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\ExternalLibs\ENET\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(SolutionDir)\$(Configuration);$(SolutionDir)\ExternalLibs\GLEW\lib;$(SolutionDir)\ExternalLibs\SOIL\$(Configuration);$(SolutionDir)\ExternalLibs\ENET;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -169,6 +169,7 @@
     <ClCompile Include="AStarNonTraversableTest.cpp" />
     <ClCompile Include="AStarTest.cpp" />
     <ClCompile Include="AStarWeightedTest.cpp" />
+    <ClCompile Include="NetSyncStateMachineTest.cpp" />
     <ClCompile Include="PathEdgeTest.cpp" />
     <ClCompile Include="StateTest.cpp" />
     <ClCompile Include="PriorityQueueTest.cpp" />

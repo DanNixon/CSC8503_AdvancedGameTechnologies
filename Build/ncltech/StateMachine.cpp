@@ -8,7 +8,7 @@
  * @param delim Delimiter
  * @return Delimited names of states in branch
  */
-std::string StateMachine::BranchToString(const IStatePtrList &branch, char delim)
+std::string StateMachine::BranchToString(const StatePtrList &branch, char delim)
 {
   std::stringstream str;
   for (auto it = branch.begin(); it != branch.end(); ++it)
@@ -36,9 +36,9 @@ StateMachine::~StateMachine()
  * @brief Gets the active branch of the state tree.
  * @return Branch of active states
  */
-IStatePtrList StateMachine::ActiveStateBranch() const
+StatePtrList StateMachine::ActiveStateBranch() const
 {
-  IStatePtrList branch;
+  StatePtrList branch;
 
   State *node = m_root.ActiveChild();
   while (node != nullptr)
@@ -65,7 +65,7 @@ void StateMachine::Reset()
  */
 bool StateMachine::Transfer()
 {
-  IStatePtrList branch = ActiveStateBranch();
+  StatePtrList branch = ActiveStateBranch();
   State *oldState = branch.back();
   bool stateChange = false;
 
@@ -75,7 +75,7 @@ bool StateMachine::Transfer()
 
     if (transferState == nullptr)
     {
-      IStatePtrList siblings = (*brIt)->Parent()->Children();
+      StatePtrList siblings = (*brIt)->Parent()->Children();
       for (auto sibIt = siblings.begin(); sibIt != siblings.end(); ++sibIt)
       {
         if ((*sibIt != *brIt) && (*sibIt)->TestTransferTo())

@@ -18,9 +18,9 @@ public:
     State * s12 = new State("state1.2", s1, nullptr);
     State * s121 = new State("state1.2.1", s12, nullptr);
 
-    Assert::IsTrue(IStatePtrList{ s1, s12, s121 } == s121->Branch());
-    Assert::IsTrue(IStatePtrList{ s1, s12, s121 } == s121->Branch(false));
-    Assert::IsTrue(IStatePtrList{ s121, s12, s1 } == s121->Branch(true));
+    Assert::IsTrue(StatePtrList{ s1, s12, s121 } == s121->Branch());
+    Assert::IsTrue(StatePtrList{ s1, s12, s121 } == s121->Branch(false));
+    Assert::IsTrue(StatePtrList{ s121, s12, s1 } == s121->Branch(true));
   }
 
   TEST_METHOD(State_ClosestCommonAncestor)
