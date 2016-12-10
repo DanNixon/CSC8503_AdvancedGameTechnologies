@@ -108,8 +108,8 @@ void VBOTestResource::draw() const {
 }
 
 __global__ void vboTestResource_update(float* ptr, int width, int height, float time) {
-	int x = blockIdx.x*blockDim.x + threadIdx.x;
-	int y = blockIdx.y*blockDim.y + threadIdx.y;
+	int x = blockIdx.x * blockDim.x + threadIdx.x;
+	int y = blockIdx.y * blockDim.y + threadIdx.y;
 	int offset = y*width + x;
 	if (x >= width || y >= height) return;
 

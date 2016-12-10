@@ -150,7 +150,7 @@ void CourseworkScene::OnInitializeScene()
   target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
   AddGameObject(target);
 
-  target->Physics()->SetOnCollisionCallback([](PhysicsObject * a, PhysicsObject * b) {
+  target->Physics()->SetOnCollisionCallback([](PhysicsObject *a, PhysicsObject *b) {
     std::string aname = a->GetAssociatedObject()->GetName();
     std::string bname = b->GetAssociatedObject()->GetName();
     NCLDebug::Log("%s hits %s", aname.c_str(), bname.c_str());
