@@ -1,3 +1,5 @@
+#include <winsock2.h>
+
 #include <nclgl\Window.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PerfTimer.h>
