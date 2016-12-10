@@ -173,6 +173,7 @@ const char vert[] =
 	"	OUT.texCoord = texCoord;\n"
 	"	OUT.worldPos = worldPos.xyz;\n"
 	"}\n";
+
 const char frag[] =
 	"#version 150 core\n"
 	"uniform sampler2D diffTex;\n"
