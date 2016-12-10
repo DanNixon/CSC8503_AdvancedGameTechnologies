@@ -46,7 +46,7 @@ void SphereCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObj
                                                  Vector3 *out_max) const
 {
   Matrix4 transform;
-  
+
   if (currentObject == nullptr)
     transform = m_LocalTransform;
   else

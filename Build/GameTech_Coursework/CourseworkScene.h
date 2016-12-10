@@ -16,6 +16,8 @@ public:
   virtual void OnUpdateScene(float dt) override;
 
 protected:
+  Mesh *m_targetMesh; //!< Graphical mesh for the target
+
   StateMachine m_debugDrawStateMachine;     //!< State machine controlling debug draw
   NetSyncStateMachine m_playerStateMachine; //!< State machine controlling player behaviour
 

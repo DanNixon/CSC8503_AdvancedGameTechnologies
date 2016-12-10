@@ -97,7 +97,7 @@ void PhysicsObject::AutoResizeBoundingBox()
  * Probably not the best solution but is relatively cheap and reduces the likelyhood of an object entering rest state
  * when changing direction.
  */
- void PhysicsObject::DoAtRestTest()
+void PhysicsObject::DoAtRestTest()
 {
   // Negative threshold disables test, don't bother calculating average or performing test
   if (m_restVelocityThresholdSquared <= 0.0f)

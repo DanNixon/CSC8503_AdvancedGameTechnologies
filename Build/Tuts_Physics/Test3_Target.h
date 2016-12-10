@@ -16,7 +16,9 @@ public:
     m_targetMesh = new OBJMesh(MESHDIR "target.obj");
     m_targetMesh->GenerateNormals();
 
-    GLuint tex = SOIL_load_OGL_texture(TEXTUREDIR "target.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+    GLuint tex =
+        SOIL_load_OGL_texture(TEXTUREDIR "target.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID,
+                              SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
     m_targetMesh->SetTexture(tex);
   }
 
@@ -30,8 +32,8 @@ public:
     SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
 
     // Create Ground
-    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.001f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false,
-      0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+    AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.001f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,
+                                                 false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
     // Create target
     ObjectMesh *target = new ObjectMesh("target");
@@ -41,9 +43,9 @@ public:
     target->Physics()->AddCollisionShape(new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)));
     target->SetBoundingRadius(1.0f);
     target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-    this->AddGameObject(target);
+    AddGameObject(target);
   }
 
 private:
-  OBJMesh * m_targetMesh;
+  OBJMesh *m_targetMesh;
 };

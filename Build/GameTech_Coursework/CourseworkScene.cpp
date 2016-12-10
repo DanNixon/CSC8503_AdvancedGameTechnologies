@@ -1,14 +1,17 @@
 #include "CourseworkScene.h"
 
+#include <nclgl\OBJMesh.h>
 #include <nclgl\Vector4.h>
 #include <ncltech\CommonUtils.h>
+#include <ncltech\CuboidCollisionShape.h>
 #include <ncltech\DistanceConstraint.h>
+#include <ncltech\ObjectMesh.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
 #include <ncltech\State.h>
 
-#define PLANET_RADIUS 100.0f
+#define PLANET_RADIUS 250.0f
 
 CourseworkScene::CourseworkScene(const std::string &friendlyName)
     : Scene(friendlyName)
@@ -101,6 +104,17 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
       shoot->AddTransferFromTest([idle]() { return idle; });
     }
   }
+
+  // Load target mesh
+  {
+    m_targetMesh = new OBJMesh(MESHDIR "target.obj");
+    m_targetMesh->GenerateNormals();
+
+    GLuint tex =
+        SOIL_load_OGL_texture(TEXTUREDIR "target.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID,
+                              SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+    m_targetMesh->SetTexture(tex);
+  }
 }
 
 CourseworkScene::~CourseworkScene()
@@ -113,7 +127,7 @@ void CourseworkScene::OnInitializeScene()
   PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
 
   // Set the camera position
-  SceneManager::Instance()->GetCamera()->SetPosition(Vector3(0.0f, PLANET_RADIUS + 50.0f, 0.0f));
+  SceneManager::Instance()->GetCamera()->SetPosition(Vector3(0.0f, PLANET_RADIUS + 5.0f, 0.0f));
   SceneManager::Instance()->GetCamera()->SetYaw(0.0f);
   SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
 
@@ -121,10 +135,27 @@ void CourseworkScene::OnInitializeScene()
   m_debugDrawStateMachine.Reset();
   m_playerStateMachine.Reset();
 
-  // Planet object
+  // Create planet
   m_planet = CommonUtils::BuildSphereObject("planet", Vector3(0.0f, 0.0f, 0.0f), PLANET_RADIUS, true, 0.0f, true, false,
                                             Vector4(0.2f, 0.5f, 1.0f, 1.0f));
   AddGameObject(m_planet);
+
+  // Create target
+  ObjectMesh *target = new ObjectMesh("target");
+  target->SetMesh(m_targetMesh, false);
+  target->CreatePhysicsNode();
+  target->Physics()->SetPosition(Vector3(0.0f, PLANET_RADIUS, 0.0f));
+  target->Physics()->AddCollisionShape(new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)));
+  target->SetBoundingRadius(10.0f);
+  target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+  AddGameObject(target);
+
+  target->Physics()->SetOnCollisionCallback([](PhysicsObject * a, PhysicsObject * b) {
+    std::string aname = a->GetAssociatedObject()->GetName();
+    std::string bname = b->GetAssociatedObject()->GetName();
+    NCLDebug::Log("%s hits %s", aname.c_str(), bname.c_str());
+    return true;
+  });
 }
 
 void CourseworkScene::OnCleanupScene()
