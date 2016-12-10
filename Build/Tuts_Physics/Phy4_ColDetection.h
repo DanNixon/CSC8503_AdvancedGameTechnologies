@@ -126,6 +126,9 @@ public:
       secondSphereCollShape->SetLocalTransform(Matrix4::Translation(Vector3(-0.25f, 0.0f, 0.0f)));
       sphere->Physics()->AddCollisionShape(secondSphereCollShape);
 
+      // Auto set bounding box
+      sphere->Physics()->AutoResizeBoundingBox();
+
       this->AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid2.2", sc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true,
                                                          true, CommonUtils::GenColour(0.55f, 1.0f)));
     }

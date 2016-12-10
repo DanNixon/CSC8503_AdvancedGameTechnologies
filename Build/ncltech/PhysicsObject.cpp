@@ -60,6 +60,34 @@ const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
   return m_wsTransform;
 }
 
+void PhysicsObject::AutoResizeBoundingBox()
+{
+  m_localBoundingBox.Reset();
+
+  const Vector3 xAxis(1.0f, 0.0f, 0.0f);
+  const Vector3 yAxis(0.0f, 1.0f, 0.0f);
+  const Vector3 zAxis(0.0f, 0.0f, 1.0f);
+
+  Vector3 lower, upper;
+
+  for (auto it = m_collisionShapes.begin(); it != m_collisionShapes.end(); ++it)
+  {
+    (*it)->GetMinMaxVertexOnAxis(nullptr, xAxis, &lower, &upper);
+    m_localBoundingBox.ExpandToFit(lower);
+    m_localBoundingBox.ExpandToFit(upper);
+
+    (*it)->GetMinMaxVertexOnAxis(nullptr, yAxis, &lower, &upper);
+    m_localBoundingBox.ExpandToFit(lower);
+    m_localBoundingBox.ExpandToFit(upper);
+
+    (*it)->GetMinMaxVertexOnAxis(nullptr, zAxis, &lower, &upper);
+    m_localBoundingBox.ExpandToFit(lower);
+    m_localBoundingBox.ExpandToFit(upper);
+  }
+
+  m_wsAabbInvalidated = true;
+}
+
 /**
  * @brief Performs test to determine if this object is at rest and sets the at rest flag accordingly.
  *
@@ -69,7 +97,7 @@ const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
  * Probably not the best solution but is relatively cheap and reduces the likelyhood of an object entering rest state
  * when changing direction.
  */
-void PhysicsObject::DoAtRestTest()
+ void PhysicsObject::DoAtRestTest()
 {
   // Negative threshold disables test, don't bother calculating average or performing test
   if (m_restVelocityThresholdSquared <= 0.0f)

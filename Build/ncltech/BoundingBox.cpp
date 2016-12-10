@@ -10,8 +10,6 @@ const int BoundingBox::RIGHT_FACE[] = {6, 7, 3, 2};
 const int BoundingBox::LEFT_FACE[] = {4, 5, 1, 0};
 
 BoundingBox::BoundingBox(bool generateHull)
-    : m_lower(FLT_MAX, FLT_MAX, FLT_MAX)
-    , m_upper(-FLT_MAX, -FLT_MAX, -FLT_MAX)
 {
   if (generateHull)
   {
@@ -32,14 +30,21 @@ BoundingBox::BoundingBox(bool generateHull)
     AddFace(Vector3(0.0f, -1.0f, 0.0f), 4, BOTTOM_FACE);
     AddFace(Vector3(1.0f, 0.0f, 0.0f), 4, RIGHT_FACE);
     AddFace(Vector3(-1.0f, 0.0f, 0.0f), 4, LEFT_FACE);
-
-    // Update hull vertex positions
-    UpdateHull();
   }
+
+  Reset();
 }
 
 BoundingBox::~BoundingBox()
 {
+}
+
+void BoundingBox::Reset()
+{
+  m_lower = Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
+  m_upper = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
+  UpdateHull();
 }
 
 void BoundingBox::ExpandToFit(const Vector3 &point)
@@ -86,6 +91,9 @@ bool BoundingBox::Intersects(const BoundingBox &other) const
 
 void BoundingBox::UpdateHull()
 {
+  if (m_vVertices.size() != 8)
+    return;
+
   // Lower
   m_vVertices[0].pos.x = m_lower.x;
   m_vVertices[0].pos.y = m_lower.y;

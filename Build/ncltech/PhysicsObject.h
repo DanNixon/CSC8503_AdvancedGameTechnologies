@@ -233,6 +233,8 @@ public:
     m_parent = obj;
   }
 
+  void AutoResizeBoundingBox();
+
   //<---------- CALLBACKS ------------>
   inline void SetOnCollisionCallback(PhysicsCollisionCallback callback)
   {

@@ -61,7 +61,11 @@ void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObj
 {
   // Build World Transform
   Matrix4 transform;
-  GetShapeWorldTransformation(currentObject, transform);
+
+  if (currentObject == nullptr)
+    transform = m_LocalTransform;
+  else
+    GetShapeWorldTransformation(currentObject, transform);
 
   // Convert world space axis into model space (Axis Aligned Cuboid)
   Matrix3 invNormalMatrix = Matrix3::Transpose(Matrix3(transform));

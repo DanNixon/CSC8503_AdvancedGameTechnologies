@@ -45,8 +45,14 @@ void SphereCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vec
 void SphereCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
                                                  Vector3 *out_max) const
 {
-  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
-  Vector3 pos = wsTransform.GetPositionVector();
+  Matrix4 transform;
+  
+  if (currentObject == nullptr)
+    transform = m_LocalTransform;
+  else
+    transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
+
+  Vector3 pos = transform.GetPositionVector();
 
   if (out_min)
     *out_min = pos - axis * m_Radius;

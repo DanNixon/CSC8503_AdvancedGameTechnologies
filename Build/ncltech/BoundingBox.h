@@ -16,6 +16,8 @@ public:
   BoundingBox(bool generateHull = true);
   virtual ~BoundingBox();
 
+  void Reset();
+
   void ExpandToFit(const Vector3 &point);
   void SetHalfDimensions(const Vector3 &halfDims);
 
