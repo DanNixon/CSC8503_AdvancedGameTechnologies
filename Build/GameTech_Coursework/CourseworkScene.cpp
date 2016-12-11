@@ -9,6 +9,7 @@
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\HullCollisionShape.h>
 #include <ncltech\ObjectMesh.h>
+#include <ncltech\OctreeBroadphase.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
@@ -16,7 +17,16 @@
 #include <ncltech\State.h>
 #include <ncltech\WeldConstraint.h>
 
-#define PLANET_RADIUS 100.0f
+const float CourseworkScene::PLANET_RADIUS = 100.0f;
+
+void CourseworkScene::PrintKeyMapping()
+{
+  NCLDebug::Log("Key mappings:");
+  NCLDebug::Log("  Reset scene: %c", KeyboardKeys::KEYBOARD_R);
+  NCLDebug::Log("  Fire ball: %c", SHOOT_BALL_KEY);
+  NCLDebug::Log("  Switch physics view mode: %c", PHYSICS_DEBUG_VIEW_KEY);
+  NCLDebug::Log("  Switch broadphase culling mode: %c", BROADPHASE_MODE_KEY);
+}
 
 CourseworkScene::CourseworkScene(const std::string &friendlyName)
     : Scene(friendlyName)
@@ -25,72 +35,143 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
 {
   // Debug draw state machine
   {
-    const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
+    const Vector4 PHYSICS_VIEW_STATUS_COLOUR(1.0f, 1.0f, 0.0f, 1.0f);
 
+    // States
     State *viewNormal = new State("normal", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    viewNormal->AddOnEntryBehaviour([](State *) {
-      NCLDebug::Log("Physics view: off");
-      PhysicsEngine::Instance()->SetDebugDrawFlags(0);
-    });
+    viewNormal->AddOnEntryBehaviour([](State *) { PhysicsEngine::Instance()->SetDebugDrawFlags(0); });
+    viewNormal->AddOnOperateBehaviour(
+        [PHYSICS_VIEW_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(PHYSICS_VIEW_STATUS_COLOUR, "Physics view: off"); });
 
     State *viewLinearMotion = new State("linear_motion", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
     viewLinearMotion->AddOnEntryBehaviour([](State *) {
-      NCLDebug::Log("Physics view: linear motion");
       PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_LINEARFORCE | DEBUGDRAW_FLAGS_LINEARVELOCITY);
     });
+    viewLinearMotion->AddOnOperateBehaviour(
+        [PHYSICS_VIEW_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(PHYSICS_VIEW_STATUS_COLOUR, "Physics view: linear motion"); });
 
     State *viewBoundingVolumes = new State("bounding_volumes", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    viewBoundingVolumes->AddOnEntryBehaviour([](State *) {
-      NCLDebug::Log("Physics view: bounding volumes");
-      PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_AABB);
-    });
+    viewBoundingVolumes->AddOnEntryBehaviour([](State *) { PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_AABB); });
+    viewBoundingVolumes->AddOnOperateBehaviour(
+        [PHYSICS_VIEW_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(PHYSICS_VIEW_STATUS_COLOUR, "Physics view: AABB"); });
 
     State *viewBroadphase = new State("broadphase", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
     viewBroadphase->AddOnEntryBehaviour([](State *) {
-      NCLDebug::Log("Physics view: broadphase");
       PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_BROADPHASE | DEBUGDRAW_FLAGS_BROADPHASE_PAIRS);
     });
+    viewBroadphase->AddOnOperateBehaviour(
+        [PHYSICS_VIEW_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(PHYSICS_VIEW_STATUS_COLOUR, "Physics view: broadphase"); });
 
     State *viewCollisions = new State("collisions", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
     viewCollisions->AddOnEntryBehaviour([](State *) {
-      NCLDebug::Log("Physics view: collisions");
       PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_COLLISIONNORMALS |
                                                    DEBUGDRAW_FLAGS_MANIFOLD);
     });
+    viewCollisions->AddOnOperateBehaviour(
+        [PHYSICS_VIEW_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(PHYSICS_VIEW_STATUS_COLOUR, "Physics view: collisions"); });
 
     State *viewConstraints = new State("constraints", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    viewConstraints->AddOnEntryBehaviour([](State *) {
-      NCLDebug::Log("Physics view: constraints");
-      PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT);
-    });
+    viewConstraints->AddOnEntryBehaviour(
+        [](State *) { PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT); });
+    viewConstraints->AddOnOperateBehaviour(
+        [PHYSICS_VIEW_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(PHYSICS_VIEW_STATUS_COLOUR, "Physics view: constraints"); });
 
-    // State transfers
-    viewNormal->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewLinearMotion]() -> State * {
+    // State transitions
+    viewNormal->AddTransferFromTest([viewLinearMotion]() -> State * {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewLinearMotion : nullptr;
     });
 
-    viewLinearMotion->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewBoundingVolumes]() -> State * {
+    viewLinearMotion->AddTransferFromTest([viewBoundingVolumes]() -> State * {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewBoundingVolumes : nullptr;
     });
 
-    viewBoundingVolumes->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewBroadphase]() -> State * {
+    viewBoundingVolumes->AddTransferFromTest([viewBroadphase]() -> State * {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewBroadphase : nullptr;
     });
 
-    viewBroadphase->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewCollisions]() -> State * {
+    viewBroadphase->AddTransferFromTest([viewCollisions]() -> State * {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewCollisions : nullptr;
     });
 
-    viewCollisions->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewConstraints]() -> State * {
+    viewCollisions->AddTransferFromTest([viewConstraints]() -> State * {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewConstraints : nullptr;
     });
 
-    viewConstraints->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewNormal]() -> State * {
-      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewNormal : nullptr;
-    });
+    viewConstraints->AddTransferFromTest(
+        [viewNormal]() -> State * { return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewNormal : nullptr; });
 
     // Default state
     m_debugDrawStateMachine.SetDefaultState(viewNormal);
+  }
+
+  // Broadphase mode state machine
+  {
+    const Vector4 BROADPHASE_MODE_STATUS_COLOUR(0.0f, 1.0f, 1.0f, 1.0f);
+
+    State::OnEntryBehaviour removePrevBroadphase = [](State *) {
+      delete PhysicsEngine::Instance()->GetBroadphase();
+      PhysicsEngine::Instance()->SetBroadphase(nullptr);
+    };
+
+    // States
+    State *sortAndSweepX = new State("sort_and_sweep_x", m_broadphaseModeStateMachine.RootState(), &m_broadphaseModeStateMachine);
+    sortAndSweepX->AddOnEntryBehaviour(removePrevBroadphase);
+    sortAndSweepX->AddOnEntryBehaviour(
+        [](State *) { PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase(Vector3(1.0f, 0.0f, 0.0f))); });
+    sortAndSweepX->AddOnOperateBehaviour([BROADPHASE_MODE_STATUS_COLOUR]() {
+      NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: sort and sweep (x axis)");
+    });
+
+    State *sortAndSweepY = new State("sort_and_sweep_y", m_broadphaseModeStateMachine.RootState(), &m_broadphaseModeStateMachine);
+    sortAndSweepY->AddOnEntryBehaviour(removePrevBroadphase);
+    sortAndSweepY->AddOnEntryBehaviour(
+        [](State *) { PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase(Vector3(0.0f, 1.0f, 0.0f))); });
+    sortAndSweepY->AddOnOperateBehaviour([BROADPHASE_MODE_STATUS_COLOUR]() {
+      NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: sort and sweep (y axis)");
+    });
+
+    State *sortAndSweepZ = new State("sort_and_sweep_z", m_broadphaseModeStateMachine.RootState(), &m_broadphaseModeStateMachine);
+    sortAndSweepZ->AddOnEntryBehaviour(removePrevBroadphase);
+    sortAndSweepZ->AddOnEntryBehaviour(
+        [](State *) { PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase(Vector3(0.0f, 0.0f, 1.0f))); });
+    sortAndSweepZ->AddOnOperateBehaviour([BROADPHASE_MODE_STATUS_COLOUR]() {
+      NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: sort and sweep (z axis)");
+    });
+
+    State *bruteForce = new State("brute_force", m_broadphaseModeStateMachine.RootState(), &m_broadphaseModeStateMachine);
+    bruteForce->AddOnEntryBehaviour(removePrevBroadphase);
+    bruteForce->AddOnEntryBehaviour([](State *) { PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase()); });
+    bruteForce->AddOnOperateBehaviour([BROADPHASE_MODE_STATUS_COLOUR]() {
+      NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: off (brute force)");
+    });
+
+    State *octree = new State("octree", m_broadphaseModeStateMachine.RootState(), &m_broadphaseModeStateMachine);
+    octree->AddOnEntryBehaviour(removePrevBroadphase);
+    octree->AddOnEntryBehaviour([](State *) { PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(10, 5)); });
+    octree->AddOnOperateBehaviour(
+        [BROADPHASE_MODE_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: octree"); });
+
+    // State transitions
+    sortAndSweepX->AddTransferFromTest([sortAndSweepY]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepY : nullptr;
+    });
+
+    sortAndSweepY->AddTransferFromTest([sortAndSweepZ]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepZ : nullptr;
+    });
+
+    sortAndSweepZ->AddTransferFromTest(
+        [bruteForce]() -> State * { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? bruteForce : nullptr; });
+
+    bruteForce->AddTransferFromTest(
+        [octree]() -> State * { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? octree : nullptr; });
+
+    octree->AddTransferFromTest([sortAndSweepX]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepX : nullptr;
+    });
+
+    // Default state
+    m_broadphaseModeStateMachine.SetDefaultState(sortAndSweepX);
   }
 
   // Player state machine
@@ -107,7 +188,8 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
     // Exit conditions
     {
       State *exitState = new State("exit", m_playerStateMachine.RootState(), &m_playerStateMachine);
-      exitState->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_X); });
+      exitState->AddTransferToTest(
+          []() { return Window::GetKeyboard()->KeyDown(KEYBOARD_X) || Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE); });
       exitState->AddOnEntryBehaviour([](State *) { NCLDebug::Log("Bye Bye~"); });
       exitState->AddOnOperateBehaviour([exitState]() {
         if (exitState->TimeInState() > 1.0f)
@@ -118,7 +200,7 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
     // Shooting spheres
     {
       State *shootBall = new State("shootBall", m_playerStateMachine.RootState(), &m_playerStateMachine);
-      shootBall->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
+      shootBall->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
 
       State *preShoot = new State("preShoot", shootBall, &m_playerStateMachine);
       preShoot->AddOnEntryBehaviour([](State *) {
@@ -128,7 +210,7 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
       shootBall->AddOnEntryBehaviour([preShoot](State *) { preShoot->SetActivation(true, preShoot->Parent()); });
 
       State *shoot = new State("shoot", shootBall, &m_playerStateMachine);
-      shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(KEYBOARD_J); });
+      shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
 
       shoot->AddOnEntryBehaviour([this](State *s) {
         Camera *camera = SceneManager::Instance()->GetCamera();
@@ -181,6 +263,8 @@ CourseworkScene::~CourseworkScene()
 
 void CourseworkScene::OnInitializeScene()
 {
+  PrintKeyMapping();
+
   // Set broadphase method
   PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
   PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
@@ -192,6 +276,7 @@ void CourseworkScene::OnInitializeScene()
 
   // Reset state machines
   m_debugDrawStateMachine.Reset();
+  m_broadphaseModeStateMachine.Reset();
   m_playerStateMachine.Reset();
 
   // Create planet
@@ -266,16 +351,19 @@ void CourseworkScene::OnCleanupScene()
 
   // Reset state machines
   m_debugDrawStateMachine.Reset();
+  m_broadphaseModeStateMachine.Reset();
   m_playerStateMachine.Reset();
 
   // Cleanup object pointers
   m_planet = nullptr;
+  m_target = nullptr;
 }
 
 void CourseworkScene::OnUpdateScene(float dt)
 {
   // Update state machines
   m_debugDrawStateMachine.Update(dt);
+  m_broadphaseModeStateMachine.Update(dt);
   m_playerStateMachine.Update(dt);
 
   // Add planet rotation

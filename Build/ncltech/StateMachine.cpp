@@ -66,6 +66,11 @@ void StateMachine::Reset()
 bool StateMachine::Transfer()
 {
   StatePtrList branch = ActiveStateBranch();
+
+  // If active state branch is empty then no state is active, cannot test transfer
+  if (branch.empty())
+    return false;
+
   State *oldState = branch.back();
   bool stateChange = false;
 

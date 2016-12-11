@@ -9,6 +9,16 @@
 class CourseworkScene : public Scene
 {
 public:
+  static const float PLANET_RADIUS;
+
+  static const KeyboardKeys BROADPHASE_MODE_KEY = KeyboardKeys::KEYBOARD_B;
+  static const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
+  static const KeyboardKeys SHOOT_BALL_KEY = KeyboardKeys::KEYBOARD_J;
+
+public:
+  static void PrintKeyMapping();
+
+public:
   CourseworkScene(const std::string &friendly_name);
   virtual ~CourseworkScene();
 
@@ -17,8 +27,9 @@ public:
   virtual void OnUpdateScene(float dt) override;
 
 protected:
-  StateMachine m_debugDrawStateMachine;     //!< State machine controlling debug draw
-  NetSyncStateMachine m_playerStateMachine; //!< State machine controlling player behaviour
+  StateMachine m_debugDrawStateMachine;      //!< State machine controlling debug draw
+  StateMachine m_broadphaseModeStateMachine; //!< State machine controlling broadphase mode
+  NetSyncStateMachine m_playerStateMachine;  //!< State machine controlling player behaviour
 
   GLuint m_planetTex;   //!< Texture of planet surface
   Mesh *m_targetMesh;   //!< Graphical mesh for the target
