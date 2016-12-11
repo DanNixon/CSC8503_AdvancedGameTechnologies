@@ -10,6 +10,7 @@
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\SphereCollisionShape.h>
 #include <ncltech\State.h>
 
@@ -25,16 +26,34 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
     const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
 
     State *normal = new State("normal", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    normal->AddOnEntryBehaviour([](State *) { NCLDebug::Log("Physics view: normal"); });
-    // TODO
+    normal->AddOnEntryBehaviour([](State *) {
+      NCLDebug::Log("Physics view: normal");
+      PhysicsEngine::Instance()->SetDebugDrawFlags(0);
+    });
 
-    State *view1 = new State("view1", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    view1->AddOnEntryBehaviour([](State *) { NCLDebug::Log("Physics view: view1"); });
-    // TODO
+    State *view1 = new State("linear_motion", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    view1->AddOnEntryBehaviour([](State *) {
+      NCLDebug::Log("Physics view: linear motion");
+      PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_LINEARFORCE | DEBUGDRAW_FLAGS_LINEARVELOCITY);
+    });
 
-    State *view2 = new State("view2", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    view2->AddOnEntryBehaviour([](State *) { NCLDebug::Log("Physics view: view2"); });
-    // TODO
+    State *view2 = new State("bounding_volumes", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    view2->AddOnEntryBehaviour([](State *) {
+      NCLDebug::Log("Physics view: bounding voltumes");
+      PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_AABB);
+    });
+
+    State *view3 = new State("collisions", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    view3->AddOnEntryBehaviour([](State *) {
+      NCLDebug::Log("Physics view: collisions");
+      PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_MANIFOLD);
+    });
+
+    State *view4 = new State("constraints", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    view4->AddOnEntryBehaviour([](State *) {
+      NCLDebug::Log("Physics view: constraints");
+      PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT);
+    });
 
     // State transfers
     normal->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, view1]() -> State * {
@@ -45,7 +64,15 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? view2 : nullptr;
     });
 
-    view2->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, normal]() -> State * {
+    view2->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, view3]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? view3 : nullptr;
+    });
+
+    view3->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, view4]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? view4 : nullptr;
+    });
+
+    view4->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, normal]() -> State * {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? normal : nullptr;
     });
 
@@ -99,6 +126,7 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
         Object *sphere = CommonUtils::BuildSphereObject("player_shot_sphere", camera->GetPosition(), 1.0f, true, 1.0f, true,
                                                         false, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
         sphere->Physics()->SetLinearVelocity(velocity);
+        sphere->Physics()->AutoResizeBoundingBox();
         this->m_shotSpheres.push(sphere);
         this->AddGameObject(sphere);
 
@@ -134,7 +162,7 @@ CourseworkScene::~CourseworkScene()
 void CourseworkScene::OnInitializeScene()
 {
   // Set broadphase method
-  PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
+  PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
 
   // Set the camera position
   SceneManager::Instance()->GetCamera()->SetPosition(Vector3(0.0f, PLANET_RADIUS + 5.0f, 0.0f));
@@ -147,7 +175,7 @@ void CourseworkScene::OnInitializeScene()
 
   // Create planet
   {
-    ObjectMesh *m_planet = new ObjectMesh("planet");
+    m_planet = new ObjectMesh("planet");
 
     m_planet->SetMesh(CommonMeshes::Sphere(), false);
     m_planet->SetTexture(m_planetTex, false);
@@ -160,9 +188,14 @@ void CourseworkScene::OnInitializeScene()
     m_planet->Physics()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
     m_planet->Physics()->SetInverseMass(0.0f);
 
-    ICollisionShape *pColshape = new SphereCollisionShape(PLANET_RADIUS);
-    m_planet->Physics()->AddCollisionShape(pColshape);
-    m_planet->Physics()->SetInverseInertia(pColshape->BuildInverseInertia(0.0f));
+    // Add planet rotation
+    m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.05f, 0.0f));
+
+    ICollisionShape *shape = new SphereCollisionShape(PLANET_RADIUS);
+    m_planet->Physics()->AddCollisionShape(shape);
+    m_planet->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
+
+    m_planet->Physics()->AutoResizeBoundingBox();
 
     AddGameObject(m_planet);
   }
@@ -170,12 +203,22 @@ void CourseworkScene::OnInitializeScene()
   // Create target
   {
     ObjectMesh *target = new ObjectMesh("target");
+
     target->SetMesh(m_targetMesh, false);
+    target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+
+    target->SetBoundingRadius(10.0f);
+    
     target->CreatePhysicsNode();
     target->Physics()->SetPosition(Vector3(0.0f, PLANET_RADIUS, 0.0f));
-    target->Physics()->AddCollisionShape(new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)));
-    target->SetBoundingRadius(10.0f);
-    target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+    target->Physics()->SetInverseMass(0.0f);
+
+    ICollisionShape * shape = new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)); // TODO
+    target->Physics()->AddCollisionShape(shape);
+    target->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
+    
+    target->Physics()->AutoResizeBoundingBox();
+
     AddGameObject(target);
 
     target->Physics()->SetOnCollisionCallback([](PhysicsObject *a, PhysicsObject *b) {

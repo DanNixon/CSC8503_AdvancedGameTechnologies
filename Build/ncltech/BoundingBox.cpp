@@ -83,12 +83,6 @@ BoundingBox BoundingBox::Transform(const Matrix4 &transformation) const
   return retVal;
 }
 
-bool BoundingBox::Intersects(const BoundingBox &other) const
-{
-  // TODO
-  return false;
-}
-
 void BoundingBox::UpdateHull()
 {
   if (m_vVertices.size() != 8)

@@ -43,8 +43,6 @@ public:
 
   BoundingBox Transform(const Matrix4 &transformation) const;
 
-  bool Intersects(const BoundingBox &other) const;
-
   void UpdateHull();
 
 protected:

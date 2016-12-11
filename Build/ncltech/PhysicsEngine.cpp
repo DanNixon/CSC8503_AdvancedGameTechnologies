@@ -243,8 +243,9 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
     }
     }
 
-    // Mark cached world transform as invalid
+    // Mark cached world transform and AABB as invalid
     obj->m_wsTransformInvalidated = true;
+    obj->m_wsAabbInvalidated = true;
   }
 
   // Test for rest conditions
