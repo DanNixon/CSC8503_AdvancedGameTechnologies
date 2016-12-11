@@ -2,6 +2,7 @@
 
 #include <nclgl\OBJMesh.h>
 #include <nclgl\Vector4.h>
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonMeshes.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\CuboidCollisionShape.h>
@@ -10,7 +11,6 @@
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
-#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\SphereCollisionShape.h>
 #include <ncltech\State.h>
 #include <ncltech\WeldConstraint.h>
@@ -53,7 +53,8 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
     State *viewCollisions = new State("collisions", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
     viewCollisions->AddOnEntryBehaviour([](State *) {
       NCLDebug::Log("Physics view: collisions");
-      PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_MANIFOLD);
+      PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_COLLISIONNORMALS |
+                                                   DEBUGDRAW_FLAGS_MANIFOLD);
     });
 
     State *viewConstraints = new State("constraints", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
@@ -218,17 +219,17 @@ void CourseworkScene::OnInitializeScene()
     m_target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
     m_target->SetBoundingRadius(10.0f);
-    
+
     m_target->CreatePhysicsNode();
     m_target->Physics()->SetPosition(Vector3(PLANET_RADIUS, 0.0f, 0.0f));
     m_target->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
 
     m_target->Physics()->SetInverseMass(0.0f);
 
-    ICollisionShape * shape = new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)); // TODO
+    ICollisionShape *shape = new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)); // TODO
     m_target->Physics()->AddCollisionShape(shape);
     m_target->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
-    
+
     m_target->Physics()->AutoResizeBoundingBox();
 
     AddGameObject(m_target);

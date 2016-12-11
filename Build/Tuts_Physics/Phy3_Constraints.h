@@ -41,12 +41,12 @@ Once the distance constraint class is built this should swing like a pendulum.
 #include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
-#include <ncltech\WeldConstraint.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SpringConstraint.h>
+#include <ncltech\WeldConstraint.h>
 
 class Phy3_Constraints : public Scene
 {

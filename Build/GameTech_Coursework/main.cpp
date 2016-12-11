@@ -61,30 +61,22 @@ void Initialize()
 //    hand corner of the screen each frame.
 void PrintStatusEntries()
 {
-  // Print Engine Options
-  NCLDebug::AddStatusEntry(status_colour_header, "NCLTech Settings");
-  NCLDebug::AddStatusEntry(status_colour, "     Physics Engine: %s (Press P to toggle)",
-                           PhysicsEngine::Instance()->IsPaused() ? "Paused  " : "Enabled ");
-  NCLDebug::AddStatusEntry(status_colour, "     Monitor V-Sync: %s (Press V to toggle)",
-                           SceneManager::Instance()->GetVsyncEnabled() ? "Enabled " : "Disabled");
-  NCLDebug::AddStatusEntry(status_colour, "");
-
   // Print Current Scene Name
-  NCLDebug::AddStatusEntry(status_colour_header, "[%d/%d]: %s", SceneManager::Instance()->GetCurrentSceneIndex() + 1,
-                           SceneManager::Instance()->SceneCount(),
-                           SceneManager::Instance()->GetCurrentScene()->GetSceneName().c_str());
-  NCLDebug::AddStatusEntry(status_colour, "     \x01 Q/E to cycle or R to reload scene");
+  NCLDebug::AddStatusEntry(status_colour_header, "%s", SceneManager::Instance()->GetCurrentScene()->GetSceneName().c_str());
+  NCLDebug::AddStatusEntry(status_colour, "   \x01 R to reload scene");
 
   // Print Performance Timers
-  NCLDebug::AddStatusEntry(status_colour, "     FPS: %5.2f  (Press G for %s info)", 1000.f / timer_total.GetAvg(),
+  NCLDebug::AddStatusEntry(status_colour, "   FPS: %5.2f  (Press G for %s info)", 1000.f / timer_total.GetAvg(),
                            show_perf_metrics ? "less" : "more");
+
   if (show_perf_metrics)
   {
-    timer_total.PrintOutputToStatusEntry(status_colour, "          Total Time     :");
-    timer_update.PrintOutputToStatusEntry(status_colour, "          Scene Update   :");
-    timer_physics.PrintOutputToStatusEntry(status_colour, "          Physics Update :");
-    timer_render.PrintOutputToStatusEntry(status_colour, "          Render Scene   :");
+    timer_total.PrintOutputToStatusEntry(status_colour, "      Total Time     :");
+    timer_update.PrintOutputToStatusEntry(status_colour, "      Scene Update   :");
+    timer_physics.PrintOutputToStatusEntry(status_colour, "      Physics Update :");
+    timer_render.PrintOutputToStatusEntry(status_colour, "      Render Scene   :");
   }
+
   NCLDebug::AddStatusEntry(status_colour, "");
 }
 

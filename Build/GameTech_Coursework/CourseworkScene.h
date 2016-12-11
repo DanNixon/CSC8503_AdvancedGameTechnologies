@@ -2,8 +2,8 @@
 
 #include <nclgl\Mesh.h>
 #include <ncltech\NetSyncStateMachine.h>
-#include <ncltech\Scene.h>
 #include <ncltech\ObjectMesh.h>
+#include <ncltech\Scene.h>
 #include <queue>
 
 class CourseworkScene : public Scene
