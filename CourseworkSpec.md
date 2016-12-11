@@ -71,7 +71,7 @@ higher mark will require the implementation of optional elements.
         the planet, assuming your scaling permits).
 - [ ] You must physically represent the Planet (see CSC8502 coursework) in some
       fashion (e.g., a sphere). The planet must rotate about its polar axis.
-- [ ] You must add a target to the surface of the planet. This region will
+- [x] You must add a target to the surface of the planet. This region will
       rotate as the planet does, and should be clearly indicated graphically
       (e.g., with a target reticule, or dart-board).
 - [ ] You must implement a score counter. The score should increment by 100
@@ -91,7 +91,7 @@ higher mark will require the implementation of optional elements.
 - [x] You will enhance your physics simulation to include a more sophisticated
       collision detection and response approach, such as separating-axis
       theorem and manifolds. More marks will be awarded for an even more
-      advanced approach (e.g.  GJK/EPA).
+      advanced approach (e.g. GJK/EPA).
 - [ ] Introduce additional objects of a more complex collision shape to the
       environment to demonstrate this functionality, which begin hovering at
       rest, and awaken when collided with.
@@ -131,7 +131,7 @@ higher mark will require the implementation of optional elements.
       example, on learning of a collision in one direction, a client might
       reverse its direction for a period of time, or react in some more
       aggressive fashion.
-- [ ] You might implement a debug view, accessed by pressing the 'M' key. This
+- [x] You might implement a debug view, accessed by pressing the 'M' key. This
       would have two modes. On a first press, only the physical representation
       of objects in the environment would be rendered, untextured, using
       coloured lines to indicate connections between vertices against a black
