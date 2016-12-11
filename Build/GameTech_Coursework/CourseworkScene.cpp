@@ -126,6 +126,7 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
         Object *sphere = CommonUtils::BuildSphereObject("player_shot_sphere", camera->GetPosition(), 1.0f, true, 1.0f, true,
                                                         false, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
         sphere->Physics()->SetLinearVelocity(velocity);
+        sphere->Physics()->SetGravitationTarget(this->m_planet->Physics());
         sphere->Physics()->AutoResizeBoundingBox();
         this->m_shotSpheres.push(sphere);
         this->AddGameObject(sphere);
@@ -163,9 +164,10 @@ void CourseworkScene::OnInitializeScene()
 {
   // Set broadphase method
   PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
+  PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
 
   // Set the camera position
-  SceneManager::Instance()->GetCamera()->SetPosition(Vector3(0.0f, PLANET_RADIUS + 5.0f, 0.0f));
+  SceneManager::Instance()->GetCamera()->SetPosition(Vector3(PLANET_RADIUS + 5.0f, 0.0f, 0.0f));
   SceneManager::Instance()->GetCamera()->SetYaw(0.0f);
   SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
 
@@ -188,9 +190,6 @@ void CourseworkScene::OnInitializeScene()
     m_planet->Physics()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
     m_planet->Physics()->SetInverseMass(0.0f);
 
-    // Add planet rotation
-    m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.05f, 0.0f));
-
     ICollisionShape *shape = new SphereCollisionShape(PLANET_RADIUS);
     m_planet->Physics()->AddCollisionShape(shape);
     m_planet->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
@@ -210,7 +209,9 @@ void CourseworkScene::OnInitializeScene()
     target->SetBoundingRadius(10.0f);
     
     target->CreatePhysicsNode();
-    target->Physics()->SetPosition(Vector3(0.0f, PLANET_RADIUS, 0.0f));
+    target->Physics()->SetPosition(Vector3(PLANET_RADIUS, 0.0f, 0.0f));
+    target->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
+
     target->Physics()->SetInverseMass(0.0f);
 
     ICollisionShape * shape = new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)); // TODO
@@ -221,11 +222,12 @@ void CourseworkScene::OnInitializeScene()
 
     AddGameObject(target);
 
-    target->Physics()->SetOnCollisionCallback([](PhysicsObject *a, PhysicsObject *b) {
+    target->Physics()->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
       std::string aname = a->GetAssociatedObject()->GetName();
       std::string bname = b->GetAssociatedObject()->GetName();
       NCLDebug::Log("%s hits %s", aname.c_str(), bname.c_str());
-      return true;
+
+      return (b != this->m_planet->Physics());
     });
   }
 }
@@ -244,6 +246,10 @@ void CourseworkScene::OnCleanupScene()
 
 void CourseworkScene::OnUpdateScene(float dt)
 {
+  // Update state machines
   m_debugDrawStateMachine.Update(dt);
   m_playerStateMachine.Update(dt);
+
+  // Add planet rotation
+  m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.05f, 0.0f));
 }
