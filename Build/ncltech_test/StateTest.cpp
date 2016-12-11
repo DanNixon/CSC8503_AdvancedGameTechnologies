@@ -69,9 +69,9 @@ public:
     state->AddOnOperateBehaviour([&data]() {data.push_back(42); });
 
     // Execute behaviours
-    state->SetActivation(true);
+    m.ActivateState(state);
     m.Operate(20.0f);
-    state->SetActivation(false);
+    m.ActivateState(m.RootState());
     
     // Test data modifications
     std::vector<int> expected = {2, 7, 99, 42, 9, 12};
@@ -88,7 +88,7 @@ public:
     State * state1 = new State("test_state_1", m.RootState(), &m);
     State * state2 = new State("test_state_2", m.RootState(), &m);
 
-    state1->SetActivation(true);
+    m.ActivateState(state1);
 
     state1->AddTransferFromTest([]() { return nullptr; });
     m.Update(10.0f);
@@ -113,7 +113,7 @@ public:
     State * state1 = new State("test_state_1", m.RootState(), &m);
     State * state2 = new State("test_state_2", m.RootState(), &m);
 
-    state1->SetActivation(true);
+    m.ActivateState(state1);
 
     m.Update(100.0f);
     Assert::IsTrue(m.ActiveStateBranch().back() == state1);

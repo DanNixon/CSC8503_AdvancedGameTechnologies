@@ -2,24 +2,18 @@
 
 #include "StateMachine.h"
 
-#include "NetworkBase.h"
+#include "IPubSubClient.h"
 
-class NetSyncStateMachine : public StateMachine
+class NetSyncStateMachine : public StateMachine, public IPubSubClient
 {
 public:
-  struct StateMachineUpdatePacket : public NetPacket
-  {
-    char nextStateName[1024];
-  };
-
-public:
-  NetSyncStateMachine();
+  NetSyncStateMachine(PubSubBroker &broker, const std::string &rxTopic, const std::string &txTopic);
   virtual ~NetSyncStateMachine();
 
-  bool NeedsNetworkSync() const;
-  void BuildNetworkSyncPacket(StateMachineUpdatePacket &pkt);
-  bool ProcessNetworkSyncPacket(const StateMachineUpdatePacket &pkt);
+  virtual bool Transfer();
+  virtual bool HandleSubscription(const std::string &topic, const char *msg) override;
 
-private:
-  State *m_lastSyncState;
+protected:
+  const std::string m_txTopic; //!< Topic used to broadcast state changes to
+  bool m_txBlanking;           //!< Flag indicating that no broadcast should take place
 };

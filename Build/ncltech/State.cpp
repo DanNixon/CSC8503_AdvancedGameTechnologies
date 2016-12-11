@@ -8,6 +8,9 @@
  */
 State *State::ClosestCommonAncestor(State *a, State *b)
 {
+  if (a == nullptr || b == nullptr)
+    return nullptr;
+
   StatePtrList branchA = a->Branch();
   StatePtrList branchB = b->Branch();
 

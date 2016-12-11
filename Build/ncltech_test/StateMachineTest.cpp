@@ -20,13 +20,13 @@ public:
     State * s21 = new State("state2.1", s2, &m);
 
     // Test activation
-    s12->SetActivation(true);
+    m.ActivateState(s12);
     Assert::IsTrue(s1 == m.RootState()->ActiveChild());
     Assert::IsTrue(s12 == s1->ActiveChild());
     Assert::IsNull(s12->ActiveChild());
 
     // Test active branch
-    s121->SetActivation(true);
+    m.ActivateState(s121);
     std::vector<State *> branch = m.ActiveStateBranch();
     Assert::AreEqual((size_t) 3, branch.size());
     Assert::IsTrue(s1 == branch[0]);
@@ -34,7 +34,7 @@ public:
     Assert::IsTrue(s121 == branch[2]);
 
     // Test deactivation
-    s121->SetActivation(false);
+    m.ActivateState(m.RootState());
     Assert::IsNull(m.RootState()->ActiveChild());
     Assert::IsNull(s1->ActiveChild());
     Assert::IsNull(s12->ActiveChild());

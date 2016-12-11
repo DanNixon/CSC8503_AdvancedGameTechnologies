@@ -75,10 +75,10 @@ public:
 
   StatePtrList Branch(bool reverse = false);
 
-  void SetActivation(bool active, State *terminateAt = nullptr, State *delta = nullptr);
-
 protected:
   friend class StateMachine;
+
+  void SetActivation(bool active, State *terminateAt = nullptr, State *delta = nullptr);
 
   State *TestTransferFrom() const;
   bool TestTransferTo() const;

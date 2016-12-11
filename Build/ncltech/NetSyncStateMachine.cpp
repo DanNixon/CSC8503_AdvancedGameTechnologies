@@ -1,51 +1,48 @@
 #include "NetSyncStateMachine.h"
 
-NetSyncStateMachine::NetSyncStateMachine()
-    : m_lastSyncState(nullptr)
+NetSyncStateMachine::NetSyncStateMachine(PubSubBroker &broker, const std::string &rxTopic, const std::string &txTopic)
+    : StateMachine()
+    , IPubSubClient(broker)
+    , m_txTopic(txTopic)
+    , m_txBlanking(false)
 {
+  m_broker.Subscribe(this, rxTopic);
 }
 
 NetSyncStateMachine::~NetSyncStateMachine()
 {
 }
 
-bool NetSyncStateMachine::NeedsNetworkSync() const
+bool NetSyncStateMachine::Transfer()
 {
-  StatePtrList branch = ActiveStateBranch();
-  return branch.empty() || branch.back() != m_lastSyncState;
+  bool didTransfer = StateMachine::Transfer();
+
+  // Send message
+  if (didTransfer && !m_txBlanking)
+  {
+    // Get target state string
+    StatePtrList branch = ActiveStateBranch();
+    std::string branchStr = BranchToString(branch, '/');
+
+    // Send topic update
+    m_broker.BroadcastMessage(m_txTopic, branchStr.c_str());
+  }
+
+  m_txBlanking = false;
+
+  return didTransfer;
 }
 
-void NetSyncStateMachine::BuildNetworkSyncPacket(StateMachineUpdatePacket &pkt)
+bool NetSyncStateMachine::HandleSubscription(const std::string &topic, const char *msg)
 {
-  // Get target state string
-  StatePtrList branch = ActiveStateBranch();
-  std::string branchStr = BranchToString(branch, '/');
-
-  // Build packet
-  pkt.type = PACKET_TYPE_FSM;
-  strncpy_s(pkt.nextStateName, branchStr.c_str(), 1204);
-
-  // Mark last known synced state
-  m_lastSyncState = branch.back();
-}
-
-bool NetSyncStateMachine::ProcessNetworkSyncPacket(const StateMachineUpdatePacket &pkt)
-{
-  // Check message type
-  if (pkt.type != PACKET_TYPE_FSM)
-    return false;
-
   // Find target state
-  std::string targetStateName(pkt.nextStateName);
+  std::string targetStateName(msg);
   State *targetState = m_root.FindState(targetStateName, '/').back();
   if (targetState == nullptr)
     return false;
 
   // Activate state
-  targetState->SetActivation(true);
-
-  // Mark last known synced state
-  m_lastSyncState = targetState;
-
+  m_txBlanking = true;
+  ActivateState(targetState);
   return true;
 }

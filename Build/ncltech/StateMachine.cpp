@@ -25,6 +25,7 @@ std::string StateMachine::BranchToString(const StatePtrList &branch, char delim)
 StateMachine::StateMachine()
     : m_root("", nullptr, this)
     , m_defaultState(nullptr)
+    , m_nextTransferState(nullptr)
 {
 }
 
@@ -59,49 +60,61 @@ void StateMachine::Reset()
     m_defaultState->SetActivation(true);
 }
 
+void StateMachine::ActivateState(State *state, bool now)
+{
+  m_nextTransferState = state;
+
+  if (now)
+    Transfer();
+}
+
 /**
  * @brief Performs transfer checks for each level of the active state branch and switches states if needed.
  * @return True if a state change took place
  */
 bool StateMachine::Transfer()
 {
-  StatePtrList branch = ActiveStateBranch();
-
-  // If active state branch is empty then no state is active, cannot test transfer
-  if (branch.empty())
-    return false;
-
-  State *oldState = branch.back();
   bool stateChange = false;
 
-  for (auto brIt = branch.begin(); brIt != branch.end(); ++brIt)
-  {
-    State *transferState = (*brIt)->TestTransferFrom();
+  StatePtrList branch = ActiveStateBranch();
+  State *oldState = branch.empty() ? nullptr : branch.back();
 
-    if (transferState == nullptr)
+  State *transferState = m_nextTransferState;
+
+  if (transferState == nullptr)
+  {
+    for (auto brIt = branch.begin(); brIt != branch.end(); ++brIt)
     {
-      StatePtrList siblings = (*brIt)->Parent()->Children();
-      for (auto sibIt = siblings.begin(); sibIt != siblings.end(); ++sibIt)
+      transferState = (*brIt)->TestTransferFrom();
+
+      if (transferState == nullptr)
       {
-        if ((*sibIt != *brIt) && (*sibIt)->TestTransferTo())
+        StatePtrList siblings = (*brIt)->Parent()->Children();
+        for (auto sibIt = siblings.begin(); sibIt != siblings.end(); ++sibIt)
         {
-          transferState = *sibIt;
-          break;
+          if ((*sibIt != *brIt) && (*sibIt)->TestTransferTo())
+          {
+            transferState = *sibIt;
+            break;
+          }
         }
       }
     }
-
-    if (transferState != nullptr)
-    {
-      stateChange = true;
-
-      State *commonAncestor = State::ClosestCommonAncestor(oldState, transferState);
-      oldState->SetActivation(false, commonAncestor, transferState);
-      transferState->SetActivation(true, commonAncestor, oldState);
-
-      break;
-    }
   }
+
+  if (transferState != nullptr)
+  {
+    stateChange = true;
+
+    State *commonAncestor = State::ClosestCommonAncestor(oldState, transferState);
+
+    if (oldState != nullptr)
+      oldState->SetActivation(false, commonAncestor, transferState);
+
+    transferState->SetActivation(true, commonAncestor, oldState);
+  }
+
+  m_nextTransferState = nullptr;
 
   return stateChange;
 }

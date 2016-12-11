@@ -207,7 +207,7 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
         NCLDebug::Log("Hold J to power up.");
         NCLDebug::Log("Release J to fire ball!");
       });
-      shootBall->AddOnEntryBehaviour([preShoot](State *) { preShoot->SetActivation(true, preShoot->Parent()); });
+      shootBall->AddOnEntryBehaviour([this, preShoot](State *) { this->m_playerStateMachine.ActivateState(preShoot); });
 
       State *shoot = new State("shoot", shootBall, &m_playerStateMachine);
       shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });

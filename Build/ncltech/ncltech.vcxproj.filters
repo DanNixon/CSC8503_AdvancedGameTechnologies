@@ -176,6 +176,9 @@
     <ClCompile Include="SpringConstraint.cpp">
       <Filter>src\Physics\Constraints</Filter>
     </ClCompile>
+    <ClCompile Include="PubSubBroker.cpp">
+      <Filter>src\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -303,6 +306,12 @@
     </ClInclude>
     <ClInclude Include="IConstraint.h">
       <Filter>include\Physics\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="IPubSubClient.h">
+      <Filter>include\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="PubSubBroker.h">
+      <Filter>include\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

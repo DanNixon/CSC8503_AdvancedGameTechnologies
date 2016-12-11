@@ -29,7 +29,7 @@ public:
 protected:
   StateMachine m_debugDrawStateMachine;      //!< State machine controlling debug draw
   StateMachine m_broadphaseModeStateMachine; //!< State machine controlling broadphase mode
-  NetSyncStateMachine m_playerStateMachine;  //!< State machine controlling player behaviour
+  StateMachine m_playerStateMachine;         //!< State machine controlling player behaviour
 
   GLuint m_planetTex;   //!< Texture of planet surface
   Mesh *m_targetMesh;   //!< Graphical mesh for the target

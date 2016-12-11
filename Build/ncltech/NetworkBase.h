@@ -50,17 +50,6 @@ For more information see: http://enet.bespin.org/Features.html
 #include <functional>
 #include <stdint.h>
 
-enum NetPacketType : uint8_t
-{
-  PACKET_TYPE_PING,
-  PACKET_TYPE_FSM
-};
-
-struct NetPacket
-{
-  NetPacketType type;
-};
-
 class NetworkBase
 {
 public:

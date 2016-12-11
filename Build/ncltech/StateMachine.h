@@ -41,6 +41,7 @@ public:
   }
 
   void Reset();
+  void ActivateState(State *state, bool now = true);
 
   /**
    * @brief Performs updates of the state machine by checking for transition conditions then performing operations over all active
@@ -61,6 +62,7 @@ public:
   virtual void Operate(float dt = 0.0f);
 
 protected:
-  State m_root;          //!< Root state
-  State *m_defaultState; //!< Default state
+  State m_root;               //!< Root state
+  State *m_defaultState;      //!< Default state
+  State *m_nextTransferState; //!< State to manually transfer to next iteration
 };
