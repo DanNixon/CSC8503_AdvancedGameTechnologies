@@ -1,8 +1,8 @@
 #include "HullCollisionShape.h"
+#include "NCLDebug.h"
 #include "PhysicsObject.h"
 #include <nclgl/Matrix3.h>
 #include <nclgl/OGLRenderer.h>
-#include "NCLDebug.h"
 
 HullCollisionShape::HullCollisionShape()
 {
@@ -12,7 +12,7 @@ HullCollisionShape::~HullCollisionShape()
 {
 }
 
-void HullCollisionShape::BuildFromMesh(Mesh * mesh)
+void HullCollisionShape::BuildFromMesh(Mesh *mesh)
 {
   // Add vertices
   for (size_t i = 0; i < mesh->numVertices; i++)
@@ -33,7 +33,7 @@ void HullCollisionShape::BuildFromMesh(Mesh * mesh)
         Vector3 normal = n1 + n2 + n3;
         normal.Normalise();
 
-        int vertexIdx[] = { (int)i, (int)i + 1, (int)i + 2 };
+        int vertexIdx[] = {(int)i, (int)i + 1, (int)i + 2};
         m_hull.AddFace(normal, 3, vertexIdx);
       }
     }
@@ -41,7 +41,7 @@ void HullCollisionShape::BuildFromMesh(Mesh * mesh)
     {
       NCLERROR("Indexed triangles are not supported by HullCollisionShape!");
     }
-    
+
     break;
 
   default:
@@ -93,7 +93,7 @@ void HullCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vecto
 }
 
 void HullCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *min,
-                                                 Vector3 *max) const
+                                               Vector3 *max) const
 {
   // Build World Transform
   Matrix4 transform;
@@ -120,8 +120,8 @@ void HullCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObjec
 }
 
 void HullCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
-                                                       std::list<Vector3> *face, Vector3 *normal,
-                                                       std::vector<Plane> *adjacentPlanes) const
+                                                     std::list<Vector3> *face, Vector3 *normal,
+                                                     std::vector<Plane> *adjacentPlanes) const
 {
   // Get the world-space transform
   Matrix4 transform;

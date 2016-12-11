@@ -12,7 +12,7 @@ public:
   HullCollisionShape();
   virtual ~HullCollisionShape();
 
-  void BuildFromMesh(Mesh * mesh);
+  void BuildFromMesh(Mesh *mesh);
 
   virtual Matrix3 BuildInverseInertia(float invMass) const override;
 

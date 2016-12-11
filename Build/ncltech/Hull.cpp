@@ -1,6 +1,6 @@
 #include "Hull.h"
-#include "NCLDebug.h"
 #include "BoundingBox.h"
+#include "NCLDebug.h"
 
 Hull::Hull()
 {

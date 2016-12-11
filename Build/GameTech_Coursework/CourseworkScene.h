@@ -20,8 +20,8 @@ protected:
   StateMachine m_debugDrawStateMachine;     //!< State machine controlling debug draw
   NetSyncStateMachine m_playerStateMachine; //!< State machine controlling player behaviour
 
-  GLuint m_planetTex; //!< Texture of planet surface
-  Mesh *m_targetMesh; //!< Graphical mesh for the target
+  GLuint m_planetTex;   //!< Texture of planet surface
+  Mesh *m_targetMesh;   //!< Graphical mesh for the target
   Mesh *m_lampPostMesh; //!< Graphical mesh for the lamp post
 
   ObjectMesh *m_planet;               //!< Planet object
