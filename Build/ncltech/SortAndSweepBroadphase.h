@@ -19,6 +19,8 @@ public:
 
   virtual void FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects, std::vector<CollisionPair> &collisionPairs);
 
+  virtual void DebugDraw();
+
 protected:
   Vector3 m_axis;  //!< Axis along which testing is performed
   int m_axisIndex; //!< Index of axis along which testing is performed

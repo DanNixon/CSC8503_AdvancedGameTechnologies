@@ -35,3 +35,8 @@ void BruteForceBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject
     }
   }
 }
+
+void BruteForceBroadphase::DebugDraw()
+{
+  // Nothing to do here (all possible pairs are added)
+}

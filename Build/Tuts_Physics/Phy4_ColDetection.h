@@ -87,7 +87,7 @@ public:
 
     PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase(Vector3(1.0f, 0.0f, 0.0f)));
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES |
-                                                 DEBUGDRAW_FLAGS_AABB);
+                                                 DEBUGDRAW_FLAGS_AABB | DEBUGDRAW_FLAGS_BROADPHASE);
 
     m_AccumTime = 0.0f;
     m_Rotating = true;

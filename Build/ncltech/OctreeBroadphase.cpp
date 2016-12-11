@@ -15,3 +15,8 @@ void OctreeBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject *> 
 {
   // TODO
 }
+
+void OctreeBroadphase::DebugDraw()
+{
+  // TODO
+}

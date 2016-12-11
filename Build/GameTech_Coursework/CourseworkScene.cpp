@@ -175,7 +175,7 @@ CourseworkScene::~CourseworkScene()
 void CourseworkScene::OnInitializeScene()
 {
   // Set broadphase method
-  PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
+  PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
   PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
 
   // Set the camera position

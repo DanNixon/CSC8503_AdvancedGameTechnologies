@@ -111,6 +111,8 @@ void PhysicsEngine::UpdatePhysics()
   // Broadphase collision detection
   m_BroadphaseCollisionPairs.clear();
   m_broadphaseDetection->FindPotentialCollisionPairs(m_PhysicsObjects, m_BroadphaseCollisionPairs);
+  if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_BROADPHASE)
+    m_broadphaseDetection->DebugDraw();
 
   // Narrowphase collision detection
   NarrowPhaseCollisions();
@@ -262,11 +264,18 @@ void PhysicsEngine::NarrowPhaseCollisions()
     // Collision Detection Algorithm to use
     CollisionDetectionSAT colDetect;
 
-    // Iterate over all possible collision pairs and perform accurate collision
-    // detection
+    // Iterate over all possible collision pairs and perform accurate collision detection
     for (size_t i = 0; i < m_BroadphaseCollisionPairs.size(); ++i)
     {
       CollisionPair &cp = m_BroadphaseCollisionPairs[i];
+
+      // Broadphase debug draw
+      if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_BROADPHASE_PAIRS)
+      {
+        NCLDebug::DrawThickLine(cp.pObjectA->GetPosition(), cp.pObjectB->GetPosition(), 0.02f, Vector4(0.0f, 0.0f, 1.0f, 1.0f));
+        NCLDebug::DrawPointNDT(cp.pObjectA->GetPosition(), 0.05f, Vector4(0.0f, 1.0f, 0.5f, 1.0f));
+        NCLDebug::DrawPointNDT(cp.pObjectB->GetPosition(), 0.05f, Vector4(0.0f, 1.0f, 0.5f, 1.0f));
+      }
 
       for (auto aIt = cp.pObjectA->CollisionShapesBegin(); aIt != cp.pObjectA->CollisionShapesEnd(); ++aIt)
       {

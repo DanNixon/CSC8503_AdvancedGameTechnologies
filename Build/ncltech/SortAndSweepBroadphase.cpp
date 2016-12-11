@@ -1,5 +1,7 @@
 #include "SortAndSweepBroadphase.h"
 
+#include "NCLDebug.h"
+
 #include <algorithm>
 
 SortAndSweepBroadphase::SortAndSweepBroadphase(const Vector3 &axis)
@@ -60,4 +62,10 @@ void SortAndSweepBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObje
       }
     }
   }
+}
+
+void SortAndSweepBroadphase::DebugDraw()
+{
+  NCLDebug::DrawPointNDT(Vector3(0.0f, 0.0f, 0.0f), 0.05f, Vector4(0.0f, 0.0f, 1.0f, 1.0f));
+  NCLDebug::DrawThickLine(Vector3(0.0f, 0.0f, 0.0f), m_axis, 0.02f, Vector4(0.0f, 0.0f, 1.0f, 1.0f));
 }

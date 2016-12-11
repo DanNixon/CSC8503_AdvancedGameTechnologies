@@ -10,6 +10,8 @@ public:
 
   virtual void FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects, std::vector<CollisionPair> &collisionPairs);
 
+  virtual void DebugDraw();
+
 protected:
   size_t m_maxObjectsPerPartition;
   size_t m_maxPartitionDepth;
