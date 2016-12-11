@@ -167,6 +167,12 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
                               SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
     m_targetMesh->SetTexture(tex);
   }
+
+  // Load lamp post mesh
+  {
+    m_lampPostMesh = new OBJMesh(MESHDIR "lamp_post.obj");
+    m_lampPostMesh->GenerateNormals();
+  }
 }
 
 CourseworkScene::~CourseworkScene()

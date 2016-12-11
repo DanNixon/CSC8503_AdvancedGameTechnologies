@@ -22,6 +22,7 @@ protected:
 
   GLuint m_planetTex; //!< Texture of planet surface
   Mesh *m_targetMesh; //!< Graphical mesh for the target
+  Mesh *m_lampPostMesh; //!< Graphical mesh for the lamp post
 
   ObjectMesh *m_planet;               //!< Planet object
   ObjectMesh *m_target;               //!< Target object
