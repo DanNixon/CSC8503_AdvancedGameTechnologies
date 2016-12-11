@@ -32,15 +32,30 @@ public:
     State * m2s121 = new State("state1.2.1", m2s12, &m2);
     State * m2s2 = new State("state2", m2.RootState(), &m2);
     State * m2s21 = new State("state2.1", m2s2, &m2);
+    
+    // Test updating machine 1
+    {
+      // Activate a state on machine 1
+      m1.ActivateState(m1s121);
 
-    // Activate a state
-    m1.ActivateState(m1s121);
+      // Test active brance on machine 2
+      StatePtrList branch = m2.ActiveStateBranch();
+      Assert::AreEqual((size_t)3, branch.size());
+      Assert::IsTrue(branch[0] == m2s1);
+      Assert::IsTrue(branch[1] == m2s12);
+      Assert::IsTrue(branch[2] == m2s121);
+    }
 
-    // Test active brance on second machine
-    StatePtrList m2Branch = m2.ActiveStateBranch();
-    Assert::AreEqual((size_t)3, m2Branch.size());
-    Assert::IsTrue(m2Branch[0] == m2s1);
-    Assert::IsTrue(m2Branch[1] == m2s12);
-    Assert::IsTrue(m2Branch[2] == m2s121);
+    // Test updating machine 2
+    {
+      // Activate a state on machine 2
+      m2.ActivateState(m2s21);
+
+      // Test active brance on machine 1
+      StatePtrList branch = m1.ActiveStateBranch();
+      Assert::AreEqual((size_t)2, branch.size());
+      Assert::IsTrue(branch[0] == m1s2);
+      Assert::IsTrue(branch[1] == m1s21);
+    }
   }
 };
