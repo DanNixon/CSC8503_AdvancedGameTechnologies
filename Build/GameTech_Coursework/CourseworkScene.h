@@ -24,5 +24,6 @@ protected:
   Mesh *m_targetMesh; //!< Graphical mesh for the target
 
   ObjectMesh *m_planet;               //!< Planet object
+  ObjectMesh *m_target;               //!< Target object
   std::queue<Object *> m_shotSpheres; //!< Queue of spheres shot by the player
 };

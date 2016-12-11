@@ -1,27 +1,13 @@
-/******************************************************************************
-Class: SliderConstraint
-Implements:
-Author: Dan Nixon
-Description:
-
-		(\_/)
-		( '_')
-	 /""""""""""""\=========     -----D
-	/"""""""""""""""""""""""\
-....\_@____@____@____@____@_/
-
-*/ /////////////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include "Constraint.h"
 #include "NCLDebug.h"
 #include "PhysicsEngine.h"
 
-class SliderConstraint : public Constraint
+class WeldConstraint : public Constraint
 {
 public:
-  SliderConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB)
+  WeldConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB)
       : m_pObj1(obj1)
       , m_pObj2(obj2)
   {

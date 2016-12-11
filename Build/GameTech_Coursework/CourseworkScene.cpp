@@ -13,6 +13,7 @@
 #include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\SphereCollisionShape.h>
 #include <ncltech\State.h>
+#include <ncltech\WeldConstraint.h>
 
 #define PLANET_RADIUS 250.0f
 
@@ -25,59 +26,69 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
   {
     const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
 
-    State *normal = new State("normal", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    normal->AddOnEntryBehaviour([](State *) {
-      NCLDebug::Log("Physics view: normal");
+    State *viewNormal = new State("normal", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    viewNormal->AddOnEntryBehaviour([](State *) {
+      NCLDebug::Log("Physics view: off");
       PhysicsEngine::Instance()->SetDebugDrawFlags(0);
     });
 
-    State *view1 = new State("linear_motion", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    view1->AddOnEntryBehaviour([](State *) {
+    State *viewLinearMotion = new State("linear_motion", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    viewLinearMotion->AddOnEntryBehaviour([](State *) {
       NCLDebug::Log("Physics view: linear motion");
       PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_LINEARFORCE | DEBUGDRAW_FLAGS_LINEARVELOCITY);
     });
 
-    State *view2 = new State("bounding_volumes", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    view2->AddOnEntryBehaviour([](State *) {
-      NCLDebug::Log("Physics view: bounding voltumes");
+    State *viewBoundingVolumes = new State("bounding_volumes", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    viewBoundingVolumes->AddOnEntryBehaviour([](State *) {
+      NCLDebug::Log("Physics view: bounding volumes");
       PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_AABB);
     });
 
-    State *view3 = new State("collisions", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    view3->AddOnEntryBehaviour([](State *) {
+    State *viewBroadphase = new State("broadphase", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    viewBroadphase->AddOnEntryBehaviour([](State *) {
+      NCLDebug::Log("Physics view: broadphase");
+      PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_BROADPHASE | DEBUGDRAW_FLAGS_BROADPHASE_PAIRS);
+    });
+
+    State *viewCollisions = new State("collisions", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    viewCollisions->AddOnEntryBehaviour([](State *) {
       NCLDebug::Log("Physics view: collisions");
       PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_MANIFOLD);
     });
 
-    State *view4 = new State("constraints", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
-    view4->AddOnEntryBehaviour([](State *) {
+    State *viewConstraints = new State("constraints", m_debugDrawStateMachine.RootState(), &m_debugDrawStateMachine);
+    viewConstraints->AddOnEntryBehaviour([](State *) {
       NCLDebug::Log("Physics view: constraints");
       PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT);
     });
 
     // State transfers
-    normal->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, view1]() -> State * {
-      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? view1 : nullptr;
+    viewNormal->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewLinearMotion]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewLinearMotion : nullptr;
     });
 
-    view1->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, view2]() -> State * {
-      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? view2 : nullptr;
+    viewLinearMotion->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewBoundingVolumes]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewBoundingVolumes : nullptr;
     });
 
-    view2->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, view3]() -> State * {
-      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? view3 : nullptr;
+    viewBoundingVolumes->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewBroadphase]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewBroadphase : nullptr;
     });
 
-    view3->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, view4]() -> State * {
-      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? view4 : nullptr;
+    viewBroadphase->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewCollisions]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewCollisions : nullptr;
     });
 
-    view4->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, normal]() -> State * {
-      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? normal : nullptr;
+    viewCollisions->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewConstraints]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewConstraints : nullptr;
+    });
+
+    viewConstraints->AddTransferFromTest([PHYSICS_DEBUG_VIEW_KEY, viewNormal]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewNormal : nullptr;
     });
 
     // Default state
-    m_debugDrawStateMachine.SetDefaultState(normal);
+    m_debugDrawStateMachine.SetDefaultState(viewNormal);
   }
 
   // Player state machine
@@ -201,34 +212,42 @@ void CourseworkScene::OnInitializeScene()
 
   // Create target
   {
-    ObjectMesh *target = new ObjectMesh("target");
+    m_target = new ObjectMesh("target");
 
-    target->SetMesh(m_targetMesh, false);
-    target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+    m_target->SetMesh(m_targetMesh, false);
+    m_target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
-    target->SetBoundingRadius(10.0f);
+    m_target->SetBoundingRadius(10.0f);
     
-    target->CreatePhysicsNode();
-    target->Physics()->SetPosition(Vector3(PLANET_RADIUS, 0.0f, 0.0f));
-    target->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
+    m_target->CreatePhysicsNode();
+    m_target->Physics()->SetPosition(Vector3(PLANET_RADIUS, 0.0f, 0.0f));
+    m_target->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
 
-    target->Physics()->SetInverseMass(0.0f);
+    m_target->Physics()->SetInverseMass(0.0f);
 
     ICollisionShape * shape = new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)); // TODO
-    target->Physics()->AddCollisionShape(shape);
-    target->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
+    m_target->Physics()->AddCollisionShape(shape);
+    m_target->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
     
-    target->Physics()->AutoResizeBoundingBox();
+    m_target->Physics()->AutoResizeBoundingBox();
 
-    AddGameObject(target);
+    AddGameObject(m_target);
 
-    target->Physics()->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
-      std::string aname = a->GetAssociatedObject()->GetName();
-      std::string bname = b->GetAssociatedObject()->GetName();
-      NCLDebug::Log("%s hits %s", aname.c_str(), bname.c_str());
+    m_target->Physics()->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
+      bool handle = b != this->m_planet->Physics();
 
-      return (b != this->m_planet->Physics());
+      if (handle)
+      {
+        std::string aname = a->GetAssociatedObject()->GetName();
+        std::string bname = b->GetAssociatedObject()->GetName();
+        NCLDebug::Log("%s hits %s", aname.c_str(), bname.c_str());
+      }
+
+      return handle;
     });
+
+    // Fix target position to planet
+    // TODO
   }
 }
 

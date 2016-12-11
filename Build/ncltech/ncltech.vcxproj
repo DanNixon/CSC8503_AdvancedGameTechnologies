@@ -122,7 +122,7 @@
     <ClInclude Include="CommonUtils.h" />
     <ClInclude Include="Constraint.h" />
     <ClInclude Include="DistanceConstraint.h" />
-    <ClInclude Include="HingeConstraint.h" />
+    <ClInclude Include="WeldConstraint.h" />
     <ClInclude Include="Hull.h" />
     <ClInclude Include="IBroadphase.h" />
     <ClInclude Include="CuboidCollisionShape.h" />
@@ -143,7 +143,6 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneRenderer.h" />
     <ClInclude Include="ScreenPicker.h" />
-    <ClInclude Include="SliderConstraint.h" />
     <ClInclude Include="SortAndSweepBroadphase.h" />
     <ClInclude Include="SphereCollisionShape.h" />
     <ClInclude Include="SpringConstraint.h" />

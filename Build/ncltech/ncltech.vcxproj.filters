@@ -232,12 +232,6 @@
     <ClInclude Include="SpringConstraint.h">
       <Filter>include\Physics\Constraints</Filter>
     </ClInclude>
-    <ClInclude Include="HingeConstraint.h">
-      <Filter>include\Physics\Constraints</Filter>
-    </ClInclude>
-    <ClInclude Include="SliderConstraint.h">
-      <Filter>include\Physics\Constraints</Filter>
-    </ClInclude>
     <ClInclude Include="IBroadphase.h">
       <Filter>include\Physics\CollisionDetection</Filter>
     </ClInclude>
@@ -291,6 +285,9 @@
     </ClInclude>
     <ClInclude Include="NetSyncStateMachine.h">
       <Filter>include\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="WeldConstraint.h">
+      <Filter>include\Physics\Constraints</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

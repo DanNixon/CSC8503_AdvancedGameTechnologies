@@ -64,6 +64,8 @@ The general runtime consists of:
 #define DEBUGDRAW_FLAGS_AABB 16
 #define DEBUGDRAW_FLAGS_LINEARVELOCITY 32
 #define DEBUGDRAW_FLAGS_LINEARFORCE 64
+#define DEBUGDRAW_FLAGS_BROADPHASE 128
+#define DEBUGDRAW_FLAGS_BROADPHASE_PAIRS 256
 
 /**
  * @brief Represents different integration schemes.
