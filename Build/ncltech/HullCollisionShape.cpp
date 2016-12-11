@@ -1,32 +1,37 @@
-#include "CuboidCollisionShape.h"
+#include "HullCollisionShape.h"
 #include "PhysicsObject.h"
 #include <nclgl/Matrix3.h>
 #include <nclgl/OGLRenderer.h>
 
-CuboidCollisionShape::CuboidCollisionShape(const Vector3 &halfDims)
-{
-  SetHalfDims(halfDims);
-}
-
-CuboidCollisionShape::~CuboidCollisionShape()
+HullCollisionShape::HullCollisionShape()
 {
 }
 
-Matrix3 CuboidCollisionShape::BuildInverseInertia(float invMass) const
+HullCollisionShape::~HullCollisionShape()
+{
+}
+
+void HullCollisionShape::BuildFromMesh(Mesh * mesh)
+{
+  // TODO
+}
+
+Matrix3 HullCollisionShape::BuildInverseInertia(float invMass) const
 {
   Matrix3 inertia;
 
-  Vector3 dimsSq = m_hull.Upper() - m_hull.Lower();
+  // TODO
+  Vector3 dimsSq = Vector3(1, 1, 1);
   dimsSq = dimsSq * dimsSq;
 
-  inertia._11 = 12.0f * invMass / (dimsSq.y + dimsSq.z);
-  inertia._22 = 12.0f * invMass / (dimsSq.x + dimsSq.z);
-  inertia._33 = 12.0f * invMass / (dimsSq.x + dimsSq.y);
+  inertia._11 = 12.f * invMass / (dimsSq.y + dimsSq.z);
+  inertia._22 = 12.f * invMass / (dimsSq.x + dimsSq.z);
+  inertia._33 = 12.f * invMass / (dimsSq.x + dimsSq.y);
 
   return inertia;
 }
 
-void CuboidCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *axes) const
+void HullCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *axes) const
 {
   if (axes)
   {
@@ -37,7 +42,7 @@ void CuboidCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, 
   }
 }
 
-void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *edges) const
+void HullCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *edges) const
 {
   if (edges)
   {
@@ -55,7 +60,7 @@ void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vec
   }
 }
 
-void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *min,
+void HullCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *min,
                                                  Vector3 *max) const
 {
   // Build World Transform
@@ -82,7 +87,7 @@ void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObj
     *max = transform * m_hull.GetVertex(vMax).pos;
 }
 
-void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
+void HullCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
                                                        std::list<Vector3> *face, Vector3 *normal,
                                                        std::vector<Plane> *adjacentPlanes) const
 {
@@ -183,16 +188,16 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
   }
 }
 
-void CuboidCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
+void HullCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
   Matrix4 transform;
   GetShapeWorldTransformation(currentObject, transform);
 
-  // Just draw the cuboid hull-mesh at the position of our PhysicsObject
+  // Just draw the hull-mesh at the position of our PhysicsObject
   m_hull.DebugDraw(transform);
 }
 
-void CuboidCollisionShape::GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const
+void HullCollisionShape::GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const
 {
   transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
 }

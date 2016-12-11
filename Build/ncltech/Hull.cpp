@@ -129,7 +129,8 @@ void Hull::AddFace(const Vector3 &_normal, int nVerts, const int *verts)
 void Hull::GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert) const
 {
   float cCorrelation;
-  int minVertex, maxVertex;
+  int minVertex = 0;
+  int maxVertex = 0;
 
   float minCorrelation = FLT_MAX, maxCorrelation = -FLT_MAX;
 

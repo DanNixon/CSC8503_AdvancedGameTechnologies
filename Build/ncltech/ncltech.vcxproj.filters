@@ -164,6 +164,9 @@
     <ClCompile Include="NetSyncStateMachine.cpp">
       <Filter>src\FSM</Filter>
     </ClCompile>
+    <ClCompile Include="HullCollisionShape.cpp">
+      <Filter>src\Physics\CollisionShapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -288,6 +291,9 @@
     </ClInclude>
     <ClInclude Include="WeldConstraint.h">
       <Filter>include\Physics\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="HullCollisionShape.h">
+      <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

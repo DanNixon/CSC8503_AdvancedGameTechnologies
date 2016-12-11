@@ -14,6 +14,7 @@
 #include <ncltech\SphereCollisionShape.h>
 #include <ncltech\State.h>
 #include <ncltech\WeldConstraint.h>
+#include <ncltech\HullCollisionShape.h>
 
 #define PLANET_RADIUS 250.0f
 
@@ -226,8 +227,9 @@ void CourseworkScene::OnInitializeScene()
 
     m_target->Physics()->SetInverseMass(0.0f);
 
-    ICollisionShape *shape = new CuboidCollisionShape(Vector3(0.5f, 0.5f, 1.0f)); // TODO
-    m_target->Physics()->AddCollisionShape(shape);
+    HullCollisionShape *shape = new HullCollisionShape();
+    shape->BuildFromMesh(m_targetMesh);
+    //m_target->Physics()->AddCollisionShape(shape);
     m_target->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
 
     m_target->Physics()->AutoResizeBoundingBox();
