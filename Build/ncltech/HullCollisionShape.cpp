@@ -2,6 +2,7 @@
 #include "PhysicsObject.h"
 #include <nclgl/Matrix3.h>
 #include <nclgl/OGLRenderer.h>
+#include "NCLDebug.h"
 
 HullCollisionShape::HullCollisionShape()
 {
@@ -13,17 +14,48 @@ HullCollisionShape::~HullCollisionShape()
 
 void HullCollisionShape::BuildFromMesh(Mesh * mesh)
 {
-  // TODO
+  // Add vertices
+  for (size_t i = 0; i < mesh->numVertices; i++)
+    m_hull.AddVertex(mesh->vertices[i]);
+
+  // Add faces
+  switch (mesh->type)
+  {
+  case GL_TRIANGLES:
+    if (mesh->numIndices == 0)
+    {
+      for (size_t i = 0; i < mesh->numVertices; i += 3)
+      {
+        Vector3 n1 = mesh->normals[i];
+        Vector3 n2 = mesh->normals[i + 1];
+        Vector3 n3 = mesh->normals[i + 2];
+
+        Vector3 normal = n1 + n2 + n3;
+        normal.Normalise();
+
+        int vertexIdx[] = { (int)i, (int)i + 1, (int)i + 2 };
+        m_hull.AddFace(normal, 3, vertexIdx);
+      }
+    }
+    else
+    {
+      NCLERROR("Indexed triangles are not supported by HullCollisionShape!");
+    }
+    
+    break;
+
+  default:
+    NCLERROR("Mesh type not supported by HullCollisionShape!");
+  }
 }
 
 Matrix3 HullCollisionShape::BuildInverseInertia(float invMass) const
 {
-  Matrix3 inertia;
-
-  // TODO
-  Vector3 dimsSq = Vector3(1, 1, 1);
+  BoundingBox bb = m_hull.GetBoundingBox();
+  Vector3 dimsSq = bb.Upper() - bb.Lower();
   dimsSq = dimsSq * dimsSq;
 
+  Matrix3 inertia;
   inertia._11 = 12.f * invMass / (dimsSq.y + dimsSq.z);
   inertia._22 = 12.f * invMass / (dimsSq.x + dimsSq.z);
   inertia._33 = 12.f * invMass / (dimsSq.x + dimsSq.y);

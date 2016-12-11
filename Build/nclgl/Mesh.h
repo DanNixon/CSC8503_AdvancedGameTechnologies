@@ -8,7 +8,6 @@ OGL functions.
 There's a couple of extra functions in here that you didn't get in the tutorial
 series, to draw debug normals and tangents. 
 
-
 -_-_-_-_-_-_-_,------,   
 _-_-_-_-_-_-_-|   /\_/\   NYANYANYAN
 -_-_-_-_-_-_-~|__( ^ .^) /
@@ -36,28 +35,33 @@ enum MeshBuffer
 
 class Mesh
 {
-public:
   friend class MD5Mesh;
-  Mesh(void);
-  virtual ~Mesh(void);
+  friend class HullCollisionShape;
 
-  static void Reset();
-  virtual void Draw(bool update = true);
-
+public:
   // Generates a single triangle, with RGB colours
   static Mesh *GenerateTriangle();
 
   // Generates a single white quad, going from -1 to 1 on the x and z axis.
   static Mesh *GenerateQuad();
   static Mesh *GenerateQuadAlt();
+
   // Generates a coloured quad, going from -1 to 1 on the x and z axis, with adjustable texture coords.
-  static Mesh *GenerateQuadTexCoordCol(Vector2 scale, Vector2 texCoord, Vector4 colour); // NX 01/11/2012
+  static Mesh *GenerateQuadTexCoordCol(Vector2 scale, Vector2 texCoord, Vector4 colour);
+
+public:
+  Mesh();
+  virtual ~Mesh();
+
+  static void Reset();
+  virtual void Draw(bool update = true);
 
   // Sets the Mesh's diffuse map. Takes an OpenGL texture 'name'
   void SetTexture(GLuint tex)
   {
     texture = tex;
   }
+
   // Gets the Mesh's diffuse map. Returns an OpenGL texture 'name'
   GLuint GetTexture()
   {
@@ -67,20 +71,26 @@ public:
   void SetColour(Vector4 *colour)
   {
     colours = colour;
-  } // NX 24/10/2012
+  }
+
+  void SetColour(Vector4 colour)
+  {
+    for (size_t i = 0; i < numVertices; i++)
+      colours[i] = colour;
+  }
 
   // Sets the Mesh's bump map. Takes an OpenGL texture 'name'
   void SetBumpMap(GLuint tex)
   {
     bumpTexture = tex;
   }
+
   // Gets the Mesh's bump map. Returns an OpenGL texture 'name'
   GLuint GetBumpMap()
   {
     return bumpTexture;
   }
 
-  // Extra stuff!!!! Aren't I nice?
   void DrawDebugNormals(float length = 5.0f);
   void DrawDebugTangents(float length = 5.0f);
 
@@ -103,6 +113,7 @@ protected:
   Vector3 GenerateTangent(const Vector3 &a, const Vector3 &b, const Vector3 &c, const Vector2 &ta, const Vector2 &tb,
                           const Vector2 &tc);
 
+protected:
   // VAO for this mesh
   GLuint arrayObject;
   // VBOs for this mesh
@@ -113,8 +124,6 @@ protected:
   GLuint type;
   // OpenGL texture name for the diffuse map
   GLuint texture;
-
-  // Stuff introduced later on in the tutorials!!
 
   // Number of indices for this mesh
   GLuint numIndices;

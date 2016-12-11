@@ -92,16 +92,11 @@ void HandleKeyboardInputs()
   if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_V))
     SceneManager::Instance()->SetVsyncEnabled(!SceneManager::Instance()->GetVsyncEnabled());
 
-  uint sceneIdx = SceneManager::Instance()->GetCurrentSceneIndex();
-  uint sceneMax = SceneManager::Instance()->SceneCount();
-  if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_E))
-    SceneManager::Instance()->JumpToScene((sceneIdx + 1) % sceneMax);
-
-  if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_Q))
-    SceneManager::Instance()->JumpToScene((sceneIdx == 0 ? sceneMax : sceneIdx) - 1);
-
   if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_R))
+  {
+    uint sceneIdx = SceneManager::Instance()->GetCurrentSceneIndex();
     SceneManager::Instance()->JumpToScene(sceneIdx);
+  }
 
   if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_G))
     show_perf_metrics = !show_perf_metrics;
@@ -116,11 +111,10 @@ int main()
   Window::GetWindow().GetTimer()->GetTimedMS();
 
   // Create main game-loop
-  while (Window::GetWindow().UpdateWindow() && !SceneManager::Instance()->ExitFlag() &&
-         !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE))
+  while (Window::GetWindow().UpdateWindow() && !SceneManager::Instance()->ExitFlag())
   {
     // Start Timing
-    float dt = Window::GetWindow().GetTimer()->GetTimedMS() * 0.001f; // How many milliseconds since last update?
+    float dt = Window::GetWindow().GetTimer()->GetTimedMS() * 0.001f;
     timer_total.BeginTimingSection();
 
     // Print Status Entries

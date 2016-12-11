@@ -228,14 +228,14 @@ void CourseworkScene::OnInitializeScene()
     m_target->SetBoundingRadius(10.0f);
 
     m_target->CreatePhysicsNode();
-    m_target->Physics()->SetPosition(Vector3(PLANET_RADIUS, 0.0f, 0.0f));
+    m_target->Physics()->SetPosition(Vector3(PLANET_RADIUS + 5.0f, 0.0f, 0.0f));
     m_target->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
 
     m_target->Physics()->SetInverseMass(0.0f);
 
     HullCollisionShape *shape = new HullCollisionShape();
     shape->BuildFromMesh(m_targetMesh);
-    //m_target->Physics()->AddCollisionShape(shape);
+    m_target->Physics()->AddCollisionShape(shape);
     m_target->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
 
     m_target->Physics()->AutoResizeBoundingBox();

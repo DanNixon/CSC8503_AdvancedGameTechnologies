@@ -1,5 +1,6 @@
 #include "Hull.h"
 #include "NCLDebug.h"
+#include "BoundingBox.h"
 
 Hull::Hull()
 {
@@ -155,6 +156,16 @@ void Hull::GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert,
     *out_min_vert = minVertex;
   if (out_max_vert)
     *out_max_vert = maxVertex;
+}
+
+BoundingBox Hull::GetBoundingBox() const
+{
+  BoundingBox retVal(false);
+
+  for (auto it = m_vVertices.begin(); it != m_vVertices.end(); ++it)
+    retVal.ExpandToFit(it->pos);
+
+  return retVal;
 }
 
 void Hull::DebugDraw(const Matrix4 &transform, const Vector4 &faceColour, const Vector4 &edgeColour) const

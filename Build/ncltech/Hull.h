@@ -33,6 +33,8 @@ so you could represent your mesh as a series of pentagons, quads etc or any comb
 #include <nclgl\Vector3.h>
 #include <vector>
 
+class BoundingBox;
+
 struct HullVertex
 {
   int idx;
@@ -106,6 +108,8 @@ public:
   }
 
   void GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert, int *out_max_vert) const;
+
+  BoundingBox GetBoundingBox() const;
 
   virtual void DebugDraw(const Matrix4 &transform, const Vector4 &faceColour = Vector4(1.0f, 1.0f, 1.0f, 0.2f),
                          const Vector4 &edgeColour = Vector4(1.0f, 0.2f, 1.0f, 1.0f)) const;
