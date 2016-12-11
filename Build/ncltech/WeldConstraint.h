@@ -17,4 +17,5 @@ protected:
   PhysicsObject *m_pObj2;
 
   Vector3 m_positionOffset;
+  Quaternion m_orientation;
 };

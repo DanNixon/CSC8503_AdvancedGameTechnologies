@@ -16,7 +16,7 @@
 #include <ncltech\State.h>
 #include <ncltech\WeldConstraint.h>
 
-#define PLANET_RADIUS 250.0f
+#define PLANET_RADIUS 100.0f
 
 CourseworkScene::CourseworkScene(const std::string &friendlyName)
     : Scene(friendlyName)

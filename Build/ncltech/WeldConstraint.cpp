@@ -5,6 +5,7 @@ WeldConstraint::WeldConstraint(PhysicsObject *obj1, PhysicsObject *obj2)
     , m_pObj2(obj2)
 {
   m_positionOffset = obj2->GetPosition() - obj1->GetPosition();
+  m_orientation = obj2->GetOrientation();
 }
 
 void WeldConstraint::ApplyImpulse()
@@ -13,11 +14,10 @@ void WeldConstraint::ApplyImpulse()
   Vector3 pos(m_positionOffset);
   Quaternion::RotatePointByQuaternion(m_pObj1->GetOrientation(), pos);
   pos += m_pObj1->GetPosition();
+  m_pObj2->SetPosition(pos);
 
   // Orientation
-  // TODO
-
-  m_pObj2->SetPosition(pos);
+  m_pObj2->SetOrientation(m_pObj1->GetOrientation() * m_orientation);
 }
 
 void WeldConstraint::DebugDraw() const
