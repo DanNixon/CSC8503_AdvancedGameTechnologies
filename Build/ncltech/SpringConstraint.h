@@ -8,7 +8,7 @@ class SpringConstraint : public IConstraint
 {
 public:
   SpringConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB,
-    float springConstant, float dampingFactor);
+                   float springConstant, float dampingFactor);
 
   virtual void ApplyImpulse() override;
   virtual void DebugDraw() const;

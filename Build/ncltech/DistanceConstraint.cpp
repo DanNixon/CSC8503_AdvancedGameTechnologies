@@ -1,8 +1,9 @@
 #include "DistanceConstraint.h"
 
-DistanceConstraint::DistanceConstraint(PhysicsObject * obj1, PhysicsObject * obj2, const Vector3 & globalOnA, const Vector3 & globalOnB)
-  : m_pObj1(obj1)
-  , m_pObj2(obj2)
+DistanceConstraint::DistanceConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA,
+                                       const Vector3 &globalOnB)
+    : m_pObj1(obj1)
+    , m_pObj2(obj2)
 {
   Vector3 ab = globalOnB - globalOnA;
   m_Distance = ab.Length();
@@ -31,8 +32,8 @@ void DistanceConstraint::ApplyImpulse()
   Vector3 v0 = m_pObj1->GetLinearVelocity() + Vector3::Cross(m_pObj1->GetAngularVelocity(), r1);
   Vector3 v1 = m_pObj2->GetLinearVelocity() + Vector3::Cross(m_pObj2->GetAngularVelocity(), r2);
   float constraintMass = (m_pObj1->GetInverseMass() + m_pObj2->GetInverseMass()) +
-    Vector3::Dot(abn, Vector3::Cross(m_pObj1->GetInverseInertia() * Vector3::Cross(r1, abn), r1) +
-      Vector3::Cross(m_pObj2->GetInverseInertia() * Vector3::Cross(r2, abn), r2));
+                         Vector3::Dot(abn, Vector3::Cross(m_pObj1->GetInverseInertia() * Vector3::Cross(r1, abn), r1) +
+                                               Vector3::Cross(m_pObj2->GetInverseInertia() * Vector3::Cross(r2, abn), r2));
 
   float b = 0.0f;
   {

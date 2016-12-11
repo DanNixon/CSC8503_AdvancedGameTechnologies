@@ -256,9 +256,7 @@ void CourseworkScene::OnInitializeScene()
     });
 
     // Fix target position to planet
-    PhysicsEngine::Instance()->AddConstraint(
-      new WeldConstraint(m_planet->Physics(), m_target->Physics(), m_planet->Physics()->GetPosition(),
-        m_target->Physics()->GetPosition()));
+    PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_target->Physics()));
   }
 }
 
