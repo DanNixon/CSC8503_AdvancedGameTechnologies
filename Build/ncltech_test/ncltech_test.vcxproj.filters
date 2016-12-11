@@ -1,13 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Physics">
-      <UniqueIdentifier>{43295a4f-b1d1-4947-90af-99d3d37b3090}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FSM">
       <UniqueIdentifier>{4b697d10-c0cc-4444-9a76-fdac3ea23f70}</UniqueIdentifier>
     </Filter>
@@ -39,9 +32,6 @@
     </ClCompile>
     <ClCompile Include="TestDataGenerator.cpp">
       <Filter>PathPlanning</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingBoxTest.cpp">
-      <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="StateTest.cpp">
       <Filter>FSM</Filter>
