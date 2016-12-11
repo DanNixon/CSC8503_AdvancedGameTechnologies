@@ -167,6 +167,15 @@
     <ClCompile Include="HullCollisionShape.cpp">
       <Filter>src\Physics\CollisionShapes</Filter>
     </ClCompile>
+    <ClCompile Include="DistanceConstraint.cpp">
+      <Filter>src\Physics\Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="WeldConstraint.cpp">
+      <Filter>src\Physics\Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="SpringConstraint.cpp">
+      <Filter>src\Physics\Constraints</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -206,9 +215,6 @@
       <Filter>include\Physics\Constraints</Filter>
     </ClInclude>
     <ClInclude Include="Manifold.h">
-      <Filter>include\Physics\Constraints</Filter>
-    </ClInclude>
-    <ClInclude Include="Constraint.h">
       <Filter>include\Physics\Constraints</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
@@ -294,6 +300,9 @@
     </ClInclude>
     <ClInclude Include="HullCollisionShape.h">
       <Filter>include\Physics\CollisionShapes</Filter>
+    </ClInclude>
+    <ClInclude Include="IConstraint.h">
+      <Filter>include\Physics\Constraints</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

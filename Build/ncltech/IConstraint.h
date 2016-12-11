@@ -1,5 +1,5 @@
 /******************************************************************************
-Class: Constraint
+Class: IConstraint
 Implements: 
 Author: Pieran Marris      <p.marris@newcastle.ac.uk> and YOU!
 Description:
@@ -23,7 +23,6 @@ which you may want to implement yourselves.
 	Bullet: http://bulletphysics.org/mediawiki-1.5.8/index.php/Constraints
 	PhysX: http://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Joints.html
 
-
 		(\_/)
 		( '_')
 	 /""""""""""""\=========     -----D
@@ -31,14 +30,16 @@ which you may want to implement yourselves.
 ....\_@____@____@____@____@_/
 
 */ /////////////////////////////////////////////////////////////////////////////
+
 #pragma once
+
 #include "PhysicsObject.h"
 #include <nclgl\Vector3.h>
 
-class Constraint
+class IConstraint
 {
 public:
-  Constraint()
+  IConstraint()
   {
   }
 

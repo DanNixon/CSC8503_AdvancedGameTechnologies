@@ -53,7 +53,7 @@ void PhysicsEngine::RemovePhysicsObject(PhysicsObject *obj)
 void PhysicsEngine::RemoveAllPhysicsObjects()
 {
   // Delete and remove all constraints/collision manifolds
-  for (Constraint *c : m_vpConstraints)
+  for (IConstraint *c : m_vpConstraints)
     delete c;
   m_vpConstraints.clear();
 
@@ -132,7 +132,7 @@ void PhysicsEngine::SolveConstraints()
   for (Manifold *m : m_vpManifolds)
     m->PreSolverStep(m_UpdateTimestep);
 
-  for (Constraint *c : m_vpConstraints)
+  for (IConstraint *c : m_vpConstraints)
     c->PreSolverStep(m_UpdateTimestep);
 
   // Solve all Constraints and Collision Manifolds
@@ -141,7 +141,7 @@ void PhysicsEngine::SolveConstraints()
     for (Manifold *m : m_vpManifolds)
       m->ApplyImpulse();
 
-    for (Constraint *c : m_vpConstraints)
+    for (IConstraint *c : m_vpConstraints)
       c->ApplyImpulse();
   }
 }
@@ -336,7 +336,7 @@ void PhysicsEngine::DebugRender()
   // Draw all constraints
   if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_CONSTRAINT)
   {
-    for (Constraint *c : m_vpConstraints)
+    for (IConstraint *c : m_vpConstraints)
       c->DebugDraw();
   }
 

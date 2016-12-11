@@ -84,10 +84,12 @@
     <ClCompile Include="CommonMeshes.cpp" />
     <ClCompile Include="CommonUtils.cpp" />
     <ClCompile Include="CuboidCollisionShape.cpp" />
+    <ClCompile Include="DistanceConstraint.cpp" />
     <ClCompile Include="HullCollisionShape.cpp" />
     <ClCompile Include="NetSyncStateMachine.cpp" />
     <ClCompile Include="OctreeBroadphase.cpp" />
     <ClCompile Include="PathEdge.cpp" />
+    <ClCompile Include="SpringConstraint.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="NetworkBase.cpp" />
     <ClCompile Include="PathNode.cpp" />
@@ -108,6 +110,7 @@
     <ClCompile Include="SphereCollisionShape.cpp" />
     <ClCompile Include="StateContainer.cpp" />
     <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="WeldConstraint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingBox.h" />
@@ -122,7 +125,7 @@
     <ClInclude Include="ICollisionShape.h" />
     <ClInclude Include="CommonMeshes.h" />
     <ClInclude Include="CommonUtils.h" />
-    <ClInclude Include="Constraint.h" />
+    <ClInclude Include="IConstraint.h" />
     <ClInclude Include="DistanceConstraint.h" />
     <ClInclude Include="WeldConstraint.h" />
     <ClInclude Include="Hull.h" />

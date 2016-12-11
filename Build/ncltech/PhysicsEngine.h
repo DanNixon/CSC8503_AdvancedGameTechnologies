@@ -42,7 +42,8 @@ The general runtime consists of:
 */ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "Constraint.h"
+
+#include "IConstraint.h"
 #include "IBroadphase.h"
 #include "Manifold.h"
 #include "PhysicsObject.h"
@@ -97,7 +98,7 @@ public:
                                   // be initialized
 
   // Add Constraints
-  void AddConstraint(Constraint *c)
+  void AddConstraint(IConstraint *c)
   {
     m_vpConstraints.push_back(c);
   }
@@ -249,6 +250,6 @@ protected:
 
   std::vector<PhysicsObject *> m_PhysicsObjects; //!< All physical objects in the simulation
 
-  std::vector<Constraint *> m_vpConstraints; // Misc constraints applying to one or more physics objects
+  std::vector<IConstraint *> m_vpConstraints; // Misc constraints applying to one or more physics objects
   std::vector<Manifold *> m_vpManifolds;     // Contact constraints between pairs of objects
 };
