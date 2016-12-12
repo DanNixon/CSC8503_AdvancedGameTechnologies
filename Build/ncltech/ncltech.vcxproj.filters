@@ -179,6 +179,9 @@
     <ClCompile Include="PubSubBroker.cpp">
       <Filter>src\Network</Filter>
     </ClCompile>
+    <ClCompile Include="BoundingBoxHull.cpp">
+      <Filter>src\Physics\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -312,6 +315,9 @@
     </ClInclude>
     <ClInclude Include="PubSubBroker.h">
       <Filter>include\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBoxHull.h">
+      <Filter>include\Physics\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -79,6 +79,7 @@
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="AABBCollisionShape.cpp" />
     <ClCompile Include="AStar.cpp" />
+    <ClCompile Include="BoundingBoxHull.cpp" />
     <ClCompile Include="BruteForceBroadphase.cpp" />
     <ClCompile Include="CollisionDetectionSAT.cpp" />
     <ClCompile Include="CommonMeshes.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="AABBCollisionShape.h" />
     <ClInclude Include="AStar.h" />
+    <ClInclude Include="BoundingBoxHull.h" />
     <ClInclude Include="BruteForceBroadphase.h" />
     <ClInclude Include="CollisionDetectionSAT.h" />
     <ClInclude Include="HullCollisionShape.h" />

@@ -7,6 +7,9 @@
     <Filter Include="PathPlanning">
       <UniqueIdentifier>{d5944864-02dc-4ef6-95b6-fedb2170e1b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{33bd866b-3bd2-4ec5-8bfc-de1695d34dd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StateContainerTest.cpp">
@@ -38,6 +41,9 @@
     </ClCompile>
     <ClCompile Include="NetSyncStateMachineTest.cpp">
       <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBoxTest.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

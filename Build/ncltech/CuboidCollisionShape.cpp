@@ -189,7 +189,7 @@ void CuboidCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
   GetShapeWorldTransformation(currentObject, transform);
 
   // Just draw the cuboid hull-mesh at the position of our PhysicsObject
-  m_hull.DebugDraw(transform);
+  m_hull.Hull::DebugDraw(transform);
 }
 
 void CuboidCollisionShape::GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const

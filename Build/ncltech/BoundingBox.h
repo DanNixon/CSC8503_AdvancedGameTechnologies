@@ -1,24 +1,19 @@
 #pragma once
 
-#include "Hull.h"
+#include <nclgl/Matrix4.h>
+#include <nclgl/Vector3.h>
 
-class BoundingBox : public Hull
+class BoundingBox
 {
 public:
-  static const int FAR_FACE[];
-  static const int NEAR_FACE[];
-  static const int TOP_FACE[];
-  static const int BOTTOM_FACE[];
-  static const int RIGHT_FACE[];
-  static const int LEFT_FACE[];
-
-public:
-  BoundingBox(bool generateHull = true);
+  BoundingBox();
+  BoundingBox(const Vector3 &lower, const Vector3 &upper);
   virtual ~BoundingBox();
 
   void Reset();
 
   void ExpandToFit(const Vector3 &point);
+  void ExpandToFit(const BoundingBox &otherBox);
   void SetHalfDimensions(const Vector3 &halfDims);
 
   Vector3 &Lower()
@@ -43,7 +38,10 @@ public:
 
   BoundingBox Transform(const Matrix4 &transformation) const;
 
-  void UpdateHull();
+  bool Intersects(const BoundingBox &otherBox) const;
+
+  virtual void DebugDraw(const Matrix4 &transform, const Vector4 &faceColour = Vector4(1.0f, 1.0f, 1.0f, 0.2f),
+                         const Vector4 &edgeColour = Vector4(1.0f, 0.2f, 1.0f, 1.0f)) const;
 
 protected:
   Vector3 m_lower; //!< Lower vertex of bounding box

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BoundingBox.h"
+#include "BoundingBoxHull.h"
 #include "ICollisionShape.h"
 
 class CuboidCollisionShape : public ICollisionShape
@@ -55,5 +55,5 @@ protected:
   virtual void GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const;
 
 protected:
-  BoundingBox m_hull;
+  BoundingBoxHull m_hull;
 };

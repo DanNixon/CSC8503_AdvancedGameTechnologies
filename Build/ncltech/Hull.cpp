@@ -160,7 +160,7 @@ void Hull::GetMinMaxVerticesInAxis(const Vector3 &local_axis, int *out_min_vert,
 
 BoundingBox Hull::GetBoundingBox() const
 {
-  BoundingBox retVal(false);
+  BoundingBox retVal;
 
   for (auto it = m_vVertices.begin(); it != m_vVertices.end(); ++it)
     retVal.ExpandToFit(it->pos);

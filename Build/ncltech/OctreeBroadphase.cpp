@@ -1,6 +1,6 @@
 #include "OctreeBroadphase.h"
 
-OctreeBroadphase::OctreeBroadphase(size_t maxObjectsPerPartition, size_t maxPartitionDepth, IBroadphase * secondaryBroadphase)
+OctreeBroadphase::OctreeBroadphase(size_t maxObjectsPerPartition, size_t maxPartitionDepth, IBroadphase *secondaryBroadphase)
     : m_maxObjectsPerPartition(maxObjectsPerPartition)
     , m_maxPartitionDepth(maxPartitionDepth)
     , m_secondaryBroadphase(secondaryBroadphase)
@@ -38,7 +38,7 @@ void OctreeBroadphase::DebugDraw()
   DebugDrawWorldDivision(m_world);
 }
 
-void OctreeBroadphase::DivideWorld(WorldDivision & division, size_t iteration)
+void OctreeBroadphase::DivideWorld(WorldDivision &division, size_t iteration)
 {
   // Exit conditions (partition depth limit or target object count reached)
   if (iteration > m_maxPartitionDepth || division.objects.size() <= m_maxObjectsPerPartition)
@@ -50,7 +50,7 @@ void OctreeBroadphase::DivideWorld(WorldDivision & division, size_t iteration)
   // TODO
 }
 
-void OctreeBroadphase::DebugDrawWorldDivision(WorldDivision & division)
+void OctreeBroadphase::DebugDrawWorldDivision(WorldDivision &division)
 {
   // Draw bounding box
   division.box.DebugDraw(Matrix4(), Vector4(1.0f, 0.8f, 0.8f, 0.1f), Vector4(1.0f, 0.5f, 0.8f, 1.0f));

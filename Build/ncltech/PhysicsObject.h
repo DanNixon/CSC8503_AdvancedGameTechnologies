@@ -14,6 +14,7 @@ as velocity, position, mass etc..
 ....\_@____@____@____@____@_/			
 
 */ /////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 #include "BoundingBox.h"
@@ -148,7 +149,6 @@ public:
   inline void SetLocalBoundingBox(const BoundingBox &bb)
   {
     m_localBoundingBox = bb;
-    m_localBoundingBox.UpdateHull();
     m_wsAabbInvalidated = true;
   }
 

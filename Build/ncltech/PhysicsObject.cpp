@@ -24,7 +24,6 @@ PhysicsObject::PhysicsObject()
     , m_onCollisionCallback(nullptr)
 {
   m_localBoundingBox.SetHalfDimensions(Vector3(0.5f, 0.5f, 0.5f));
-  m_localBoundingBox.UpdateHull();
 }
 
 PhysicsObject::~PhysicsObject()
