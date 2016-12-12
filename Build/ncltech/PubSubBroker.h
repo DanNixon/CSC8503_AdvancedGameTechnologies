@@ -23,10 +23,10 @@ public:
   PubSubBroker();
   virtual ~PubSubBroker();
 
-  void Subscribe(IPubSubClient *client, const std::string &topic);
-  bool UnSubscribe(IPubSubClient *client, const std::string &topic);
+  virtual void Subscribe(IPubSubClient *client, const std::string &topic);
+  virtual bool UnSubscribe(IPubSubClient *client, const std::string &topic);
 
-  void BroadcastMessage(const std::string &topic, const char *msg);
+  virtual void BroadcastMessage(const std::string &topic, const char *msg);
 
 protected:
   std::vector<Subscription> m_subscriptions;

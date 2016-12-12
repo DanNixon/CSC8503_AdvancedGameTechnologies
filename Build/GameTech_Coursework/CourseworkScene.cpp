@@ -317,7 +317,6 @@ void CourseworkScene::OnInitializeScene()
 {
   PrintKeyMapping();
 
-  // Set broadphase method
   PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
   PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
 
@@ -350,6 +349,9 @@ void CourseworkScene::OnInitializeScene()
     ICollisionShape *shape = new SphereCollisionShape(PLANET_RADIUS);
     m_planet->Physics()->AddCollisionShape(shape);
     m_planet->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
+
+    // Never perform at rest test on planet (should always rotate)
+    m_planet->Physics()->SetRestVelocityThreshold(0.0f);
 
     m_planet->Physics()->AutoResizeBoundingBox();
 
@@ -422,5 +424,5 @@ void CourseworkScene::OnUpdateScene(float dt)
   m_playerStateMachine.Update(dt);
 
   // Add planet rotation
-  m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.05f, 0.0f));
+  m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.01f, 0.0f));
 }
