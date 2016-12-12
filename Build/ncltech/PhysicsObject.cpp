@@ -2,6 +2,9 @@
 #include "NCLDebug.h"
 #include "PhysicsEngine.h"
 
+/**
+ * @brief Creates a new physics object with default settings.
+ */
 PhysicsObject::PhysicsObject()
     : m_parent(nullptr)
     , m_wsTransformInvalidated(true)
@@ -35,6 +38,10 @@ PhysicsObject::~PhysicsObject()
   m_collisionShapes.clear();
 }
 
+/**
+ * @brief Gets the axis aligned bounding box of this object in world space.
+ * @return World space AABB
+ */
 BoundingBox PhysicsObject::GetWorldSpaceAABB() const
 {
   if (m_wsAabbInvalidated)
@@ -46,6 +53,10 @@ BoundingBox PhysicsObject::GetWorldSpaceAABB() const
   return m_wsAabb;
 }
 
+/**
+ * @brief Gets the world space transformation matrix of this object.
+ * @return World space transformation
+ */
 const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
 {
   if (m_wsTransformInvalidated)
@@ -59,6 +70,9 @@ const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
   return m_wsTransform;
 }
 
+/**
+ * @brief Automatically resizes the local bounding box to the minimum volume that contains all collision shapes.
+ */
 void PhysicsObject::AutoResizeBoundingBox()
 {
   m_localBoundingBox.Reset();
@@ -113,6 +127,10 @@ void PhysicsObject::DoAtRestTest()
   m_atRest = m_averageSummedVelocity <= m_restVelocityThresholdSquared;
 }
 
+/**
+ * @brief Draws debug info for this object.
+ * @param flags Draw mode flags
+ */
 void PhysicsObject::DebugDraw(uint64_t flags) const
 {
   if (flags & DEBUGDRAW_FLAGS_AABB)

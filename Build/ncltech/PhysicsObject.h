@@ -2,16 +2,16 @@
 Class: PhysicsObject
 Implements:
 Author: Author: Pieran Marris      <p.marris@newcastle.ac.uk> and YOU!
-Description: 
+Description:
 
 This defines all the physical properties of an element in the world, such
 as velocity, position, mass etc..
 
-		(\_/)							
-		( '_')						
-	 /""""""""""""\=========     -----D	
-	/"""""""""""""""""""""""\		
-....\_@____@____@____@____@_/			
+		(\_/)
+		( '_')
+	 /""""""""""""\=========     -----D
+	/"""""""""""""""""""""""\
+....\_@____@____@____@____@_/
 
 */ /////////////////////////////////////////////////////////////////////////////
 
@@ -37,6 +37,10 @@ class Object;
 //			  > This can be useful for AI to see if a player/agent is inside an area/collision volume
 typedef std::function<bool(PhysicsObject *this_obj, PhysicsObject *colliding_obj)> PhysicsCollisionCallback;
 
+/**
+ * @class PhysicsObject
+ * @brief Physical object in the simulation.
+ */
 class PhysicsObject
 {
   friend class PhysicsEngine;
@@ -45,22 +49,37 @@ public:
   PhysicsObject();
   virtual ~PhysicsObject();
 
-  //<--------- GETTERS ------------->
+  /**
+   * @brief Gets the at rest flag.
+   * @return True if object is at rest
+   */
   inline bool IsAtRest() const
   {
     return m_atRest;
   }
 
+  /**
+   * @brief Gets the at rest flag.
+   * @return True if the object is not at rest
+   */
   inline bool IsAwake() const
   {
     return !m_atRest;
   }
 
+  /**
+   * @brief Gets the square of the rest velocity threshold.
+   * @return Squared rest velocity
+   */
   inline float GetRestVelocityThresholdSquared() const
   {
     return m_restVelocityThresholdSquared;
   }
 
+  /**
+   * @brief Gets the local model bounding box.
+   * @return Bounding box
+   */
   inline BoundingBox GetLocalBoundingBox() const
   {
     return m_localBoundingBox;
@@ -68,105 +87,184 @@ public:
 
   BoundingBox GetWorldSpaceAABB() const;
 
+  /**
+   * @brief Gets the collision elasticity.
+   * @return Elasticity
+   */
   inline float GetElasticity() const
   {
     return m_elasticity;
   }
 
+  /**
+   * @brief Gets friction.
+   * @return Friction
+   */
   inline float GetFriction() const
   {
     return m_friction;
   }
 
+  /**
+   * @brief Gets position vector.
+   * @return Position
+   */
   inline const Vector3 &GetPosition() const
   {
     return m_position;
   }
 
+  /**
+   * @brief Gets linear velocity vector.
+   * @return Linear velocity
+   */
   inline const Vector3 &GetLinearVelocity() const
   {
     return m_linearVelocity;
   }
 
+  /**
+   * @brief Gets linear force vector.
+   * @return Linear force
+   */
   inline const Vector3 &GetForce() const
   {
     return m_linearForce;
   }
 
+  /**
+   * @brief Gets inverse object mass.
+   * @return Inverse mass
+   */
   inline float GetInverseMass() const
   {
     return m_inverseMass;
   }
 
+  /**
+   * @brief Gets object orientation.
+   * @return Orientation
+   */
   inline const Quaternion &GetOrientation() const
   {
     return m_orientation;
   }
 
+  /**
+   * @brief Gets angular velocity vector.
+   * @return Angular velocity
+   */
   inline const Vector3 &GetAngularVelocity() const
   {
     return m_angularVelocity;
   }
 
+  /**
+   * @brief Gets torque vector.
+   * @return Torque
+   */
   inline const Vector3 &GetTorque() const
   {
     return m_torque;
   }
 
+  /**
+   * @brief Gets inverse inertia matrix.
+   * @return Inverse inertia
+   */
   inline const Matrix3 &GetInverseInertia() const
   {
     return m_inverseInertia;
   }
 
+  /**
+   * @brief Gets the number of attached collision shapes.
+   * @return Collision shape count
+   */
   inline size_t NumCollisionShapes() const
   {
     return m_collisionShapes.size();
   }
 
+  /**
+   * @brief Gets a const iterator to the start of the vector of collision shapes.
+   * @return Start iterator
+   */
   inline std::vector<ICollisionShape *>::const_iterator CollisionShapesBegin() const
   {
     return m_collisionShapes.cbegin();
   }
 
+  /**
+   * @brief Gets a const iterator to the end of the vector of collision shapes.
+   * @return End iterator
+   */
   inline std::vector<ICollisionShape *>::const_iterator CollisionShapesEnd() const
   {
     return m_collisionShapes.cend();
   }
 
+  /**
+   * @brief Gets a pointer to the Object associated with this physical object.
+   * @return Parent Object
+   */
   inline Object *GetAssociatedObject() const
   {
     return m_parent;
   }
 
-  const Matrix4 &GetWorldSpaceTransform() const; // Built from scratch or returned from cached value
+  const Matrix4 &GetWorldSpaceTransform() const;
 
-  //<--------- SETTERS ------------->
+  /**
+   * @brief Sets the at rest velocity sum threshold.
+   * @param vel At rest velocity
+   */
   inline void SetRestVelocityThreshold(float vel)
   {
     m_restVelocityThresholdSquared = vel * vel;
   }
 
+  /**
+   * @brief Sets the local bounding box.
+   * @param bb Bounding box
+   */
   inline void SetLocalBoundingBox(const BoundingBox &bb)
   {
     m_localBoundingBox = bb;
     m_wsAabbInvalidated = true;
   }
 
+  /**
+   * @brief Sets the object that this object shares point gravitation with.
+   * @param obj Gravity target
+   */
   inline void SetGravitationTarget(PhysicsObject *obj)
   {
     m_gravitationTarget = obj;
   }
 
+  /**
+   * @brief Sets collision elasticity.
+   * @param elasticity Elasticity
+   */
   inline void SetElasticity(float elasticity)
   {
     m_elasticity = elasticity;
   }
 
+  /**
+   * @brief Sets friction of this object.
+   * @param friction Friction
+   */
   inline void SetFriction(float friction)
   {
     m_friction = friction;
   }
 
+  /**
+   * @brief Sets the position of this object.
+   * @param v Position
+   */
   inline void SetPosition(const Vector3 &v)
   {
     m_position = v;
@@ -175,31 +273,54 @@ public:
     m_atRest = false;
   }
 
+  /**
+   * @brief Sets the linear velocity of this object.
+   * @param v Linear velocity
+   */
   inline void SetLinearVelocity(const Vector3 &v)
   {
     m_linearVelocity = v;
   }
 
+  /**
+   * @brief Adds a linear force to the object.
+   * @param force Force vector to add
+   */
   inline void ApplyForce(const Vector3 &force)
   {
     m_linearForce += force;
   }
 
+  /**
+   * @brief Sets linear force to zero.
+   */
   inline void ClearForces()
   {
     m_linearForce.ToZero();
   }
 
+  /**
+   * @brief Sets the linear force on this object.
+   * @param v Linear force
+   */
   inline void SetForce(const Vector3 &v)
   {
     m_linearForce = v;
   }
 
+  /**
+   * @brief Sets the inverse mass of this object.
+   * @param v Inverse mass
+   */
   inline void SetInverseMass(const float &v)
   {
     m_inverseMass = v;
   }
 
+  /**
+   * @brief Sets the orientation of the object.
+   * @param v Orientation
+   */
   inline void SetOrientation(const Quaternion &v)
   {
     m_orientation = v;
@@ -207,27 +328,47 @@ public:
     m_atRest = false;
   }
 
+  /**
+   * @brief Sets the angular velocity of the object.
+   * @param v Angular velocity vector
+   */
   inline void SetAngularVelocity(const Vector3 &v)
   {
     m_angularVelocity = v;
   }
 
+  /**
+   * @brief Sets torque on the object.
+   * @param v Torque vector
+   */
   inline void SetTorque(const Vector3 &v)
   {
     m_torque = v;
   }
 
+  /**
+   * @brief Sets the inverse inertia of the object.
+   * @param v Inverse inertia matrix
+   */
   inline void SetInverseInertia(const Matrix3 &v)
   {
     m_inverseInertia = v;
   }
 
+  /**
+   * @brief Adds a collision shape to the object.
+   * @param colShape Collision shape
+   */
   inline void AddCollisionShape(ICollisionShape *colShape)
   {
     m_collisionShapes.push_back(colShape);
   }
 
-  // Called automatically when PhysicsObject is created through Object::CreatePhysicsNode()
+  /**
+   * @brief Sets the association between this physics object and an Object.
+   *
+   * Called automatically when PhysicsObject is created through Object::CreatePhysicsNode().
+   */
   inline void SetAssociatedObject(Object *obj)
   {
     m_parent = obj;
@@ -235,12 +376,21 @@ public:
 
   void AutoResizeBoundingBox();
 
-  //<---------- CALLBACKS ------------>
+  /**
+   * @brief Sets the collision callback handler.
+   * @param callback Callback function
+   */
   inline void SetOnCollisionCallback(PhysicsCollisionCallback callback)
   {
     m_onCollisionCallback = callback;
   }
 
+  /**
+   * @brief Triggers the on collision callback.
+   * @param obj_a First (this) object
+   * @param obj_b Second (other) object
+   * @return Boolean indicating if the collision should be handled
+   */
   inline bool FireOnCollisionEvent(PhysicsObject *obj_a, PhysicsObject *obj_b)
   {
     bool handleCollision = (m_onCollisionCallback) ? m_onCollisionCallback(obj_a, obj_b) : true;
