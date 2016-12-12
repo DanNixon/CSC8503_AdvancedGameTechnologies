@@ -142,6 +142,26 @@ public:
     return Vector3(x / v, y / v, z / v);
   };
 
+  inline bool operator<(const Vector3 &other) const
+  {
+    return x < other.x && y < other.y && z < other.z;
+  }
+
+  inline bool operator<=(const Vector3 &other) const
+  {
+    return x <= other.x && y <= other.y && z <= other.z;
+  }
+
+  inline bool operator>(const Vector3 &other) const
+  {
+    return x > other.x && y > other.y && z > other.z;
+  }
+
+  inline bool operator>=(const Vector3 &other) const
+  {
+    return x >= other.x && y >= other.y && z >= other.z;
+  }
+
   inline bool operator==(const Vector3 &A) const
   {
     return (A.x == x && A.y == y && A.z == z) ? true : false;

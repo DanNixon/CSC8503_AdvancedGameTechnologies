@@ -61,6 +61,11 @@ void BoundingBox::SetHalfDimensions(const Vector3 &halfDims)
   m_upper = halfDims;
 }
 
+const Vector3 BoundingBox::Centre() const
+{
+  return m_lower + ((m_upper - m_lower) * 0.5f);
+}
+
 BoundingBox BoundingBox::Transform(const Matrix4 &transformation) const
 {
   BoundingBox retVal;
@@ -78,10 +83,15 @@ BoundingBox BoundingBox::Transform(const Matrix4 &transformation) const
   return retVal;
 }
 
+bool BoundingBox::Intersects(const Vector3 &point) const
+{
+  return m_lower <= point && point <= m_upper;
+}
+
 bool BoundingBox::Intersects(const BoundingBox &otherBox) const
 {
-  // TODO
-  return false;
+  return (m_lower <= otherBox.m_lower && otherBox.m_lower <= m_upper) ||
+         ((m_lower <= otherBox.m_upper && otherBox.m_upper <= m_upper));
 }
 
 void BoundingBox::DebugDraw(const Matrix4 &transform, const Vector4 &faceColour, const Vector4 &edgeColour) const

@@ -36,8 +36,11 @@ public:
     return m_upper;
   }
 
+  const Vector3 Centre() const;
+
   BoundingBox Transform(const Matrix4 &transformation) const;
 
+  bool Intersects(const Vector3 &point) const;
   bool Intersects(const BoundingBox &otherBox) const;
 
   virtual void DebugDraw(const Matrix4 &transform, const Vector4 &faceColour = Vector4(1.0f, 1.0f, 1.0f, 0.2f),

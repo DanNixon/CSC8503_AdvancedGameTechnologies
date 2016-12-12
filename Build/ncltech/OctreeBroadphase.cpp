@@ -47,6 +47,10 @@ void OctreeBroadphase::DivideWorld(WorldDivision &division, size_t iteration)
     return;
   }
 
+  const Vector3 lower = division.box.Lower();
+  const Vector3 centre = division.box.Centre();
+  const Vector3 upper = division.box.Upper();
+
   // TODO
 }
 
