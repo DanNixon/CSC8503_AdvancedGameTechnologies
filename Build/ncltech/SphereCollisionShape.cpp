@@ -93,8 +93,8 @@ void SphereCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
  */
 void SphereCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
-  Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
-  Vector3 pos = wsTransform.GetPositionVector();
+  Matrix4 transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
+  Vector3 pos = transform.GetPositionVector();
 
   // Draw Filled Circle
   NCLDebug::DrawPointNDT(pos, m_Radius, Vector4(1.0f, 1.0f, 1.0f, 0.2f));

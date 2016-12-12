@@ -215,7 +215,9 @@ void CuboidCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 }
 
 /**
- * @copydoc ICollisionShape::GetShapeWorldTransformation
+ * @brief Gets the transformation matrix that transforms the shape to world space.
+ * @param currentObject Pointer to object
+ * @param transform Transformation matrix
  */
 void CuboidCollisionShape::GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const
 {

@@ -182,6 +182,9 @@
     <ClCompile Include="BoundingBoxHull.cpp">
       <Filter>src\Physics\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="PlaneCollisionShape.cpp">
+      <Filter>src\Physics\CollisionShapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -318,6 +321,9 @@
     </ClInclude>
     <ClInclude Include="BoundingBoxHull.h">
       <Filter>include\Physics\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneCollisionShape.h">
+      <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

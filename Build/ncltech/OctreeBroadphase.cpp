@@ -126,7 +126,7 @@ void OctreeBroadphase::DivideWorld(WorldDivision *division, size_t iteration)
 void OctreeBroadphase::DebugDrawWorldDivision(WorldDivision *division)
 {
   // Draw bounding box
-  division->box.DebugDraw(Matrix4(), Vector4(1.0f, 0.8f, 0.8f, 0.2f), Vector4(1.0f, 1.0f, 0.0f, 1.0f), 0.5f);
+  division->box.DebugDraw(Matrix4(), Vector4(1.0f, 0.8f, 0.8f, 0.2f), Vector4(1.0f, 1.0f, 0.0f, 1.0f), 0.05f);
 
   // Draw sub divisions
   for (auto it = division->subdivisions.begin(); it != division->subdivisions.end(); ++it)

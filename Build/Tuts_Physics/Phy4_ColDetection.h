@@ -50,6 +50,7 @@ normal are correct for all collisions. =]
 ....\_@____@____@____@____@_/
 
 */ /////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 #include <ncltech\AABBCollisionShape.h>
@@ -63,6 +64,7 @@ normal are correct for all collisions. =]
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
 #include <ncltech\SphereCollisionShape.h>
+#include <ncltech\PlaneCollisionShape.h>
 
 class Phy4_ColDetection : public Scene
 {
@@ -96,9 +98,14 @@ public:
     m_Rotating = true;
 
     // Create Ground
-    Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,
-                                                    false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
-    // this->AddGameObject(ground);
+    {
+      Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f,
+        false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+      
+      ground->Physics()->AddCollisionShape(new PlaneCollisionShape(Vector3(0.0f, 1.0f, 0.0f)));
+
+      AddGameObject(ground);
+    }
 
     // Create Sphere-Sphere Manifold Test
     {
@@ -109,9 +116,9 @@ public:
       ICollisionShape *shape = new AABBCollisionShape();
       sphere->Physics()->AddCollisionShape(shape);
 
-      this->AddGameObject(sphere);
+      AddGameObject(sphere);
 
-      this->AddGameObject(CommonUtils::BuildSphereObject("orbiting_sphere1.1", ss_pos, 0.5f, true, 0.0f, true, true,
+      AddGameObject(CommonUtils::BuildSphereObject("orbiting_sphere1.1", ss_pos, 0.5f, true, 0.0f, true, true,
                                                          CommonUtils::GenColour(0.55f, 1.0f)));
     }
 
@@ -119,7 +126,7 @@ public:
     {
       Object *sphere = CommonUtils::BuildSphereObject("orbiting_sphere2", sc_pos + Vector3(0.9f, 0.0f, 0.0f), 0.5f, true, 0.0f,
                                                       true, false, CommonUtils::GenColour(0.3f, 0.5f));
-      this->AddGameObject(sphere);
+      AddGameObject(sphere);
 
       // Testing
       (*(sphere->Physics()->CollisionShapesBegin()))->SetLocalTransform(Matrix4::Translation(Vector3(0.5f, 0.0f, 0.0f)));
@@ -132,7 +139,7 @@ public:
       // Auto set bounding box
       sphere->Physics()->AutoResizeBoundingBox();
 
-      this->AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid2.2", sc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true,
+      AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid2.2", sc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true,
                                                          true, CommonUtils::GenColour(0.55f, 1.0f)));
     }
 
@@ -141,11 +148,11 @@ public:
       Object *cuboid =
           CommonUtils::BuildCuboidObject("rotating_cuboid3", cc_pos + Vector3(0.75f, 0.0f, 0.0f), Vector3(0.5f, 0.5f, 0.5f), true,
                                          0.0f, true, false, CommonUtils::GenColour(0.3f, 0.5f));
-      this->AddGameObject(cuboid);
+      AddGameObject(cuboid);
 
       cuboid->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 30.0f));
 
-      this->AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid3.3", cc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true,
+      AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid3.3", cc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true,
                                                          true, CommonUtils::GenColour(0.55f, 1.0f)));
     }
   }

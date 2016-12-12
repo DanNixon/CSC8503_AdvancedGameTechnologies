@@ -8,7 +8,7 @@
  * @author Dan Nixon
  * @brief Collision shape for an axis aligned bounding box.
  *
- * Essentially a auboid collision shape with no rotation transformation.
+ * Essentially a cuboid collision shape with no rotation transformation.
  */
 class AABBCollisionShape : public CuboidCollisionShape
 {

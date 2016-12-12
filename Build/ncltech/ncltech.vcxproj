@@ -90,6 +90,7 @@
     <ClCompile Include="NetSyncStateMachine.cpp" />
     <ClCompile Include="OctreeBroadphase.cpp" />
     <ClCompile Include="PathEdge.cpp" />
+    <ClCompile Include="PlaneCollisionShape.cpp" />
     <ClCompile Include="PubSubBroker.cpp" />
     <ClCompile Include="SpringConstraint.cpp" />
     <ClCompile Include="State.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="IConstraint.h" />
     <ClInclude Include="DistanceConstraint.h" />
     <ClInclude Include="IPubSubClient.h" />
+    <ClInclude Include="PlaneCollisionShape.h" />
     <ClInclude Include="PubSubBroker.h" />
     <ClInclude Include="WeldConstraint.h" />
     <ClInclude Include="Hull.h" />
