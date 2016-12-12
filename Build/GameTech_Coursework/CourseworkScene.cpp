@@ -360,7 +360,6 @@ void CourseworkScene::OnInitializeScene()
     m_planet->SetColour(Vector4(0.5f, 0.5f, 0.5f, 1.0f));
 
     m_planet->SetLocalTransform(Matrix4::Scale(Vector3(PLANET_RADIUS, PLANET_RADIUS, PLANET_RADIUS)));
-    m_planet->SetBoundingRadius(PLANET_RADIUS);
 
     m_planet->CreatePhysicsNode();
     m_planet->Physics()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
@@ -383,9 +382,6 @@ void CourseworkScene::OnInitializeScene()
     m_target = new ObjectMesh("target");
 
     m_target->SetMesh(m_targetMesh, false);
-    m_target->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-
-    m_target->SetBoundingRadius(10.0f);
 
     m_target->CreatePhysicsNode();
     m_target->Physics()->SetPosition(Vector3(PLANET_RADIUS + 5.0f, 0.0f, 0.0f));
@@ -413,27 +409,23 @@ void CourseworkScene::OnInitializeScene()
 
   // Create lamp post
   {
-    m_lampPost = new ObjectMesh("target");
+    m_lampPost = new ObjectMesh("lamp_post");
 
     m_lampPost->SetMesh(m_lampPostMesh, false);
     m_lampPost->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
-    m_lampPost->SetBoundingRadius(10.0f);
-
     m_lampPost->CreatePhysicsNode();
-    m_lampPost->Physics()->SetPosition(Vector3(PLANET_RADIUS + 5.0f, 0.0f, 0.0f));
+    m_lampPost->Physics()->SetPosition(Vector3(PLANET_RADIUS + 10.0f, 0.0f, 0.0f));
     //m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
 
     m_target->Physics()->SetInverseMass(0.0f);
 
-    //HullCollisionShape *shape = new HullCollisionShape();
-    //m_lampPost->Physics()->AddCollisionShape(shape);
-
-    //m_lampPost->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
+    ICollisionShape * shape1 = new CuboidCollisionShape(Vector3(1.0f, 1.0f, 1.0f));
+    m_lampPost->Physics()->AddCollisionShape(shape1);
 
     m_lampPost->Physics()->AutoResizeBoundingBox();
 
-    //AddGameObject(m_lampPost);
+    AddGameObject(m_lampPost);
 
     m_lampPost->Physics()->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
       // No collisions with planet

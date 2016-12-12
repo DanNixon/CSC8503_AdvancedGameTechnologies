@@ -428,6 +428,8 @@ void OBJMesh::FixTextures(MTLInfo &info)
   if (!info.bumpNum)
   {
     string temp = info.diffuse;
+    if (temp.empty())
+      return;
 
     if (temp[temp.size() - 5] == 'd')
     {

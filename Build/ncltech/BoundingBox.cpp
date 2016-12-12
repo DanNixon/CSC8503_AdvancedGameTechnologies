@@ -88,9 +88,20 @@ void BoundingBox::SetHalfDimensions(const Vector3 &halfDims)
  * @brief Gets the position of the centre of the box.
  * @return Centre point
  */
-const Vector3 BoundingBox::Centre() const
+Vector3 BoundingBox::Centre() const
 {
   return m_lower + ((m_upper - m_lower) * 0.5f);
+}
+
+/**
+ * @brief Gets the radius of the equivalent bounding sphere.
+ * @return Bounding sphere radius
+ */
+float BoundingBox::SphereRadius() const
+{
+  Vector3 dims = m_upper - m_lower;
+  float radius = max(dims.x, max(dims.y, dims.z)) * 0.5f;
+  return radius;
 }
 
 /**

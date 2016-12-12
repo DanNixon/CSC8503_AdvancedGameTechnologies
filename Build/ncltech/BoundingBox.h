@@ -57,7 +57,9 @@ public:
     return m_upper;
   }
 
-  const Vector3 Centre() const;
+  Vector3 Centre() const;
+
+  float SphereRadius() const;
 
   BoundingBox Transform(const Matrix4 &transformation) const;
 

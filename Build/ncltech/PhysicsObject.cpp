@@ -1,6 +1,8 @@
 #include "PhysicsObject.h"
+
 #include "NCLDebug.h"
 #include "PhysicsEngine.h"
+#include "Object.h"
 
 /**
  * @brief Creates a new physics object with default settings.
@@ -72,6 +74,8 @@ const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
 
 /**
  * @brief Automatically resizes the local bounding box to the minimum volume that contains all collision shapes.
+ *
+ * Also sets the bounding sphere radius of the parent Object (if one is associated).
  */
 void PhysicsObject::AutoResizeBoundingBox()
 {
@@ -97,6 +101,10 @@ void PhysicsObject::AutoResizeBoundingBox()
     m_localBoundingBox.ExpandToFit(lower);
     m_localBoundingBox.ExpandToFit(upper);
   }
+
+  // Set bounding radius of parent
+  if (m_parent != nullptr)
+    m_parent->SetBoundingRadius(m_localBoundingBox.SphereRadius());
 
   m_wsAabbInvalidated = true;
 }

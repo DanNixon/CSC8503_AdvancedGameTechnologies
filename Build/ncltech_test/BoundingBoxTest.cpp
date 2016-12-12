@@ -73,4 +73,25 @@ public:
     Assert::IsTrue(b1.Intersects(b3));
     Assert::IsFalse(b2.Intersects(b3));
   }
+
+  TEST_METHOD(BoundingBox_BoundingSphereRadius)
+  {
+    {
+      BoundingBox b;
+      b.SetHalfDimensions(Vector3(10.0f, 12.0f, 18.0f));
+      Assert::AreEqual(18.0f, b.SphereRadius());
+    }
+
+    {
+      BoundingBox b;
+      b.SetHalfDimensions(Vector3(12.0f, 10.0f, 6.0f));
+      Assert::AreEqual(12.0f, b.SphereRadius());
+    }
+
+    {
+      BoundingBox b;
+      b.SetHalfDimensions(Vector3(100.0f, 120.0f, 18.0f));
+      Assert::AreEqual(120.0f, b.SphereRadius());
+    }
+  }
 };
