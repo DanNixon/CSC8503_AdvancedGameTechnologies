@@ -35,8 +35,8 @@ protected:
   size_t m_maxObjectsPerPartition; //!< Maximum number of objects in a single world partition before subdivision
   size_t m_maxPartitionDepth;      //!< Maximum number of sub world partitions to recursively create
 
-  IBroadphase *m_secondaryBroadphase;
+  IBroadphase *m_secondaryBroadphase; //!< Broadphase stage used to determine collision pairs within subdivisions
 
   WorldDivision *m_world; //!< Root world space
-  std::vector<WorldDivision *> m_leafDivisions;
+  std::vector<WorldDivision *> m_leafDivisions; //!< Subdivisions containing objects to generate collision pairs for
 };

@@ -94,10 +94,8 @@ bool BoundingBox::Intersects(const BoundingBox &otherBox) const
          ((m_lower <= otherBox.m_upper && otherBox.m_upper <= m_upper));
 }
 
-void BoundingBox::DebugDraw(const Matrix4 &transform, const Vector4 &faceColour, const Vector4 &edgeColour) const
+void BoundingBox::DebugDraw(const Matrix4 &transform, const Vector4 &faceColour, const Vector4 &edgeColour, float width) const
 {
-  const float WIDTH = 0.02f;
-
   Vector3 uuu = transform * m_upper;
   Vector3 lll = transform * m_lower;
 
@@ -110,18 +108,18 @@ void BoundingBox::DebugDraw(const Matrix4 &transform, const Vector4 &faceColour,
   Vector3 lul(lll.x, uuu.y, lll.z);
 
   // Draw edges
-  NCLDebug::DrawThickLineNDT(luu, uuu, WIDTH, edgeColour);
-  NCLDebug::DrawThickLineNDT(lul, uul, WIDTH, edgeColour);
-  NCLDebug::DrawThickLineNDT(llu, ulu, WIDTH, edgeColour);
-  NCLDebug::DrawThickLineNDT(lll, ull, WIDTH, edgeColour);
+  NCLDebug::DrawThickLineNDT(luu, uuu, width, edgeColour);
+  NCLDebug::DrawThickLineNDT(lul, uul, width, edgeColour);
+  NCLDebug::DrawThickLineNDT(llu, ulu, width, edgeColour);
+  NCLDebug::DrawThickLineNDT(lll, ull, width, edgeColour);
 
-  NCLDebug::DrawThickLineNDT(lul, lll, WIDTH, edgeColour);
-  NCLDebug::DrawThickLineNDT(uul, ull, WIDTH, edgeColour);
-  NCLDebug::DrawThickLineNDT(luu, llu, WIDTH, edgeColour);
-  NCLDebug::DrawThickLineNDT(uuu, ulu, WIDTH, edgeColour);
+  NCLDebug::DrawThickLineNDT(lul, lll, width, edgeColour);
+  NCLDebug::DrawThickLineNDT(uul, ull, width, edgeColour);
+  NCLDebug::DrawThickLineNDT(luu, llu, width, edgeColour);
+  NCLDebug::DrawThickLineNDT(uuu, ulu, width, edgeColour);
 
-  NCLDebug::DrawThickLineNDT(lll, llu, WIDTH, edgeColour);
-  NCLDebug::DrawThickLineNDT(ull, ulu, WIDTH, edgeColour);
-  NCLDebug::DrawThickLineNDT(lul, luu, WIDTH, edgeColour);
-  NCLDebug::DrawThickLineNDT(uul, uuu, WIDTH, edgeColour);
+  NCLDebug::DrawThickLineNDT(lll, llu, width, edgeColour);
+  NCLDebug::DrawThickLineNDT(ull, ulu, width, edgeColour);
+  NCLDebug::DrawThickLineNDT(lul, luu, width, edgeColour);
+  NCLDebug::DrawThickLineNDT(uul, uuu, width, edgeColour);
 }

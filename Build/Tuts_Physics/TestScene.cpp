@@ -27,7 +27,7 @@ void TestScene::OnInitializeScene()
 
   PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(100, 2, new BruteForceBroadphase()));
 
-  //PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_BROADPHASE);
+  // PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_BROADPHASE);
   PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_BROADPHASE | DEBUGDRAW_FLAGS_BROADPHASE_PAIRS);
 
   // Set the camera position

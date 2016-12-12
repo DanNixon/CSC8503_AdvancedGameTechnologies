@@ -149,11 +149,10 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
     State *octree = new State("octree", m_broadphaseModeStateMachine.RootState(), &m_broadphaseModeStateMachine);
     octree->AddOnEntryBehaviour(removePrevBroadphase);
     octree->AddOnEntryBehaviour([](State *) {
-      // TODO
-      PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(10, 5, new BruteForceBroadphase()));
+      PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(10, 4, new BruteForceBroadphase()));
     });
     octree->AddOnOperateBehaviour(
-        [BROADPHASE_MODE_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: octree"); });
+        [BROADPHASE_MODE_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: octree (obj. lim 10, div. lim. 4, brute force)"); });
 
     // State transitions
     sortAndSweepX->AddTransferFromTest([sortAndSweepY]() -> State * {

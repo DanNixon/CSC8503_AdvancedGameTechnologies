@@ -47,7 +47,10 @@ void OctreeBroadphase::DivideWorld(WorldDivision *division, size_t iteration)
   // Exit conditions (partition depth limit or target object count reached)
   if (iteration > m_maxPartitionDepth || division->objects.size() <= m_maxObjectsPerPartition)
   {
-    m_leafDivisions.push_back(division);
+    // Ignore any subdivisions that contain no objects
+    if (!division->objects.empty())
+      m_leafDivisions.push_back(division);
+
     return;
   }
 
@@ -102,7 +105,7 @@ void OctreeBroadphase::DivideWorld(WorldDivision *division, size_t iteration)
 void OctreeBroadphase::DebugDrawWorldDivision(WorldDivision *division)
 {
   // Draw bounding box
-  division->box.DebugDraw(Matrix4(), Vector4(1.0f, 0.8f, 0.8f, 0.1f), Vector4(1.0f, 0.5f, 0.8f, 1.0f));
+  division->box.DebugDraw(Matrix4(), Vector4(1.0f, 0.8f, 0.8f, 0.2f), Vector4(1.0f, 1.0f, 0.0f, 1.0f), 0.5f);
 
   // Draw sub divisions
   for (auto it = division->subdivisions.begin(); it != division->subdivisions.end(); ++it)

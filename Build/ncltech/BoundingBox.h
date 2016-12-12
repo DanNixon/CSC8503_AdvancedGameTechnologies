@@ -44,7 +44,7 @@ public:
   bool Intersects(const BoundingBox &otherBox) const;
 
   virtual void DebugDraw(const Matrix4 &transform, const Vector4 &faceColour = Vector4(1.0f, 1.0f, 1.0f, 0.2f),
-                         const Vector4 &edgeColour = Vector4(1.0f, 0.2f, 1.0f, 1.0f)) const;
+                         const Vector4 &edgeColour = Vector4(1.0f, 0.2f, 1.0f, 1.0f), float width = 0.02f) const;
 
 protected:
   Vector3 m_lower; //!< Lower vertex of bounding box
