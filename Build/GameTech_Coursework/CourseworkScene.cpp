@@ -29,6 +29,7 @@ void CourseworkScene::PrintKeyMapping()
 {
   NCLDebug::Log("Key mappings:");
   NCLDebug::Log("  Reset scene: %c", KeyboardKeys::KEYBOARD_R);
+  NCLDebug::Log("  Reset player: %c", PLAYER_RESET_KEY);
   NCLDebug::Log("  Fire ball: %c", SHOOT_BALL_KEY);
   NCLDebug::Log("  Switch physics view mode: %c", PHYSICS_DEBUG_VIEW_KEY);
   NCLDebug::Log("  Switch broadphase culling mode: %c", BROADPHASE_MODE_KEY);
@@ -244,7 +245,14 @@ CourseworkScene::CourseworkScene()
     State *reset = new State("reset", m_playerStateMachine.RootState(), &m_playerStateMachine);
     m_playerStateMachine.SetDefaultState(reset);
     reset->AddTransferFromTest([idle]() { return idle; });
-    reset->AddOnEntryBehaviour([](State *) { NCLDebug::Log("TODO: clear balls"); });
+    reset->AddTransferToTest([]() {
+      return Window::GetKeyboard()->KeyDown(PLAYER_RESET_KEY);
+    });
+    reset->AddOnEntryBehaviour([this](State *) {
+      NCLDebug::Log("Player reset.");
+      for (auto it = this->m_shotSpheres.begin(); it != this->m_shotSpheres.end(); ++it)
+        this->RemoveGameObject(*it);
+    });
 
     // Exit conditions
     {
@@ -284,7 +292,7 @@ CourseworkScene::CourseworkScene()
         sphere->Physics()->SetLinearVelocity(velocity);
         sphere->Physics()->SetGravitationTarget(this->m_planet->Physics());
         sphere->Physics()->AutoResizeBoundingBox();
-        this->m_shotSpheres.push(sphere);
+        this->m_shotSpheres.push_back(sphere);
         this->AddGameObject(sphere);
 
         NCLDebug::Log("Shot ball with velocity (%f, %f, %f)", velocity.x, velocity.y, velocity.z);

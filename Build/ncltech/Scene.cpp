@@ -26,6 +26,20 @@ void Scene::AddGameObject(Object *game_object)
   m_pRootGameObject->AddChildObject(game_object);
 }
 
+void Scene::RemoveGameObject(Object * game_object)
+{
+  auto it = std::find(game_object->m_parent->m_vpChildren.begin(), game_object->m_parent->m_vpChildren.end(), game_object);
+  if (it != game_object->m_parent->m_vpChildren.end())
+  {
+    if (game_object->HasPhysics())
+      PhysicsEngine::Instance()->RemovePhysicsObject(game_object->Physics());
+
+    game_object->m_parent->m_vpChildren.erase(it);
+
+    delete game_object;
+  }
+}
+
 Object *Scene::FindGameObject(const std::string &name)
 {
   return m_pRootGameObject->FindGameObject(name);

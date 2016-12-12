@@ -12,8 +12,6 @@ It can also optionally be attached to a PhysicsObject component which will
 automatically update the object's world transform based off it's physical
 position/orientation each frame.
 
-
-
 		(\_/)
 		( '_')
 	 /""""""""""""\=========     -----D
@@ -21,7 +19,9 @@ position/orientation each frame.
 ....\_@____@____@____@____@_/
 
 */ /////////////////////////////////////////////////////////////////////////////
+
 #pragma once
+
 #include "PhysicsObject.h"
 #include <nclgl\Matrix4.h>
 #include <vector>
@@ -95,6 +95,7 @@ public:
   {
     m_Colour = colour;
   }
+
   const Vector4 &GetColour()
   {
     return m_Colour;
@@ -107,6 +108,7 @@ public:
   {
     m_BoundingRadius = radius;
   }
+
   float GetBoundingRadius()
   {
     return m_BoundingRadius;
@@ -122,6 +124,7 @@ public:
   {
     m_LocalTransform = transform;
   }
+
   const Matrix4 &GetLocalTransform()
   {
     return m_LocalTransform;

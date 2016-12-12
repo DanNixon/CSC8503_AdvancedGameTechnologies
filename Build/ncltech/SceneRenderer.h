@@ -74,7 +74,6 @@ Extra Features:
 		If your interested in gamma curves/correction the following article has all you will need to know:
 		http://http.developer.nvidia.com/GPUGems3/gpugems3_ch24.html
 
-
 		(\_/)
 		( '_')
 	 /""""""""""""\=========     -----D
@@ -82,6 +81,7 @@ Extra Features:
 ....\_@____@____@____@____@_/
 
 */ /////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 #include "RenderList.h"

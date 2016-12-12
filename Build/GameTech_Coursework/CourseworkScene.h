@@ -4,7 +4,7 @@
 #include <ncltech\NetSyncStateMachine.h>
 #include <ncltech\ObjectMesh.h>
 #include <ncltech\Scene.h>
-#include <queue>
+#include <vector>
 
 /**
  * @class CourseworkScene
@@ -35,6 +35,11 @@ public:
    */
   static const KeyboardKeys SHOOT_BALL_KEY = KeyboardKeys::KEYBOARD_J;
 
+  /**
+   * @brief Key used to reset the player state.
+   */
+  static const KeyboardKeys PLAYER_RESET_KEY = KeyboardKeys::KEYBOARD_K;
+
 public:
   static void PrintKeyMapping();
 
@@ -56,7 +61,7 @@ protected:
   Mesh *m_targetMesh;   //!< Graphical mesh for the target
   Mesh *m_lampPostMesh; //!< Graphical mesh for the lamp post
 
-  ObjectMesh *m_planet;               //!< Planet object
-  ObjectMesh *m_target;               //!< Target object
-  std::queue<Object *> m_shotSpheres; //!< Queue of spheres shot by the player
+  ObjectMesh *m_planet;                //!< Planet object
+  ObjectMesh *m_target;                //!< Target object
+  std::vector<Object *> m_shotSpheres; //!< Spheres shot by the player
 };

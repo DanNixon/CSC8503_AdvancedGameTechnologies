@@ -41,13 +41,11 @@ void PhysicsEngine::AddPhysicsObject(PhysicsObject *obj)
 void PhysicsEngine::RemovePhysicsObject(PhysicsObject *obj)
 {
   // Lookup the object in question
-  auto found_loc = std::find(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), obj);
+  auto it = std::find(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), obj);
 
   // If found, remove it from the list
-  if (found_loc != m_PhysicsObjects.end())
-  {
-    m_PhysicsObjects.erase(found_loc);
-  }
+  if (it != m_PhysicsObjects.end())
+    m_PhysicsObjects.erase(it);
 }
 
 void PhysicsEngine::RemoveAllPhysicsObjects()
