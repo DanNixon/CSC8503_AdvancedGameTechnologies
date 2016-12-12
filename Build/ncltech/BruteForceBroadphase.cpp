@@ -1,5 +1,8 @@
 #include "BruteForceBroadphase.h"
 
+/**
+ * @brief Create a new brute force broadphase instance.
+ */
 BruteForceBroadphase::BruteForceBroadphase()
     : IBroadphase()
 {
@@ -9,6 +12,9 @@ BruteForceBroadphase::~BruteForceBroadphase()
 {
 }
 
+/**
+ * @copydoc IBroadphase::FindPotentialCollisionPairs
+ */
 void BruteForceBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects,
                                                        std::vector<CollisionPair> &collisionPairs)
 {
@@ -36,6 +42,9 @@ void BruteForceBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject
   }
 }
 
+/**
+ * @copydoc IBroadphase::DebugDraw
+ */
 void BruteForceBroadphase::DebugDraw()
 {
   // Nothing to do here (all possible pairs are added)

@@ -15,10 +15,13 @@ bool show_perf_metrics = false;
 PerfTimer timer_total, timer_physics, timer_update, timer_render;
 uint shadowCycleKey = 4;
 
-// Program Deconstructor
-//  - Releases all global components and memory
-//  - Optionally prints out an error message and
-//    stalls the runtime if requested.
+/**
+ * @brief Releases all global components and memory.
+ * @param error Flag indicating an exit due to error
+ * @param reason Reason string
+ *
+ * Optionally prints out an error message and stalls the runtime if requested.
+ */
 void Quit(bool error = false, const string &reason = "")
 {
   // Release Singletons
@@ -35,9 +38,9 @@ void Quit(bool error = false, const string &reason = "")
   }
 }
 
-// Program Initialise
-//  - Generates all program wide components and enqueues all scenes
-//    for the SceneManager to display
+/**
+ * @brief Generates all program wide components and enqueues all scenes for the SceneManager to display.
+ */
 void Initialize()
 {
   // Initialise the Window
@@ -53,12 +56,12 @@ void Initialize()
     Quit(true, "Renderer failed to initialise!");
 
   // Enqueue All Scenes
-  SceneManager::Instance()->EnqueueScene(new CourseworkScene("GameTech coursework"));
+  SceneManager::Instance()->EnqueueScene(new CourseworkScene());
 }
 
-// Print Debug Info
-//  - Prints a list of status entries to the top left
-//    hand corner of the screen each frame.
+/**
+ * @brief Prints a list of status entries to the top left hand corner of the screen each frame.
+ */
 void PrintStatusEntries()
 {
   // Print Current Scene Name
@@ -80,10 +83,9 @@ void PrintStatusEntries()
   NCLDebug::AddStatusEntry(status_colour, "");
 }
 
-// Process Input
-//  - Handles all program wide keyboard inputs for
-//    things such toggling the physics engine and
-//    cycling through scenes.
+/**
+ * @brief Handles all program wide keyboard inputs for things such toggling the physics engine.
+ */
 void HandleKeyboardInputs()
 {
   if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_P))
@@ -102,7 +104,10 @@ void HandleKeyboardInputs()
     show_perf_metrics = !show_perf_metrics;
 }
 
-// Program Entry Point
+/**
+ * @brief Entry point.
+ * @return Exit code
+ */
 int main()
 {
   // Initialize our Window, Physics, Scenes etc
@@ -159,5 +164,6 @@ int main()
 
   // Cleanup
   Quit();
+
   return 0;
 }

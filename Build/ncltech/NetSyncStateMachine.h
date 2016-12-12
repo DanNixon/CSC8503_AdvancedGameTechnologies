@@ -4,6 +4,11 @@
 
 #include "IPubSubClient.h"
 
+/**
+ * @class NetSyncStateMachine
+ * @author Dan Nixon
+ * @brief State machine that can be synchronised with identical state machines over a publisher/subscriber broker.
+ */
 class NetSyncStateMachine : public StateMachine, public IPubSubClient
 {
 public:

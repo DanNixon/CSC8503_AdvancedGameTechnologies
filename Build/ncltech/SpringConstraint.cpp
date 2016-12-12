@@ -1,5 +1,14 @@
 #include "SpringConstraint.h"
 
+/**
+ * @brief Create a new spring constraint.
+ * @param obj1 First object
+ * @param obj2 Second object
+ * @param globalOnA Position of constraint point on first object
+ * @param globalOnB Position of constraint point on second object
+ * @param springConstant Spring constant
+ * @param dampingFactor Damping factor
+ */
 SpringConstraint::SpringConstraint(PhysicsObject *obj1, PhysicsObject *obj2, const Vector3 &globalOnA, const Vector3 &globalOnB,
                                    float springConstant, float dampingFactor)
     : m_pObj1(obj1)
@@ -16,6 +25,9 @@ SpringConstraint::SpringConstraint(PhysicsObject *obj1, PhysicsObject *obj2, con
   m_LocalOnB = Matrix3::Transpose(m_pObj2->GetOrientation().ToMatrix3()) * r2;
 }
 
+/**
+ * @copydoc IConstraint::ApplyImpulse
+ */
 void SpringConstraint::ApplyImpulse()
 {
   if (m_pObj1->GetInverseMass() + m_pObj2->GetInverseMass() == 0.0f)
@@ -54,6 +66,9 @@ void SpringConstraint::ApplyImpulse()
   m_pObj2->SetAngularVelocity(m_pObj2->GetAngularVelocity() - m_pObj2->GetInverseInertia() * Vector3::Cross(r2, abn * jn));
 }
 
+/**
+ * @copydoc IConstraint::DebugDraw
+ */
 void SpringConstraint::DebugDraw() const
 {
   Vector3 globalOnA = m_pObj1->GetOrientation().ToMatrix3() * m_LocalOnA + m_pObj1->GetPosition();

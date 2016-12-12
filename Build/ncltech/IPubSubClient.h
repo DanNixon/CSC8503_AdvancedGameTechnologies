@@ -4,9 +4,18 @@
 
 #include <string>
 
+/**
+ * @class IPubSubClient
+ * @author Dan Nixon
+ * @brief Interface for clients to a publisher/subscriber broker.
+ */
 class IPubSubClient
 {
 public:
+  /**
+   * @brief Creates a new client.
+   * @param broker Broker to connect to
+   */
   IPubSubClient(PubSubBroker &broker)
       : m_broker(broker)
   {
@@ -16,6 +25,12 @@ public:
   {
   }
 
+  /**
+   * @brief Handles delivery of a new message from a subscribed topic.
+   * @param topic Topic
+   * @param msg Message payload
+   * @return Flag indicating successful handling of the message
+   */
   virtual bool HandleSubscription(const std::string &topic, const char *msg) = 0;
 
 protected:

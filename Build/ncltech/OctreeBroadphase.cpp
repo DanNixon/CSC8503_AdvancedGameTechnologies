@@ -1,5 +1,11 @@
 #include "OctreeBroadphase.h"
 
+/**
+ * @brief Creates a new octree broadphase instance.
+ * @param maxObjectsPerPartition Target maximum number of objects in each world division
+ * @param maxPartitionDepth Maximum recursion depth
+ * @param secondaryBroadphase Broadphase method used to generate collision pairs in each division
+ */
 OctreeBroadphase::OctreeBroadphase(size_t maxObjectsPerPartition, size_t maxPartitionDepth, IBroadphase *secondaryBroadphase)
     : m_maxObjectsPerPartition(maxObjectsPerPartition)
     , m_maxPartitionDepth(maxPartitionDepth)
@@ -12,6 +18,9 @@ OctreeBroadphase::~OctreeBroadphase()
   delete m_secondaryBroadphase;
 }
 
+/**
+ * @copydoc IBroadphase::FindPotentialCollisionPairs
+ */
 void OctreeBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects,
                                                    std::vector<CollisionPair> &collisionPairs)
 {
@@ -37,11 +46,19 @@ void OctreeBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject *> 
     m_secondaryBroadphase->FindPotentialCollisionPairs((*it)->objects, collisionPairs);
 }
 
+/**
+ * @copydoc IBroadphase::DebugDraw
+ */
 void OctreeBroadphase::DebugDraw()
 {
   DebugDrawWorldDivision(m_world);
 }
 
+/**
+ * @brief Recursively divides the world.
+ * @param division Current division
+ * @param iteration Iteration count
+ */
 void OctreeBroadphase::DivideWorld(WorldDivision *division, size_t iteration)
 {
   // Exit conditions (partition depth limit or target object count reached)
@@ -102,6 +119,10 @@ void OctreeBroadphase::DivideWorld(WorldDivision *division, size_t iteration)
   }
 }
 
+/**
+ * @brief Recursively draws world partitions.
+ * @param division Root world division
+ */
 void OctreeBroadphase::DebugDrawWorldDivision(WorldDivision *division)
 {
   // Draw bounding box

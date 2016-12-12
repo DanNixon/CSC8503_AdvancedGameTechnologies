@@ -4,11 +4,19 @@
 
 #include <algorithm>
 
+/**
+ * @brief Creates a new bounding box with minimum dimensions.
+ */
 BoundingBox::BoundingBox()
 {
   Reset();
 }
 
+/**
+ * @brief Creates a new bounding box with specified dimensions.
+ * @param lower Lower vertex
+ * @param upper Upper vertex
+ */
 BoundingBox::BoundingBox(const Vector3 &lower, const Vector3 &upper)
     : m_lower(lower)
     , m_upper(upper)
@@ -19,12 +27,19 @@ BoundingBox::~BoundingBox()
 {
 }
 
+/**
+ * @brief Resets the dimensions of the bounding box to minimum.
+ */
 void BoundingBox::Reset()
 {
   m_lower = Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
   m_upper = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 }
 
+/**
+ * @brief Expands the dimensions of the bounding box to fit a given point.
+ * @param point Point to include
+ */
 void BoundingBox::ExpandToFit(const Vector3 &point)
 {
   m_lower.x = min(m_lower.x, point.x);
@@ -36,6 +51,10 @@ void BoundingBox::ExpandToFit(const Vector3 &point)
   m_upper.z = max(m_upper.z, point.z);
 }
 
+/**
+ * @brief Expands the dimensions of the bounding box to fit a given bounding box.
+ * @param otherBox Bounding box to include
+ */
 void BoundingBox::ExpandToFit(const BoundingBox &otherBox)
 {
   m_lower.x = min(m_lower.x, otherBox.m_lower.x);
@@ -55,17 +74,30 @@ void BoundingBox::ExpandToFit(const BoundingBox &otherBox)
   m_upper.z = max(m_upper.z, otherBox.m_upper.z);
 }
 
+/**
+ * @brief Sets the half dimensions of the box.
+ * @param halfDims Half dimensions
+ */
 void BoundingBox::SetHalfDimensions(const Vector3 &halfDims)
 {
   m_lower = -halfDims;
   m_upper = halfDims;
 }
 
+/**
+ * @brief Gets the position of the centre of the box.
+ * @return Centre point
+ */
 const Vector3 BoundingBox::Centre() const
 {
   return m_lower + ((m_upper - m_lower) * 0.5f);
 }
 
+/**
+ * @brief Transforms this box by a given transformation matrix.
+ * @param transformation Transformation matrix
+ * @return Transformed bounding box
+ */
 BoundingBox BoundingBox::Transform(const Matrix4 &transformation) const
 {
   BoundingBox retVal;
@@ -83,17 +115,34 @@ BoundingBox BoundingBox::Transform(const Matrix4 &transformation) const
   return retVal;
 }
 
+/**
+ * @brief Tests if a point is inside this bounding box.
+ * @param point Point to test
+ * @return True if the point is inside the box
+ */
 bool BoundingBox::Intersects(const Vector3 &point) const
 {
   return m_lower <= point && point <= m_upper;
 }
 
+/**
+ * @brief Tests if this bounding box overlaps with another.
+ * @param otherBox Bounding box to test
+ * @return True if bounding boxes overlap
+ */
 bool BoundingBox::Intersects(const BoundingBox &otherBox) const
 {
   return (m_lower <= otherBox.m_lower && otherBox.m_lower <= m_upper) ||
          ((m_lower <= otherBox.m_upper && otherBox.m_upper <= m_upper));
 }
 
+/**
+ * @brief Debug draws this bounding box.
+ * @param transform Box transformation
+ * @param faceColour Colour of faces
+ * @param edgeColour Colour of edges
+ * @param width Width of edge lines
+ */
 void BoundingBox::DebugDraw(const Matrix4 &transform, const Vector4 &faceColour, const Vector4 &edgeColour, float width) const
 {
   Vector3 uuu = transform * m_upper;
@@ -122,4 +171,7 @@ void BoundingBox::DebugDraw(const Matrix4 &transform, const Vector4 &faceColour,
   NCLDebug::DrawThickLineNDT(ull, ulu, width, edgeColour);
   NCLDebug::DrawThickLineNDT(lul, luu, width, edgeColour);
   NCLDebug::DrawThickLineNDT(uul, uuu, width, edgeColour);
+
+  // Draw faces
+  // TODO
 }

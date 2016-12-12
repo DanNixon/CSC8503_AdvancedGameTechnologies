@@ -1,11 +1,19 @@
 #include "AABBCollisionShape.h"
 #include "PhysicsObject.h"
 
+/**
+ * @brief Create a new AABB collision shape.
+ */
 AABBCollisionShape::AABBCollisionShape()
     : CuboidCollisionShape()
 {
 }
 
+/**
+ * @brief Create a new AABB collision shape with given dimensions.
+ * @param lowerLeft Lower vertex
+ * @param upperRight Upper vertex
+ */
 AABBCollisionShape::AABBCollisionShape(const Vector3 &lowerLeft, const Vector3 &upperRight)
     : CuboidCollisionShape()
 {
@@ -17,6 +25,9 @@ AABBCollisionShape::~AABBCollisionShape()
 {
 }
 
+/**
+ * @copydoc CuboidCollisionShape::GetCollisionAxes
+ */
 void AABBCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *axis) const
 {
   if (axis)
@@ -27,6 +38,9 @@ void AABBCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, st
   }
 }
 
+/**
+ * @copydoc CuboidCollisionShape::GetShapeWorldTransformation
+ */
 void AABBCollisionShape::GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const
 {
   Matrix4 objectWs = currentObject->GetWorldSpaceTransform();

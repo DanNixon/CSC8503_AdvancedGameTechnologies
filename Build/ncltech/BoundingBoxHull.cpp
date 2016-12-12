@@ -1,12 +1,38 @@
 #include "BoundingBoxHull.h"
 
+/**
+ * @brief Vertices of the far face.
+ */
 const int BoundingBoxHull::FAR_FACE[] = {0, 1, 2, 3};
+
+/**
+ * @brief Vertices of the near face.
+ */
 const int BoundingBoxHull::NEAR_FACE[] = {7, 6, 5, 4};
+
+/**
+ * @brief Vertices of the top face.
+ */
 const int BoundingBoxHull::TOP_FACE[] = {5, 6, 2, 1};
+
+/**
+ * @brief Vertices of the bottom face.
+ */
 const int BoundingBoxHull::BOTTOM_FACE[] = {0, 3, 7, 4};
+
+/**
+ * @brief Vertices of the right face.
+ */
 const int BoundingBoxHull::RIGHT_FACE[] = {6, 7, 3, 2};
+
+/**
+ * @brief Vertices of the left face.
+ */
 const int BoundingBoxHull::LEFT_FACE[] = {4, 5, 1, 0};
 
+/**
+ * @brief Creates a new bounding box with hull.
+ */
 BoundingBoxHull::BoundingBoxHull()
 {
   // Vertices
@@ -32,6 +58,9 @@ BoundingBoxHull::~BoundingBoxHull()
 {
 }
 
+/**
+ * @brief Updates the positions of the hull vertices to match the upper and lower vertices of the bounding box.
+ */
 void BoundingBoxHull::UpdateHull()
 {
   if (m_vVertices.size() != 8)

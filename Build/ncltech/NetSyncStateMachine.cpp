@@ -1,5 +1,11 @@
 #include "NetSyncStateMachine.h"
 
+/**
+ * @brief Creates a new synchronised state machine.
+ * @param broker Broker to connect to
+ * @param rxTopic Topic to listen for state changes on
+ * @param txTopic Topic to broadcast state changes to
+ */
 NetSyncStateMachine::NetSyncStateMachine(PubSubBroker &broker, const std::string &rxTopic, const std::string &txTopic)
     : StateMachine()
     , IPubSubClient(broker)
@@ -13,6 +19,9 @@ NetSyncStateMachine::~NetSyncStateMachine()
 {
 }
 
+/**
+ * @copydoc StateMachine:;Transfer
+ */
 bool NetSyncStateMachine::Transfer()
 {
   bool didTransfer = StateMachine::Transfer();
@@ -33,6 +42,9 @@ bool NetSyncStateMachine::Transfer()
   return didTransfer;
 }
 
+/**
+ * @copydoc IPubSubClient::HandleSubscription
+ */
 bool NetSyncStateMachine::HandleSubscription(const std::string &topic, const char *msg)
 {
   // Find target state

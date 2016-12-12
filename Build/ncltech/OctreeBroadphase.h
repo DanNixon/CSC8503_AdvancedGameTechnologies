@@ -4,20 +4,29 @@
 
 #include "BoundingBox.h"
 
+/**
+ * @class OctreeBroadphase
+ * @author Dan Nixon
+ * @brief Broadphase culling using octree method.
+ */
 class OctreeBroadphase : public IBroadphase
 {
 public:
+  /**
+   * @brief Stores data relating to a subdivision of the world space.
+   */
   struct WorldDivision
   {
     ~WorldDivision()
     {
+      // Delete all subdivisions
       for (auto it = subdivisions.begin(); it != subdivisions.end(); ++it)
         delete *it;
     }
 
-    BoundingBox box;
-    std::vector<PhysicsObject *> objects;
-    std::vector<WorldDivision *> subdivisions;
+    BoundingBox box;                           //!< Division bounding box
+    std::vector<PhysicsObject *> objects;      //!< Objects withing this division
+    std::vector<WorldDivision *> subdivisions; //!< Subdivisions within this division
   };
 
 public:

@@ -3,6 +3,11 @@
 #include <nclgl/Matrix4.h>
 #include <nclgl/Vector3.h>
 
+/**
+ * @class BoundingBox
+ * @author Dan Nixon
+ * @brief Represents a simple 3D bounding box.
+ */
 class BoundingBox
 {
 public:
@@ -16,21 +21,37 @@ public:
   void ExpandToFit(const BoundingBox &otherBox);
   void SetHalfDimensions(const Vector3 &halfDims);
 
+  /**
+   * @brief Gets the lower vertex of the bounding box.
+   * @return Reference to vertex
+   */
   Vector3 &Lower()
   {
     return m_lower;
   }
 
+  /**
+   * @brief Gets the lower vertex of the bounding box.
+   * @return Const reference to vertex
+   */
   const Vector3 &Lower() const
   {
     return m_lower;
   }
 
+  /**
+   * @brief Gets the upper vertex of the bounding box.
+   * @return Reference to vertex
+   */
   Vector3 &Upper()
   {
     return m_upper;
   }
 
+  /**
+   * @brief Gets the upper vertex of the bounding box.
+   * @return Const reference to vertex
+   */
   const Vector3 &Upper() const
   {
     return m_upper;

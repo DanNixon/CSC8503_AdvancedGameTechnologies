@@ -9,7 +9,7 @@ seperate. It works on a velocity level, enforcing the constraint:
 	dot([(velocity of B) - (velocity of A)], normal) = zero
 
 Thus ensuring that after integrating the position through the time, the distance between
-the two objects never changes. 
+the two objects never changes.
 
 		(\_/)
 		( '_')
@@ -25,6 +25,10 @@ the two objects never changes.
 #include "NCLDebug.h"
 #include "PhysicsEngine.h"
 
+/**
+ * @class DistanceConstraint
+ * @brief Constraint to keep two objects a given distance apart.
+ */
 class DistanceConstraint : public IConstraint
 {
 public:
@@ -34,11 +38,11 @@ public:
   virtual void DebugDraw() const;
 
 protected:
-  PhysicsObject *m_pObj1;
-  PhysicsObject *m_pObj2;
+  PhysicsObject *m_pObj1; //!< First object
+  PhysicsObject *m_pObj2; //!< Second object
 
-  float m_Distance;
+  float m_Distance; //!< target distance between objects
 
-  Vector3 m_LocalOnA;
-  Vector3 m_LocalOnB;
+  Vector3 m_LocalOnA; //!< Local constraint point transform on first object
+  Vector3 m_LocalOnB; //!< Local constraint point transform on second object
 };

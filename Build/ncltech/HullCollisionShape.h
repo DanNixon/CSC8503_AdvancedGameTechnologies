@@ -6,6 +6,11 @@
 
 #include <nclgl/Mesh.h>
 
+/**
+ * @class HullCollisionShape
+ * @author Dan Nixon
+ * @brief Collision shape for a convex hull.
+ */
 class HullCollisionShape : public ICollisionShape
 {
 public:
@@ -32,5 +37,5 @@ protected:
   virtual void GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const;
 
 protected:
-  Hull m_hull;
+  Hull m_hull; //!< Hull describing shape
 };

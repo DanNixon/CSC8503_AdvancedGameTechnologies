@@ -3,11 +3,10 @@
 #include "PhysicsObject.h"
 #include <nclgl/Matrix3.h>
 
-SphereCollisionShape::SphereCollisionShape()
-{
-  m_Radius = 1.0f;
-}
-
+/**
+ * @brief Creates a spherical collision shape.
+ * @param radius Sphere radius (default is 1)
+ */
 SphereCollisionShape::SphereCollisionShape(float radius)
 {
   m_Radius = radius;
@@ -17,6 +16,9 @@ SphereCollisionShape::~SphereCollisionShape()
 {
 }
 
+/**
+ * @copydoc ICollisionShape::BuildInverseInertia
+ */
 Matrix3 SphereCollisionShape::BuildInverseInertia(float invMass) const
 {
   // https://en.wikipedia.org/wiki/List_of_moments_of_inertia
@@ -31,17 +33,25 @@ Matrix3 SphereCollisionShape::BuildInverseInertia(float invMass) const
   return inertia;
 }
 
+/**
+ * @copydoc ICollisionShape::GetCollisionAxes
+ */
 void SphereCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const
 {
-  /* There is infinite possible axes on a sphere so we MUST handle it seperately
-   */
+  // There is infinite possible axes on a sphere so we MUST handle it seperately
 }
 
+/**
+ * @copydoc ICollisionShape::GetEdges
+ */
 void SphereCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *out_edges) const
 {
-  /* There is infinite edges on a sphere so we MUST handle it seperately */
+  //There is infinite edges on a sphere so we MUST handle it seperately
 }
 
+/**
+ * @copydoc ICollisionShape::GetMinMaxVertexOnAxis
+ */
 void SphereCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
                                                  Vector3 *out_max) const
 {
@@ -61,6 +71,9 @@ void SphereCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObj
     *out_max = pos + axis * m_Radius;
 }
 
+/**
+ * @copydoc ICollisionShape::GetIncidentReferencePolygon
+ */
 void SphereCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
                                                        std::list<Vector3> *out_face, Vector3 *out_normal,
                                                        std::vector<Plane> *out_adjacent_planes) const
@@ -75,6 +88,9 @@ void SphereCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
     *out_normal = axis;
 }
 
+/**
+ * @copydoc ICollisionShape::DebugDraw
+ */
 void SphereCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
   Matrix4 wsTransform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;

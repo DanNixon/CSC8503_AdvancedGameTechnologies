@@ -21,32 +21,38 @@ setting up and adjanency information.
 
 #include "ICollisionShape.h"
 
+/**
+ * @class SphereCollisionShape
+ * @brief Collision shape for a sphere.
+ */
 class SphereCollisionShape : public ICollisionShape
 {
 public:
-  SphereCollisionShape();
-  SphereCollisionShape(float radius);
+  SphereCollisionShape(float radius = 1.0f);
   virtual ~SphereCollisionShape();
 
-  // Get/Set Sphere Radius
+  /**
+   * @brief Sets the sphere radius.
+   * @param radius Radius
+   */
   void SetRadius(float radius)
   {
     m_Radius = radius;
   }
 
+  /**
+   * @brief Gets the sphere radius.
+   * @return Radius
+   */
   inline float GetRadius() const
   {
     return m_Radius;
   }
 
-  // Debug Collision Shape
   virtual void DebugDraw(const PhysicsObject *currentObject) const override;
 
-  // Build Inertia Matrix for rotational mass
   virtual Matrix3 BuildInverseInertia(float invMass) const override;
 
-  // Generic Collision Detection Routines
-  //  - Used in CollisionDetectionSAT to identify if two shapes overlap
   virtual void GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const override;
 
   virtual void GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *out_edges) const override;
@@ -58,5 +64,5 @@ public:
                                            Vector3 *out_normal, std::vector<Plane> *out_adjacent_planes) const override;
 
 protected:
-  float m_Radius;
+  float m_Radius; //!< Sphere radius
 };

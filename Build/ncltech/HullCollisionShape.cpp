@@ -4,6 +4,9 @@
 #include <nclgl/Matrix3.h>
 #include <nclgl/OGLRenderer.h>
 
+/**
+ * @brief Creates a new convex hull collision shape.
+ */
 HullCollisionShape::HullCollisionShape()
 {
 }
@@ -12,6 +15,10 @@ HullCollisionShape::~HullCollisionShape()
 {
 }
 
+/**
+ * @brief Builds the hull based on a graphical Mesh.
+ * @param mesh Mesh to build from
+ */
 void HullCollisionShape::BuildFromMesh(Mesh *mesh)
 {
   // Add vertices
@@ -49,6 +56,9 @@ void HullCollisionShape::BuildFromMesh(Mesh *mesh)
   }
 }
 
+/**
+ * @copydoc ICollisionShape::BuildInverseInertia
+ */
 Matrix3 HullCollisionShape::BuildInverseInertia(float invMass) const
 {
   BoundingBox bb = m_hull.GetBoundingBox();
@@ -63,6 +73,9 @@ Matrix3 HullCollisionShape::BuildInverseInertia(float invMass) const
   return inertia;
 }
 
+/**
+ * @copydoc ICollisionShape::GetCollisionAxes
+ */
 void HullCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *axes) const
 {
   if (axes)
@@ -74,6 +87,9 @@ void HullCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, st
   }
 }
 
+/**
+ * @copydoc ICollisionShape::GetEdges
+ */
 void HullCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *edges) const
 {
   if (edges)
@@ -92,6 +108,9 @@ void HullCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vecto
   }
 }
 
+/**
+ * @copydoc ICollisionShape::GetMinMaxVertexOnAxis
+ */
 void HullCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *min,
                                                Vector3 *max) const
 {
@@ -119,6 +138,9 @@ void HullCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObjec
     *max = transform * m_hull.GetVertex(vMax).pos;
 }
 
+/**
+ * @copydoc ICollisionShape::GetIncidentReferencePolygon
+ */
 void HullCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
                                                      std::list<Vector3> *face, Vector3 *normal,
                                                      std::vector<Plane> *adjacentPlanes) const
@@ -220,6 +242,9 @@ void HullCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curren
   }
 }
 
+/**
+ * @copydoc ICollisionShape::DebugDraw
+ */
 void HullCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
   Matrix4 transform;
@@ -229,6 +254,9 @@ void HullCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
   m_hull.DebugDraw(transform);
 }
 
+/**
+ * @copydoc ICollisionShape::GetShapeWorldTransformation
+ */
 void HullCollisionShape::GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const
 {
   transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;

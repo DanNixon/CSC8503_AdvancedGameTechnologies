@@ -4,6 +4,10 @@
 
 #include <algorithm>
 
+/**
+ * @brief Creates a new sort and sweep broadphase instance.
+ * @param axis Axis to operate along (defaults to X axis)
+ */
 SortAndSweepBroadphase::SortAndSweepBroadphase(const Vector3 &axis)
     : IBroadphase()
 {
@@ -14,6 +18,10 @@ SortAndSweepBroadphase::~SortAndSweepBroadphase()
 {
 }
 
+/**
+ * @brief Set the axis to operate along.
+ * @param axis Unit vector defining axis
+ */
 void SortAndSweepBroadphase::SetAxis(const Vector3 &axis)
 {
   // Determine axis
@@ -33,6 +41,9 @@ void SortAndSweepBroadphase::SetAxis(const Vector3 &axis)
   };
 }
 
+/**
+ * @copydoc IBroadphase::FindPotentialCollisionPairs
+ */
 void SortAndSweepBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject *> &objects,
                                                          std::vector<CollisionPair> &collisionPairs)
 {
@@ -64,6 +75,9 @@ void SortAndSweepBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObje
   }
 }
 
+/**
+ * @copydoc IBroadphase::DebugDraw
+ */
 void SortAndSweepBroadphase::DebugDraw()
 {
   NCLDebug::DrawPointNDT(Vector3(0.0f, 0.0f, 0.0f), 0.05f, Vector4(0.0f, 0.0f, 1.0f, 1.0f));

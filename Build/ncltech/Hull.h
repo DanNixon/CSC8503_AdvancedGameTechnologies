@@ -2,22 +2,22 @@
 Class: Hull
 Implements:
 Author: Pieran Marris      <p.marris@newcastle.ac.uk> and YOU!
-Description: 
+Description:
 
 This is an elaborate and /slow/ version of the Mesh class from Graphics for Games.
 It keeps track of faces, vertices and edges of a given mesh aswell as all the adjancy
 information.
 
-This means that you can retrieve a face and instanty have a list of all of it's 
+This means that you can retrieve a face and instanty have a list of all of it's
 adjancent faces and contained vertices/edges without having to do expensive lookups.
 Yep.. the expensive part is that these are all precomputed when the hull is first created O(n^3).
 
-They can be quite useful for debugging shapes and experimenting with new 3D algorithms. 
-In this framework they are used to represent discrete collision shapes which have distinct non-curved, 
+They can be quite useful for debugging shapes and experimenting with new 3D algorithms.
+In this framework they are used to represent discrete collision shapes which have distinct non-curved,
 faces such as the CuboidCollisionShape.
 
 Note: One of the big changes from a normal Mesh is that the faces can have any number of vertices,
-so you could represent your mesh as a series of pentagons, quads etc or any combination of these. 
+so you could represent your mesh as a series of pentagons, quads etc or any combination of these.
 
 		(\_/)
 		( '_')
@@ -35,29 +35,39 @@ so you could represent your mesh as a series of pentagons, quads etc or any comb
 
 class BoundingBox;
 
+/**
+ * @brief Stores data related to a vertex in a Hull.
+ */
 struct HullVertex
 {
-  int idx;
-  Vector3 pos;
-  std::vector<int> enclosing_edges;
-  std::vector<int> enclosing_faces;
+  int idx;                          //!< Vertex index
+  Vector3 pos;                      //!< Position
+  std::vector<int> enclosing_edges; //!< Indices of connected edges
+  std::vector<int> enclosing_faces; //!< Indices of connected faces
 };
 
+/**
+ * @brief Stores data related to an edge in a Hull.
+ */
 struct HullEdge
 {
-  int idx;
-  int vStart, vEnd;
-  std::vector<int> adjoining_edge_ids;
-  std::vector<int> enclosing_faces;
+  int idx;                             //!< Edge index
+  int vStart;                          //!< Index of start vertex
+  int vEnd;                            //!< Index of end vertex
+  std::vector<int> adjoining_edge_ids; //!< Indices of connected edges
+  std::vector<int> enclosing_faces;    //!< Indices of connected faces
 };
 
+/**
+ * @brief Stores data related to an edge in a Hull.
+ */
 struct HullFace
 {
-  int idx;
-  Vector3 _normal;
-  std::vector<int> vert_ids;
-  std::vector<int> edge_ids;
-  std::vector<int> adjoining_face_ids;
+  int idx;                             //!< Face index
+  Vector3 _normal;                     //!< Face normal
+  std::vector<int> vert_ids;           //!< Indices of vertices
+  std::vector<int> edge_ids;           //!< Indices of edges
+  std::vector<int> adjoining_face_ids; //!< Indices of connected faces
 };
 
 class Hull

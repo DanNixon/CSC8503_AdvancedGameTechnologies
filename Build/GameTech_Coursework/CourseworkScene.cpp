@@ -17,8 +17,14 @@
 #include <ncltech\State.h>
 #include <ncltech\WeldConstraint.h>
 
+/**
+ * @brief Radius of the planet.
+ */
 const float CourseworkScene::PLANET_RADIUS = 100.0f;
 
+/**
+ * @brief Prints the key mappings to the log.
+ */
 void CourseworkScene::PrintKeyMapping()
 {
   NCLDebug::Log("Key mappings:");
@@ -29,8 +35,11 @@ void CourseworkScene::PrintKeyMapping()
   NCLDebug::Log("  Switch integrations mode: %c", INTEGRATION_MODE_KEY);
 }
 
-CourseworkScene::CourseworkScene(const std::string &friendlyName)
-    : Scene(friendlyName)
+/**
+ * @brief Creates a new courseowrk scene.
+ */
+CourseworkScene::CourseworkScene()
+    : Scene("GameTech coursework")
     , m_planetTex(0)
     , m_planet(nullptr)
 {

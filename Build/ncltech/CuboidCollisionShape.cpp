@@ -3,6 +3,10 @@
 #include <nclgl/Matrix3.h>
 #include <nclgl/OGLRenderer.h>
 
+/**
+ * @brief Creates a new cuboid collision shape.
+ * @param halfDims Half dimensions
+ */
 CuboidCollisionShape::CuboidCollisionShape(const Vector3 &halfDims)
 {
   SetHalfDims(halfDims);
@@ -12,6 +16,9 @@ CuboidCollisionShape::~CuboidCollisionShape()
 {
 }
 
+/**
+ * @copydoc ICollisionShape::BuildInverseInertia
+ */
 Matrix3 CuboidCollisionShape::BuildInverseInertia(float invMass) const
 {
   Matrix3 inertia;
@@ -26,6 +33,9 @@ Matrix3 CuboidCollisionShape::BuildInverseInertia(float invMass) const
   return inertia;
 }
 
+/**
+ * @copydoc ICollisionShape::GetCollisionAxes
+ */
 void CuboidCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *axes) const
 {
   if (axes)
@@ -37,6 +47,9 @@ void CuboidCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, 
   }
 }
 
+/**
+ * @copydoc ICollisionShape::GetEdges
+ */
 void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *edges) const
 {
   if (edges)
@@ -55,6 +68,9 @@ void CuboidCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vec
   }
 }
 
+/**
+ * @copydoc ICollisionShape::GetMinMaxVertexOnAxis
+ */
 void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *min,
                                                  Vector3 *max) const
 {
@@ -82,6 +98,9 @@ void CuboidCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObj
     *max = transform * m_hull.GetVertex(vMax).pos;
 }
 
+/**
+ * @copydoc ICollisionShape::GetIncidentReferencePolygon
+ */
 void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
                                                        std::list<Vector3> *face, Vector3 *normal,
                                                        std::vector<Plane> *adjacentPlanes) const
@@ -183,6 +202,9 @@ void CuboidCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curr
   }
 }
 
+/**
+ * @copydoc ICollisionShape::DebugDraw
+ */
 void CuboidCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
   Matrix4 transform;
@@ -192,6 +214,9 @@ void CuboidCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
   m_hull.Hull::DebugDraw(transform);
 }
 
+/**
+ * @copydoc ICollisionShape::GetShapeWorldTransformation
+ */
 void CuboidCollisionShape::GetShapeWorldTransformation(const PhysicsObject *currentObject, Matrix4 &transform) const
 {
   transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;

@@ -6,21 +6,40 @@
 #include <ncltech\Scene.h>
 #include <queue>
 
+/**
+ * @class CourseworkScene
+ * @brief Courseowrk demo scene.
+ */
 class CourseworkScene : public Scene
 {
 public:
   static const float PLANET_RADIUS;
 
+  /**
+   * @brief Key used to toggle broadphase collision detection mode.
+   */
   static const KeyboardKeys BROADPHASE_MODE_KEY = KeyboardKeys::KEYBOARD_B;
+
+  /**
+   * @brief Key used to toggle integration mode.
+   */
   static const KeyboardKeys INTEGRATION_MODE_KEY = KeyboardKeys::KEYBOARD_I;
+
+  /**
+   * @brief Key used to toggle physics debug draw mode.
+   */
   static const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
+
+  /**
+   * @brief Key used to shoot a sphere from the camera view point.
+   */
   static const KeyboardKeys SHOOT_BALL_KEY = KeyboardKeys::KEYBOARD_J;
 
 public:
   static void PrintKeyMapping();
 
 public:
-  CourseworkScene(const std::string &friendly_name);
+  CourseworkScene();
   virtual ~CourseworkScene();
 
   virtual void OnInitializeScene() override;

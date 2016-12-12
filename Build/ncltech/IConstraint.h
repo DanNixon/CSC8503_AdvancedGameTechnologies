@@ -1,9 +1,9 @@
 /******************************************************************************
 Class: IConstraint
-Implements: 
+Implements:
 Author: Pieran Marris      <p.marris@newcastle.ac.uk> and YOU!
 Description:
-A generic template class to represent a physical constraint. 
+A generic template class to represent a physical constraint.
 
 A rigid body has 6 degrees of freedom: 3 positional and 3 rotational. A
 constraint in this sense is anything which acts to constrain the movement of that
@@ -36,6 +36,10 @@ which you may want to implement yourselves.
 #include "PhysicsObject.h"
 #include <nclgl\Vector3.h>
 
+/**
+ * @class IConstraint
+ * @brief Interface for a physical constraint between two objects.
+ */
 class IConstraint
 {
 public:
@@ -43,21 +47,26 @@ public:
   {
   }
 
-  // Apply Velocity Impulse to object(s) in order to satisfy given constraint
-  //  - Called by PhysicsEngine upon resolving constraints
+  /**
+   * @brief Apply Velocity Impulse to object(s) in order to satisfy given constraint.
+   *
+   * Called by PhysicsEngine upon resolving constraints
+   */
   virtual void ApplyImpulse() = 0;
 
-  // Optional: Pre-solver step will be triggered before any calls to
-  // ApplyImpulse
-  //			 and only ever be called once per physics timestep
-  //  - If you need to precompute any data/velocity forces prior to them
-  //  changing
-  //    through this (or other constraints) then you can do it here.
+  /**
+   * @brief Pre-solver step will be triggered before any calls to ApplyImpulse and only ever be called once per physics timestep
+   * @param dt Time step
+   *
+   * If you need to precompute any data/velocity forces prior to them changing through this (or other constraints) then you can do it here.
+   */
   virtual void PreSolverStep(float dt)
   {
   }
 
-  // Visually Debug Constraint
+  /**
+   * @brief Visually debug constraint.
+   */
   virtual void DebugDraw() const
   {
   }
