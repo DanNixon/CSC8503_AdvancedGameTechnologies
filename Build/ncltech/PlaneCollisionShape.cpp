@@ -1,7 +1,7 @@
 #include "PlaneCollisionShape.h"
 
-#include "PhysicsObject.h"
 #include "NCLDebug.h"
+#include "PhysicsObject.h"
 
 /**
  * @brief Create a new plane collision shape.
@@ -28,7 +28,7 @@ Matrix3 PlaneCollisionShape::BuildInverseInertia(float invMass) const
 /**
  * @copydoc ICollisionShape::GetCollisionAxes
  */
-void PlaneCollisionShape::GetCollisionAxes(const PhysicsObject * currentObject, std::vector<Vector3>* out_axes) const
+void PlaneCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, std::vector<Vector3> *out_axes) const
 {
   // TODO
 }
@@ -36,7 +36,7 @@ void PlaneCollisionShape::GetCollisionAxes(const PhysicsObject * currentObject, 
 /**
  * @copydoc ICollisionShape::GetEdges
  */
-void PlaneCollisionShape::GetEdges(const PhysicsObject * currentObject, std::vector<CollisionEdge>* out_edges) const
+void PlaneCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *out_edges) const
 {
   // TODO
 }
@@ -44,7 +44,8 @@ void PlaneCollisionShape::GetEdges(const PhysicsObject * currentObject, std::vec
 /**
  * @copydoc ICollisionShape::GetMinMaxVertexOnAxis
  */
-void PlaneCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject * currentObject, const Vector3 & axis, Vector3 * out_min, Vector3 * out_max) const
+void PlaneCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject *currentObject, const Vector3 &axis, Vector3 *out_min,
+                                                Vector3 *out_max) const
 {
   // TODO
 }
@@ -52,7 +53,9 @@ void PlaneCollisionShape::GetMinMaxVertexOnAxis(const PhysicsObject * currentObj
 /**
  * @copydoc ICollisionShape::GetIncidentReferencePolygon
  */
-void PlaneCollisionShape::GetIncidentReferencePolygon(const PhysicsObject * currentObject, const Vector3 & axis, std::list<Vector3>* out_face, Vector3 * out_normal, std::vector<Plane>* out_adjacent_planes) const
+void PlaneCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *currentObject, const Vector3 &axis,
+                                                      std::list<Vector3> *out_face, Vector3 *out_normal,
+                                                      std::vector<Plane> *out_adjacent_planes) const
 {
   // TODO
 }
@@ -60,7 +63,7 @@ void PlaneCollisionShape::GetIncidentReferencePolygon(const PhysicsObject * curr
 /**
  * @copydoc ICollisionShape::DebugDraw
  */
-void PlaneCollisionShape::DebugDraw(const PhysicsObject * currentObject) const
+void PlaneCollisionShape::DebugDraw(const PhysicsObject *currentObject) const
 {
   Matrix4 transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
   Vector3 pos = transform.GetPositionVector();

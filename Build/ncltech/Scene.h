@@ -74,9 +74,9 @@ public:
 
   // Add GameObject to the scene list
   //    - All added game objects are managed by the scene itself, firing OnRender and OnUpdate functions automatically
-  void AddGameObject(Object *game_object);
+  void AddGameObject(Object *gameObject);
 
-  void RemoveGameObject(Object *game_object);
+  void RemoveGameObject(Object *gameObject);
 
   // Simple recursive search
   //   - Searches all Objects in the tree and returns the first one with the name specified or NULL if none can be

@@ -62,6 +62,12 @@ public:
     return m_parent->ActiveChild() == this;
   }
 
+  /**
+   * @brief Gets the time spent in the current state.
+   * @return Time in state
+   *
+   * Note that units are not relevant in the scope of the FSM so are the same as whatever units were passed to Update().
+   */
   inline float TimeInState() const
   {
     return m_timeInState;

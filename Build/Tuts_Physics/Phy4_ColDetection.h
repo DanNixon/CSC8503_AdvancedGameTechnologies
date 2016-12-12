@@ -60,11 +60,11 @@ normal are correct for all collisions. =]
 #include <ncltech\NCLDebug.h>
 #include <ncltech\OctreeBroadphase.h>
 #include <ncltech\PhysicsEngine.h>
+#include <ncltech\PlaneCollisionShape.h>
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
 #include <ncltech\SphereCollisionShape.h>
-#include <ncltech\PlaneCollisionShape.h>
 
 class Phy4_ColDetection : public Scene
 {
@@ -99,9 +99,9 @@ public:
 
     // Create Ground
     {
-      Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f,
-        false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
-      
+      Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,
+                                                      0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+
       ground->Physics()->AddCollisionShape(new PlaneCollisionShape(Vector3(0.0f, 1.0f, 0.0f)));
 
       AddGameObject(ground);
@@ -119,7 +119,7 @@ public:
       AddGameObject(sphere);
 
       AddGameObject(CommonUtils::BuildSphereObject("orbiting_sphere1.1", ss_pos, 0.5f, true, 0.0f, true, true,
-                                                         CommonUtils::GenColour(0.55f, 1.0f)));
+                                                   CommonUtils::GenColour(0.55f, 1.0f)));
     }
 
     // Create Sphere-Cuboid Manifold Test
@@ -139,8 +139,8 @@ public:
       // Auto set bounding box
       sphere->Physics()->AutoResizeBoundingBox();
 
-      AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid2.2", sc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true,
-                                                         true, CommonUtils::GenColour(0.55f, 1.0f)));
+      AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid2.2", sc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true, true,
+                                                   CommonUtils::GenColour(0.55f, 1.0f)));
     }
 
     // Create Cuboid-Cuboid Manifold Test
@@ -152,8 +152,8 @@ public:
 
       cuboid->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 30.0f));
 
-      AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid3.3", cc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true,
-                                                         true, CommonUtils::GenColour(0.55f, 1.0f)));
+      AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid3.3", cc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true, true,
+                                                   CommonUtils::GenColour(0.55f, 1.0f)));
     }
   }
 

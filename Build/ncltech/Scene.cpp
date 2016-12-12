@@ -21,22 +21,25 @@ Scene::~Scene()
   }
 }
 
-void Scene::AddGameObject(Object *game_object)
+void Scene::AddGameObject(Object *gameObject)
 {
-  m_pRootGameObject->AddChildObject(game_object);
+  m_pRootGameObject->AddChildObject(gameObject);
 }
 
-void Scene::RemoveGameObject(Object *game_object)
+void Scene::RemoveGameObject(Object *gameObject)
 {
-  auto it = std::find(game_object->m_parent->m_vpChildren.begin(), game_object->m_parent->m_vpChildren.end(), game_object);
-  if (it != game_object->m_parent->m_vpChildren.end())
+  if (gameObject->m_parent == nullptr)
+    return;
+
+  auto it = std::find(gameObject->m_parent->m_vpChildren.begin(), gameObject->m_parent->m_vpChildren.end(), gameObject);
+  if (it != gameObject->m_parent->m_vpChildren.end())
   {
-    if (game_object->HasPhysics())
-      PhysicsEngine::Instance()->RemovePhysicsObject(game_object->Physics());
+    if (gameObject->HasPhysics())
+      PhysicsEngine::Instance()->RemovePhysicsObject(gameObject->Physics());
 
-    game_object->m_parent->m_vpChildren.erase(it);
+    gameObject->m_parent->m_vpChildren.erase(it);
 
-    delete game_object;
+    delete gameObject;
   }
 }
 

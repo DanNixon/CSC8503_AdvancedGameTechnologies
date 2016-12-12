@@ -245,11 +245,13 @@ CourseworkScene::CourseworkScene()
     State *reset = new State("reset", m_playerStateMachine.RootState(), &m_playerStateMachine);
     m_playerStateMachine.SetDefaultState(reset);
     reset->AddTransferFromTest([idle]() { return idle; });
-    reset->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(PLAYER_RESET_KEY); });
+    reset->AddTransferToTest([]() { return Window::GetKeyboard()->KeyTriggered(PLAYER_RESET_KEY); });
     reset->AddOnEntryBehaviour([this](State *) {
       NCLDebug::Log("Player reset.");
+
       for (auto it = this->m_shotSpheres.begin(); it != this->m_shotSpheres.end(); ++it)
         this->RemoveGameObject(*it);
+      this->m_shotSpheres.clear();
     });
 
     // Exit conditions
@@ -285,11 +287,10 @@ CourseworkScene::CourseworkScene()
         Vector3 velocity(0.0f, 0.0f, -s->TimeInState() * 10.0f);
         Quaternion::RotatePointByQuaternion(camera->GetOrientation(), velocity);
 
-        Object *sphere = CommonUtils::BuildSphereObject("player_shot_sphere", camera->GetPosition(), 1.0f, true, 1.0f, true,
-                                                        false, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+        Ball *sphere = new Ball();
+        sphere->Physics()->SetPosition(camera->GetPosition());
         sphere->Physics()->SetLinearVelocity(velocity);
         sphere->Physics()->SetGravitationTarget(this->m_planet->Physics());
-        sphere->Physics()->AutoResizeBoundingBox();
         this->m_shotSpheres.push_back(sphere);
         this->AddGameObject(sphere);
 
@@ -398,16 +399,8 @@ void CourseworkScene::OnInitializeScene()
     AddGameObject(m_target);
 
     m_target->Physics()->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
-      bool handle = b != this->m_planet->Physics();
-
-      if (handle)
-      {
-        std::string aname = a->GetAssociatedObject()->GetName();
-        std::string bname = b->GetAssociatedObject()->GetName();
-        NCLDebug::Log("%s hits %s", aname.c_str(), bname.c_str());
-      }
-
-      return handle;
+      // No collisions with planet
+      return (b != this->m_planet->Physics());
     });
 
     // Fix target position to planet
@@ -417,8 +410,6 @@ void CourseworkScene::OnInitializeScene()
 
 void CourseworkScene::OnCleanupScene()
 {
-  Scene::OnCleanupScene();
-
   // Reset state machines
   m_debugDrawStateMachine.Reset();
   m_broadphaseModeStateMachine.Reset();
@@ -428,6 +419,8 @@ void CourseworkScene::OnCleanupScene()
   // Cleanup object pointers
   m_planet = nullptr;
   m_target = nullptr;
+
+  Scene::OnCleanupScene();
 }
 
 void CourseworkScene::OnUpdateScene(float dt)
@@ -437,6 +430,23 @@ void CourseworkScene::OnUpdateScene(float dt)
   m_broadphaseModeStateMachine.Update(dt);
   m_integrationModeStateMachine.Update(dt);
   m_playerStateMachine.Update(dt);
+
+  // Update balls
+  for (auto it = m_shotSpheres.begin(); it != m_shotSpheres.end();)
+  {
+    Ball *b = *it;
+    b->GetStateMachine().Update(dt);
+
+    if (b->IsDead())
+    {
+      it = m_shotSpheres.erase(it);
+      RemoveGameObject(b);
+    }
+    else
+    {
+      ++it;
+    }
+  }
 
   // Add planet rotation
   m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.01f, 0.0f));

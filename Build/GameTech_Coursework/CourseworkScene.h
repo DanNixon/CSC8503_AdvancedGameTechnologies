@@ -6,6 +6,8 @@
 #include <ncltech\Scene.h>
 #include <vector>
 
+#include "Ball.h"
+
 /**
  * @class CourseworkScene
  * @author Dan Nixon
@@ -62,7 +64,7 @@ protected:
   Mesh *m_targetMesh;   //!< Graphical mesh for the target
   Mesh *m_lampPostMesh; //!< Graphical mesh for the lamp post
 
-  ObjectMesh *m_planet;                //!< Planet object
-  ObjectMesh *m_target;                //!< Target object
-  std::vector<Object *> m_shotSpheres; //!< Spheres shot by the player
+  ObjectMesh *m_planet;              //!< Planet object
+  ObjectMesh *m_target;              //!< Target object
+  std::vector<Ball *> m_shotSpheres; //!< Balls shot by the player
 };

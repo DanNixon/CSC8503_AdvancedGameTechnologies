@@ -1,10 +1,11 @@
+// clang-format off
 #include <winsock2.h>
-
 #include <nclgl\Window.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PerfTimer.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
+// clang-format on
 
 #include "CourseworkScene.h"
 
