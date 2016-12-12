@@ -433,7 +433,7 @@ void CourseworkScene::OnInitializeScene()
 
     m_lampPost->Physics()->AutoResizeBoundingBox();
 
-    AddGameObject(m_lampPost);
+    //AddGameObject(m_lampPost);
 
     m_lampPost->Physics()->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
       // No collisions with planet

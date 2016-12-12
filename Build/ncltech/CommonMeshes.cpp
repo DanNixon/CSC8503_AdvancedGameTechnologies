@@ -24,7 +24,7 @@ void CommonMeshes::InitializeMeshes()
 
     m_pPlane = Mesh::GenerateQuadTexCoordCol(Vector2(1.f, 1.f), Vector2(0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f));
     m_pCube = new OBJMesh(MESHDIR "cube.obj");
-    m_pSphere = new OBJMesh(MESHDIR "sphere.obj");
+    m_pSphere = new OBJMesh(MESHDIR "sphere2.obj");
 
     m_pPlane->SetTexture(m_CheckerboardTex);
     m_pCube->SetTexture(m_CheckerboardTex);
