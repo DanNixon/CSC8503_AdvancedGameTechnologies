@@ -46,7 +46,7 @@ void SphereCollisionShape::GetCollisionAxes(const PhysicsObject *currentObject, 
  */
 void SphereCollisionShape::GetEdges(const PhysicsObject *currentObject, std::vector<CollisionEdge> *out_edges) const
 {
-  //There is infinite edges on a sphere so we MUST handle it seperately
+  // There is infinite edges on a sphere so we MUST handle it seperately
 }
 
 /**

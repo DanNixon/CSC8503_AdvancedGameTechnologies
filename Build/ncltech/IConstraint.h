@@ -58,7 +58,8 @@ public:
    * @brief Pre-solver step will be triggered before any calls to ApplyImpulse and only ever be called once per physics timestep
    * @param dt Time step
    *
-   * If you need to precompute any data/velocity forces prior to them changing through this (or other constraints) then you can do it here.
+   * If you need to precompute any data/velocity forces prior to them changing through this (or other constraints) then you can do
+   * it here.
    */
   virtual void PreSolverStep(float dt)
   {

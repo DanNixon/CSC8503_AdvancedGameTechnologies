@@ -25,7 +25,7 @@ protected:
   float m_restDistance; //!< Distance between objects when spring is at rest
 
   float m_springConstant; //!< Spring constant
-  float m_dampingFactor; //!< Spring damping factor
+  float m_dampingFactor;  //!< Spring damping factor
 
   Vector3 m_LocalOnA; //!< Local constraint point transform on first object
   Vector3 m_LocalOnB; //!< Local constraint point transform on second object

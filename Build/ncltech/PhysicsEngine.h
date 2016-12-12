@@ -241,15 +241,15 @@ protected:
 
   IntegrationType m_integrationType; //!< Type of integration performed in object updates
 
-  Vector3 m_LinearGravity; //!< Linear acceleration due to gravity (zero to disable linear gravity)
-  float m_PointGravity; //!< Acceleration due to point gravity (one object is stationary)
+  Vector3 m_LinearGravity;  //!< Linear acceleration due to gravity (zero to disable linear gravity)
+  float m_PointGravity;     //!< Acceleration due to point gravity (one object is stationary)
   float m_PointGravitation; //!< Gravitation constant for point gravity (both objects are movable)
 
   float m_DampingFactor; //!< Velocity dampening factor
 
   IBroadphase *m_broadphaseDetection;                    //!< Handler used to find broadphase collision pairs
   std::vector<CollisionPair> m_BroadphaseCollisionPairs; //!< Set of collision paris found in broadphase
-  size_t m_broadphaseCollisionPairCount; //!< Cached count of braoadphase collision pairs
+  size_t m_broadphaseCollisionPairCount;                 //!< Cached count of braoadphase collision pairs
 
   std::vector<PhysicsObject *> m_PhysicsObjects; //!< All physical objects in the simulation
 

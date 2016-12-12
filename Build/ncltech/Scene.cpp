@@ -26,7 +26,7 @@ void Scene::AddGameObject(Object *game_object)
   m_pRootGameObject->AddChildObject(game_object);
 }
 
-void Scene::RemoveGameObject(Object * game_object)
+void Scene::RemoveGameObject(Object *game_object)
 {
   auto it = std::find(game_object->m_parent->m_vpChildren.begin(), game_object->m_parent->m_vpChildren.end(), game_object);
   if (it != game_object->m_parent->m_vpChildren.end())

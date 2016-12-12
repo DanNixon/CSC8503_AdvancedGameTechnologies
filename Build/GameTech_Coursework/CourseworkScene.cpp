@@ -245,9 +245,7 @@ CourseworkScene::CourseworkScene()
     State *reset = new State("reset", m_playerStateMachine.RootState(), &m_playerStateMachine);
     m_playerStateMachine.SetDefaultState(reset);
     reset->AddTransferFromTest([idle]() { return idle; });
-    reset->AddTransferToTest([]() {
-      return Window::GetKeyboard()->KeyDown(PLAYER_RESET_KEY);
-    });
+    reset->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(PLAYER_RESET_KEY); });
     reset->AddOnEntryBehaviour([this](State *) {
       NCLDebug::Log("Player reset.");
       for (auto it = this->m_shotSpheres.begin(); it != this->m_shotSpheres.end(); ++it)
