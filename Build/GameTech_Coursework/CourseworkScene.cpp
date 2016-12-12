@@ -42,7 +42,11 @@ void CourseworkScene::PrintKeyMapping()
 CourseworkScene::CourseworkScene()
     : Scene("GameTech coursework")
     , m_planetTex(0)
+    , m_targetMesh(nullptr)
+    , m_lampPostMesh(nullptr)
     , m_planet(nullptr)
+    , m_target(nullptr)
+    , m_lampPost(nullptr)
 {
   // Debug draw state machine (overfill for a state machine really...)
   {
@@ -88,23 +92,23 @@ CourseworkScene::CourseworkScene()
         [PHYSICS_VIEW_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(PHYSICS_VIEW_STATUS_COLOUR, "Physics view: constraints"); });
 
     // State transitions
-    viewNormal->AddTransferFromTest([viewLinearMotion]() -> State * {
+    viewNormal->AddTransferFromTest([viewLinearMotion]() {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewLinearMotion : nullptr;
     });
 
-    viewLinearMotion->AddTransferFromTest([viewBoundingVolumes]() -> State * {
+    viewLinearMotion->AddTransferFromTest([viewBoundingVolumes]() {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewBoundingVolumes : nullptr;
     });
 
-    viewBoundingVolumes->AddTransferFromTest([viewBroadphase]() -> State * {
+    viewBoundingVolumes->AddTransferFromTest([viewBroadphase]() {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewBroadphase : nullptr;
     });
 
-    viewBroadphase->AddTransferFromTest([viewCollisions]() -> State * {
+    viewBroadphase->AddTransferFromTest([viewCollisions]() {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewCollisions : nullptr;
     });
 
-    viewCollisions->AddTransferFromTest([viewConstraints]() -> State * {
+    viewCollisions->AddTransferFromTest([viewConstraints]() {
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewConstraints : nullptr;
     });
 
@@ -165,21 +169,21 @@ CourseworkScene::CourseworkScene()
     });
 
     // State transitions
-    sortAndSweepX->AddTransferFromTest([sortAndSweepY]() -> State * {
+    sortAndSweepX->AddTransferFromTest([sortAndSweepY]() {
       return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepY : nullptr;
     });
 
-    sortAndSweepY->AddTransferFromTest([sortAndSweepZ]() -> State * {
+    sortAndSweepY->AddTransferFromTest([sortAndSweepZ]() {
       return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepZ : nullptr;
     });
 
     sortAndSweepZ->AddTransferFromTest(
-        [bruteForce]() -> State * { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? bruteForce : nullptr; });
+        [bruteForce]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? bruteForce : nullptr; });
 
     bruteForce->AddTransferFromTest(
-        [octree]() -> State * { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? octree : nullptr; });
+        [octree]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? octree : nullptr; });
 
-    octree->AddTransferFromTest([sortAndSweepX]() -> State * {
+    octree->AddTransferFromTest([sortAndSweepX]() {
       return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepX : nullptr;
     });
 
@@ -218,17 +222,17 @@ CourseworkScene::CourseworkScene()
         [INTEGRATION_MODE_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(INTEGRATION_MODE_STATUS_COLOUR, "Integration: RK4"); });
 
     // State transitions
-    explicitEuler->AddTransferFromTest([semiImplicitEuler]() -> State * {
+    explicitEuler->AddTransferFromTest([semiImplicitEuler]() {
       return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? semiImplicitEuler : nullptr;
     });
 
     semiImplicitEuler->AddTransferFromTest(
-        [rk2]() -> State * { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? rk2 : nullptr; });
+        [rk2]() { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? rk2 : nullptr; });
 
     rk2->AddTransferFromTest(
-        [rk4]() -> State * { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? rk4 : nullptr; });
+        [rk4]() { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? rk4 : nullptr; });
 
-    rk4->AddTransferFromTest([explicitEuler]() -> State * {
+    rk4->AddTransferFromTest([explicitEuler]() {
       return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? explicitEuler : nullptr;
     });
 
@@ -406,6 +410,39 @@ void CourseworkScene::OnInitializeScene()
     // Fix target position to planet
     PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_target->Physics()));
   }
+
+  // Create lamp post
+  {
+    m_lampPost = new ObjectMesh("target");
+
+    m_lampPost->SetMesh(m_lampPostMesh, false);
+    m_lampPost->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+
+    m_lampPost->SetBoundingRadius(10.0f);
+
+    m_lampPost->CreatePhysicsNode();
+    m_lampPost->Physics()->SetPosition(Vector3(PLANET_RADIUS + 5.0f, 0.0f, 0.0f));
+    //m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
+
+    m_target->Physics()->SetInverseMass(0.0f);
+
+    //HullCollisionShape *shape = new HullCollisionShape();
+    //m_lampPost->Physics()->AddCollisionShape(shape);
+
+    //m_lampPost->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
+
+    m_lampPost->Physics()->AutoResizeBoundingBox();
+
+    AddGameObject(m_lampPost);
+
+    m_lampPost->Physics()->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
+      // No collisions with planet
+      return (b != this->m_planet->Physics());
+    });
+
+    // Fix target position to planet
+    PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_lampPost->Physics()));
+  }
 }
 
 void CourseworkScene::OnCleanupScene()
@@ -419,6 +456,7 @@ void CourseworkScene::OnCleanupScene()
   // Cleanup object pointers
   m_planet = nullptr;
   m_target = nullptr;
+  m_lampPost = nullptr;
 
   Scene::OnCleanupScene();
 }

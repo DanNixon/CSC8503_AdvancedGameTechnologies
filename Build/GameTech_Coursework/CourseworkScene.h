@@ -66,5 +66,6 @@ protected:
 
   ObjectMesh *m_planet;              //!< Planet object
   ObjectMesh *m_target;              //!< Target object
+  ObjectMesh *m_lampPost;            //!< Lamp post object
   std::vector<Ball *> m_shotSpheres; //!< Balls shot by the player
 };
