@@ -26,6 +26,7 @@ void CourseworkScene::PrintKeyMapping()
   NCLDebug::Log("  Fire ball: %c", SHOOT_BALL_KEY);
   NCLDebug::Log("  Switch physics view mode: %c", PHYSICS_DEBUG_VIEW_KEY);
   NCLDebug::Log("  Switch broadphase culling mode: %c", BROADPHASE_MODE_KEY);
+  NCLDebug::Log("  Switch integrations mode: %c", INTEGRATION_MODE_KEY);
 }
 
 CourseworkScene::CourseworkScene(const std::string &friendlyName)
@@ -33,7 +34,7 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
     , m_planetTex(0)
     , m_planet(nullptr)
 {
-  // Debug draw state machine
+  // Debug draw state machine (overfill for a state machine really...)
   {
     const Vector4 PHYSICS_VIEW_STATUS_COLOUR(1.0f, 1.0f, 0.0f, 1.0f);
 
@@ -104,7 +105,7 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
     m_debugDrawStateMachine.SetDefaultState(viewNormal);
   }
 
-  // Broadphase mode state machine
+  // Broadphase mode state machine (again, overkill)
   {
     const Vector4 BROADPHASE_MODE_STATUS_COLOUR(0.0f, 1.0f, 1.0f, 1.0f);
 
@@ -172,6 +173,55 @@ CourseworkScene::CourseworkScene(const std::string &friendlyName)
 
     // Default state
     m_broadphaseModeStateMachine.SetDefaultState(sortAndSweepX);
+  }
+
+  // Integration mode state machine (such overkill...)
+  {
+    const Vector4 INTEGRATION_MODE_STATUS_COLOUR(1.0f, 0.0f, 1.0f, 1.0f);
+
+    // States
+    State *explicitEuler = new State("explicit_euler", m_integrationModeStateMachine.RootState(), &m_integrationModeStateMachine);
+    explicitEuler->AddOnEntryBehaviour(
+        [](State *) { PhysicsEngine::Instance()->SetIntegrationType(INTEGRATION_EXPLICIT_EULER); });
+    explicitEuler->AddOnOperateBehaviour([INTEGRATION_MODE_STATUS_COLOUR]() {
+      NCLDebug::AddStatusEntry(INTEGRATION_MODE_STATUS_COLOUR, "Integration: explicit Euler");
+    });
+
+    State *semiImplicitEuler =
+        new State("semi_implicit_euler", m_integrationModeStateMachine.RootState(), &m_integrationModeStateMachine);
+    semiImplicitEuler->AddOnEntryBehaviour(
+        [](State *) { PhysicsEngine::Instance()->SetIntegrationType(INTEGRATION_SEMI_IMPLICIT_EULER); });
+    semiImplicitEuler->AddOnOperateBehaviour([INTEGRATION_MODE_STATUS_COLOUR]() {
+      NCLDebug::AddStatusEntry(INTEGRATION_MODE_STATUS_COLOUR, "Integration: semi-implicit Euler");
+    });
+
+    State *rk2 = new State("rk2", m_integrationModeStateMachine.RootState(), &m_integrationModeStateMachine);
+    rk2->AddOnEntryBehaviour([](State *) { PhysicsEngine::Instance()->SetIntegrationType(INTEGRATION_RUNGE_KUTTA_2); });
+    rk2->AddOnOperateBehaviour(
+        [INTEGRATION_MODE_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(INTEGRATION_MODE_STATUS_COLOUR, "Integration: RK2"); });
+
+    State *rk4 = new State("rk4", m_integrationModeStateMachine.RootState(), &m_integrationModeStateMachine);
+    rk4->AddOnEntryBehaviour([](State *) { PhysicsEngine::Instance()->SetIntegrationType(INTEGRATION_RUNGE_KUTTA_4); });
+    rk4->AddOnOperateBehaviour(
+        [INTEGRATION_MODE_STATUS_COLOUR]() { NCLDebug::AddStatusEntry(INTEGRATION_MODE_STATUS_COLOUR, "Integration: RK4"); });
+
+    // State transitions
+    explicitEuler->AddTransferFromTest([semiImplicitEuler]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? semiImplicitEuler : nullptr;
+    });
+
+    semiImplicitEuler->AddTransferFromTest(
+        [rk2]() -> State * { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? rk2 : nullptr; });
+
+    rk2->AddTransferFromTest(
+        [rk4]() -> State * { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? rk4 : nullptr; });
+
+    rk4->AddTransferFromTest([explicitEuler]() -> State * {
+      return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? explicitEuler : nullptr;
+    });
+
+    // Default state
+    m_integrationModeStateMachine.SetDefaultState(semiImplicitEuler);
   }
 
   // Player state machine
@@ -277,6 +327,7 @@ void CourseworkScene::OnInitializeScene()
   // Reset state machines
   m_debugDrawStateMachine.Reset();
   m_broadphaseModeStateMachine.Reset();
+  m_integrationModeStateMachine.Reset();
   m_playerStateMachine.Reset();
 
   // Create planet
@@ -352,6 +403,7 @@ void CourseworkScene::OnCleanupScene()
   // Reset state machines
   m_debugDrawStateMachine.Reset();
   m_broadphaseModeStateMachine.Reset();
+  m_integrationModeStateMachine.Reset();
   m_playerStateMachine.Reset();
 
   // Cleanup object pointers
@@ -364,6 +416,7 @@ void CourseworkScene::OnUpdateScene(float dt)
   // Update state machines
   m_debugDrawStateMachine.Update(dt);
   m_broadphaseModeStateMachine.Update(dt);
+  m_integrationModeStateMachine.Update(dt);
   m_playerStateMachine.Update(dt);
 
   // Add planet rotation

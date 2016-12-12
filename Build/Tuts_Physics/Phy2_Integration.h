@@ -12,7 +12,6 @@ If your like me, and have forgetten everything about integration, don't worry!
 You can find a really nice little refresher here:
 https://www.khanacademy.org/math/calculus-home/integration-applications-calc/rectilinear-motion-integral-calc/v/antiderivative-acceleration
 
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::: IF YOUR BORED! :::
 ::::::::::::::::::::::
@@ -30,7 +29,6 @@ https://www.khanacademy.org/math/calculus-home/integration-applications-calc/rec
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
 		(\_/)
 		( '_')
 	 /""""""""""""\=========     -----D
@@ -38,6 +36,7 @@ https://www.khanacademy.org/math/calculus-home/integration-applications-calc/rec
 ....\_@____@____@____@____@_/
 
 */ /////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 #include <ncltech\BruteForceBroadphase.h>
