@@ -9,9 +9,15 @@ class OctreeBroadphase : public IBroadphase
 public:
   struct WorldDivision
   {
+    ~WorldDivision()
+    {
+      for (auto it = subdivisions.begin(); it != subdivisions.end(); ++it)
+        delete *it;
+    }
+
     BoundingBox box;
     std::vector<PhysicsObject *> objects;
-    std::vector<WorldDivision> subdivisions;
+    std::vector<WorldDivision *> subdivisions;
   };
 
 public:
@@ -22,8 +28,8 @@ public:
   virtual void DebugDraw();
 
 protected:
-  void DivideWorld(WorldDivision &division, size_t iteration);
-  void DebugDrawWorldDivision(WorldDivision &division);
+  void DivideWorld(WorldDivision *division, size_t iteration);
+  void DebugDrawWorldDivision(WorldDivision *division);
 
 protected:
   size_t m_maxObjectsPerPartition; //!< Maximum number of objects in a single world partition before subdivision
@@ -31,6 +37,6 @@ protected:
 
   IBroadphase *m_secondaryBroadphase;
 
-  WorldDivision m_world; //!< Root world space
+  WorldDivision *m_world; //!< Root world space
   std::vector<WorldDivision *> m_leafDivisions;
 };

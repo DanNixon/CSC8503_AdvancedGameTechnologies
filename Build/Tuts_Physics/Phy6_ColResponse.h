@@ -9,7 +9,6 @@ and it's affect in the world. The boxes should hopefully all drift down the 20
 degree slope at different rates and the bouncing balls should all hopefully
 bounce at different heights :)
 
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::: IF YOUR BORED! :::
 ::::::::::::::::::::::
@@ -26,8 +25,6 @@ bounce at different heights :)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-
 		(\_/)
 		( '_')
 	 /""""""""""""\=========     -----D
@@ -35,6 +32,7 @@ bounce at different heights :)
 ....\_@____@____@____@____@_/
 
 */ /////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 #include <ncltech\BruteForceBroadphase.h>
@@ -54,6 +52,8 @@ public:
 
   virtual void OnInitializeScene() override
   {
+    PhysicsEngine::Instance()->SetPaused(true);
+
     SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 15.0f));
     SceneManager::Instance()->GetCamera()->SetYaw(-10.f);
     SceneManager::Instance()->GetCamera()->SetPitch(-30.f);

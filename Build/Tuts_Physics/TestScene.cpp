@@ -5,7 +5,8 @@
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
-#include <ncltech\SortAndSweepBroadphase.h>
+#include <ncltech\OctreeBroadphase.h>
+#include <ncltech\BruteForceBroadphase.h>
 
 using namespace CommonUtils;
 
@@ -22,7 +23,12 @@ TestScene::~TestScene()
 
 void TestScene::OnInitializeScene()
 {
-  PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
+  PhysicsEngine::Instance()->SetPaused(true);
+
+  PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(100, 2, new BruteForceBroadphase()));
+
+  //PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_BROADPHASE);
+  PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_BROADPHASE | DEBUGDRAW_FLAGS_BROADPHASE_PAIRS);
 
   // Set the camera position
   SceneManager::Instance()->GetCamera()->SetPosition(Vector3(15.0f, 10.0f, -15.0f));
@@ -37,19 +43,19 @@ void TestScene::OnInitializeScene()
 
   //<--- SCENE CREATION --->
   // Create Ground
-  this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f, true,
+  AddGameObject(BuildCuboidObject("ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true,
                                         false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
   // Create Player (See OnUpdateScene)
-  m_pPlayer = BuildCuboidObject("Player1",                        // Optional: Name
-                                Vector3(5.f, 0.5f, 0.0f),         // Position
-                                Vector3(0.5f, 0.5f, 1.0f),        // Half-Dimensions
-                                true,                             // Physics Enabled?
-                                0.f,                              // Physical Mass (must have physics enabled)
-                                false,                            // Physically Collidable (has collision shape)
-                                false,                            // Dragable by user?
-                                Vector4(0.1f, 0.1f, 0.1f, 1.0f)); // Render colour
-  this->AddGameObject(m_pPlayer);
+  m_pPlayer = BuildCuboidObject("Player1",                        
+                                Vector3(5.f, 0.5f, 0.0f),         
+                                Vector3(0.5f, 0.5f, 1.0f),        
+                                true,                             
+                                0.0f,                              
+                                true,                             
+                                false,                            
+                                Vector4(0.1f, 0.1f, 0.1f, 1.0f));
+  AddGameObject(m_pPlayer);
 
   auto create_cube_tower = [&](const Vector3 &offset, float cubewidth) {
     const Vector3 halfdims = Vector3(cubewidth, cubewidth, cubewidth) * 0.5f;
@@ -61,21 +67,21 @@ void TestScene::OnInitializeScene()
         Vector4 colour = GenColour(idx / 10.f, 0.5f);
         Vector3 pos = offset + Vector3(x * cubewidth, 1e-3f + y * cubewidth, cubewidth * (idx % 2 == 0) ? 0.5f : -0.5f);
 
-        Object *cube = BuildCuboidObject("",       // Optional: Name
-                                         pos,      // Position
-                                         halfdims, // Half-Dimensions
-                                         false,    // Physics Enabled?
-                                         0.f,      // Physical Mass (must have physics enabled)
-                                         false,    // Physically Collidable (has collision shape)
-                                         true,     // Dragable by user?
-                                         colour);  // Render colour
-        this->AddGameObject(cube);
+        Object *cube = BuildCuboidObject("cube",
+                                         pos,      
+                                         halfdims, 
+                                         true,     
+                                         1.0f,     
+                                         true,     
+                                         true,     
+                                         colour);  
+        AddGameObject(cube);
       }
     }
   };
 
   auto create_ball_cube = [&](const Vector3 &offset, const Vector3 &scale, float ballsize) {
-    const int dims = 10;
+    const int dims = 5;
     const Vector4 col = Vector4(1.0f, 0.5f, 0.2f, 1.0f);
 
     for (int x = 0; x < dims; ++x)
@@ -85,29 +91,29 @@ void TestScene::OnInitializeScene()
         for (int z = 0; z < dims; ++z)
         {
           Vector3 pos = offset + Vector3(scale.x * x, scale.y * y, scale.z * z);
-          Object *sphere = BuildSphereObject("",       // Optional: Name
-                                             pos,      // Position
-                                             ballsize, // Half-Dimensions
-                                             false,    // Physics Enabled?
-                                             0.f,      // Physical Mass (must have physics enabled)
-                                             false,    // Physically Collidable (has collision shape)
-                                             false,    // Dragable by user?
-                                             col);     // Render colour
-          this->AddGameObject(sphere);
+          Object *sphere = BuildSphereObject("sphere",
+                                             pos,      
+                                             ballsize, 
+                                             true,     
+                                             1.0f,     
+                                             true,     
+                                             true,     
+                                             col);  
+          AddGameObject(sphere);
         }
       }
     }
   };
 
   // Create Cube Towers
-  create_cube_tower(Vector3(3.0f, 0.5f, 3.0f), 1.0f);
-  create_cube_tower(Vector3(-3.0f, 0.5f, -3.0f), 1.0f);
+  //create_cube_tower(Vector3(3.0f, 0.5f, 3.0f), 1.0f);
+  //create_cube_tower(Vector3(-3.0f, 0.5f, -3.0f), 1.0f);
 
   // Create Test Ball Pit
   create_ball_cube(Vector3(-8.0f, 0.5f, 12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
-  create_ball_cube(Vector3(8.0f, 0.5f, 12.0f), Vector3(0.3f, 0.3f, 0.3f), 0.1f);
-  create_ball_cube(Vector3(-8.0f, 0.5f, -12.0f), Vector3(0.2f, 0.2f, 0.2f), 0.1f);
-  create_ball_cube(Vector3(8.0f, 0.5f, -12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
+  //create_ball_cube(Vector3(8.0f, 0.5f, 12.0f), Vector3(0.3f, 0.3f, 0.3f), 0.1f);
+  //create_ball_cube(Vector3(-8.0f, 0.5f, -12.0f), Vector3(0.2f, 0.2f, 0.2f), 0.1f);
+  //create_ball_cube(Vector3(8.0f, 0.5f, -12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
 }
 
 void TestScene::OnCleanupScene()

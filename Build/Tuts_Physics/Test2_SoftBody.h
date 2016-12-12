@@ -17,6 +17,8 @@ public:
 
   virtual void OnInitializeScene() override
   {
+    PhysicsEngine::Instance()->SetPaused(true);
+
     SceneManager::Instance()->GetCamera()->SetPosition(Vector3(0.0f, 25.0f, 25.0f));
 
     PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());

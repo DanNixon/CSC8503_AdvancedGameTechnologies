@@ -87,6 +87,8 @@ public:
 
   virtual void OnInitializeScene() override
   {
+    PhysicsEngine::Instance()->SetPaused(true);
+
     SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-2.0f, 7.5f, -8.0f));
     SceneManager::Instance()->GetCamera()->SetYaw(-160.f);
     SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
