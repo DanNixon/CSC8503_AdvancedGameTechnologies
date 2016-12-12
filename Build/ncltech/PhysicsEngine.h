@@ -20,7 +20,7 @@ The general runtime consists of:
 		   can find some free time to fix this =] )
 
 		 - Narrowphase Collision Detection
-		   Takes the list provided by the broadphase collision detection and 
+		   Takes the list provided by the broadphase collision detection and
 		   accurately collides all objects, building a collision manifold as
 		   required. (Tutorial 4/5)
 
@@ -79,63 +79,89 @@ enum IntegrationType
   INTEGRATION_RUNGE_KUTTA_4
 };
 
+/**
+ * @class PhysicsEngine
+ * @brief Manages simulation of a physical system.
+ */
 class PhysicsEngine : public TSingleton<PhysicsEngine>
 {
   friend class TSingleton<PhysicsEngine>;
 
 public:
+  /**
+   * @brief Maximum number of physics updates that can be performed in a single frame.
+   */
   const uint8_t MAX_UPDATES_PER_FRAME = 5;
 
 public:
-  // Reset Default Values like gravity/timestep - called when scene is switched out
   void SetDefaults();
 
-  // Add/Remove Physics Objects
   void AddPhysicsObject(PhysicsObject *obj);
   void RemovePhysicsObject(PhysicsObject *obj);
-  void RemoveAllPhysicsObjects(); // Delete all physics entities etc and
-                                  // reset-physics environment for new scene to
-                                  // be initialized
+  void RemoveAllPhysicsObjects();
 
-  // Add Constraints
+  /**
+   * @brief Adds a constraint to the physics system.
+   * @param c Constraint to add
+   */
   void AddConstraint(IConstraint *c)
   {
     m_vpConstraints.push_back(c);
   }
 
-  // Update Physics Engine
-  void Update(float deltaTime); // Remember DeltaTime is 'seconds' since last
-                                // update not milliseconds
+  void Update(float deltaTime);
 
-  // Debug draw all physics objects, manifolds and constraints
   void DebugRender();
 
-  // Getters / Setters
+  /**
+   * @brief Gets the simulation paused state.
+   * @return True if simulation is paused
+   */
   bool IsPaused() const
   {
     return m_IsPaused;
   }
 
+  /**
+   * @brief Pause or resume the simulation.
+   * @param paused True if the simulation is to be paused
+   */
   void SetPaused(bool paused)
   {
     m_IsPaused = paused;
   }
 
+  /**
+   * @brief Gets the active debug draw flags.
+   * @return Debug draw flags
+   */
   uint64_t GetDebugDrawFlags() const
   {
     return m_DebugDrawFlags;
   }
 
+  /**
+   * @brief Sets the active debug draw flags.
+   * @param flags Debug draw flags
+   */
   void SetDebugDrawFlags(uint64_t flags)
   {
     m_DebugDrawFlags = flags;
   }
 
+  /**
+   * @brief Gets the target update time step in seconds.
+   * @return Target update timestep
+   */
   float GetUpdateTimestep() const
   {
     return m_UpdateTimestep;
   }
 
+  /**
+   * @brief Sets the target update time step in seconds.
+   * @param updateTimestep Target update timestep
+   */
   void SetUpdateTimestep(float updateTimestep)
   {
     m_UpdateTimestep = updateTimestep;
@@ -188,26 +214,48 @@ public:
     m_integrationType = type;
   }
 
+  /**
+   * @brief Gets the acceleration due to uniform linear gravity.
+   * @return Acceleration due to gravity vector
+   */
   const Vector3 &GetGravity() const
   {
     return m_LinearGravity;
   }
 
+  /**
+   * @brief Sets uniform linear gravity.
+   * @param g Acceleration due to gravity vector
+   *
+   * A vector of zero magnitude disables linear gravity and enables point gravity for objects that have it configured.
+   */
   void SetGravity(const Vector3 &g)
   {
     m_LinearGravity = g;
   }
 
-  float GetDampingFactor() const
-  {
-    return m_DampingFactor;
-  }
-
+  /**
+   * @brief Sets the velocity damping factor.
+   * @param d Damping factor
+   */
   void SetDampingFactor(float d)
   {
     m_DampingFactor = d;
   }
 
+  /**
+   * @brief Gets the velocity damping factor.
+   * @return Damping factor
+   */
+  float GetDampingFactor() const
+  {
+    return m_DampingFactor;
+  }
+
+  /**
+   * @brief Gets the target update time step in seconds.
+   * @return Target update timestep
+   */
   float GetDeltaTime() const
   {
     return m_UpdateTimestep;
@@ -219,23 +267,16 @@ protected:
   PhysicsEngine();
   ~PhysicsEngine();
 
-  // The actual time-independant update function
   void UpdatePhysics();
-
-  // Handles narrowphase collision detection
   void NarrowPhaseCollisions();
-
-  // Updates all physics objects position, orientation, velocity etc
   void UpdatePhysicsObject(PhysicsObject *obj);
-
-  // Solves all physical constraints (constraints and manifolds)
   void SolveConstraints();
 
 protected:
   bool m_IsPaused; //!< Flag indicating phsyics updates are paused
 
-  float m_UpdateTimestep;
-  float m_UpdateAccum;
+  float m_UpdateTimestep; //!< Target update timestep in seconds
+  float m_UpdateAccum;    //!< Accumulated time over the frame
 
   uint64_t m_DebugDrawFlags; //!< Debug draw state flags
 
@@ -253,6 +294,6 @@ protected:
 
   std::vector<PhysicsObject *> m_PhysicsObjects; //!< All physical objects in the simulation
 
-  std::vector<IConstraint *> m_vpConstraints; // Misc constraints applying to one or more physics objects
-  std::vector<Manifold *> m_vpManifolds;      // Contact constraints between pairs of objects
+  std::vector<IConstraint *> m_vpConstraints; //!< Misc constraints applying to one or more physics objects
+  std::vector<Manifold *> m_vpManifolds;      //!< Contact constraints between pairs of objects
 };

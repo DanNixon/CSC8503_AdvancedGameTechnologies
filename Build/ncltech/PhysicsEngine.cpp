@@ -6,6 +6,9 @@
 #include <nclgl\Window.h>
 #include <omp.h>
 
+/**
+ * @brief Sets default engine settings.
+ */
 void PhysicsEngine::SetDefaults()
 {
   m_DebugDrawFlags = NULL;
@@ -19,6 +22,11 @@ void PhysicsEngine::SetDefaults()
   m_integrationType = INTEGRATION_SEMI_IMPLICIT_EULER;
 }
 
+/**
+ * @brief Creates a new physics engine.
+ *
+ * (handled by singleton)
+ */
 PhysicsEngine::PhysicsEngine()
     : m_broadphaseDetection(nullptr)
 {
@@ -33,11 +41,19 @@ PhysicsEngine::~PhysicsEngine()
     delete m_broadphaseDetection;
 }
 
+/**
+ * @brief Adds a new object to the simulation.
+ * @param obj Object to add
+ */
 void PhysicsEngine::AddPhysicsObject(PhysicsObject *obj)
 {
   m_PhysicsObjects.push_back(obj);
 }
 
+/**
+ * @brief Removes an object from the simulation.
+ * @param obj Object to remove
+ */
 void PhysicsEngine::RemovePhysicsObject(PhysicsObject *obj)
 {
   // Lookup the object in question
@@ -48,6 +64,9 @@ void PhysicsEngine::RemovePhysicsObject(PhysicsObject *obj)
     m_PhysicsObjects.erase(it);
 }
 
+/**
+ * @brief Removes all physics objects from the simulation.
+ */
 void PhysicsEngine::RemoveAllPhysicsObjects()
 {
   // Delete and remove all constraints/collision manifolds
@@ -71,6 +90,10 @@ void PhysicsEngine::RemoveAllPhysicsObjects()
   m_PhysicsObjects.clear();
 }
 
+/**
+ * @brief Performs an update of the physics system.
+ * @param deltaTime Time passed in seconds
+ */
 void PhysicsEngine::Update(float deltaTime)
 {
   m_broadphaseCollisionPairCount = 0;
@@ -83,7 +106,7 @@ void PhysicsEngine::Update(float deltaTime)
     {
       m_UpdateAccum -= m_UpdateTimestep;
 
-      // Additional check here incase physics was paused mid-update and the contents of the physics need to be displayed
+      // Additional check here in case physics was paused mid-update and the contents of the physics need to be displayed
       if (!m_IsPaused)
       {
         UpdatePhysics();
@@ -100,6 +123,9 @@ void PhysicsEngine::Update(float deltaTime)
   }
 }
 
+/**
+ * @brief Updates the physical objects in the simulation.
+ */
 void PhysicsEngine::UpdatePhysics()
 {
   for (Manifold *m : m_vpManifolds)
@@ -123,6 +149,9 @@ void PhysicsEngine::UpdatePhysics()
     UpdatePhysicsObject(obj);
 }
 
+/**
+ * @brief Solves constraints between objects.
+ */
 void PhysicsEngine::SolveConstraints()
 {
   // Optional step to allow constraints to precompute values based off current velocities before they are updated in the
@@ -144,6 +173,10 @@ void PhysicsEngine::SolveConstraints()
   }
 }
 
+/**
+ * @brief Updates the position and velocity of a given object based on their state and world gravity.
+ * @param obj Object to update
+ */
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 {
   if (obj->IsAwake())
@@ -252,6 +285,9 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
   obj->DoAtRestTest();
 }
 
+/**
+ * @brief Handle narrowphase collision detection.
+ */
 void PhysicsEngine::NarrowPhaseCollisions()
 {
   if (m_BroadphaseCollisionPairs.size() > 0)
@@ -322,6 +358,9 @@ void PhysicsEngine::NarrowPhaseCollisions()
   }
 }
 
+/**
+ * @brief Draw visual debug information.
+ */
 void PhysicsEngine::DebugRender()
 {
   // Draw all collision manifolds
