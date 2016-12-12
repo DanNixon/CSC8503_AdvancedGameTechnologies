@@ -1,8 +1,8 @@
 #include "PhysicsObject.h"
 
 #include "NCLDebug.h"
-#include "PhysicsEngine.h"
 #include "Object.h"
+#include "PhysicsEngine.h"
 
 /**
  * @brief Creates a new physics object with default settings.

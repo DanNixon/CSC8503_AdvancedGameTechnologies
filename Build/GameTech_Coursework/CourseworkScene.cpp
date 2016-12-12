@@ -100,17 +100,14 @@ CourseworkScene::CourseworkScene()
       return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewBoundingVolumes : nullptr;
     });
 
-    viewBoundingVolumes->AddTransferFromTest([viewBroadphase]() {
-      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewBroadphase : nullptr;
-    });
+    viewBoundingVolumes->AddTransferFromTest(
+        [viewBroadphase]() { return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewBroadphase : nullptr; });
 
-    viewBroadphase->AddTransferFromTest([viewCollisions]() {
-      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewCollisions : nullptr;
-    });
+    viewBroadphase->AddTransferFromTest(
+        [viewCollisions]() { return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewCollisions : nullptr; });
 
-    viewCollisions->AddTransferFromTest([viewConstraints]() {
-      return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewConstraints : nullptr;
-    });
+    viewCollisions->AddTransferFromTest(
+        [viewConstraints]() { return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewConstraints : nullptr; });
 
     viewConstraints->AddTransferFromTest(
         [viewNormal]() -> State * { return Window::GetKeyboard()->KeyTriggered(PHYSICS_DEBUG_VIEW_KEY) ? viewNormal : nullptr; });
@@ -169,13 +166,11 @@ CourseworkScene::CourseworkScene()
     });
 
     // State transitions
-    sortAndSweepX->AddTransferFromTest([sortAndSweepY]() {
-      return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepY : nullptr;
-    });
+    sortAndSweepX->AddTransferFromTest(
+        [sortAndSweepY]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepY : nullptr; });
 
-    sortAndSweepY->AddTransferFromTest([sortAndSweepZ]() {
-      return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepZ : nullptr;
-    });
+    sortAndSweepY->AddTransferFromTest(
+        [sortAndSweepZ]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepZ : nullptr; });
 
     sortAndSweepZ->AddTransferFromTest(
         [bruteForce]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? bruteForce : nullptr; });
@@ -183,9 +178,8 @@ CourseworkScene::CourseworkScene()
     bruteForce->AddTransferFromTest(
         [octree]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? octree : nullptr; });
 
-    octree->AddTransferFromTest([sortAndSweepX]() {
-      return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepX : nullptr;
-    });
+    octree->AddTransferFromTest(
+        [sortAndSweepX]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepX : nullptr; });
 
     // Default state
     m_broadphaseModeStateMachine.SetDefaultState(sortAndSweepX);
@@ -229,12 +223,10 @@ CourseworkScene::CourseworkScene()
     semiImplicitEuler->AddTransferFromTest(
         [rk2]() { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? rk2 : nullptr; });
 
-    rk2->AddTransferFromTest(
-        [rk4]() { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? rk4 : nullptr; });
+    rk2->AddTransferFromTest([rk4]() { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? rk4 : nullptr; });
 
-    rk4->AddTransferFromTest([explicitEuler]() {
-      return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? explicitEuler : nullptr;
-    });
+    rk4->AddTransferFromTest(
+        [explicitEuler]() { return Window::GetKeyboard()->KeyTriggered(INTEGRATION_MODE_KEY) ? explicitEuler : nullptr; });
 
     // Default state
     m_integrationModeStateMachine.SetDefaultState(semiImplicitEuler);
@@ -416,11 +408,11 @@ void CourseworkScene::OnInitializeScene()
 
     m_lampPost->CreatePhysicsNode();
     m_lampPost->Physics()->SetPosition(Vector3(PLANET_RADIUS + 10.0f, 0.0f, 0.0f));
-    //m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
+    // m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
 
     m_target->Physics()->SetInverseMass(0.0f);
 
-    ICollisionShape * shape1 = new CuboidCollisionShape(Vector3(1.0f, 1.0f, 1.0f));
+    ICollisionShape *shape1 = new CuboidCollisionShape(Vector3(1.0f, 1.0f, 1.0f));
     m_lampPost->Physics()->AddCollisionShape(shape1);
 
     m_lampPost->Physics()->AutoResizeBoundingBox();
