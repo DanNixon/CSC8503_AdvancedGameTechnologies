@@ -437,7 +437,7 @@ void CourseworkScene::OnUpdateScene(float dt)
     Ball *b = *it;
     b->GetStateMachine().Update(dt);
 
-    if (b->IsDead())
+    if (b->HasExpired())
     {
       it = m_shotSpheres.erase(it);
       RemoveGameObject(b);

@@ -23,15 +23,19 @@ public:
     return m_stateMachine;
   }
 
-  inline bool IsDead() const
+  /**
+   * @brief Gets the value of the flag indicating this ball should be removed.
+   * @return Expired flag
+   */
+  inline bool HasExpired() const
   {
-    return m_dead;
+    return m_expired;
   }
 
 protected:
   float m_lifetime;            //!< Lifetime in seconds
   StateMachine m_stateMachine; //!< AI for the ball
 
-  bool m_dead;
-  bool m_hitTarget;
+  bool m_hitTarget; //!< Flag indicating that this ball has collided with the target
+  bool m_expired;   //!< Flag indicating that this ball should be removed
 };

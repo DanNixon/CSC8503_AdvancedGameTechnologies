@@ -7,8 +7,8 @@
 Ball::Ball(float radius, float inverseMass, float lifetime)
     : ObjectMesh("ball")
     , m_lifetime(lifetime)
-    , m_dead(false)
     , m_hitTarget(false)
+    , m_expired(false)
 {
   // Setup mesh and physics
   {
@@ -50,12 +50,12 @@ Ball::Ball(float radius, float inverseMass, float lifetime)
     // State change from idel to shot when ball is awake
     shot->AddTransferToTest([this]() { return this->Physics()->IsAwake(); });
 
-    // Die state
-    State *die = new State("die", shot, &m_stateMachine);
-    die->AddTransferToTest([]() { return true; });
-    die->AddOnEntryBehaviour([this](State *) {
+    // Expired state
+    State *expired = new State("expired", shot, &m_stateMachine);
+    expired->AddTransferToTest([]() { return true; });
+    expired->AddOnEntryBehaviour([this](State *) {
       // Set dead flag
-      this->m_dead = true;
+      this->m_expired = true;
     });
 
     // Target hit state
@@ -68,8 +68,8 @@ Ball::Ball(float radius, float inverseMass, float lifetime)
     // State change from shot to hit target when hit target flag is set
     shot->AddTransferFromTest([this, shot, targetHit]() { return this->m_hitTarget ? targetHit : nullptr; });
 
-    // State change from shot to die after lifetime has elapsed
-    shot->AddTransferFromTest([this, shot, die]() { return (shot->TimeInState() > this->m_lifetime) ? die : nullptr; });
+    // State change from shot to expired after lifetime has elapsed
+    shot->AddTransferFromTest([this, shot, expired]() { return (shot->TimeInState() > this->m_lifetime) ? expired : nullptr; });
 
     // Set default state
     m_stateMachine.SetDefaultState(idle);
