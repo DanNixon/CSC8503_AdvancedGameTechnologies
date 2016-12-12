@@ -1,3 +1,6 @@
+# Temp Blender files
+*.blend1
+
 # Doxygen generated docs
 doxygen_docs/
 doxygen*.db
