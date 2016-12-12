@@ -8,6 +8,7 @@
 
 /**
  * @class CourseworkScene
+ * @author Dan Nixon
  * @brief Courseowrk demo scene.
  */
 class CourseworkScene : public Scene
