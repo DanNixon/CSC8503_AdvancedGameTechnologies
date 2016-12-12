@@ -23,8 +23,8 @@ void OctreeBroadphase::FindPotentialCollisionPairs(std::vector<PhysicsObject *> 
   m_world = new WorldDivision();
   for (auto it = objects.begin(); it != objects.end(); ++it)
   {
-    PhysicsObject * o = *it;
-    
+    PhysicsObject *o = *it;
+
     m_world->box.ExpandToFit(o->GetWorldSpaceAABB());
     m_world->objects.push_back(o);
   }
@@ -73,7 +73,7 @@ void OctreeBroadphase::DivideWorld(WorldDivision *division, size_t iteration)
   // Create new world divisions
   for (size_t i = 0; i < NUM_DIVISIONS; i++)
   {
-    WorldDivision * newDivision = new WorldDivision();
+    WorldDivision *newDivision = new WorldDivision();
 
     // Set bounds
     // clang-format off

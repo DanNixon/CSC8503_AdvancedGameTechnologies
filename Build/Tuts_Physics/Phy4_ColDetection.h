@@ -57,11 +57,11 @@ normal are correct for all collisions. =]
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\NCLDebug.h>
+#include <ncltech\OctreeBroadphase.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\SortAndSweepBroadphase.h>
-#include <ncltech\OctreeBroadphase.h>
 #include <ncltech\SphereCollisionShape.h>
 
 class Phy4_ColDetection : public Scene
@@ -86,7 +86,7 @@ public:
     SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
     SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
-    //PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase(Vector3(1.0f, 0.0f, 0.0f)));
+    // PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase(Vector3(1.0f, 0.0f, 0.0f)));
     PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(2, 2, new BruteForceBroadphase()));
 
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES |

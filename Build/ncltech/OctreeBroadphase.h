@@ -37,6 +37,6 @@ protected:
 
   IBroadphase *m_secondaryBroadphase; //!< Broadphase stage used to determine collision pairs within subdivisions
 
-  WorldDivision *m_world; //!< Root world space
+  WorldDivision *m_world;                       //!< Root world space
   std::vector<WorldDivision *> m_leafDivisions; //!< Subdivisions containing objects to generate collision pairs for
 };

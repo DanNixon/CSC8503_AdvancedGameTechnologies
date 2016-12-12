@@ -1,12 +1,12 @@
 #include "TestScene.h"
 
 #include <nclgl\Vector4.h>
+#include <ncltech\BruteForceBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
+#include <ncltech\OctreeBroadphase.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
-#include <ncltech\OctreeBroadphase.h>
-#include <ncltech\BruteForceBroadphase.h>
 
 using namespace CommonUtils;
 
@@ -43,17 +43,11 @@ void TestScene::OnInitializeScene()
 
   //<--- SCENE CREATION --->
   // Create Ground
-  AddGameObject(BuildCuboidObject("ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true,
-                                        false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+  AddGameObject(BuildCuboidObject("ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false,
+                                  Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
   // Create Player (See OnUpdateScene)
-  m_pPlayer = BuildCuboidObject("Player1",                        
-                                Vector3(5.f, 0.5f, 0.0f),         
-                                Vector3(0.5f, 0.5f, 1.0f),        
-                                true,                             
-                                0.0f,                              
-                                true,                             
-                                false,                            
+  m_pPlayer = BuildCuboidObject("Player1", Vector3(5.f, 0.5f, 0.0f), Vector3(0.5f, 0.5f, 1.0f), true, 0.0f, true, false,
                                 Vector4(0.1f, 0.1f, 0.1f, 1.0f));
   AddGameObject(m_pPlayer);
 
@@ -67,14 +61,7 @@ void TestScene::OnInitializeScene()
         Vector4 colour = GenColour(idx / 10.f, 0.5f);
         Vector3 pos = offset + Vector3(x * cubewidth, 1e-3f + y * cubewidth, cubewidth * (idx % 2 == 0) ? 0.5f : -0.5f);
 
-        Object *cube = BuildCuboidObject("cube",
-                                         pos,      
-                                         halfdims, 
-                                         true,     
-                                         1.0f,     
-                                         true,     
-                                         true,     
-                                         colour);  
+        Object *cube = BuildCuboidObject("cube", pos, halfdims, true, 1.0f, true, true, colour);
         AddGameObject(cube);
       }
     }
@@ -91,14 +78,7 @@ void TestScene::OnInitializeScene()
         for (int z = 0; z < dims; ++z)
         {
           Vector3 pos = offset + Vector3(scale.x * x, scale.y * y, scale.z * z);
-          Object *sphere = BuildSphereObject("sphere",
-                                             pos,      
-                                             ballsize, 
-                                             true,     
-                                             1.0f,     
-                                             true,     
-                                             true,     
-                                             col);  
+          Object *sphere = BuildSphereObject("sphere", pos, ballsize, true, 1.0f, true, true, col);
           AddGameObject(sphere);
         }
       }
@@ -106,14 +86,14 @@ void TestScene::OnInitializeScene()
   };
 
   // Create Cube Towers
-  //create_cube_tower(Vector3(3.0f, 0.5f, 3.0f), 1.0f);
-  //create_cube_tower(Vector3(-3.0f, 0.5f, -3.0f), 1.0f);
+  // create_cube_tower(Vector3(3.0f, 0.5f, 3.0f), 1.0f);
+  // create_cube_tower(Vector3(-3.0f, 0.5f, -3.0f), 1.0f);
 
   // Create Test Ball Pit
   create_ball_cube(Vector3(-8.0f, 0.5f, 12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
-  //create_ball_cube(Vector3(8.0f, 0.5f, 12.0f), Vector3(0.3f, 0.3f, 0.3f), 0.1f);
-  //create_ball_cube(Vector3(-8.0f, 0.5f, -12.0f), Vector3(0.2f, 0.2f, 0.2f), 0.1f);
-  //create_ball_cube(Vector3(8.0f, 0.5f, -12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
+  // create_ball_cube(Vector3(8.0f, 0.5f, 12.0f), Vector3(0.3f, 0.3f, 0.3f), 0.1f);
+  // create_ball_cube(Vector3(-8.0f, 0.5f, -12.0f), Vector3(0.2f, 0.2f, 0.2f), 0.1f);
+  // create_ball_cube(Vector3(8.0f, 0.5f, -12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
 }
 
 void TestScene::OnCleanupScene()
