@@ -1,5 +1,7 @@
 #include "CourseworkScene.h"
 
+#include <GameplayLib\ShootableBall.h>
+#include <GameplayLib\ShootableCube.h>
 #include <nclgl\OBJMesh.h>
 #include <nclgl\Vector4.h>
 #include <ncltech\BruteForceBroadphase.h>
@@ -16,9 +18,6 @@
 #include <ncltech\SphereCollisionShape.h>
 #include <ncltech\State.h>
 #include <ncltech\WeldConstraint.h>
-
-#include "ShootableBall.h"
-#include "ShootableCube.h"
 
 /**
  * @brief Radius of the planet.

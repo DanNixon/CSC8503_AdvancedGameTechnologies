@@ -1,12 +1,11 @@
 #pragma once
 
+#include <GameplayLib\IShootable.h>
 #include <nclgl\Mesh.h>
 #include <ncltech\NetSyncStateMachine.h>
 #include <ncltech\ObjectMesh.h>
 #include <ncltech\Scene.h>
 #include <vector>
-
-#include "IShootable.h"
 
 /**
  * @class CourseworkScene
