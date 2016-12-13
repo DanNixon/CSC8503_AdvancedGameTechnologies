@@ -287,7 +287,8 @@ CourseworkScene::CourseworkScene()
         Quaternion::RotatePointByQuaternion(camera->GetOrientation(), velocity);
 
         // TODO
-        IShootable *shootable = new ShootableBall();
+        // IShootable *shootable = new ShootableBall();
+        IShootable *shootable = new ShootableCube();
 
         shootable->Physics()->SetPosition(camera->GetPosition());
         shootable->Physics()->SetLinearVelocity(velocity);

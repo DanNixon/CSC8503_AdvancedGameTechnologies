@@ -2,31 +2,14 @@
 
 #include <ncltech/CommonMeshes.h>
 #include <ncltech/NCLDebug.h>
-#include <ncltech/SphereCollisionShape.h>
 
-IShootable::IShootable(float radius, float inverseMass, float lifetime)
-    : ObjectMesh("ball")
+IShootable::IShootable(float lifetime)
+    : ObjectMesh("shootable")
     , m_lifetime(lifetime)
     , m_hitTarget(false)
     , m_expired(false)
 {
-  // Setup mesh and physics
-  {
-    SetMesh(CommonMeshes::Sphere(), false);
-    SetTexture(CommonMeshes::CheckerboardTex(), false);
-    SetLocalTransform(Matrix4::Scale(Vector3(radius, radius, radius)));
-    SetColour(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-    SetBoundingRadius(radius);
-
-    CreatePhysicsNode();
-    m_pPhysicsObject->SetInverseMass(inverseMass);
-
-    ICollisionShape *shape = new SphereCollisionShape(radius);
-    m_pPhysicsObject->AddCollisionShape(shape);
-    m_pPhysicsObject->SetInverseInertia(shape->BuildInverseInertia(inverseMass));
-
-    m_pPhysicsObject->AutoResizeBoundingBox();
-  }
+  CreatePhysicsNode();
 
   // Collision handler
   {
@@ -79,4 +62,13 @@ IShootable::IShootable(float radius, float inverseMass, float lifetime)
 
 IShootable::~IShootable()
 {
+}
+
+void IShootable::PostCreate(float inverseMass)
+{
+  SetTexture(CommonMeshes::CheckerboardTex(), false);
+  SetColour(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+
+  m_pPhysicsObject->SetInverseMass(inverseMass);
+  m_pPhysicsObject->AutoResizeBoundingBox();
 }

@@ -1,7 +1,19 @@
 #include "ShootableBall.h"
 
-ShootableBall::ShootableBall()
+#include <ncltech/CommonMeshes.h>
+#include <ncltech/SphereCollisionShape.h>
+
+ShootableBall::ShootableBall(float radius, float inverseMass, float lifetime)
+    : IShootable(lifetime)
 {
+  SetMesh(CommonMeshes::Sphere(), false);
+  SetLocalTransform(Matrix4::Scale(Vector3(radius, radius, radius)));
+
+  ICollisionShape *shape = new SphereCollisionShape(radius);
+  m_pPhysicsObject->AddCollisionShape(shape);
+  m_pPhysicsObject->SetInverseInertia(shape->BuildInverseInertia(inverseMass));
+
+  PostCreate(inverseMass);
 }
 
 ShootableBall::~ShootableBall()

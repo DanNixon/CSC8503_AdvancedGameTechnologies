@@ -11,7 +11,7 @@
 class IShootable : public ObjectMesh
 {
 public:
-  IShootable(float radius = 0.5f, float inverseMass = 1.0f, float lifetime = 10.0f);
+  IShootable(float lifetime = 10.0f);
   virtual ~IShootable();
 
   /**
@@ -31,6 +31,9 @@ public:
   {
     return m_expired;
   }
+
+protected:
+  void PostCreate(float inverseMass);
 
 protected:
   float m_lifetime;            //!< Lifetime in seconds
