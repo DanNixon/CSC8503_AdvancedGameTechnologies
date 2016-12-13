@@ -127,13 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="ShootableBall.cpp" />
+    <ClCompile Include="IShootable.cpp" />
     <ClCompile Include="CourseworkScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ShootableCube.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ball.h" />
+    <ClInclude Include="ShootableBall.h" />
+    <ClInclude Include="IShootable.h" />
     <ClInclude Include="CourseworkScene.h" />
+    <ClInclude Include="ShootableCube.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

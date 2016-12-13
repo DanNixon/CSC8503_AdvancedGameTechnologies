@@ -8,11 +8,11 @@
  * @author Dan Nixon
  * @brief Balls that can be shot from the perspective of the player.
  */
-class Ball : public ObjectMesh
+class IShootable : public ObjectMesh
 {
 public:
-  Ball(float radius = 0.5f, float inverseMass = 1.0f, float lifetime = 10.0f);
-  virtual ~Ball();
+  IShootable(float radius = 0.5f, float inverseMass = 1.0f, float lifetime = 10.0f);
+  virtual ~IShootable();
 
   /**
    * @brief Gets the state machine for this ball.

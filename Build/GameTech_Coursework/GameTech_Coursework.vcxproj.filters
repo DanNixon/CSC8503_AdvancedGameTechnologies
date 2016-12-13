@@ -3,10 +3,31 @@
   <ItemGroup>
     <ClCompile Include="CourseworkScene.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="IShootable.cpp">
+      <Filter>Shootables</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootableCube.cpp">
+      <Filter>Shootables</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootableBall.cpp">
+      <Filter>Shootables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CourseworkScene.h" />
-    <ClInclude Include="Ball.h" />
+    <ClInclude Include="IShootable.h">
+      <Filter>Shootables</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootableCube.h">
+      <Filter>Shootables</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootableBall.h">
+      <Filter>Shootables</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Shootables">
+      <UniqueIdentifier>{08f271ec-6c63-44e3-8808-06a9c21b36cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -17,6 +17,9 @@
 #include <ncltech\State.h>
 #include <ncltech\WeldConstraint.h>
 
+#include "ShootableBall.h"
+#include "ShootableCube.h"
+
 /**
  * @brief Radius of the planet.
  */
@@ -245,9 +248,9 @@ CourseworkScene::CourseworkScene()
     reset->AddOnEntryBehaviour([this](State *) {
       NCLDebug::Log("Player reset.");
 
-      for (auto it = this->m_shotSpheres.begin(); it != this->m_shotSpheres.end(); ++it)
+      for (auto it = this->m_shotThings.begin(); it != this->m_shotThings.end(); ++it)
         this->RemoveGameObject(*it);
-      this->m_shotSpheres.clear();
+      this->m_shotThings.clear();
     });
 
     // Exit conditions
@@ -264,17 +267,17 @@ CourseworkScene::CourseworkScene()
 
     // Shooting spheres
     {
-      State *shootBall = new State("shootBall", m_playerStateMachine.RootState(), &m_playerStateMachine);
-      shootBall->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
+      State *shootThing = new State("shootThing", m_playerStateMachine.RootState(), &m_playerStateMachine);
+      shootThing->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
 
-      State *preShoot = new State("preShoot", shootBall, &m_playerStateMachine);
+      State *preShoot = new State("preShoot", shootThing, &m_playerStateMachine);
       preShoot->AddOnEntryBehaviour([](State *) {
         NCLDebug::Log("Hold J to power up.");
         NCLDebug::Log("Release J to fire ball!");
       });
-      shootBall->AddOnEntryBehaviour([this, preShoot](State *) { this->m_playerStateMachine.ActivateState(preShoot); });
+      shootThing->AddOnEntryBehaviour([this, preShoot](State *) { this->m_playerStateMachine.ActivateState(preShoot); });
 
-      State *shoot = new State("shoot", shootBall, &m_playerStateMachine);
+      State *shoot = new State("shoot", shootThing, &m_playerStateMachine);
       shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
 
       shoot->AddOnEntryBehaviour([this](State *s) {
@@ -283,12 +286,14 @@ CourseworkScene::CourseworkScene()
         Vector3 velocity(0.0f, 0.0f, -s->TimeInState() * 10.0f);
         Quaternion::RotatePointByQuaternion(camera->GetOrientation(), velocity);
 
-        Ball *sphere = new Ball();
-        sphere->Physics()->SetPosition(camera->GetPosition());
-        sphere->Physics()->SetLinearVelocity(velocity);
-        sphere->Physics()->SetGravitationTarget(this->m_planet->Physics());
-        this->m_shotSpheres.push_back(sphere);
-        this->AddGameObject(sphere);
+        // TODO
+        IShootable *shootable = new ShootableBall();
+
+        shootable->Physics()->SetPosition(camera->GetPosition());
+        shootable->Physics()->SetLinearVelocity(velocity);
+        shootable->Physics()->SetGravitationTarget(this->m_planet->Physics());
+        this->m_shotThings.push_back(shootable);
+        this->AddGameObject(shootable);
 
         NCLDebug::Log("Shot ball with velocity (%f, %f, %f)", velocity.x, velocity.y, velocity.z);
       });
@@ -454,14 +459,14 @@ void CourseworkScene::OnUpdateScene(float dt)
   m_playerStateMachine.Update(dt);
 
   // Update balls
-  for (auto it = m_shotSpheres.begin(); it != m_shotSpheres.end();)
+  for (auto it = m_shotThings.begin(); it != m_shotThings.end();)
   {
-    Ball *b = *it;
+    IShootable *b = *it;
     b->GetStateMachine().Update(dt);
 
     if (b->HasExpired())
     {
-      it = m_shotSpheres.erase(it);
+      it = m_shotThings.erase(it);
       RemoveGameObject(b);
     }
     else

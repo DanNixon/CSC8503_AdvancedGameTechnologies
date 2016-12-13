@@ -1,10 +1,10 @@
-#include "Ball.h"
+#include "IShootable.h"
 
 #include <ncltech/CommonMeshes.h>
 #include <ncltech/NCLDebug.h>
 #include <ncltech/SphereCollisionShape.h>
 
-Ball::Ball(float radius, float inverseMass, float lifetime)
+IShootable::IShootable(float radius, float inverseMass, float lifetime)
     : ObjectMesh("ball")
     , m_lifetime(lifetime)
     , m_hitTarget(false)
@@ -77,6 +77,6 @@ Ball::Ball(float radius, float inverseMass, float lifetime)
   }
 }
 
-Ball::~Ball()
+IShootable::~IShootable()
 {
 }
