@@ -8,7 +8,7 @@
  * @param dimensions Dimensions of the 2D plane
  */
 PlaneCollisionShape::PlaneCollisionShape(const Vector2 &dimensions)
-  : m_dimensions(dimensions)
+    : m_dimensions(dimensions)
 {
 }
 

@@ -55,5 +55,5 @@ public:
 
 protected:
   Vector3 _normal; //!< Unit-length plane normal
-  float distance; //!< Distance from origin
+  float distance;  //!< Distance from origin
 };

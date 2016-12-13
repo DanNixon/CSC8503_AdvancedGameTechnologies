@@ -62,12 +62,13 @@ public:
 
     // Create Ground
     {
-      Object * ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,
-        0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
-      
+      Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,
+                                                      0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+
       // Plane collision shape
-      ICollisionShape * shape = new PlaneCollisionShape(Vector2(20.0f, 20.0f));
-      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 1.0f, 0.0f)) * Matrix4::Rotation(90.0f, Vector3(-1.0f, 0.0f, 0.0f)));
+      ICollisionShape *shape = new PlaneCollisionShape(Vector2(20.0f, 20.0f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 1.0f, 0.0f)) *
+                               Matrix4::Rotation(90.0f, Vector3(-1.0f, 0.0f, 0.0f)));
       ground->Physics()->AddCollisionShape(shape);
 
       ground->Physics()->AutoResizeBoundingBox();
@@ -81,8 +82,9 @@ public:
                                                    false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 
       // Plane collision shape
-      ICollisionShape * shape = new PlaneCollisionShape(Vector2(5.0f, 2.0f));
-      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 1.0f, 0.0f)) * Matrix4::Rotation(90.0f, Vector3(-1.0f, 0.0f, 0.0f)));
+      ICollisionShape *shape = new PlaneCollisionShape(Vector2(5.0f, 2.0f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 1.0f, 0.0f)) *
+                               Matrix4::Rotation(90.0f, Vector3(-1.0f, 0.0f, 0.0f)));
       obj->Physics()->AddCollisionShape(shape);
 
       obj->Physics()->SetFriction(1.0f);
@@ -141,7 +143,7 @@ public:
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Manifolds : %s (Press M to toggle)",
                              (drawFlags & DEBUGDRAW_FLAGS_MANIFOLD) ? "Enabled" : "Disabled");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw AABB : %s (Press B to toggle)",
-      (drawFlags & DEBUGDRAW_FLAGS_AABB) ? "Enabled" : "Disabled");
+                             (drawFlags & DEBUGDRAW_FLAGS_AABB) ? "Enabled" : "Disabled");
 
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_C))
       drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
