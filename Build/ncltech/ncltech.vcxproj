@@ -113,6 +113,7 @@
     <ClCompile Include="SphereCollisionShape.cpp" />
     <ClCompile Include="StateContainer.cpp" />
     <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="Utility.cpp" />
     <ClCompile Include="WeldConstraint.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +135,7 @@
     <ClInclude Include="IPubSubClient.h" />
     <ClInclude Include="PlaneCollisionShape.h" />
     <ClInclude Include="PubSubBroker.h" />
+    <ClInclude Include="Utility.h" />
     <ClInclude Include="WeldConstraint.h" />
     <ClInclude Include="Hull.h" />
     <ClInclude Include="IBroadphase.h" />

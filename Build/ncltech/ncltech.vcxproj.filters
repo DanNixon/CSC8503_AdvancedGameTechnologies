@@ -185,6 +185,9 @@
     <ClCompile Include="PlaneCollisionShape.cpp">
       <Filter>src\Physics\CollisionShapes</Filter>
     </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -324,6 +327,9 @@
     </ClInclude>
     <ClInclude Include="PlaneCollisionShape.h">
       <Filter>include\Physics\CollisionShapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

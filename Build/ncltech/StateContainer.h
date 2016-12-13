@@ -13,9 +13,6 @@ class State;
 class StateContainer
 {
 public:
-  static std::vector<std::string> StateContainer::Split(const std::string &str, char delim = '/');
-
-public:
   StateContainer();
   virtual ~StateContainer();
 

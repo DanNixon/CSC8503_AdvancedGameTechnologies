@@ -1,30 +1,9 @@
 #include "StateContainer.h"
 
 #include <algorithm>
-#include <sstream>
 
 #include "State.h"
-
-/**
-* @brief Splits a string by a delimiter.
-* @param str String to split
-* @param delim Delimiter
-* @return Vector of substrings
-*/
-std::vector<std::string> StateContainer::Split(const std::string &str, char delim)
-{
-  std::vector<std::string> retVal;
-  std::stringstream ss(str);
-  std::string item;
-
-  while (std::getline(ss, item, delim))
-  {
-    if (!item.empty())
-      retVal.push_back(item);
-  }
-
-  return retVal;
-}
+#include "Utility.h"
 
 StateContainer::StateContainer()
     : m_active(nullptr)
@@ -45,7 +24,7 @@ StateContainer::~StateContainer()
 StatePtrList StateContainer::FindState(const std::string &name, char delim)
 {
   StatePtrList branch;
-  std::vector<std::string> names = Split(name, delim);
+  std::vector<std::string> names = Utility::Split(name, delim);
   std::reverse(names.begin(), names.end());
   FindStateImpl(names, branch);
   return branch;
