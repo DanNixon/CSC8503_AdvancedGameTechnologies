@@ -27,8 +27,6 @@ void ClientCLI::InitCLI()
       }
 
       {
-        std::lock_guard<std::mutex> lock(m_networkMutex);
-
         // Create and init broker
         this->m_broker = new PubSubBrokerNetNode();
         if (!this->m_broker->Initialize(std::stoi(argv[1]), 16))
@@ -71,8 +69,9 @@ void ClientCLI::InitCLI()
         return 1;
       }
 
+      PubSubBrokerNetNode * broker = this->m_broker;
       {
-        std::lock_guard<std::mutex> lock(this->m_networkMutex);
+        std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
 
         // Remove CLI pub/sub client
         this->m_broker->UnSubscribeFromAll(this->m_cliPubSubClient);
@@ -81,16 +80,17 @@ void ClientCLI::InitCLI()
 
         // Close broker network node
         this->m_broker->Release();
-        delete this->m_broker;
         this->m_broker = nullptr;
       }
-      out << "Disconnected.\n";
 
       // Stop network update thread
       if (this->m_networkUpdateThread.joinable())
         this->m_networkUpdateThread.join();
 
-      out << "Network thread stopped.\n";
+      // Free broker
+      delete broker;
+
+      out << "Disconnected.\n";
       return COMMAND_EXIT_CLEAN;
     };
 
@@ -110,7 +110,7 @@ void ClientCLI::InitCLI()
       const char *msg = argv[2].c_str();
 
       {
-        std::lock_guard<std::mutex> lock(this->m_networkMutex);
+        std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
         this->m_broker->BroadcastMessage(nullptr, argv[1], msg, (uint16_t)strlen(msg));
       }
 
@@ -132,7 +132,7 @@ void ClientCLI::InitCLI()
 
       // Subscribe local pub/sub client to a topic
       {
-        std::lock_guard<std::mutex> lock(this->m_networkMutex);
+        std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
         this->m_broker->Subscribe(m_cliPubSubClient, argv[1]);
       }
 
@@ -160,7 +160,7 @@ void ClientCLI::NetworkUpdateLoop()
   while (m_broker != nullptr)
   {
     {
-      std::lock_guard<std::mutex> lock(m_networkMutex);
+      std::lock_guard<std::mutex> lock(m_broker->Mutex());
 
       // Do another text just in case broker was deleted while waiting for mutex lock
       if (m_broker != nullptr)

@@ -3,11 +3,18 @@
 #include "NetworkBase.h"
 #include "PubSubBroker.h"
 
+#include <mutex>
+
 class PubSubBrokerNetNode : public PubSubBroker, public NetworkBase
 {
 public:
   PubSubBrokerNetNode();
   virtual ~PubSubBrokerNetNode();
+
+  inline std::mutex &Mutex()
+  {
+    return m_netMutex;
+  }
 
   void ConnectToBroker(const uint8_t ip[4], uint16_t port);
   bool IsConnectedToServer() const;
@@ -20,5 +27,6 @@ protected:
   void HandleRxEvent(const ENetEvent &rxEvent);
 
 protected:
-  std::vector<ENetPeer *> m_connections;
+  std::mutex m_netMutex; //!< Mutex controling access
+  std::vector<ENetPeer *> m_connections; //!< Active connection
 };

@@ -52,9 +52,8 @@ protected:
   void BrokerNetworkLoop();
 
 protected:
-  std::thread m_brokerThread; //!< Thread handling networking for broker
-  std::mutex m_brokerMutex; //!< Mutex controling access to broker
-  GameTimer m_brokerUpdateTimer; //!< Timer for network updates
+  std::thread m_networkThread; //!< Thread handling networking for broker
+  GameTimer m_networkTimer; //!< Timer for network updates
   PubSubBrokerNetNode *m_broker; //!< Publisher/subscriber broker network node
   FunctionalPubSubClient * m_netAnnounceClient; //!< Pub/sub client used for network announcements
 

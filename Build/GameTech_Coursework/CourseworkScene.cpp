@@ -286,7 +286,7 @@ void CourseworkScene::OnInitializeScene()
     });
 
     // Start network update thread
-    m_brokerThread = std::thread(&CourseworkScene::BrokerNetworkLoop, this);
+    m_networkThread = std::thread(&CourseworkScene::BrokerNetworkLoop, this);
   }
   else
   {
@@ -397,13 +397,19 @@ void CourseworkScene::OnInitializeScene()
     // Fix target position to planet
     PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_lampPost->Physics()));
   }
+
+  // Check for server connection (should have probably happened in the time taken for world generation, etc. (on a local connection at least))
+  if (m_broker->IsConnectedToServer())
+    NCLDebug::Log("Connected to server!");
+  else
+    NCLERROR("Cannot connect to server.");
 }
 
 void CourseworkScene::OnCleanupScene()
 {
   // Close networking
   {
-    std::lock_guard<std::mutex> lock(m_brokerMutex);
+    std::lock_guard<std::mutex> lock(m_broker->Mutex());
 
     // Remove CLI pub/sub client
     m_broker->UnSubscribeFromAll(m_netAnnounceClient);
@@ -418,8 +424,8 @@ void CourseworkScene::OnCleanupScene()
   NCLDebug::Log("Disconnected from server.");
 
   // Stop network update thread
-  if (m_brokerThread.joinable())
-    m_brokerThread.join();
+  if (m_networkThread.joinable())
+    m_networkThread.join();
 
   // Reset state machines
   m_debugDrawStateMachine.Reset();
@@ -462,12 +468,12 @@ void CourseworkScene::BrokerNetworkLoop()
   while (m_broker != nullptr)
   {
     {
-      std::lock_guard<std::mutex> lock(m_brokerMutex);
+      std::lock_guard<std::mutex> lock(m_broker->Mutex());
 
       // Do another text just in case broker was deleted while waiting for mutex lock
       if (m_broker != nullptr)
       {
-        float dt = m_brokerUpdateTimer.GetTimedMS() * 0.001f;
+        float dt = m_networkTimer.GetTimedMS() * 0.001f;
         m_broker->PumpNetwork(dt);
       }
     }

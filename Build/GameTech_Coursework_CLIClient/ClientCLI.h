@@ -4,7 +4,6 @@
 
 // clang-format off
 #include <winsock2.h>
-#include <mutex>
 #include <thread>
 // clang-format on
 
@@ -28,6 +27,5 @@ protected:
   PubSubBrokerNetNode *m_broker;
   FunctionalPubSubClient *m_cliPubSubClient;
 
-  std::mutex m_networkMutex;
   std::thread m_networkUpdateThread;
 };
