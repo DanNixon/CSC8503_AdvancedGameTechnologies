@@ -33,7 +33,8 @@ void CourseworkScene::PrintKeyMapping()
   NCLDebug::Log("Key mappings:");
   NCLDebug::Log("  Reset scene: %c", KeyboardKeys::KEYBOARD_R);
   NCLDebug::Log("  Reset player: %c", PLAYER_RESET_KEY);
-  NCLDebug::Log("  Fire ball: %c", SHOOT_BALL_KEY);
+  NCLDebug::Log("  Shoot cube: %c", SHOOT_CUBE_KEY);
+  NCLDebug::Log("  Shoot ball: %c", SHOOT_BALL_KEY);
   NCLDebug::Log("  Switch physics view mode: %c", PHYSICS_DEBUG_VIEW_KEY);
   NCLDebug::Log("  Switch broadphase culling mode: %c", BROADPHASE_MODE_KEY);
   NCLDebug::Log("  Switch integrations mode: %c", INTEGRATION_MODE_KEY);
@@ -265,40 +266,40 @@ CourseworkScene::CourseworkScene()
       });
     }
 
-    // Shooting spheres
+    // Shooting
     {
-      State *shootThing = new State("shootThing", m_playerStateMachine.RootState(), &m_playerStateMachine);
-      shootThing->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
+      State::OnEntryBehaviour powerUpBehaviour = [](State *) { NCLDebug::Log("Hold to power up. Release to fire!"); };
+      State::TransferFromTest returnToIdle = [idle]() { return idle; };
 
-      State *preShoot = new State("preShoot", shootThing, &m_playerStateMachine);
-      preShoot->AddOnEntryBehaviour([](State *) {
-        NCLDebug::Log("Hold J to power up.");
-        NCLDebug::Log("Release J to fire ball!");
-      });
-      shootThing->AddOnEntryBehaviour([this, preShoot](State *) { this->m_playerStateMachine.ActivateState(preShoot); });
+      // Shooting cubes
+      {
+        State *shootCube = new State("shoot_cube", m_playerStateMachine.RootState(), &m_playerStateMachine);
+        shootCube->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY); });
 
-      State *shoot = new State("shoot", shootThing, &m_playerStateMachine);
-      shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
+        State *preShoot = new State("pre_shoot", shootCube, &m_playerStateMachine);
+        preShoot->AddOnEntryBehaviour(powerUpBehaviour);
+        shootCube->AddOnEntryBehaviour([this, preShoot](State *) { this->m_playerStateMachine.ActivateState(preShoot); });
 
-      shoot->AddOnEntryBehaviour([this](State *s) {
-        Camera *camera = SceneManager::Instance()->GetCamera();
+        State *shoot = new State("shoot", shootCube, &m_playerStateMachine);
+        shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY); });
+        shoot->AddOnEntryBehaviour([this](State *s) { this->ShootFromCamera(new ShootableCube(), s->TimeInState()); });
+        shoot->AddTransferFromTest(returnToIdle);
+      }
 
-        Vector3 velocity(0.0f, 0.0f, -s->TimeInState() * 10.0f);
-        Quaternion::RotatePointByQuaternion(camera->GetOrientation(), velocity);
+      // Shooting spheres
+      {
+        State *shootBall = new State("shoot_ball", m_playerStateMachine.RootState(), &m_playerStateMachine);
+        shootBall->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
 
-        // TODO
-        // IShootable *shootable = new ShootableBall();
-        IShootable *shootable = new ShootableCube();
+        State *preShoot = new State("pre_shoot", shootBall, &m_playerStateMachine);
+        preShoot->AddOnEntryBehaviour(powerUpBehaviour);
+        shootBall->AddOnEntryBehaviour([this, preShoot](State *) { this->m_playerStateMachine.ActivateState(preShoot); });
 
-        shootable->Physics()->SetPosition(camera->GetPosition());
-        shootable->Physics()->SetLinearVelocity(velocity);
-        shootable->Physics()->SetGravitationTarget(this->m_planet->Physics());
-        this->m_shotThings.push_back(shootable);
-        this->AddGameObject(shootable);
-
-        NCLDebug::Log("Shot ball with velocity (%f, %f, %f)", velocity.x, velocity.y, velocity.z);
-      });
-      shoot->AddTransferFromTest([idle]() { return idle; });
+        State *shoot = new State("shoot", shootBall, &m_playerStateMachine);
+        shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
+        shoot->AddOnEntryBehaviour([this](State *s) { this->ShootFromCamera(new ShootableBall(), s->TimeInState()); });
+        shoot->AddTransferFromTest(returnToIdle);
+      }
     }
   }
 
@@ -478,4 +479,24 @@ void CourseworkScene::OnUpdateScene(float dt)
 
   // Add planet rotation
   m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.01f, 0.0f));
+}
+
+/**
+ * @brief Shoots a shootable obejct from the camera position in the camera forward direction.
+ * @param shootable Object to shoot
+ * @param power Velocity scaling (x10)
+ */
+void CourseworkScene::ShootFromCamera(IShootable *shootable, float power)
+{
+  Camera *camera = SceneManager::Instance()->GetCamera();
+
+  Vector3 velocity(0.0f, 0.0f, -power * 10.0f);
+  Quaternion::RotatePointByQuaternion(camera->GetOrientation(), velocity);
+
+  shootable->Physics()->SetPosition(camera->GetPosition());
+  shootable->Physics()->SetLinearVelocity(velocity);
+  shootable->Physics()->SetGravitationTarget(this->m_planet->Physics());
+
+  m_shotThings.push_back(shootable);
+  AddGameObject(shootable);
 }

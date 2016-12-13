@@ -34,6 +34,11 @@ public:
   static const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
 
   /**
+   * @brief Key used to shoot a cube from the camera view point.
+   */
+  static const KeyboardKeys SHOOT_CUBE_KEY = KeyboardKeys::KEYBOARD_H;
+
+  /**
    * @brief Key used to shoot a sphere from the camera view point.
    */
   static const KeyboardKeys SHOOT_BALL_KEY = KeyboardKeys::KEYBOARD_J;
@@ -53,6 +58,9 @@ public:
   virtual void OnInitializeScene() override;
   virtual void OnCleanupScene() override;
   virtual void OnUpdateScene(float dt) override;
+
+protected:
+  void ShootFromCamera(IShootable *shootable, float power = 1.0f);
 
 protected:
   StateMachine m_debugDrawStateMachine;       //!< State machine controlling debug draw
