@@ -408,6 +408,7 @@ void CourseworkScene::OnInitializeScene()
 void CourseworkScene::OnCleanupScene()
 {
   // Close networking
+  PubSubBrokerNetNode * broker = m_broker;
   {
     std::lock_guard<std::mutex> lock(m_broker->Mutex());
 
@@ -418,14 +419,16 @@ void CourseworkScene::OnCleanupScene()
 
     // Close broker network node
     m_broker->Release();
-    delete m_broker;
     m_broker = nullptr;
   }
-  NCLDebug::Log("Disconnected from server.");
 
   // Stop network update thread
   if (m_networkThread.joinable())
     m_networkThread.join();
+
+  delete broker;
+
+  NCLDebug::Log("Disconnected from server.");
 
   // Reset state machines
   m_debugDrawStateMachine.Reset();
