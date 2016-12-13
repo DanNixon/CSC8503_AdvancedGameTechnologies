@@ -5,6 +5,6 @@
 class ShootableBall : public IShootable
 {
 public:
-  ShootableBall(Player * owner, float radius = 0.5f, float inverseMass = 1.0f, float lifetime = 10.0f);
+  ShootableBall(Player *owner, float radius = 0.5f, float inverseMass = 1.0f, float lifetime = 10.0f);
   virtual ~ShootableBall();
 };

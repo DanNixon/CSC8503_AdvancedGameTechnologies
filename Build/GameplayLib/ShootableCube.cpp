@@ -3,7 +3,7 @@
 #include <ncltech/CommonMeshes.h>
 #include <ncltech/CuboidCollisionShape.h>
 
-ShootableCube::ShootableCube(Player * owner, const Vector3 &halfDims, float inverseMass, float lifetime)
+ShootableCube::ShootableCube(Player *owner, const Vector3 &halfDims, float inverseMass, float lifetime)
     : IShootable(owner, lifetime)
 {
   SetMesh(CommonMeshes::Cube(), false);
