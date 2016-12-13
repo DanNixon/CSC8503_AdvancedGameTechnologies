@@ -23,7 +23,8 @@ public:
 
   virtual ~IPubSubClient()
   {
-    m_broker->UnSubscribeFromAll(this);
+    if (m_broker != nullptr)
+      m_broker->UnSubscribeFromAll(this);
   }
 
   /**

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{230753E4-DB69-4B77-AB0E-16FE1BE1CC1F}"
 EndProject
@@ -57,6 +57,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameTech_Coursework_CLIClie
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommandLineInterfaceLib", "CommandLineInterfaceLib\CommandLineInterfaceLib.vcxproj", "{67C67E1B-66DE-49CF-99D4-A72F688BA43E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{98D6B51B-CB0A-4389-ADC6-24082B967C3F} = {98D6B51B-CB0A-4389-ADC6-24082B967C3F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommandLineInterfaceLibTest", "CommandLineInterfaceLibTest\CommandLineInterfaceLibTest.vcxproj", "{DCB6D64F-045C-4500-80BD-803DBBE88F1E}"
 	ProjectSection(ProjectDependencies) = postProject

@@ -1,5 +1,8 @@
 #include "LocalScore.h"
 
+#include <ncltech\NCLDebug.h>
+#include <ncltech\Utility.h>
+
 LocalScore::LocalScore(PubSubBroker * broker)
     : IPubSubClient(broker)
     , m_startingScore(0.0f)
@@ -40,9 +43,26 @@ void LocalScore::DeltaPoints(float points)
 
 bool LocalScore::HandleSubscription(const std::string & topic, const char * msg, uint16_t len)
 {
-  switch (msg[0])
+  if (topic == "highscore/add")
   {
+    bool result = (msg == "1");
 
+    if (result)
+      NCLDebug::Log("New high score!");
+    else
+      NCLDebug::Log("No new high score...");
+  }
+  else if (topic == "highscore/list")
+  {
+    std::vector<std::string> tokens = Utility::Split(std::string(msg), ',');
+
+    NCLDebug::Log("High scores:");
+    for (size_t i = 0; i < tokens.size(); i += 2)
+      NCLDebug::Log("  %d) %5.0f - %s", (i / 2) + 1, tokens[i].c_str(), tokens[i + 1].c_str());
+  }
+  else
+  {
+    return false;
   }
 
   return true;

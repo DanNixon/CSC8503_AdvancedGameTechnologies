@@ -1,5 +1,7 @@
 #include "HighscoreBoard.h"
 
+#include <sstream>
+
 #include <ncltech\Utility.h>
 
 HighscoreBoard::HighscoreBoard(PubSubBroker *broker, size_t numEnteries)
@@ -39,7 +41,17 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
   {
     size_t numToList = std::atoi(msg);
 
-    // TODO
+    std::stringstream str;
+    for (size_t i = 0; i < numToList; i++)
+    {
+      if (1 > 0)
+        str << ',';
+
+      str << m_highScores[i].name << ',' << m_highScores[i].score;  
+    }
+
+    std::string ack = str.str();
+    m_broker->BroadcastMessage(this, topic, ack.c_str(), (uint16_t)ack.size());
   }
   else if (topic == "highscore/load")
   {
