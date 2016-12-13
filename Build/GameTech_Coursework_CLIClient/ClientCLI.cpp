@@ -69,7 +69,7 @@ void ClientCLI::InitCLI()
         return 1;
       }
 
-      PubSubBrokerNetNode * broker = this->m_broker;
+      PubSubBrokerNetNode *broker = this->m_broker;
       {
         std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
 

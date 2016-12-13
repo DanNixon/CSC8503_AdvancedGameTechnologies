@@ -19,7 +19,7 @@ void Window::init(int width, int height)
     MessageBox(NULL, "Window Creation Failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
     exit(0);
   }
-  SetWindowLong(hwnd, GWL_USERDATA, (LONG)this); // possibly needs fixing, changed to SetWindowLongPtr
+  SetWindowLong(hwnd, GWL_USERDATA, (LONG) this); // possibly needs fixing, changed to SetWindowLongPtr
 
   RECT client, window;
   GetClientRect(hwnd, &client);

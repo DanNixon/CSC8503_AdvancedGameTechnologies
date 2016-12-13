@@ -274,7 +274,7 @@ void CourseworkScene::OnInitializeScene()
   m_broker = new PubSubBrokerNetNode();
   if (m_broker->Initialize(CLIENT_PORT, 8))
   {
-    const uint8_t SERVER_IP[] = { 127, 0, 0, 1 };
+    const uint8_t SERVER_IP[] = {127, 0, 0, 1};
     m_broker->ConnectToBroker(SERVER_IP, SERVER_PORT);
 
     // Add network announcement client
@@ -398,7 +398,8 @@ void CourseworkScene::OnInitializeScene()
     PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_lampPost->Physics()));
   }
 
-  // Check for server connection (should have probably happened in the time taken for world generation, etc. (on a local connection at least))
+  // Check for server connection (should have probably happened in the time taken for world generation, etc. (on a local
+  // connection at least))
   if (m_broker->IsConnectedToServer())
     NCLDebug::Log("Connected to server!");
   else
@@ -408,7 +409,7 @@ void CourseworkScene::OnInitializeScene()
 void CourseworkScene::OnCleanupScene()
 {
   // Close networking
-  PubSubBrokerNetNode * broker = m_broker;
+  PubSubBrokerNetNode *broker = m_broker;
   {
     std::lock_guard<std::mutex> lock(m_broker->Mutex());
 

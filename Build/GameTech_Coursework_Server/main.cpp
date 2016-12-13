@@ -1,10 +1,10 @@
 #pragma once
 
+#include <GameplayLib\HighscoreBoard.h>
 #include <enet\enet.h>
 #include <iphlpapi.h>
 #include <nclgl\GameTimer.h>
 #include <ncltech\PubSubBrokerNetNode.h>
-#include <GameplayLib\HighscoreBoard.h>
 
 #pragma comment(lib, "IPHLPAPI.lib")
 

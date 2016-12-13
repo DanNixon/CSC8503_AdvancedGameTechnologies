@@ -15,7 +15,7 @@ PubSubBrokerNetNode::~PubSubBrokerNetNode()
 void PubSubBrokerNetNode::ConnectToBroker(const uint8_t ip[4], uint16_t port)
 {
   ENetPeer *peer = ConnectPeer(ip[0], ip[1], ip[2], ip[3], port);
-  //m_connections.push_back(peer);
+  // m_connections.push_back(peer);
 }
 
 bool PubSubBrokerNetNode::IsConnectedToServer() const
@@ -87,7 +87,8 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
   enet_packet_destroy(packet);
 }
 
-void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len, int32_t ignorePeer)
+void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len,
+                                           int32_t ignorePeer)
 {
   // Length (topic length + equals + payload length + null terminator)
   uint16_t packetLen = (uint16_t)topic.length() + len + 2;

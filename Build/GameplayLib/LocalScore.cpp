@@ -3,7 +3,7 @@
 #include <ncltech\NCLDebug.h>
 #include <ncltech\Utility.h>
 
-LocalScore::LocalScore(PubSubBroker * broker)
+LocalScore::LocalScore(PubSubBroker *broker)
     : IPubSubClient(broker)
     , m_startingScore(0.0f)
     , m_modifier(1.0f)
@@ -45,7 +45,7 @@ void LocalScore::DeltaPoints(float points)
   m_score += m_bonus + (m_modifier * points);
 }
 
-bool LocalScore::HandleSubscription(const std::string & topic, const char * msg, uint16_t len)
+bool LocalScore::HandleSubscription(const std::string &topic, const char *msg, uint16_t len)
 {
   if (topic == "highscore/add")
   {

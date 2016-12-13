@@ -1,14 +1,14 @@
 #pragma once
 
+#include <mutex>
 #include <nclgl\Mesh.h>
+#include <ncltech\FunctionalPubSubClient.h>
 #include <ncltech\NetSyncStateMachine.h>
 #include <ncltech\ObjectMesh.h>
-#include <ncltech\Scene.h>
 #include <ncltech\PubSubBrokerNetNode.h>
-#include <ncltech\FunctionalPubSubClient.h>
-#include <vector>
+#include <ncltech\Scene.h>
 #include <thread>
-#include <mutex>
+#include <vector>
 
 #include <GameplayLib\Player.h>
 
@@ -52,10 +52,10 @@ protected:
   void BrokerNetworkLoop();
 
 protected:
-  std::thread m_networkThread; //!< Thread handling networking for broker
-  GameTimer m_networkTimer; //!< Timer for network updates
-  PubSubBrokerNetNode *m_broker; //!< Publisher/subscriber broker network node
-  FunctionalPubSubClient * m_netAnnounceClient; //!< Pub/sub client used for network announcements
+  std::thread m_networkThread;                 //!< Thread handling networking for broker
+  GameTimer m_networkTimer;                    //!< Timer for network updates
+  PubSubBrokerNetNode *m_broker;               //!< Publisher/subscriber broker network node
+  FunctionalPubSubClient *m_netAnnounceClient; //!< Pub/sub client used for network announcements
 
   StateMachine m_debugDrawStateMachine;       //!< State machine controlling debug draw
   StateMachine m_broadphaseModeStateMachine;  //!< State machine controlling broadphase mode

@@ -1,7 +1,7 @@
 #include "HighscoreBoard.h"
 
-#include <sstream>
 #include <algorithm>
+#include <sstream>
 
 #include <ncltech\Utility.h>
 
@@ -57,7 +57,7 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
       if (1 > 0)
         str << ',';
 
-      str << m_highScores[i].name << ',' << m_highScores[i].score;  
+      str << m_highScores[i].name << ',' << m_highScores[i].score;
     }
 
     std::string ack = str.str();
@@ -72,7 +72,7 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
   else if (topic == "highscore/save")
   {
     std::string filename(msg);
-    char result = (char) SaveToFile(filename);
+    char result = (char)SaveToFile(filename);
     m_broker->BroadcastMessage(this, topic, &result, 1);
   }
   else
@@ -83,13 +83,13 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
   return true;
 }
 
-bool HighscoreBoard::LoadFromFile(const std::string & filename)
+bool HighscoreBoard::LoadFromFile(const std::string &filename)
 {
   // TODO
   return false;
 }
 
-bool HighscoreBoard::SaveToFile(const std::string & filename)
+bool HighscoreBoard::SaveToFile(const std::string &filename)
 {
   // TODO
   return false;
