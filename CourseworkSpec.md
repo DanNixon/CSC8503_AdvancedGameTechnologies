@@ -74,7 +74,7 @@ higher mark will require the implementation of optional elements.
 - [x] You must add a target to the surface of the planet. This region will
       rotate as the planet does, and should be clearly indicated graphically
       (e.g., with a target reticule, or dart-board).
-- [ ] You must implement a score counter. The score should increment by 100
+- [x] You must implement a score counter. The score should increment by 100
       every time a launched sphere hits the target region of the planet.
 - [ ] You should demonstrate awareness that the physical representation of an
       object does not need to perfectly match its graphical representation. An
