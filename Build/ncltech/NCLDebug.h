@@ -66,6 +66,7 @@ Note: All functions have an "<function>NDT" varient which refers to a 'non depth
 */ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
 #include <mutex>
 #include <nclgl\Matrix3.h>
 #include <nclgl\Matrix4.h>
@@ -196,6 +197,8 @@ protected:
   }
 
 protected:
+  static std::mutex m_LogMutex;
+
   static Vector3 m_CameraPosition;
   static Matrix4 m_ProjMtx;
   static Matrix4 m_ViewMtx;

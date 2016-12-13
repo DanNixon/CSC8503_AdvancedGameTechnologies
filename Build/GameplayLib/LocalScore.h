@@ -27,6 +27,7 @@ public:
     return m_bonus;
   }
 
+  virtual void Submit(const std::string &name = "Player");
   virtual void Reset();
 
   virtual void DeltaPoints(float points);

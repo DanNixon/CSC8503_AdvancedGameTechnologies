@@ -1,13 +1,21 @@
 #include "HighscoreBoard.h"
 
 #include <sstream>
+#include <algorithm>
 
 #include <ncltech\Utility.h>
 
-HighscoreBoard::HighscoreBoard(PubSubBroker *broker, size_t numEnteries)
+HighscoreBoard::HighscoreBoard(PubSubBroker *broker)
     : IPubSubClient(broker)
-    , m_highScores(numEnteries)
 {
+  // Subscribe to topics
+  if (broker != nullptr)
+  {
+    broker->Subscribe(this, "highscore/add");
+    broker->Subscribe(this, "highscore/list");
+    broker->Subscribe(this, "highscore/load");
+    broker->Subscribe(this, "highscore/save");
+  }
 }
 
 HighscoreBoard::~HighscoreBoard()
@@ -21,6 +29,8 @@ size_t HighscoreBoard::AddScore(const LocalScore *score, const std::string &name
 
 size_t HighscoreBoard::AddScore(float score, const std::string &name)
 {
+  m_highScores.push_back({name, score});
+  std::sort(m_highScores.begin(), m_highScores.end(), [](HighscoreRecord &a, HighscoreRecord &b) { return a.score > b.score; });
   // TODO
   return 0;
 }

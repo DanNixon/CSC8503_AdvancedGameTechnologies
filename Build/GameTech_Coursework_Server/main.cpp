@@ -4,13 +4,13 @@
 #include <iphlpapi.h>
 #include <nclgl\GameTimer.h>
 #include <ncltech\PubSubBrokerNetNode.h>
+#include <GameplayLib\HighscoreBoard.h>
 
 #pragma comment(lib, "IPHLPAPI.lib")
 
-#define SERVER_PORT 1234
+#define SERVER_PORT 1200
 
 PubSubBrokerNetNode g_node;
-GameTimer g_timer;
 
 void PrintAllAdapterIPAddresses();
 
@@ -41,11 +41,15 @@ int main(int argc, char **argv)
   printf("Server initiated\n");
   PrintAllAdapterIPAddresses();
 
+  // Init high score board
+  HighscoreBoard highScores(&g_node);
+
   // Run update loop
-  g_timer.GetTimedMS();
+  GameTimer timer;
+  timer.GetTimedMS();
   while (true)
   {
-    float dt = g_timer.GetTimedMS() * 0.001f;
+    float dt = timer.GetTimedMS() * 0.001f;
     g_node.PumpNetwork(dt);
     Sleep(0);
   }

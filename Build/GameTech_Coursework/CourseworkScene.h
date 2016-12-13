@@ -4,7 +4,11 @@
 #include <ncltech\NetSyncStateMachine.h>
 #include <ncltech\ObjectMesh.h>
 #include <ncltech\Scene.h>
+#include <ncltech\PubSubBrokerNetNode.h>
+#include <ncltech\FunctionalPubSubClient.h>
 #include <vector>
+#include <thread>
+#include <mutex>
 
 #include <GameplayLib\Player.h>
 
@@ -45,6 +49,15 @@ public:
   virtual void OnUpdateScene(float dt) override;
 
 protected:
+  void BrokerNetworkLoop();
+
+protected:
+  std::thread m_brokerThread; //!< Thread handling networking for broker
+  std::mutex m_brokerMutex; //!< Mutex controling access to broker
+  GameTimer m_brokerUpdateTimer; //!< Timer for network updates
+  PubSubBrokerNetNode *m_broker; //!< Publisher/subscriber broker network node
+  FunctionalPubSubClient * m_netAnnounceClient; //!< Pub/sub client used for network announcements
+
   StateMachine m_debugDrawStateMachine;       //!< State machine controlling debug draw
   StateMachine m_broadphaseModeStateMachine;  //!< State machine controlling broadphase mode
   StateMachine m_integrationModeStateMachine; //!< State machine controlling broadphase mode

@@ -6,24 +6,24 @@ PubSubBrokerNetNode::PubSubBrokerNetNode()
 
 PubSubBrokerNetNode::~PubSubBrokerNetNode()
 {
-  // Disconnect all active connections
-  // for (auto it = m_connections.begin(); it != m_connections.end(); ++it)
-  // enet_peer_disconnect_now(*it, 0);
   m_connections.clear();
 
   // Close network
   Release();
 }
 
-bool PubSubBrokerNetNode::ConnectToBroker(const uint8_t ip[4], uint16_t port)
+void PubSubBrokerNetNode::ConnectToBroker(const uint8_t ip[4], uint16_t port)
 {
   ENetPeer *peer = ConnectPeer(ip[0], ip[1], ip[2], ip[3], port);
-  bool result = (peer != nullptr);
+  //m_connections.push_back(peer);
+}
 
-  if (result)
-    m_connections.push_back(peer);
+bool PubSubBrokerNetNode::IsConnectedToServer() const
+{
+  if (m_connections.empty())
+    return false;
 
-  return result;
+  return m_connections.back()->state == ENET_PEER_STATE_CONNECTED;
 }
 
 void PubSubBrokerNetNode::PumpNetwork(float dt)
@@ -75,8 +75,8 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
 
     printf("- Message from client %d on topic %s: %s\n", rxEvent.peer->incomingPeerID, topic.c_str(), payload);
 
-    // Broadcast message locally
-    PubSubBroker::BroadcastMessage(nullptr, topic, payload, (uint16_t)pl.size());
+    // Broadcast message
+    BroadcastMessage(nullptr, topic, payload, (uint16_t)pl.size(), rxEvent.peer->incomingPeerID);
   }
   else
   {
@@ -87,7 +87,7 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
   enet_packet_destroy(packet);
 }
 
-void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len)
+void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len, int32_t ignorePeer)
 {
   // Length (topic length + equals + payload length + null terminator)
   uint16_t packetLen = (uint16_t)topic.length() + len + 2;
@@ -113,7 +113,12 @@ void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::str
 
   // Send packet
   ENetPacket *packet = enet_packet_create(payload, packetLen, 0);
-  enet_host_broadcast(m_pNetwork, 0, packet);
+
+  for (auto it = m_connections.begin(); it != m_connections.end(); ++it)
+  {
+    if ((*it)->incomingPeerID != ignorePeer)
+      enet_peer_send(*it, 0, packet);
+  }
 
   PubSubBroker::BroadcastMessage(source, topic, msg, len);
 }

@@ -1,5 +1,6 @@
 // clang-format off
 #include <winsock2.h>
+#include <enet\enet.h>
 #include <nclgl\Window.h>
 #include <ncltech\NCLDebug.h>
 #include <ncltech\PerfTimer.h>
@@ -14,7 +15,6 @@ const Vector4 status_colour_header = Vector4(0.8f, 0.9f, 1.0f, 1.0f);
 
 bool show_perf_metrics = false;
 PerfTimer timer_total, timer_physics, timer_update, timer_render;
-uint shadowCycleKey = 4;
 
 /**
  * @brief Releases all global components and memory.
@@ -33,7 +33,7 @@ void Quit(bool error = false, const string &reason = "")
   // Show console reason before exit
   if (error)
   {
-    std::cout << reason << std::endl;
+    std::cerr << reason << std::endl;
     system("PAUSE");
     exit(-1);
   }
@@ -44,6 +44,10 @@ void Quit(bool error = false, const string &reason = "")
  */
 void Initialize()
 {
+  // Init ENet
+  if (enet_initialize() != 0)
+    Quit(true, "An error occurred while initializing ENet!");
+
   // Initialise the Window
   if (!Window::Initialise("Game Technologies", 1280, 800, false))
     Quit(true, "Window failed to initialise!");

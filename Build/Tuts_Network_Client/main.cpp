@@ -12,7 +12,6 @@ const Vector4 status_colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 const Vector4 status_colour_header = Vector4(0.8f, 0.9f, 1.0f, 1.0f);
 
 PerfTimer timer_total, timer_physics, timer_update, timer_render;
-uint shadowCycleKey = 4;
 bool show_perf_metrics = false;
 
 void Quit(bool error = false, const string &reason = "")

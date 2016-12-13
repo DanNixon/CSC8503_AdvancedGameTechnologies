@@ -9,11 +9,12 @@ public:
   PubSubBrokerNetNode();
   virtual ~PubSubBrokerNetNode();
 
-  bool ConnectToBroker(const uint8_t ip[4], uint16_t port);
+  void ConnectToBroker(const uint8_t ip[4], uint16_t port);
+  bool IsConnectedToServer() const;
 
   void PumpNetwork(float dt);
 
-  virtual void BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len);
+  virtual void BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len, int32_t ignorePeer = -1);
 
 protected:
   void HandleRxEvent(const ENetEvent &rxEvent);

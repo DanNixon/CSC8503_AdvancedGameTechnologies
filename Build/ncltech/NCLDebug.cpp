@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <sstream>
 
+std::mutex NCLDebug::m_LogMutex;
+
 Vector3 NCLDebug::m_CameraPosition;
 Matrix4 NCLDebug::m_ProjMtx;
 Matrix4 NCLDebug::m_ViewMtx;
@@ -322,6 +324,8 @@ void NCLDebug::AddLogEntry(const Vector3 &colour, const std::string &text)
 
 void NCLDebug::Log(const Vector3 &colour, const std::string text, ...)
 {
+  std::lock_guard<std::mutex> lock(m_LogMutex);
+
   va_list args;
   va_start(args, text);
 
@@ -335,6 +339,8 @@ void NCLDebug::Log(const Vector3 &colour, const std::string text, ...)
 
 void NCLDebug::Log(const std::string text, ...)
 {
+  std::lock_guard<std::mutex> lock(m_LogMutex);
+
   va_list args;
   va_start(args, text);
 
@@ -411,6 +417,8 @@ struct TriVertex
 
 void NCLDebug::SortDebugLists()
 {
+  std::lock_guard<std::mutex> lock(m_LogMutex);
+
   // Draw log text
   float cs_size_x = LOG_TEXT_SIZE / Window::GetWindow().GetScreenSize().x * 2.0f;
   float cs_size_y = LOG_TEXT_SIZE / Window::GetWindow().GetScreenSize().y * 2.0f;
@@ -524,6 +532,8 @@ void NCLDebug::DrawDebugLists()
     NCLERROR("Unable to load all ncldebug shaders!");
     return;
   }
+
+  std::lock_guard<std::mutex> lock(m_LogMutex);
 
   // Buffer all data into the single buffer object
   size_t max_size = 0;

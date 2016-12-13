@@ -17,7 +17,7 @@ public:
   };
 
 public:
-  HighscoreBoard(PubSubBroker *broker, size_t numEnteries = 10);
+  HighscoreBoard(PubSubBroker *broker);
   virtual ~HighscoreBoard();
 
   inline size_t NumScores() const

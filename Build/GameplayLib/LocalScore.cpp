@@ -31,6 +31,10 @@ void LocalScore::SetBonus(float bonus)
   m_bonus = bonus;
 }
 
+void LocalScore::Submit(const std::string &name)
+{
+}
+
 void LocalScore::Reset()
 {
   m_score = m_startingScore;
@@ -45,12 +49,8 @@ bool LocalScore::HandleSubscription(const std::string & topic, const char * msg,
 {
   if (topic == "highscore/add")
   {
-    bool result = (msg == "1");
-
-    if (result)
-      NCLDebug::Log("New high score!");
-    else
-      NCLDebug::Log("No new high score...");
+    long position = std::atol(msg);
+    NCLDebug::Log("Score ranking: %l", position);
   }
   else if (topic == "highscore/list")
   {
@@ -58,7 +58,13 @@ bool LocalScore::HandleSubscription(const std::string & topic, const char * msg,
 
     NCLDebug::Log("High scores:");
     for (size_t i = 0; i < tokens.size(); i += 2)
-      NCLDebug::Log("  %d) %5.0f - %s", (i / 2) + 1, tokens[i].c_str(), tokens[i + 1].c_str());
+    {
+      std::string name = tokens[i];
+      if (name.empty())
+        name = "[no name]";
+
+      NCLDebug::Log("  %d) %5.0f - %s", (i / 2) + 1, name.c_str(), tokens[i + 1].c_str());
+    }
   }
   else
   {

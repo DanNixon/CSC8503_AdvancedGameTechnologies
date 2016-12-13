@@ -33,7 +33,6 @@ The packets sent between clients can each optionally be sent via:
 	  This means we can make no assumptions about when the packet will arrive, only that it will eventually arrive.
 	  ENET accomplishes this by emulating it's own variation of the TCP protocol on top of the existing UDP socket.
 
-
 For more information see: http://enet.bespin.org/Features.html
 
 		(\_/)

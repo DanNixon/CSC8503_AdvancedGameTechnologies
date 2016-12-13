@@ -17,6 +17,9 @@
 #include <ncltech\State.h>
 #include <ncltech\WeldConstraint.h>
 
+#define CLIENT_PORT 1000
+#define SERVER_PORT 1200
+
 /**
  * @brief Radius of the planet.
  */
@@ -42,6 +45,8 @@ void CourseworkScene::PrintKeyMapping()
  */
 CourseworkScene::CourseworkScene()
     : Scene("GameTech coursework")
+    , m_broker(nullptr)
+    , m_netAnnounceClient(nullptr)
     , m_planetTex(0)
     , m_targetMesh(nullptr)
     , m_lampPostMesh(nullptr)
@@ -260,12 +265,38 @@ CourseworkScene::CourseworkScene()
 
 CourseworkScene::~CourseworkScene()
 {
+  delete m_netAnnounceClient;
 }
 
 void CourseworkScene::OnInitializeScene()
 {
+  // Connect to server
+  m_broker = new PubSubBrokerNetNode();
+  if (m_broker->Initialize(CLIENT_PORT, 8))
+  {
+    const uint8_t SERVER_IP[] = { 127, 0, 0, 1 };
+    m_broker->ConnectToBroker(SERVER_IP, SERVER_PORT);
+
+    // Add network announcement client
+    m_netAnnounceClient = new FunctionalPubSubClient(m_broker);
+    m_broker->Subscribe(m_netAnnounceClient, "announce");
+    m_netAnnounceClient->SetSubscriptionHandler([&](const std::string &topic, const char *msg, uint16_t) {
+      NCLDebug::Log("[ANNOUNCE] %s\n", msg);
+      return true;
+    });
+
+    // Start network update thread
+    m_brokerThread = std::thread(&CourseworkScene::BrokerNetworkLoop, this);
+  }
+  else
+  {
+    NCLERROR("Failed to init networking!");
+  }
+
+  // Show key mappings
   PrintKeyMapping();
 
+  // Configure physics
   PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
   PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
 
@@ -370,6 +401,26 @@ void CourseworkScene::OnInitializeScene()
 
 void CourseworkScene::OnCleanupScene()
 {
+  // Close networking
+  {
+    std::lock_guard<std::mutex> lock(m_brokerMutex);
+
+    // Remove CLI pub/sub client
+    m_broker->UnSubscribeFromAll(m_netAnnounceClient);
+    delete m_netAnnounceClient;
+    m_netAnnounceClient = nullptr;
+
+    // Close broker network node
+    m_broker->Release();
+    delete m_broker;
+    m_broker = nullptr;
+  }
+  NCLDebug::Log("Disconnected from server.");
+
+  // Stop network update thread
+  if (m_brokerThread.joinable())
+    m_brokerThread.join();
+
   // Reset state machines
   m_debugDrawStateMachine.Reset();
   m_broadphaseModeStateMachine.Reset();
@@ -404,4 +455,23 @@ void CourseworkScene::OnUpdateScene(float dt)
 
   // Add planet rotation
   m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.01f, 0.0f));
+}
+
+void CourseworkScene::BrokerNetworkLoop()
+{
+  while (m_broker != nullptr)
+  {
+    {
+      std::lock_guard<std::mutex> lock(m_brokerMutex);
+
+      // Do another text just in case broker was deleted while waiting for mutex lock
+      if (m_broker != nullptr)
+      {
+        float dt = m_brokerUpdateTimer.GetTimedMS() * 0.001f;
+        m_broker->PumpNetwork(dt);
+      }
+    }
+
+    Sleep(0);
+  }
 }
