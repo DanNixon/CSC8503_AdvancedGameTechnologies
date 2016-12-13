@@ -13,9 +13,10 @@ public:
 
   void PumpNetwork(float dt);
 
-//protected:
-  void HandleRxEvent(const ENetEvent &rxEvent);
-  void NetworkTxPayload(const std::string &topic, const char * msg, uint16_t len);
+  virtual void BroadcastMessage(IPubSubClient *source, const std::string &topic, const char * msg, uint16_t len);
+
+protected:
+  void HandleRxEvent(const ENetEvent &rxEvent);  
 
 protected:
   std::vector<ENetPeer *> m_connections;

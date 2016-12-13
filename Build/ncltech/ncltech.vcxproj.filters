@@ -337,5 +337,8 @@
     <ClInclude Include="PubSubBrokerNetNode.h">
       <Filter>include\Network</Filter>
     </ClInclude>
+    <ClInclude Include="FunctionalPubSubClient.h">
+      <Filter>include\Network</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

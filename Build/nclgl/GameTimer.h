@@ -28,7 +28,7 @@ public:
   float GetMS();
 
   // How many milliseconds have passed since GetTimedMS was last called
-  float GetTimedMS();
+  float GetTimedMS(bool reset = true);
 
 protected:
   LARGE_INTEGER start;     // Start of timer

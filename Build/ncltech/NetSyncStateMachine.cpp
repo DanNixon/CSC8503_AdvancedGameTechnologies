@@ -35,7 +35,7 @@ bool NetSyncStateMachine::Transfer()
 
     // Send topic update
     const char * msg = branchStr.c_str();
-    m_broker.BroadcastMessage(m_txTopic, msg, (uint16_t) strlen(msg));
+    m_broker.BroadcastMessage(this, m_txTopic, msg, (uint16_t) strlen(msg));
   }
 
   m_txBlanking = false;

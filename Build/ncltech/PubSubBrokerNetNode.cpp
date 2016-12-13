@@ -73,21 +73,21 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
     std::vector<char> pl(it + 1, data + packet->dataLength);
     const char * payload = pl.data();
 
-    printf("    Message from client %d on topic %s: %s\n", rxEvent.peer->incomingPeerID, topic.c_str(), payload);
+    printf("- Message from client %d on topic %s: %s\n", rxEvent.peer->incomingPeerID, topic.c_str(), payload);
 
     // Broadcast message locally
-    // TODO
+    PubSubBroker::BroadcastMessage(nullptr, topic, payload, (uint16_t) pl.size());
   }
   else
   {
-    printf("    Message from client %d: malformed packet\n", rxEvent.peer->incomingPeerID);
+    printf("- Message from client %d: malformed packet\n", rxEvent.peer->incomingPeerID);
   }
 
   // Free packet
   enet_packet_destroy(packet);
 }
 
-void PubSubBrokerNetNode::NetworkTxPayload(const std::string &topic, const char * msg, uint16_t len)
+void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char * msg, uint16_t len)
 {
   // Length (topic length + equals + payload length + null terminator)
   uint16_t packetLen = (uint16_t) topic.length() + len + 2;
@@ -114,4 +114,6 @@ void PubSubBrokerNetNode::NetworkTxPayload(const std::string &topic, const char 
   // Send packet
   ENetPacket *packet = enet_packet_create(payload, packetLen, 0);
   enet_host_broadcast(m_pNetwork, 0, packet);
+
+  PubSubBroker::BroadcastMessage(source, topic, msg, len);
 }

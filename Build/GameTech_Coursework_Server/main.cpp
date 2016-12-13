@@ -4,6 +4,7 @@
 #include <iphlpapi.h>
 #include <nclgl\GameTimer.h>
 #include <ncltech\PubSubBrokerNetNode.h>
+#include <ncltech\FunctionalPubSubClient.h>
 
 #pragma comment(lib, "IPHLPAPI.lib")
 
@@ -23,21 +24,35 @@ int onExit(int exitCode)
 
 int main(int argc, char **argv)
 {
+  // Init ENet
   if (enet_initialize() != 0)
   {
     fprintf(stderr, "An error occurred while initializing ENet.\n");
     return EXIT_FAILURE;
   }
 
+  // Init server
   if (!g_node.Initialize(SERVER_PORT, 8))
   {
     fprintf(stderr, "An error occurred while trying to create an ENet server host.\n");
     onExit(EXIT_FAILURE);
   }
 
+  // Show interfaces
   printf("Server initiated\n");
   PrintAllAdapterIPAddresses();
 
+  // Add broadcast message handler
+  FunctionalPubSubClient broadcastMessageHandler(g_node);
+  broadcastMessageHandler.SetSubscriptionHandler([&broadcastMessageHandler](const std::string &, const char * msg, uint16_t) {
+    printf("Broadcast message: %s\n", msg);
+    char * ack = "ack";
+    g_node.BroadcastMessage(&broadcastMessageHandler, "broadcast_messages", ack, 3);
+    return true;
+  });
+  g_node.Subscribe(&broadcastMessageHandler, "broadcast_messages");
+
+  // Run update loop
   g_timer.GetTimedMS();
   while (true)
   {
@@ -93,7 +108,7 @@ void PrintAllAdapterIPAddresses()
       IP_ADDR_STRING *cIpAddress = &cAdapter->IpAddressList;
       while (cIpAddress != NULL)
       {
-        printf("  - Listening for connections on %s:%u\n", cIpAddress->IpAddress.String, SERVER_PORT);
+        printf("  - %s:%u\n", cIpAddress->IpAddress.String, SERVER_PORT);
         cIpAddress = cIpAddress->Next;
       }
       cAdapter = cAdapter->Next;

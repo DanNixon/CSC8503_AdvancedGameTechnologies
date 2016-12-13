@@ -23,6 +23,7 @@ public:
 
   virtual ~IPubSubClient()
   {
+    m_broker.UnSubscribeFromAll(this);
   }
 
   /**

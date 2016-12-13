@@ -18,10 +18,11 @@ float GameTimer::GetMS()
   return (float)((t.QuadPart - start.QuadPart) * 1000.0 / frequency.QuadPart);
 }
 
-float GameTimer::GetTimedMS()
+float GameTimer::GetTimedMS(bool reset)
 {
   float a = GetMS();
   float b = a - lastTime;
-  lastTime = a;
+  if (reset)
+    lastTime = a;
   return b;
 }

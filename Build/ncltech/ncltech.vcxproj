@@ -124,6 +124,7 @@
     <ClInclude Include="BoundingBoxHull.h" />
     <ClInclude Include="BruteForceBroadphase.h" />
     <ClInclude Include="CollisionDetectionSAT.h" />
+    <ClInclude Include="FunctionalPubSubClient.h" />
     <ClInclude Include="HullCollisionShape.h" />
     <ClInclude Include="NetSyncStateMachine.h" />
     <ClInclude Include="PubSubBrokerNetNode.h" />

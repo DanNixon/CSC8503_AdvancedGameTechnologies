@@ -33,8 +33,9 @@ public:
 
   virtual void Subscribe(IPubSubClient *client, const std::string &topic);
   virtual bool UnSubscribe(IPubSubClient *client, const std::string &topic);
+  virtual void UnSubscribeFromAll(IPubSubClient *client);
 
-  virtual void BroadcastMessage(const std::string &topic, const char *msg, uint16_t len);
+  virtual void BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len);
 
 protected:
   std::vector<Subscription> m_subscriptions; //!< All active subscriptions for this broker

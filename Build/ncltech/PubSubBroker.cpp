@@ -39,12 +39,28 @@ bool PubSubBroker::UnSubscribe(IPubSubClient *client, const std::string &topic)
 }
 
 /**
+ * @brief Removes all subscriptions a client has.
+ * @param client Client who's subscriptions are to be removed
+ */
+ void PubSubBroker::UnSubscribeFromAll(IPubSubClient * client)
+ {
+   for (auto it = m_subscriptions.begin(); it != m_subscriptions.end();)
+   {
+     if (it->client == client)
+       it = m_subscriptions.erase(it);
+     else
+       ++it;
+   }
+ }
+
+/**
  * @brief Broadcasts a message to all clients subscribed to a topic.
+ * @param source Source client
  * @param topic Topic to publish on
  * @param msg Message payload
  * @param len Length of message payload
  */
-void PubSubBroker::BroadcastMessage(const std::string &topic, const char *msg, uint16_t len)
+void PubSubBroker::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len)
 {
   // Drop empty messages
   if (len == 0)
@@ -53,7 +69,7 @@ void PubSubBroker::BroadcastMessage(const std::string &topic, const char *msg, u
   // Broadcast messages
   for (auto it = m_subscriptions.begin(); it != m_subscriptions.end(); ++it)
   {
-    if (it->topic == topic)
+    if (it->topic == topic && it->client != source)
       it->client->HandleSubscription(topic, msg, len);
   }
 }
