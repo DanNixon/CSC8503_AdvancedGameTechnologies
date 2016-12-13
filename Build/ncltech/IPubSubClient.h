@@ -14,16 +14,16 @@ class IPubSubClient
 public:
   /**
    * @brief Creates a new client.
-   * @param broker Broker to connect to
+   * @param broker Broker to publish and subscribe to
    */
-  IPubSubClient(PubSubBroker &broker)
+  IPubSubClient(PubSubBroker *broker)
       : m_broker(broker)
   {
   }
 
   virtual ~IPubSubClient()
   {
-    m_broker.UnSubscribeFromAll(this);
+    m_broker->UnSubscribeFromAll(this);
   }
 
   /**
@@ -36,5 +36,5 @@ public:
   virtual bool HandleSubscription(const std::string &topic, const char *msg, uint16_t len) = 0;
 
 protected:
-  PubSubBroker &m_broker; //!< Broker this client is attached to
+  PubSubBroker *m_broker; //!< Broker this client is attached to
 };

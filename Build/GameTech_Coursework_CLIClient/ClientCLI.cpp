@@ -45,7 +45,7 @@ void ClientCLI::InitCLI()
         out << "Connected to server.\n";
 
         // Create local pub/sub client
-        this->m_cliPubSubClient = new FunctionalPubSubClient(*(this->m_broker));
+        this->m_cliPubSubClient = new FunctionalPubSubClient(this->m_broker);
         m_cliPubSubClient->SetSubscriptionHandler([&](const std::string &topic, const char *msg, uint16_t) {
           printf("MSG: %s = %s\n", topic.c_str(), msg);
           return true;

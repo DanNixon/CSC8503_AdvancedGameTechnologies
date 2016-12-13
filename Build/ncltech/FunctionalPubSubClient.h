@@ -10,7 +10,7 @@ public:
   typedef std::function<bool(const std::string &, const char *, uint16_t)> HandleSubscruptionFunction;
 
 public:
-  FunctionalPubSubClient(PubSubBroker &broker)
+  FunctionalPubSubClient(PubSubBroker *broker)
       : IPubSubClient(broker)
   {
   }

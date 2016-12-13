@@ -6,13 +6,13 @@
  * @param rxTopic Topic to listen for state changes on
  * @param txTopic Topic to broadcast state changes to
  */
-NetSyncStateMachine::NetSyncStateMachine(PubSubBroker &broker, const std::string &rxTopic, const std::string &txTopic)
+NetSyncStateMachine::NetSyncStateMachine(PubSubBroker *broker, const std::string &rxTopic, const std::string &txTopic)
     : StateMachine()
     , IPubSubClient(broker)
     , m_txTopic(txTopic)
     , m_txBlanking(false)
 {
-  m_broker.Subscribe(this, rxTopic);
+  m_broker->Subscribe(this, rxTopic);
 }
 
 NetSyncStateMachine::~NetSyncStateMachine()
@@ -35,7 +35,7 @@ bool NetSyncStateMachine::Transfer()
 
     // Send topic update
     const char *msg = branchStr.c_str();
-    m_broker.BroadcastMessage(this, m_txTopic, msg, (uint16_t)strlen(msg));
+    m_broker->BroadcastMessage(this, m_txTopic, msg, (uint16_t)strlen(msg));
   }
 
   m_txBlanking = false;

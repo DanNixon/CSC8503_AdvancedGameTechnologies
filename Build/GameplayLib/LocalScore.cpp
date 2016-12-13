@@ -1,7 +1,8 @@
 #include "LocalScore.h"
 
-LocalScore::LocalScore()
-    : m_startingScore(0.0f)
+LocalScore::LocalScore(PubSubBroker * broker)
+    : IPubSubClient(broker)
+    , m_startingScore(0.0f)
     , m_modifier(1.0f)
     , m_bonus(0.0f)
     , m_score(0.0f)
@@ -35,4 +36,14 @@ void LocalScore::Reset()
 void LocalScore::DeltaPoints(float points)
 {
   m_score += m_bonus + (m_modifier * points);
+}
+
+bool LocalScore::HandleSubscription(const std::string & topic, const char * msg, uint16_t len)
+{
+  switch (msg[0])
+  {
+
+  }
+
+  return true;
 }

@@ -8,6 +8,7 @@
 
 Player::Player(Scene *scene)
     : m_scene(scene)
+    , m_score(nullptr) // TODO
 {
   // State machine
   {

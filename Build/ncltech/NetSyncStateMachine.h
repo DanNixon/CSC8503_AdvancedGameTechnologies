@@ -12,7 +12,7 @@
 class NetSyncStateMachine : public StateMachine, public IPubSubClient
 {
 public:
-  NetSyncStateMachine(PubSubBroker &broker, const std::string &rxTopic, const std::string &txTopic);
+  NetSyncStateMachine(PubSubBroker *broker, const std::string &rxTopic, const std::string &txTopic);
   virtual ~NetSyncStateMachine();
 
   virtual bool Transfer();

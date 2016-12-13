@@ -1,9 +1,11 @@
 #pragma once
 
-class LocalScore
+#include <ncltech\IPubSubClient.h>
+
+class LocalScore : public IPubSubClient
 {
 public:
-  LocalScore();
+  LocalScore(PubSubBroker *broker);
   virtual ~LocalScore();
 
   virtual void SetStartingScore(float startingScore);
@@ -33,6 +35,8 @@ public:
   {
     return m_score;
   }
+
+  virtual bool HandleSubscription(const std::string &topic, const char *msg, uint16_t len);
 
 protected:
   float m_startingScore; //!< Default starting score

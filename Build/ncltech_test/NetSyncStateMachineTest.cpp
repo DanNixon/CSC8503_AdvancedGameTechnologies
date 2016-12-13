@@ -11,7 +11,7 @@ TEST_CLASS(NetSyncStateMachineTest)
 public:
   TEST_METHOD(NetSyncStateMachine_activation)
   {
-    PubSubBroker broker;
+    PubSubBroker *broker = new PubSubBroker();
 
     // Machine 1
     NetSyncStateMachine m1(broker, "m2_to_m1", "m1_to_m2");
@@ -61,7 +61,7 @@ public:
 
   TEST_METHOD(NetSyncStateMachine_activation_same_topic)
   {
-    PubSubBroker broker;
+    PubSubBroker *broker = new PubSubBroker();
 
     // Machine 1
     NetSyncStateMachine m1(broker, "fsm_topic", "fsm_topic");
