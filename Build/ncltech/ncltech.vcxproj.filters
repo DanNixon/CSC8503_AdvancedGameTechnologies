@@ -188,6 +188,9 @@
     <ClCompile Include="Utility.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="PubSubBrokerNetNode.cpp">
+      <Filter>src\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NCLDebug.h">
@@ -330,6 +333,9 @@
     </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="PubSubBrokerNetNode.h">
+      <Filter>include\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -82,6 +82,7 @@ produce satisfactory results on the networked peers.
 */ /////////////////////////////////////////////////////////////////////////////
 
 #include "Net1_Client.h"
+
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\NCLDebug.h>
@@ -115,7 +116,7 @@ void Net1_Client::OnInitializeScene()
                                           true, // Physics Enabled here Purely to make setting position easier via
                                                 // Physics()->SetPosition()
                                           0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
-  this->AddGameObject(m_pObj);
+  AddGameObject(m_pObj);
 }
 
 void Net1_Client::OnCleanupScene()

@@ -137,9 +137,9 @@ Window::Window(std::string title, int sizeX, int sizeY, bool fullScreen)
     mouse = new Mouse(windowHandle);
   }
   // if(!timer) {
-  timer = new GameTimer();
+  g_timer = new GameTimer();
   //}
-  elapsedMS = timer->GetMS();
+  elapsedMS = g_timer->GetMS();
 
   Window::GetMouse()->SetAbsolutePositionBounds((unsigned int)size.x, (unsigned int)size.y);
 
@@ -228,7 +228,7 @@ bool Window::UpdateWindow()
 {
   MSG msg;
 
-  float diff = timer->GetMS() - elapsedMS;
+  float diff = g_timer->GetMS() - elapsedMS;
 
   Window::GetMouse()->UpdateDoubleClick(diff);
 
@@ -240,7 +240,7 @@ bool Window::UpdateWindow()
     CheckMessages(msg);
   }
 
-  elapsedMS = timer->GetMS();
+  elapsedMS = g_timer->GetMS();
 
   return !forceQuit;
 }

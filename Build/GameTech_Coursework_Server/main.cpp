@@ -3,28 +3,25 @@
 #include <enet\enet.h>
 #include <iphlpapi.h>
 #include <nclgl\GameTimer.h>
-#include <nclgl\Vector3.h>
-#include <nclgl\common.h>
-#include <ncltech\NetworkBase.h>
+#include <ncltech\PubSubBrokerNetNode.h>
 
 #pragma comment(lib, "IPHLPAPI.lib")
 
 #define SERVER_PORT 1234
 
-NetworkBase server;
-GameTimer timer;
-GameTimer txTimer;
+PubSubBrokerNetNode g_server;
+GameTimer g_timer;
 
 void Win32_PrintAllAdapterIPAddresses();
 
-int onExit(int exitcode)
+int onExit(int exitCode)
 {
-  server.Release();
+  g_server.Release();
   system("pause");
-  exit(exitcode);
+  exit(exitCode);
 }
 
-int main(int arcg, char **argv)
+int main(int argc, char **argv)
 {
   if (enet_initialize() != 0)
   {
@@ -32,54 +29,29 @@ int main(int arcg, char **argv)
     return EXIT_FAILURE;
   }
 
-  if (!server.Initialize(SERVER_PORT, 4))
+  if (!g_server.Initialize(SERVER_PORT, 8))
   {
     fprintf(stderr, "An error occurred while trying to create an ENet server host.\n");
     onExit(EXIT_FAILURE);
   }
 
   printf("Server Initiated\n");
-
   Win32_PrintAllAdapterIPAddresses();
 
-  timer.GetTimedMS();
+  g_timer.GetTimedMS();
   while (true)
   {
-    float dt = timer.GetTimedMS() * 0.001f;
-
-    server.ServiceNetwork(dt, [&](const ENetEvent &evnt) {
-      switch (evnt.type)
-      {
-      case ENET_EVENT_TYPE_CONNECT:
-        printf("- New Client Connected\n");
-        break;
-
-      case ENET_EVENT_TYPE_RECEIVE:
-        printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
-        enet_packet_destroy(evnt.packet);
-        break;
-
-      case ENET_EVENT_TYPE_DISCONNECT:
-        printf("- Client %d has disconnected.\n", evnt.peer->incomingPeerID);
-        break;
-      }
-    });
-
-    if (txTimer.GetTimedMS() > 1000.0f)
-    {
-      // ENetPacket *position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
-      // enet_host_broadcast(server.m_pNetwork, 0, position_update);
-    }
-
+    float dt = g_timer.GetTimedMS() * 0.001f;
+    g_server.PumpNetwork(dt);
     Sleep(0);
   }
 
   onExit(0);
 }
 
-// Yay Win32 code >.>
-//  - Grabs a list of all network adapters on the computer and prints out all
-//  IPv4 addresses associated with them.
+/**
+ * @brief Grabs a list of all network adapters on the computer and prints out all IPv4 addresses associated with them.
+ */
 void Win32_PrintAllAdapterIPAddresses()
 {
   // Initially allocate 5KB of memory to store all adapter info

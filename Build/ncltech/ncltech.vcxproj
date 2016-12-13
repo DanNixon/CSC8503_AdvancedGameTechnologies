@@ -88,6 +88,7 @@
     <ClCompile Include="DistanceConstraint.cpp" />
     <ClCompile Include="HullCollisionShape.cpp" />
     <ClCompile Include="NetSyncStateMachine.cpp" />
+    <ClCompile Include="PubSubBrokerNetNode.cpp" />
     <ClCompile Include="OctreeBroadphase.cpp" />
     <ClCompile Include="PathEdge.cpp" />
     <ClCompile Include="PlaneCollisionShape.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="CollisionDetectionSAT.h" />
     <ClInclude Include="HullCollisionShape.h" />
     <ClInclude Include="NetSyncStateMachine.h" />
+    <ClInclude Include="PubSubBrokerNetNode.h" />
     <ClInclude Include="OctreeBroadphase.h" />
     <ClInclude Include="PathEdge.h" />
     <ClInclude Include="ICollisionShape.h" />

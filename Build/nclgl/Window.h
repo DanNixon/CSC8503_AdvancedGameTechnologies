@@ -75,7 +75,7 @@ public:
 
   GameTimer *GetTimer()
   {
-    return timer;
+    return g_timer;
   }
 
 protected:
@@ -89,7 +89,7 @@ protected:
   static Keyboard *keyboard;
   static Mouse *mouse;
 
-  GameTimer *timer;
+  GameTimer *g_timer;
 
   OGLRenderer *renderer;
 
