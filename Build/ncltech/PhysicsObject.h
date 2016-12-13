@@ -218,10 +218,15 @@ public:
   /**
    * @brief Sets the at rest velocity sum threshold.
    * @param vel At rest velocity
+   *
+   * Set to a negative value to disable check.
    */
   inline void SetRestVelocityThreshold(float vel)
   {
-    m_restVelocityThresholdSquared = vel * vel;
+    if (vel <= 0.0f)
+      m_restVelocityThresholdSquared = -1.0f;
+    else
+      m_restVelocityThresholdSquared = vel * vel;
   }
 
   /**

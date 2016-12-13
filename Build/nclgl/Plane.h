@@ -13,6 +13,7 @@ _-_-_-_-_-_-_-""  ""
 */ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
 #include "vector3.h"
 
 class Plane
@@ -27,29 +28,32 @@ public:
   {
     this->_normal = _normal;
   }
+
   // Gets the planes normal.
   Vector3 GetNormal() const
   {
     return _normal;
   }
+
   // Sets the planes distance from the origin
   void SetDistance(float dist)
   {
     distance = dist;
   }
+
   // Gets the planes distance from the origin
   float GetDistance() const
   {
     return distance;
   }
+
   // Performs a simple sphere / plane test
   bool SphereInPlane(const Vector3 &position, float radius) const;
+
   // Performs a simple sphere / point test
   bool PointInPlane(const Vector3 &position) const;
 
 protected:
-  // Unit-length plane normal
-  Vector3 _normal;
-  // Distance from origin
-  float distance;
+  Vector3 _normal; //!< Unit-length plane normal
+  float distance; //!< Distance from origin
 };

@@ -68,9 +68,9 @@ public:
       // Plane collision shape
       ICollisionShape * shape = new PlaneCollisionShape(Vector2(20.0f, 20.0f));
       shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 1.0f, 0.0f)) * Matrix4::Rotation(90.0f, Vector3(-1.0f, 0.0f, 0.0f)));
-
       ground->Physics()->AddCollisionShape(shape);
 
+      ground->Physics()->AutoResizeBoundingBox();
       AddGameObject(ground);
     }
 
@@ -140,6 +140,8 @@ public:
                              (drawFlags & DEBUGDRAW_FLAGS_COLLISIONNORMALS) ? "Enabled" : "Disabled");
     NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw Manifolds : %s (Press M to toggle)",
                              (drawFlags & DEBUGDRAW_FLAGS_MANIFOLD) ? "Enabled" : "Disabled");
+    NCLDebug::AddStatusEntry(Vector4(1.0f, 0.9f, 0.8f, 1.0f), "     Draw AABB : %s (Press B to toggle)",
+      (drawFlags & DEBUGDRAW_FLAGS_AABB) ? "Enabled" : "Disabled");
 
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_C))
       drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
@@ -149,6 +151,9 @@ public:
 
     if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_M))
       drawFlags ^= DEBUGDRAW_FLAGS_MANIFOLD;
+
+    if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_B))
+      drawFlags ^= DEBUGDRAW_FLAGS_AABB;
 
     PhysicsEngine::Instance()->SetDebugDrawFlags(drawFlags);
   }

@@ -125,11 +125,11 @@ void PhysicsObject::DoAtRestTest()
     return;
 
   // Value between 0 and 1, higher values discard old data faster
-  const float alpha = 0.7f;
+  static const float ALPHA = 0.7f;
 
   // Calculate exponential moving average
   float v = m_linearVelocity.LengthSquared() + m_angularVelocity.LengthSquared();
-  m_averageSummedVelocity += alpha * (v - m_averageSummedVelocity);
+  m_averageSummedVelocity += ALPHA * (v - m_averageSummedVelocity);
 
   // Do test
   m_atRest = m_averageSummedVelocity <= m_restVelocityThresholdSquared;
@@ -142,7 +142,12 @@ void PhysicsObject::DoAtRestTest()
 void PhysicsObject::DebugDraw(uint64_t flags) const
 {
   if (flags & DEBUGDRAW_FLAGS_AABB)
-    GetWorldSpaceAABB().DebugDraw(Matrix4(), Vector4(0.8f, 1.0f, 1.0f, 0.25f), Vector4(0.4f, 0.8f, 1.0f, 1.0f));
+  {
+    Vector4 colour(0.2f, 0.8f, 1.0f, 1.0f);
+    if (m_atRest)
+      colour = Vector4(0.8f, 0.8f, 1.0f, 1.0f);
+    GetWorldSpaceAABB().DebugDraw(Matrix4(), Vector4(0.8f, 1.0f, 1.0f, 0.25f), colour);
+  }
 
   if (flags & DEBUGDRAW_FLAGS_LINEARVELOCITY)
     NCLDebug::DrawThickLineNDT(m_wsTransform.GetPositionVector(), m_wsTransform * m_linearVelocity, 0.02f,

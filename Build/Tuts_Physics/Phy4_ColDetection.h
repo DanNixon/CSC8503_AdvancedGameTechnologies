@@ -92,7 +92,7 @@ public:
     PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(2, 2, new BruteForceBroadphase()));
 
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONNORMALS | DEBUGDRAW_FLAGS_COLLISIONVOLUMES |
-                                                 DEBUGDRAW_FLAGS_AABB | DEBUGDRAW_FLAGS_BROADPHASE);
+      DEBUGDRAW_FLAGS_AABB);// | DEBUGDRAW_FLAGS_BROADPHASE);
 
     m_AccumTime = 0.0f;
     m_Rotating = true;
@@ -103,7 +103,7 @@ public:
                                                       0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 
       // Plane collision shape
-      ICollisionShape * shape = new PlaneCollisionShape(Vector2(20.0f, 20.0f));
+      ICollisionShape * shape = new PlaneCollisionShape(Vector2(2.0f, 2.0f));
       shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 1.0f, 0.0f)) * Matrix4::Rotation(90.0f, Vector3(-1.0f, 0.0f, 0.0f)));
       ground->Physics()->AddCollisionShape(shape);
 
@@ -157,8 +157,10 @@ public:
 
       cuboid->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 30.0f));
 
-      AddGameObject(CommonUtils::BuildCuboidObject("static_cuboid3.3", cc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true, true,
-                                                   CommonUtils::GenColour(0.55f, 1.0f)));
+      Object * staticCuboid = CommonUtils::BuildCuboidObject("static_cuboid3.3", cc_pos, Vector3(0.5f, 0.5f, 0.5f), true, 0.0f, true, true,
+        CommonUtils::GenColour(0.55f, 1.0f));
+      staticCuboid->Physics()->SetRestVelocityThreshold(-1.0f);
+      AddGameObject(staticCuboid);
     }
   }
 

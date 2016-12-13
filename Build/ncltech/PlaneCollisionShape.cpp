@@ -110,20 +110,29 @@ void PlaneCollisionShape::GetIncidentReferencePolygon(const PhysicsObject *curre
                                                       std::list<Vector3> *out_face, Vector3 *out_normal,
                                                       std::vector<Plane> *out_adjacent_planes) const
 {
+  Matrix4 transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
+
+  std::vector<CollisionEdge> edges;
+  GetEdges(currentObject, &edges);
+
   // Normal
   if (out_normal != nullptr)
-  {
-    Matrix4 transform = currentObject->GetWorldSpaceTransform() * m_LocalTransform;
     *out_normal = -transform.GetBackVector();
-  }
 
   // Face
   if (out_face != nullptr)
   {
-    std::vector<CollisionEdge> edges;
-    GetEdges(currentObject, &edges);
     for (auto it = edges.begin(); it != edges.end(); ++it)
       out_face->push_back(it->_v0);
+  }
+
+  // (Fake) adjacent planes
+  if (out_adjacent_planes != nullptr)
+  {
+    out_adjacent_planes->push_back(Plane(-transform.GetUpVector(), -Vector3::Dot(-transform.GetUpVector(), edges[3]._v0)));
+    out_adjacent_planes->push_back(Plane(transform.GetUpVector(), -Vector3::Dot(transform.GetUpVector(), edges[1]._v0)));
+    out_adjacent_planes->push_back(Plane(-transform.GetRightVector(), -Vector3::Dot(-transform.GetRightVector(), edges[3]._v0)));
+    out_adjacent_planes->push_back(Plane(transform.GetRightVector(), -Vector3::Dot(transform.GetRightVector(), edges[1]._v0)));
   }
 }
 
