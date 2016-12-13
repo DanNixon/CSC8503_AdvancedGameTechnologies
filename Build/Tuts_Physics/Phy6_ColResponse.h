@@ -61,17 +61,35 @@ public:
     PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
 
     // Create Ground
-    this->AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,
-                                                       0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+    {
+      Object * ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,
+        0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+      
+      // Plane collision shape
+      ICollisionShape * shape = new PlaneCollisionShape(Vector2(20.0f, 20.0f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 1.0f, 0.0f)) * Matrix4::Rotation(90.0f, Vector3(-1.0f, 0.0f, 0.0f)));
+
+      ground->Physics()->AddCollisionShape(shape);
+
+      AddGameObject(ground);
+    }
 
     // ELASTICITY EXAMPLE -> Balls bouncing on a pad
     {
       // Sphere Bounce-Pad
       Object *obj = CommonUtils::BuildCuboidObject("BouncePad", Vector3(-2.5f, 0.0f, 6.0f), Vector3(5.0f, 1.0f, 2.0f), true, 0.0f,
-                                                   true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+                                                   false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
+
+      // Plane collision shape
+      ICollisionShape * shape = new PlaneCollisionShape(Vector2(5.0f, 2.0f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 1.0f, 0.0f)) * Matrix4::Rotation(90.0f, Vector3(-1.0f, 0.0f, 0.0f)));
+      obj->Physics()->AddCollisionShape(shape);
+
       obj->Physics()->SetFriction(1.0f);
       obj->Physics()->SetElasticity(1.0f);
-      this->AddGameObject(obj);
+
+      obj->Physics()->AutoResizeBoundingBox();
+      AddGameObject(obj);
 
       // Create Bouncing Spheres
       for (int i = 0; i < 5; ++i)
@@ -81,7 +99,7 @@ public:
             CommonUtils::BuildSphereObject("", Vector3(-5.0f + i * 1.25f, 5.5f, 6.0f), 0.5f, true, 1.0f, true, true, colour);
         obj->Physics()->SetFriction(0.1f);
         obj->Physics()->SetElasticity(i * 0.1f + 0.5f);
-        this->AddGameObject(obj);
+        AddGameObject(obj);
       }
     }
 
@@ -92,7 +110,7 @@ public:
                                                     true, false, Vector4(1.0f, 0.7f, 1.0f, 1.0f));
       ramp->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 20.0f));
       ramp->Physics()->SetFriction(1.0f);
-      this->AddGameObject(ramp);
+      AddGameObject(ramp);
 
       // Create Cubes to slide down a ramp
       for (int i = 0; i < 5; ++i)
@@ -102,7 +120,7 @@ public:
                                                       1.f, true, true, colour);
         cube->Physics()->SetFriction((i + 1) * 0.05f); // Ranging from 0.05 - 0.25
         cube->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 200.0f));
-        this->AddGameObject(cube);
+        AddGameObject(cube);
       }
     }
   }

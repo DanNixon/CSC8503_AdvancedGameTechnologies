@@ -276,7 +276,9 @@ void CollisionDetectionSAT::GenContactPoints(Manifold *out_manifold)
     }
 
     // Clip adjacent contact points
-    SutherlandHodgmanClipping(*incPolygon, refAdjPlanes->size(), &(*refAdjPlanes)[0], incPolygon, false);
+    // TODO (test with cube intersecting plane)
+    //if (!refAdjPlanes->empty())
+      SutherlandHodgmanClipping(*incPolygon, refAdjPlanes->size(), &(*refAdjPlanes)[0], incPolygon, false);
 
     // Clip above contact points
     SutherlandHodgmanClipping(*incPolygon, 1, &refPlane, incPolygon, true);

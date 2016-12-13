@@ -2,6 +2,8 @@
 
 #include "ICollisionShape.h"
 
+#include <nclgl/Vector2.h>
+
 /**
  * @class PlaneCollisionShape
  * @author Dan Nixon
@@ -10,7 +12,7 @@
 class PlaneCollisionShape : public ICollisionShape
 {
 public:
-  PlaneCollisionShape(const Vector3 &normal = Vector3(0.0f, 1.0f, 0.0f));
+  PlaneCollisionShape(const Vector2 &dimensions);
   virtual ~PlaneCollisionShape();
 
   virtual Matrix3 BuildInverseInertia(float invMass) const override;
@@ -28,5 +30,5 @@ public:
   virtual void DebugDraw(const PhysicsObject *currentObject) const override;
 
 protected:
-  Vector3 m_normal; //!< Plane normal
+  Vector2 m_dimensions; //!< Dimensions of the 2D plane
 };

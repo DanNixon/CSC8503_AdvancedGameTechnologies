@@ -74,6 +74,21 @@ public:
   //'up' as the...up axis (pointing towards the top of the screen)
   static Matrix4 BuildViewMatrix(const Vector3 &from, const Vector3 &lookingAt, const Vector3 up = Vector3(0, 1, 0));
 
+  Vector3 GetRightVector() const
+  {
+    return Vector3(values[0], values[1], values[2]);
+  }
+
+  Vector3 GetUpVector() const
+  {
+    return Vector3(values[4], values[5], values[6]);
+  }
+
+  Vector3 GetBackVector() const
+  {
+    return Vector3(values[8], values[9], values[10]);
+  }
+
   void ClearRotation();
   Matrix4 GetRotation() const;
   Matrix4 GetTransposedRotation() const;

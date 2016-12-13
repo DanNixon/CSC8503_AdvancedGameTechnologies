@@ -102,7 +102,12 @@ public:
       Object *ground = CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, 0.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true,
                                                       0.0f, false, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f));
 
-      ground->Physics()->AddCollisionShape(new PlaneCollisionShape(Vector3(0.0f, 1.0f, 0.0f)));
+      // Plane collision shape
+      ICollisionShape * shape = new PlaneCollisionShape(Vector2(20.0f, 20.0f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.0f, 1.0f, 0.0f)) * Matrix4::Rotation(90.0f, Vector3(-1.0f, 0.0f, 0.0f)));
+      ground->Physics()->AddCollisionShape(shape);
+
+      ground->Physics()->AutoResizeBoundingBox();
 
       AddGameObject(ground);
     }
