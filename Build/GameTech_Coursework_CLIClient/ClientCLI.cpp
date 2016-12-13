@@ -11,6 +11,9 @@ ClientCLI::~ClientCLI()
 {
 }
 
+/**
+ * @brief Creates commands for the CLI.
+ */
 void ClientCLI::InitCLI()
 {
   // Connect command
@@ -29,7 +32,7 @@ void ClientCLI::InitCLI()
                                                 this->m_broker = new PubSubBrokerNetNode();
                                                 if (!this->m_broker->Initialize(std::stoi(argv[1]), 16))
                                                 {
-                                                  out << "An error occurred while trying to create an ENet server host.\n";
+                                                  out << "Broker node init failed.\n";
                                                   delete this->m_broker;
                                                   return 1;
                                                 }
@@ -71,10 +74,12 @@ void ClientCLI::InitCLI()
                                                 // Remove CLI pub/sub client
                                                 this->m_broker->UnSubscribeFromAll(this->m_cliPubSubClient);
                                                 delete this->m_cliPubSubClient;
+                                                this->m_cliPubSubClient = nullptr;
 
                                                 // Close broker network node
                                                 this->m_broker->Release();
                                                 delete this->m_broker;
+                                                this->m_broker = nullptr;
                                               }
                                               out << "Disconnected.\n";
 
@@ -130,15 +135,22 @@ void ClientCLI::InitCLI()
                                             2, "Subscribes to a topic."));
 }
 
+/**
+ * @brief Runs the update loop required to operate the networking componenet of the client.
+ */
 void ClientCLI::NetworkUpdateLoop()
 {
-  while(m_broker != nullptr)
+  while (m_broker != nullptr)
   {
     {
       std::lock_guard<std::mutex> lock(m_networkMutex);
 
-      float dt = m_networkUpdateTimer.GetTimedMS() * 0.001f;
-      m_broker->PumpNetwork(dt);
+      // Do another text just in case broker was deleted while waiting for mutex lock
+      if (m_broker != nullptr)
+      {
+        float dt = m_networkUpdateTimer.GetTimedMS() * 0.001f;
+        m_broker->PumpNetwork(dt);
+      }
     }
 
     Sleep(0);
