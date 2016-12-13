@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 /**
  * @class Utility
@@ -13,4 +13,3 @@ class Utility
 public:
   static std::vector<std::string> Split(const std::string &str, char delim = '/');
 };
-

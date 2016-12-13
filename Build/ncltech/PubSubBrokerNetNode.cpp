@@ -17,7 +17,7 @@ PubSubBrokerNetNode::~PubSubBrokerNetNode()
 
 bool PubSubBrokerNetNode::ConnectToBroker(const uint8_t ip[4], uint16_t port)
 {
-  ENetPeer * peer = ConnectPeer(ip[0], ip[1], ip[2], ip[3], port);
+  ENetPeer *peer = ConnectPeer(ip[0], ip[1], ip[2], ip[3], port);
   bool result = (peer != nullptr);
 
   if (result)
@@ -60,8 +60,8 @@ void PubSubBrokerNetNode::PumpNetwork(float dt)
 
 void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
 {
-  ENetPacket * packet = rxEvent.packet;
-  char * data = (char *) packet->data;
+  ENetPacket *packet = rxEvent.packet;
+  char *data = (char *)packet->data;
 
   // Handle packet
   auto it = std::find(data, data + packet->dataLength, '=');
@@ -71,12 +71,12 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
     std::string topic(data, it);
 
     std::vector<char> pl(it + 1, data + packet->dataLength);
-    const char * payload = pl.data();
+    const char *payload = pl.data();
 
     printf("- Message from client %d on topic %s: %s\n", rxEvent.peer->incomingPeerID, topic.c_str(), payload);
 
     // Broadcast message locally
-    PubSubBroker::BroadcastMessage(nullptr, topic, payload, (uint16_t) pl.size());
+    PubSubBroker::BroadcastMessage(nullptr, topic, payload, (uint16_t)pl.size());
   }
   else
   {
@@ -87,15 +87,15 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
   enet_packet_destroy(packet);
 }
 
-void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char * msg, uint16_t len)
+void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len)
 {
   // Length (topic length + equals + payload length + null terminator)
-  uint16_t packetLen = (uint16_t) topic.length() + len + 2;
+  uint16_t packetLen = (uint16_t)topic.length() + len + 2;
 
   // Build packet
-  char * payload = new char[packetLen];
-  const char * topicStr = topic.c_str();
-  char * p = payload;
+  char *payload = new char[packetLen];
+  const char *topicStr = topic.c_str();
+  char *p = payload;
 
   // Topic
   memcpy_s(p, strlen(topicStr), topicStr, strlen(topicStr));
@@ -105,7 +105,7 @@ void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::str
   *(p++) = '=';
 
   // Payload
-  memcpy_s(p, (rsize_t) len, msg, (rsize_t) len);
+  memcpy_s(p, (rsize_t)len, msg, (rsize_t)len);
   p += len;
 
   // NULL terminate

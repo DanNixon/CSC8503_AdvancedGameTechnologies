@@ -16,5 +16,4 @@ void FunctionalPubSubClient::SetSubscriptionHandler(HandleSubscruptionFunction h
 
 bool FunctionalPubSubClient::HandleSubscription(const std::string &topic, const char *msg, uint16_t len)
 {
-  
 }

@@ -42,16 +42,16 @@ bool PubSubBroker::UnSubscribe(IPubSubClient *client, const std::string &topic)
  * @brief Removes all subscriptions a client has.
  * @param client Client who's subscriptions are to be removed
  */
- void PubSubBroker::UnSubscribeFromAll(IPubSubClient * client)
- {
-   for (auto it = m_subscriptions.begin(); it != m_subscriptions.end();)
-   {
-     if (it->client == client)
-       it = m_subscriptions.erase(it);
-     else
-       ++it;
-   }
- }
+void PubSubBroker::UnSubscribeFromAll(IPubSubClient *client)
+{
+  for (auto it = m_subscriptions.begin(); it != m_subscriptions.end();)
+  {
+    if (it->client == client)
+      it = m_subscriptions.erase(it);
+    else
+      ++it;
+  }
+}
 
 /**
  * @brief Broadcasts a message to all clients subscribed to a topic.

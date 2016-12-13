@@ -3,8 +3,8 @@
 #include <enet\enet.h>
 #include <iphlpapi.h>
 #include <nclgl\GameTimer.h>
-#include <ncltech\PubSubBrokerNetNode.h>
 #include <ncltech\FunctionalPubSubClient.h>
+#include <ncltech\PubSubBrokerNetNode.h>
 
 #pragma comment(lib, "IPHLPAPI.lib")
 
@@ -13,7 +13,7 @@
 PubSubBrokerNetNode g_node;
 GameTimer g_timer;
 
-GameTimer g_txTimer; //TODO
+GameTimer g_txTimer; // TODO
 
 int onExit(int exitCode)
 {
@@ -39,14 +39,14 @@ int main(int argc, char **argv)
   }
 
   // Connect to server
-  const uint8_t ip[] = { 127, 0, 0, 1 };
+  const uint8_t ip[] = {127, 0, 0, 1};
   g_node.ConnectToBroker(ip, SERVER_PORT);
 
   printf("CLI client initiated.\n");
 
   // Add broadcast message handler
   FunctionalPubSubClient broadcastMessageHandler(g_node);
-  broadcastMessageHandler.SetSubscriptionHandler([&](const std::string &, const char * msg, uint16_t) {
+  broadcastMessageHandler.SetSubscriptionHandler([&](const std::string &, const char *msg, uint16_t) {
     printf("Broadcast message: %s\n", msg);
     return true;
   });
@@ -61,8 +61,8 @@ int main(int argc, char **argv)
 
     if (g_txTimer.GetTimedMS(false) > 5000.0f)
     {
-      char * m = "world";
-      g_node.BroadcastMessage(&broadcastMessageHandler, "broadcast_messages", m, (uint16_t) strlen(m));
+      char *m = "world";
+      g_node.BroadcastMessage(&broadcastMessageHandler, "broadcast_messages", m, (uint16_t)strlen(m));
       g_txTimer.GetTimedMS();
     }
 

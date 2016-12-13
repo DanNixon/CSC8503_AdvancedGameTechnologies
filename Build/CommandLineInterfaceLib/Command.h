@@ -32,8 +32,7 @@ public:
    * Takes a reference to the input and output streams and a vector of string
    * parameters as parameters and returns an exit code.
    */
-  typedef std::function<int(std::istream &in, std::ostream &out, std::vector<std::string> &argv)>
-      CMDHandlerFunc;
+  typedef std::function<int(std::istream &in, std::ostream &out, std::vector<std::string> &argv)> CMDHandlerFunc;
 
 public:
   /**
@@ -48,8 +47,7 @@ public:
    *
    * desc is shown when the CommandContainer::help() function is invoked.
    */
-  Command(const std::string &commandName, CMDHandlerFunc func, size_t numArguments = 0,
-          const std::string &desc = "")
+  Command(const std::string &commandName, CMDHandlerFunc func, size_t numArguments = 0, const std::string &desc = "")
       : m_commandName(commandName)
       , m_handlerFunc(func)
       , m_numArguments(numArguments)
@@ -89,13 +87,11 @@ public:
    * The first element of the tokens vector contains the name of the command
    * being executed (as per argv convention).
    */
-  inline int handleCmdFunc(std::istream &in, std::ostream &out,
-                           std::vector<std::string> &tokens) const
+  inline int handleCmdFunc(std::istream &in, std::ostream &out, std::vector<std::string> &tokens) const
   {
     if (tokens.size() < m_numArguments)
     {
-      out << "Too few arguments (got " << tokens.size() << ", expected " << m_numArguments
-          << ").\n";
+      out << "Too few arguments (got " << tokens.size() << ", expected " << m_numArguments << ").\n";
       return COMMAND_EXIT_TOO_FEW_ARGUMENTS;
     }
 

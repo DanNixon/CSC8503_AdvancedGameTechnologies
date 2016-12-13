@@ -11,7 +11,7 @@ public:
 
 public:
   FunctionalPubSubClient(PubSubBroker &broker)
-    : IPubSubClient(broker)
+      : IPubSubClient(broker)
   {
   }
 
@@ -32,4 +32,3 @@ public:
 protected:
   HandleSubscruptionFunction m_handler;
 };
-

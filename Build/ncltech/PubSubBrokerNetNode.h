@@ -1,7 +1,7 @@
 #pragma once
 
-#include "PubSubBroker.h"
 #include "NetworkBase.h"
+#include "PubSubBroker.h"
 
 class PubSubBrokerNetNode : public PubSubBroker, public NetworkBase
 {
@@ -13,10 +13,10 @@ public:
 
   void PumpNetwork(float dt);
 
-  virtual void BroadcastMessage(IPubSubClient *source, const std::string &topic, const char * msg, uint16_t len);
+  virtual void BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len);
 
 protected:
-  void HandleRxEvent(const ENetEvent &rxEvent);  
+  void HandleRxEvent(const ENetEvent &rxEvent);
 
 protected:
   std::vector<ENetPeer *> m_connections;

@@ -34,8 +34,8 @@ bool NetSyncStateMachine::Transfer()
     std::string branchStr = BranchToString(branch, '/');
 
     // Send topic update
-    const char * msg = branchStr.c_str();
-    m_broker.BroadcastMessage(this, m_txTopic, msg, (uint16_t) strlen(msg));
+    const char *msg = branchStr.c_str();
+    m_broker.BroadcastMessage(this, m_txTopic, msg, (uint16_t)strlen(msg));
   }
 
   m_txBlanking = false;

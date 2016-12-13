@@ -18,13 +18,12 @@ const size_t CommandContainer::HELP_CMD_WIDTH = 20;
 CommandContainer::CommandContainer()
 {
   /* Add help command */
-  m_commands.push_back(std::make_shared<Command>(
-      "help",
-      [this](std::istream &in, std::ostream &out, std::vector<std::string> argv) {
-        this->help(out);
-        return 0;
-      },
-      0, "Shows command usage."));
+  m_commands.push_back(std::make_shared<Command>("help",
+                                                 [this](std::istream &in, std::ostream &out, std::vector<std::string> argv) {
+                                                   this->help(out);
+                                                   return 0;
+                                                 },
+                                                 0, "Shows command usage."));
 }
 
 CommandContainer::~CommandContainer()
@@ -59,8 +58,7 @@ int CommandContainer::handle(std::istream &in, std::ostream &out, std::vector<st
     return -1;
   }
 
-  auto it = std::find_if(m_commands.begin(), m_commands.end(),
-                         [tokens](Command_ptr c) { return c->commandName() == tokens[0]; });
+  auto it = std::find_if(m_commands.begin(), m_commands.end(), [tokens](Command_ptr c) { return c->commandName() == tokens[0]; });
 
   if (it == m_commands.end())
   {
@@ -81,6 +79,5 @@ void CommandContainer::help(std::ostream &out)
   out << "Command usage:\n";
 
   for (auto it = m_commands.begin(); it != m_commands.end(); ++it)
-    out << ' ' << std::left << std::setw(HELP_CMD_WIDTH) << (*it)->commandName() << ": "
-        << (*it)->description() << '\n';
+    out << ' ' << std::left << std::setw(HELP_CMD_WIDTH) << (*it)->commandName() << ": " << (*it)->description() << '\n';
 }
