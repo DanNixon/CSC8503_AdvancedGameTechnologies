@@ -32,7 +32,7 @@ void LocalScore::Reset()
   m_score = m_startingScore;
 }
 
-void LocalScore::AwardPoints(float points)
+void LocalScore::DeltaPoints(float points)
 {
   m_score += m_bonus + (m_modifier * points);
 }

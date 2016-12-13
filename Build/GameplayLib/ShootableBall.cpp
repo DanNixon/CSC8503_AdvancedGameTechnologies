@@ -3,8 +3,8 @@
 #include <ncltech/CommonMeshes.h>
 #include <ncltech/SphereCollisionShape.h>
 
-ShootableBall::ShootableBall(float radius, float inverseMass, float lifetime)
-    : IShootable(lifetime)
+ShootableBall::ShootableBall(Player * owner, float radius, float inverseMass, float lifetime)
+    : IShootable(owner, lifetime)
 {
   SetMesh(CommonMeshes::Sphere(), false);
   SetLocalTransform(Matrix4::Scale(Vector3(radius, radius, radius)));

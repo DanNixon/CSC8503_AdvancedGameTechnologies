@@ -27,9 +27,9 @@ public:
 
   virtual void Reset();
 
-  virtual void AwardPoints(float points);
+  virtual void DeltaPoints(float points);
 
-  inline float GetScore() const
+  inline float GetScoreCounter() const
   {
     return m_score;
   }

@@ -3,6 +3,8 @@
 #include <ncltech/ObjectMesh.h>
 #include <ncltech/StateMachine.h>
 
+class Player;
+
 /**
  * @class Ball
  * @author Dan Nixon
@@ -11,8 +13,17 @@
 class IShootable : public ObjectMesh
 {
 public:
-  IShootable(float lifetime = 10.0f);
+  IShootable(Player *owner, float lifetime = 10.0f);
   virtual ~IShootable();
+
+  /**
+   * @brief Gets a pointer to the player that shot this thing.
+   * @return Pointer to owning player
+   */
+  Player *GetOwner()
+  {
+    return m_owner;
+  }
 
   /**
    * @brief Gets the state machine for this ball.
@@ -36,6 +47,8 @@ protected:
   void PostCreate(float inverseMass);
 
 protected:
+  Player *m_owner; //!< Player that shot this thing
+
   float m_lifetime;            //!< Lifetime in seconds
   StateMachine m_stateMachine; //!< AI for the ball
 

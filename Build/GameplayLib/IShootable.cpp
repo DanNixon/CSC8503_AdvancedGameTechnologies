@@ -3,8 +3,11 @@
 #include <ncltech/CommonMeshes.h>
 #include <ncltech/NCLDebug.h>
 
-IShootable::IShootable(float lifetime)
+#include "Player.h"
+
+IShootable::IShootable(Player *owner, float lifetime)
     : ObjectMesh("shootable")
+    , m_owner(owner)
     , m_lifetime(lifetime)
     , m_hitTarget(false)
     , m_expired(false)
@@ -43,9 +46,9 @@ IShootable::IShootable(float lifetime)
 
     // Target hit state
     State *targetHit = new State("target_hit", shot, &m_stateMachine);
-    targetHit->AddOnEntryBehaviour([](State *) {
-      // TODO
+    targetHit->AddOnEntryBehaviour([this](State *) {
       NCLDebug::Log("Hit Target!");
+      this->m_owner->GetScoreCounter().DeltaPoints(100.0f);
     });
 
     // State change from shot to hit target when hit target flag is set

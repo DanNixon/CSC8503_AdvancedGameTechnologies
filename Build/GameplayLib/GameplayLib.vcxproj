@@ -14,6 +14,7 @@
     <ClCompile Include="HighscoreBoard.cpp" />
     <ClCompile Include="IShootable.cpp" />
     <ClCompile Include="LocalScore.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShootableBall.cpp" />
     <ClCompile Include="ShootableCube.cpp" />
   </ItemGroup>
@@ -21,6 +22,7 @@
     <ClInclude Include="HighscoreBoard.h" />
     <ClInclude Include="IShootable.h" />
     <ClInclude Include="LocalScore.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="ShootableBall.h" />
     <ClInclude Include="ShootableCube.h" />
   </ItemGroup>

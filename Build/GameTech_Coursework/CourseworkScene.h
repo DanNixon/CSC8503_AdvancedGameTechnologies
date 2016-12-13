@@ -1,11 +1,12 @@
 #pragma once
 
-#include <GameplayLib\IShootable.h>
 #include <nclgl\Mesh.h>
 #include <ncltech\NetSyncStateMachine.h>
 #include <ncltech\ObjectMesh.h>
 #include <ncltech\Scene.h>
 #include <vector>
+
+#include <GameplayLib\Player.h>
 
 /**
  * @class CourseworkScene
@@ -32,21 +33,6 @@ public:
    */
   static const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
 
-  /**
-   * @brief Key used to shoot a cube from the camera view point.
-   */
-  static const KeyboardKeys SHOOT_CUBE_KEY = KeyboardKeys::KEYBOARD_H;
-
-  /**
-   * @brief Key used to shoot a sphere from the camera view point.
-   */
-  static const KeyboardKeys SHOOT_BALL_KEY = KeyboardKeys::KEYBOARD_J;
-
-  /**
-   * @brief Key used to reset the player state.
-   */
-  static const KeyboardKeys PLAYER_RESET_KEY = KeyboardKeys::KEYBOARD_K;
-
 public:
   static void PrintKeyMapping();
 
@@ -59,20 +45,17 @@ public:
   virtual void OnUpdateScene(float dt) override;
 
 protected:
-  void ShootFromCamera(IShootable *shootable, float power = 1.0f);
-
-protected:
   StateMachine m_debugDrawStateMachine;       //!< State machine controlling debug draw
   StateMachine m_broadphaseModeStateMachine;  //!< State machine controlling broadphase mode
   StateMachine m_integrationModeStateMachine; //!< State machine controlling broadphase mode
-  StateMachine m_playerStateMachine;          //!< State machine controlling player behaviour
 
   GLuint m_planetTex;   //!< Texture of planet surface
   Mesh *m_targetMesh;   //!< Graphical mesh for the target
   Mesh *m_lampPostMesh; //!< Graphical mesh for the lamp post
 
-  ObjectMesh *m_planet;                   //!< Planet object
-  ObjectMesh *m_target;                   //!< Target object
-  ObjectMesh *m_lampPost;                 //!< Lamp post object
-  std::vector<IShootable *> m_shotThings; //!< Things shot by the player
+  ObjectMesh *m_planet;   //!< Planet object
+  ObjectMesh *m_target;   //!< Target object
+  ObjectMesh *m_lampPost; //!< Lamp post object
+
+  Player *m_player; //!< Player
 };

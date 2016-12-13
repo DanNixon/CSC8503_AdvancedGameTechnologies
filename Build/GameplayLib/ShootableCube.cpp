@@ -3,8 +3,8 @@
 #include <ncltech/CommonMeshes.h>
 #include <ncltech/CuboidCollisionShape.h>
 
-ShootableCube::ShootableCube(const Vector3 &halfDims, float inverseMass, float lifetime)
-    : IShootable(lifetime)
+ShootableCube::ShootableCube(Player * owner, const Vector3 &halfDims, float inverseMass, float lifetime)
+    : IShootable(owner, lifetime)
 {
   SetMesh(CommonMeshes::Cube(), false);
   SetLocalTransform(Matrix4::Scale(halfDims));

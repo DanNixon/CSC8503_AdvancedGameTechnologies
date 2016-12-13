@@ -17,5 +17,6 @@ public:
   HighscoreBoard();
   virtual ~HighscoreBoard();
 
-  virtual void AddScore(const LocalScore *score);
+  virtual size_t AddScore(const LocalScore *score, const std::string &name = "");
+  virtual size_t AddScore(float score, const std::string &name = "");
 };

@@ -24,6 +24,7 @@
     <ClCompile Include="LocalScore.cpp">
       <Filter>Scoring</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IShootable.h">
@@ -41,5 +42,6 @@
     <ClInclude Include="LocalScore.h">
       <Filter>Scoring</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h" />
   </ItemGroup>
 </Project>
