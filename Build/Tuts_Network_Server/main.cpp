@@ -41,16 +41,16 @@ FOR MORE NETWORKING INFORMATION SEE "Tuts_Network_Client -> Net1_Client.h"
 #define SERVER_PORT 1234
 #define UPDATE_TIMESTEP (1.0f / 30.0f) // send 30 position updates per second
 
-NetworkBase g_server;
+NetworkBase g_node;
 GameTimer g_timer;
 float accum_time = 0.0f;
 float rotation = 0.0f;
 
-void Win32_PrintAllAdapterIPAddresses();
+void PrintAllAdapterIPAddresses();
 
 int onExit(int exitcode)
 {
-  g_server.Release();
+  g_node.Release();
   system("pause");
   exit(exitcode);
 }
@@ -64,7 +64,7 @@ int main(int arcg, char **argv)
   }
 
   // Initialize Server on Port 1234, with a possible 32 clients connected at any time
-  if (!g_server.Initialize(SERVER_PORT, 32))
+  if (!g_node.Initialize(SERVER_PORT, 32))
   {
     fprintf(stderr, "An error occurred while trying to create an ENet server host.\n");
     onExit(EXIT_FAILURE);
@@ -72,7 +72,7 @@ int main(int arcg, char **argv)
 
   printf("Server Initiated\n");
 
-  Win32_PrintAllAdapterIPAddresses();
+  PrintAllAdapterIPAddresses();
 
   g_timer.GetTimedMS();
   while (true)
@@ -82,7 +82,7 @@ int main(int arcg, char **argv)
     rotation += 0.5f * PI * dt;
 
     // Handle All Incoming Packets and Send any enqued packets
-    g_server.ServiceNetwork(dt, [&](const ENetEvent &evnt) {
+    g_node.ServiceNetwork(dt, [&](const ENetEvent &evnt) {
       switch (evnt.type)
       {
       case ENET_EVENT_TYPE_CONNECT:
@@ -117,20 +117,20 @@ int main(int arcg, char **argv)
       // Create the packet and broadcast it (unreliable transport) to all
       // clients
       ENetPacket *position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
-      enet_host_broadcast(g_server.m_pNetwork, 0, position_update);
+      enet_host_broadcast(g_node.m_pNetwork, 0, position_update);
     }
 
     Sleep(0);
   }
 
   system("pause");
-  g_server.Release();
+  g_node.Release();
 }
 
 // Yay Win32 code >.>
 //  - Grabs a list of all network adapters on the computer and prints out all
 //  IPv4 addresses associated with them.
-void Win32_PrintAllAdapterIPAddresses()
+void PrintAllAdapterIPAddresses()
 {
   // Initially allocate 5KB of memory to store all adapter info
   ULONG outBufLen = 5000;

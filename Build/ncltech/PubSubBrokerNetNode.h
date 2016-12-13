@@ -13,7 +13,7 @@ public:
 
   void PumpNetwork(float dt);
 
-protected:
+//protected:
   void HandleRxEvent(const ENetEvent &rxEvent);
   void NetworkTxPayload(const std::string &topic, const char * msg, uint16_t len);
 

@@ -60,21 +60,58 @@ void PubSubBrokerNetNode::PumpNetwork(float dt)
 
 void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
 {
+  ENetPacket * packet = rxEvent.packet;
+  char * data = (char *) packet->data;
+
   // Handle packet
-  // TODO
-  printf("\t Client %d says: %s\n", rxEvent.peer->incomingPeerID, rxEvent.packet->data);
+  auto it = std::find(data, data + packet->dataLength, '=');
+  if (it != data + packet->dataLength)
+  {
+    // Parse packet data
+    std::string topic(data, it);
+
+    std::vector<char> pl(it + 1, data + packet->dataLength);
+    const char * payload = pl.data();
+
+    printf("    Message from client %d on topic %s: %s\n", rxEvent.peer->incomingPeerID, topic.c_str(), payload);
+
+    // Broadcast message locally
+    // TODO
+  }
+  else
+  {
+    printf("    Message from client %d: malformed packet\n", rxEvent.peer->incomingPeerID);
+  }
 
   // Free packet
-  enet_packet_destroy(rxEvent.packet);
+  enet_packet_destroy(packet);
 }
 
 void PubSubBrokerNetNode::NetworkTxPayload(const std::string &topic, const char * msg, uint16_t len)
 {
+  // Length (topic length + equals + payload length + null terminator)
+  uint16_t packetLen = (uint16_t) topic.length() + len + 2;
+
   // Build packet
-  char * payload = new char[len];
-  // TODO
+  char * payload = new char[packetLen];
+  const char * topicStr = topic.c_str();
+  char * p = payload;
+
+  // Topic
+  memcpy_s(p, strlen(topicStr), topicStr, strlen(topicStr));
+  p += strlen(topicStr);
+
+  // Seperator
+  *(p++) = '=';
+
+  // Payload
+  memcpy_s(p, (rsize_t) len, msg, (rsize_t) len);
+  p += len;
+
+  // NULL terminate
+  *(p++) = '\0';
 
   // Send packet
-  ENetPacket *packet = enet_packet_create(payload, len, 0);
+  ENetPacket *packet = enet_packet_create(payload, packetLen, 0);
   enet_host_broadcast(m_pNetwork, 0, packet);
 }

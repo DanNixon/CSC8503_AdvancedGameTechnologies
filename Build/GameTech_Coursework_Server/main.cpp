@@ -9,14 +9,14 @@
 
 #define SERVER_PORT 1234
 
-PubSubBrokerNetNode g_server;
+PubSubBrokerNetNode g_node;
 GameTimer g_timer;
 
-void Win32_PrintAllAdapterIPAddresses();
+void PrintAllAdapterIPAddresses();
 
 int onExit(int exitCode)
 {
-  g_server.Release();
+  g_node.Release();
   system("pause");
   exit(exitCode);
 }
@@ -29,20 +29,20 @@ int main(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  if (!g_server.Initialize(SERVER_PORT, 8))
+  if (!g_node.Initialize(SERVER_PORT, 8))
   {
     fprintf(stderr, "An error occurred while trying to create an ENet server host.\n");
     onExit(EXIT_FAILURE);
   }
 
-  printf("Server Initiated\n");
-  Win32_PrintAllAdapterIPAddresses();
+  printf("Server initiated\n");
+  PrintAllAdapterIPAddresses();
 
   g_timer.GetTimedMS();
   while (true)
   {
     float dt = g_timer.GetTimedMS() * 0.001f;
-    g_server.PumpNetwork(dt);
+    g_node.PumpNetwork(dt);
     Sleep(0);
   }
 
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 /**
  * @brief Grabs a list of all network adapters on the computer and prints out all IPv4 addresses associated with them.
  */
-void Win32_PrintAllAdapterIPAddresses()
+void PrintAllAdapterIPAddresses()
 {
   // Initially allocate 5KB of memory to store all adapter info
   ULONG outBufLen = 5000;
@@ -93,7 +93,7 @@ void Win32_PrintAllAdapterIPAddresses()
       IP_ADDR_STRING *cIpAddress = &cAdapter->IpAddressList;
       while (cIpAddress != NULL)
       {
-        printf("\t - Listening for connections on %s:%u\n", cIpAddress->IpAddress.String, SERVER_PORT);
+        printf("  - Listening for connections on %s:%u\n", cIpAddress->IpAddress.String, SERVER_PORT);
         cIpAddress = cIpAddress->Next;
       }
       cAdapter = cAdapter->Next;
