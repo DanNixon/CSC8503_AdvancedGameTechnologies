@@ -46,9 +46,9 @@ For more information see: http://enet.bespin.org/Features.html
 
 #pragma once
 
+#include <stdint.h>
 #include <enet\enet.h>
 #include <functional>
-#include <stdint.h>
 
 class NetworkBase
 {

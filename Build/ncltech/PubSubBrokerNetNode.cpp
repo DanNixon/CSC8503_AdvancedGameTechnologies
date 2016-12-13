@@ -7,8 +7,8 @@ PubSubBrokerNetNode::PubSubBrokerNetNode()
 PubSubBrokerNetNode::~PubSubBrokerNetNode()
 {
   // Disconnect all active connections
-  for (auto it = m_connections.begin(); it != m_connections.end(); ++it)
-    enet_peer_disconnect_now(*it, 0);
+  //for (auto it = m_connections.begin(); it != m_connections.end(); ++it)
+    //enet_peer_disconnect_now(*it, 0);
   m_connections.clear();
 
   // Close network

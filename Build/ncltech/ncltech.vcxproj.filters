@@ -69,14 +69,14 @@
     <Filter Include="include\PathPlanning">
       <UniqueIdentifier>{c0489657-25af-4881-9dcc-258083fa3ca4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Misc">
+      <UniqueIdentifier>{6c68cee4-a7a4-4cd0-a4f4-c34db64f6bf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Misc">
+      <UniqueIdentifier>{c6ae8623-9e88-4e40-84f4-b21a1a4a4e5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NCLDebug.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsEngine.cpp">
       <Filter>src\Physics</Filter>
     </ClCompile>
@@ -112,9 +112,6 @@
     </ClCompile>
     <ClCompile Include="CollisionDetectionSAT.cpp">
       <Filter>src\Physics\CollisionDetection</Filter>
-    </ClCompile>
-    <ClCompile Include="CommonUtils.cpp">
-      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="NetworkBase.cpp">
       <Filter>src\Network</Filter>
@@ -185,23 +182,23 @@
     <ClCompile Include="PlaneCollisionShape.cpp">
       <Filter>src\Physics\CollisionShapes</Filter>
     </ClCompile>
-    <ClCompile Include="Utility.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="PubSubBrokerNetNode.cpp">
       <Filter>src\Network</Filter>
     </ClCompile>
+    <ClCompile Include="CommonUtils.cpp">
+      <Filter>src\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="NCLDebug.cpp">
+      <Filter>src\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>src\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>src\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NCLDebug.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="TSingleton.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="CommonMeshes.h">
       <Filter>include\Graphics</Filter>
     </ClInclude>
@@ -240,12 +237,6 @@
     </ClInclude>
     <ClInclude Include="ObjectMeshDragable.h">
       <Filter>include\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="PerfTimer.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonUtils.h">
-      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="NetworkBase.h">
       <Filter>include\Network</Filter>
@@ -331,14 +322,29 @@
     <ClInclude Include="PlaneCollisionShape.h">
       <Filter>include\Physics\CollisionShapes</Filter>
     </ClInclude>
-    <ClInclude Include="Utility.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="PubSubBrokerNetNode.h">
       <Filter>include\Network</Filter>
     </ClInclude>
     <ClInclude Include="FunctionalPubSubClient.h">
       <Filter>include\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonUtils.h">
+      <Filter>include\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="NCLDebug.h">
+      <Filter>include\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="PerfTimer.h">
+      <Filter>include\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>include\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="TSingleton.h">
+      <Filter>include\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>include\Misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

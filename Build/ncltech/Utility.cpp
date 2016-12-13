@@ -22,3 +22,18 @@ std::vector<std::string> Utility::Split(const std::string &str, char delim)
 
   return retVal;
 }
+
+/**
+ * @brief Parses an IP address from a string.
+ * @param data Storage for IP address
+ * @param str String containing IP address
+ *
+ * Format is the standard IPv4 standard, i.e. 127.0.0.1
+ */
+void Utility::ParseIPAddress(uint8_t *data, const std::string &str)
+{
+  std::vector<std::string> tokens = Split(str, '.');
+
+  for (size_t i = 0; i < 4; i++)
+    data[i] = std::stoi(tokens[i]);
+}

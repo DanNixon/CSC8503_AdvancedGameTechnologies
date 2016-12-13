@@ -3,7 +3,6 @@
 #include <enet\enet.h>
 #include <iphlpapi.h>
 #include <nclgl\GameTimer.h>
-#include <ncltech\FunctionalPubSubClient.h>
 #include <ncltech\PubSubBrokerNetNode.h>
 
 #pragma comment(lib, "IPHLPAPI.lib")
@@ -41,16 +40,6 @@ int main(int argc, char **argv)
   // Show interfaces
   printf("Server initiated\n");
   PrintAllAdapterIPAddresses();
-
-  // Add broadcast message handler
-  FunctionalPubSubClient broadcastMessageHandler(g_node);
-  broadcastMessageHandler.SetSubscriptionHandler([&broadcastMessageHandler](const std::string &, const char *msg, uint16_t) {
-    printf("Broadcast message: %s\n", msg);
-    char *ack = "ack";
-    g_node.BroadcastMessage(&broadcastMessageHandler, "broadcast_messages", ack, 3);
-    return true;
-  });
-  g_node.Subscribe(&broadcastMessageHandler, "broadcast_messages");
 
   // Run update loop
   g_timer.GetTimedMS();
