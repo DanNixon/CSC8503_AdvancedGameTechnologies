@@ -34,7 +34,8 @@ bool NetSyncStateMachine::Transfer()
     std::string branchStr = BranchToString(branch, '/');
 
     // Send topic update
-    m_broker.BroadcastMessage(m_txTopic, branchStr.c_str());
+    const char * msg = branchStr.c_str();
+    m_broker.BroadcastMessage(m_txTopic, msg, (uint16_t) strlen(msg));
   }
 
   m_txBlanking = false;
@@ -45,7 +46,7 @@ bool NetSyncStateMachine::Transfer()
 /**
  * @copydoc IPubSubClient::HandleSubscription
  */
-bool NetSyncStateMachine::HandleSubscription(const std::string &topic, const char *msg)
+bool NetSyncStateMachine::HandleSubscription(const std::string &topic, const char *msg, uint16_t len)
 {
   // Find target state
   std::string targetStateName(msg);

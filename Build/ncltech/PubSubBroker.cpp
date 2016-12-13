@@ -42,12 +42,18 @@ bool PubSubBroker::UnSubscribe(IPubSubClient *client, const std::string &topic)
  * @brief Broadcasts a message to all clients subscribed to a topic.
  * @param topic Topic to publish on
  * @param msg Message payload
+ * @param len Length of message payload
  */
-void PubSubBroker::BroadcastMessage(const std::string &topic, const char *msg)
+void PubSubBroker::BroadcastMessage(const std::string &topic, const char *msg, uint16_t len)
 {
+  // Drop empty messages
+  if (len == 0)
+    return;
+
+  // Broadcast messages
   for (auto it = m_subscriptions.begin(); it != m_subscriptions.end(); ++it)
   {
     if (it->topic == topic)
-      it->client->HandleSubscription(topic, msg);
+      it->client->HandleSubscription(topic, msg, len);
   }
 }

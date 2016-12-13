@@ -16,7 +16,7 @@ public:
   virtual ~NetSyncStateMachine();
 
   virtual bool Transfer();
-  virtual bool HandleSubscription(const std::string &topic, const char *msg) override;
+  virtual bool HandleSubscription(const std::string &topic, const char *msg, uint16_t len) override;
 
 protected:
   const std::string m_txTopic; //!< Topic used to broadcast state changes to
