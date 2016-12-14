@@ -68,7 +68,8 @@ protected:
   ObjectMesh *m_planet;   //!< Planet object
   ObjectMesh *m_target;   //!< Target object
   ObjectMesh *m_lampPost; //!< Lamp post object
-  ObjectMesh *m_orbiter;  //!< Orbiting object
+  ObjectMesh *m_spaceCube;  //!< Space cube
+  ObjectMesh *m_spaceSphere;  //!< Space sphere
 
   Player *m_player; //!< Player
 };

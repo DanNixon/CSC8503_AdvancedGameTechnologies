@@ -53,7 +53,8 @@ CourseworkScene::CourseworkScene()
     , m_planet(nullptr)
     , m_target(nullptr)
     , m_lampPost(nullptr)
-    , m_orbiter(nullptr)
+    , m_spaceCube(nullptr)
+    , m_spaceSphere(nullptr)
 {
   // Debug draw state machine (overfill for a state machine really...)
   {
@@ -428,35 +429,57 @@ void CourseworkScene::OnInitializeScene()
     PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_lampPost->Physics()));
   }
 
-  // Create orbiting object
+  // Objects in space
   {
-    const float RADIUS = 5.0f;
-    const float INVERSE_MASS = 0.1f;
+    // Force at rest normally due to no gravity, add gravity on first collision
+    auto gravityOnCollide = [this](PhysicsObject *a, PhysicsObject *b) {
+      a->SetGravitationTarget(this->m_planet->Physics());
+      return true;
+    };
 
-    m_orbiter = new ObjectMesh("orbiter");
+    // Cube
+    {
+      const Vector3 DIMENSIONS(1.0f, 1.2f, 0.8f);
+      const float INVERSE_MASS = 0.1f;
 
-    m_orbiter->SetMesh(CommonMeshes::Sphere(), false);
-    //m_orbiter->SetTexture(m_planetTex, false); // TODO
+      m_spaceCube = new ObjectMesh("space_cube");
+      m_spaceCube->SetMesh(CommonMeshes::Cube(), false);
+      m_spaceCube->SetLocalTransform(Matrix4::Scale(DIMENSIONS));
 
-    m_orbiter->SetLocalTransform(Matrix4::Scale(RADIUS));
+      m_spaceCube->CreatePhysicsNode();
+      m_spaceCube->Physics()->SetPosition(Vector3(0.0f, PLANET_RADIUS + 30.0f, 0.0f));
+      m_spaceCube->Physics()->SetInverseMass(INVERSE_MASS);
+      m_spaceCube->Physics()->SetOnCollisionCallback(gravityOnCollide);
 
-    m_orbiter->CreatePhysicsNode();
-    m_orbiter->Physics()->SetPosition(Vector3(0.0f, PLANET_RADIUS + 20.0f, 0.0f));
-    m_orbiter->Physics()->SetInverseMass(INVERSE_MASS);
+      ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
+      m_spaceCube->Physics()->AddCollisionShape(shape);
+      m_spaceCube->Physics()->SetInverseInertia(shape->BuildInverseInertia(INVERSE_MASS));
 
-    ICollisionShape *shape = new SphereCollisionShape(RADIUS);
-    m_orbiter->Physics()->AddCollisionShape(shape);
-    m_orbiter->Physics()->SetInverseInertia(shape->BuildInverseInertia(INVERSE_MASS));
+      m_spaceCube->Physics()->AutoResizeBoundingBox();
+      AddGameObject(m_spaceCube);
+    }
 
-    // Never perform at rest test on planet (should always rotate)
-    m_orbiter->Physics()->SetRestVelocityThreshold(0.0f);
+    // Sphere
+    {
+      const float RADIUS = 3.0f;
+      const float INVERSE_MASS = 0.1f;
 
-    m_orbiter->Physics()->AutoResizeBoundingBox();
+      m_spaceSphere = new ObjectMesh("space_sphere");
+      m_spaceSphere->SetMesh(CommonMeshes::Sphere(), false);
+      m_spaceSphere->SetLocalTransform(Matrix4::Scale(RADIUS));
 
-    AddGameObject(m_orbiter);
+      m_spaceSphere->CreatePhysicsNode();
+      m_spaceSphere->Physics()->SetPosition(Vector3(0.0f, 0.0f, PLANET_RADIUS + 30.0f));
+      m_spaceSphere->Physics()->SetInverseMass(INVERSE_MASS);
+      m_spaceSphere->Physics()->SetOnCollisionCallback(gravityOnCollide);
 
-    // Fix distence from planet
-    PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(m_planet->Physics(), m_orbiter->Physics(), m_planet->Physics()->GetPosition(), m_orbiter->Physics()->GetPosition()));
+      ICollisionShape *shape = new SphereCollisionShape(RADIUS);
+      m_spaceSphere->Physics()->AddCollisionShape(shape);
+      m_spaceSphere->Physics()->SetInverseInertia(shape->BuildInverseInertia(INVERSE_MASS));
+
+      m_spaceSphere->Physics()->AutoResizeBoundingBox();
+      AddGameObject(m_spaceSphere);
+    }
   }
 
   // Create player
@@ -508,7 +531,8 @@ void CourseworkScene::OnCleanupScene()
   m_planet = nullptr;
   m_target = nullptr;
   m_lampPost = nullptr;
-  m_orbiter = nullptr;
+  m_spaceCube = nullptr;
+  m_spaceSphere = nullptr;
 
   Scene::OnCleanupScene();
 }

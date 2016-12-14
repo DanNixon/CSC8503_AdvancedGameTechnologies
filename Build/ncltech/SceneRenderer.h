@@ -103,7 +103,7 @@ enum ScreenTextures //..or GBuffer
 
 #define SHADOWMAP_MAX 16 // Hard limit defined in shader
 
-#define PROJ_FAR 80.0f  // Can see for 80m - setting this too far really hurts shadow quality as
+#define PROJ_FAR 100.0f // Can see for 100m - setting this too far really hurts shadow quality as
                         // they attempt to cover the entirety of the view frustum
 #define PROJ_NEAR 0.01f // Nearest object @ 1cm
 #define PROJ_FOV 45.0f  // 45 degree field of view
