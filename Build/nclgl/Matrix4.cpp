@@ -167,6 +167,22 @@ Matrix4 Matrix4::Scale(const Vector3 &scale)
   return m;
 }
 
+/**
+ * @brief Creates a uniform scaling matrix.
+ * @param scale Scale factor
+ * @return Scaling matrix
+ */
+Matrix4 Matrix4::Scale(float scale)
+{
+  Matrix4 m;
+
+  m.values[0] = scale;
+  m.values[5] = scale;
+  m.values[10] = scale;
+
+  return m;
+}
+
 Matrix4 Matrix4::Translation(const Vector3 &translation)
 {
   Matrix4 m;

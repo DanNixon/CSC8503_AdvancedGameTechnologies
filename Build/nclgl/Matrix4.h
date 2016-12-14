@@ -56,6 +56,8 @@ public:
   // Analogous to glScalef
   static Matrix4 Scale(const Vector3 &scale);
 
+  static Matrix4 Scale(float scale);
+
   // Creates a translation matrix (identity, with 'translation' vector at
   // floats 12, 13, and 14. Analogous to glTranslatef
   static Matrix4 Translation(const Vector3 &translation);

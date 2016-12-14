@@ -53,6 +53,7 @@ CourseworkScene::CourseworkScene()
     , m_planet(nullptr)
     , m_target(nullptr)
     , m_lampPost(nullptr)
+    , m_orbiter(nullptr)
 {
   // Debug draw state machine (overfill for a state machine really...)
   {
@@ -316,9 +317,8 @@ void CourseworkScene::OnInitializeScene()
 
     m_planet->SetMesh(CommonMeshes::Sphere(), false);
     m_planet->SetTexture(m_planetTex, false);
-    m_planet->SetColour(Vector4(0.5f, 0.5f, 0.5f, 1.0f));
 
-    m_planet->SetLocalTransform(Matrix4::Scale(Vector3(PLANET_RADIUS, PLANET_RADIUS, PLANET_RADIUS)));
+    m_planet->SetLocalTransform(Matrix4::Scale(PLANET_RADIUS));
 
     m_planet->CreatePhysicsNode();
     m_planet->Physics()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
@@ -371,7 +371,6 @@ void CourseworkScene::OnInitializeScene()
     m_lampPost = new ObjectMesh("lamp_post");
 
     m_lampPost->SetMesh(m_lampPostMesh, false);
-    m_lampPost->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
     m_lampPost->CreatePhysicsNode();
     m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, -1.0f), 90.0f) * Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 30.0f));
@@ -429,6 +428,37 @@ void CourseworkScene::OnInitializeScene()
     PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_lampPost->Physics()));
   }
 
+  // Create orbiting object
+  {
+    const float RADIUS = 5.0f;
+    const float INVERSE_MASS = 0.1f;
+
+    m_orbiter = new ObjectMesh("orbiter");
+
+    m_orbiter->SetMesh(CommonMeshes::Sphere(), false);
+    //m_orbiter->SetTexture(m_planetTex, false); // TODO
+
+    m_orbiter->SetLocalTransform(Matrix4::Scale(RADIUS));
+
+    m_orbiter->CreatePhysicsNode();
+    m_orbiter->Physics()->SetPosition(Vector3(0.0f, PLANET_RADIUS + 20.0f, 0.0f));
+    m_orbiter->Physics()->SetInverseMass(INVERSE_MASS);
+
+    ICollisionShape *shape = new SphereCollisionShape(RADIUS);
+    m_orbiter->Physics()->AddCollisionShape(shape);
+    m_orbiter->Physics()->SetInverseInertia(shape->BuildInverseInertia(INVERSE_MASS));
+
+    // Never perform at rest test on planet (should always rotate)
+    m_orbiter->Physics()->SetRestVelocityThreshold(0.0f);
+
+    m_orbiter->Physics()->AutoResizeBoundingBox();
+
+    AddGameObject(m_orbiter);
+
+    // Fix distence from planet
+    PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(m_planet->Physics(), m_orbiter->Physics(), m_planet->Physics()->GetPosition(), m_orbiter->Physics()->GetPosition()));
+  }
+
   // Create player
   m_player = new Player(this, m_broker);
 
@@ -478,6 +508,7 @@ void CourseworkScene::OnCleanupScene()
   m_planet = nullptr;
   m_target = nullptr;
   m_lampPost = nullptr;
+  m_orbiter = nullptr;
 
   Scene::OnCleanupScene();
 }
