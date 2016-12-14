@@ -1,8 +1,8 @@
 #include "HighscoreBoard.h"
 
 #include <algorithm>
-#include <sstream>
 #include <fstream>
+#include <sstream>
 
 #include <ncltech\Utility.h>
 
@@ -111,14 +111,26 @@ bool HighscoreBoard::LoadFromFile()
 {
   std::ifstream file;
 
+  // Open file
   file.open(m_highscoreFilename, std::ios_base::in);
   if (!file.is_open())
     return false;
 
-  // TODO
+  // Clear existing high scores
+  m_highScores.clear();
+
+  // Parse new high scores
+  std::string line;
+  while (std::getline(file, line))
+  {
+    std::vector<std::string> tokens = Utility::Split(line, ',');
+    if (tokens.size() != 2)
+      continue;
+    m_highScores.push_back({tokens[0], std::stof(tokens[1])});
+  }
 
   file.close();
-  return true;
+  return !m_highScores.empty();
 }
 
 /**
@@ -129,12 +141,14 @@ bool HighscoreBoard::SaveToFile()
 {
   std::ofstream file;
 
+  // Open file
   file.open(m_highscoreFilename, std::ios_base::out | std::ios_base::trunc);
   if (!file.is_open())
     return false;
 
+  // Output high scores to file
   for (auto it = m_highScores.begin(); it != m_highScores.end(); ++it)
-    file << it->name << '\t' << it->score << '\n';
+    file << it->name << ',' << it->score << '\n';
 
   file.close();
   return true;
