@@ -59,7 +59,7 @@ higher mark will require the implementation of optional elements.
 - [ ] You must add simple test scenarios into the environment which permit the
       testing of your basic collision detection and response algorithms. These
       will take the form of:
-  - [ ] A sphere and a cube which begin the scenario in space, and at Rest.
+  - [x] A sphere and a cube which begin the scenario in space, and at Rest.
         They should react to the impact of the fired projectile, waking up and
         responding to the collision as normal.
   - [ ] A horizontal quad and a vertical quad, represented as bounded planes. A
@@ -76,7 +76,7 @@ higher mark will require the implementation of optional elements.
       (e.g., with a target reticule, or dart-board).
 - [x] You must implement a score counter. The score should increment by 100
       every time a launched sphere hits the target region of the planet.
-- [ ] You should demonstrate awareness that the physical representation of an
+- [x] You should demonstrate awareness that the physical representation of an
       object does not need to perfectly match its graphical representation. An
       example of this principle in practise should be testable within the
       simulation (e.g., a bunny rabbit mesh represented, physically, as a few
