@@ -37,6 +37,11 @@ public:
    */
   static const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
 
+  /**
+   * @brief Key used to toggle planet atmosphere.
+   */
+  static const KeyboardKeys ATMOSPHERE_TOGGLE_KEY = KeyboardKeys::KEYBOARD_U;
+
 public:
   static void PrintKeyMapping();
 

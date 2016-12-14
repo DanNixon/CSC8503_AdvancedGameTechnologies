@@ -38,6 +38,7 @@ void CourseworkScene::PrintKeyMapping()
   NCLDebug::Log("  Switch physics view mode: %c", PHYSICS_DEBUG_VIEW_KEY);
   NCLDebug::Log("  Switch broadphase culling mode: %c", BROADPHASE_MODE_KEY);
   NCLDebug::Log("  Switch integrations mode: %c", INTEGRATION_MODE_KEY);
+  NCLDebug::Log("  Toggle atmosphere: %c", ATMOSPHERE_TOGGLE_KEY);
 }
 
 /**
@@ -575,6 +576,11 @@ void CourseworkScene::OnUpdateScene(float dt)
   m_broadphaseModeStateMachine.Update(dt);
   m_integrationModeStateMachine.Update(dt);
   m_player->Update(dt);
+
+  // Atmosphere status and toggle
+  NCLDebug::AddStatusEntry(Vector4(0.5f, 1.0f, 0.0f, 1.0f), "Atmosphere: %s", (m_atmosphere->CanCollide() ? "on" : "off"));
+  if (Window::GetKeyboard()->KeyTriggered(ATMOSPHERE_TOGGLE_KEY))
+    m_atmosphere->SetCollisionsEnabled(!m_atmosphere->CanCollide());
 
   // Show player score
   if (m_player != nullptr)

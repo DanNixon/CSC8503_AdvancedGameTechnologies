@@ -68,6 +68,15 @@ public:
   }
 
   /**
+   * @brief Gets the collision detection ebale flag for this object.
+   * @return True if collision detection is enabled
+   */
+  inline bool CanCollide() const
+  {
+    return m_collisionEnabled;
+  }
+
+  /**
    * @brief Gets the square of the rest velocity threshold.
    * @return Squared rest velocity
    */
@@ -192,7 +201,7 @@ public:
    */
   inline std::vector<ICollisionShape *>::const_iterator CollisionShapesBegin() const
   {
-    return m_collisionShapes.cbegin();
+    return m_collisionEnabled ? m_collisionShapes.cbegin() : m_collisionShapes.cend();
   }
 
   /**
@@ -214,6 +223,15 @@ public:
   }
 
   const Matrix4 &GetWorldSpaceTransform() const;
+
+  /**
+   * @brief Sets if collision detection is enabled for this object.
+   * @param enable If collisions are enabled
+   */
+  inline void SetCollisionsEnabled(bool enable)
+  {
+    m_collisionEnabled = enable;
+  }
 
   /**
    * @brief Sets the at rest velocity sum threshold.
@@ -422,6 +440,7 @@ public:
 protected:
   Object *m_parent; //!< Attached GameObject or NULL if none set
 
+  bool m_collisionEnabled;              //!< Flag indication if collision detection is enabled for this object
   bool m_atRest;                        //!< Flag indicating if this object is at rest
   float m_restVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be stationary
   float m_averageSummedVelocity;        //!< Exponential moving average of sum of magnitudes of linear and angular velocity
