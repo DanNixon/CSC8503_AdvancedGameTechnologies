@@ -119,7 +119,7 @@ higher mark will require the implementation of optional elements.
 - [ ] You might extend the physical representation of the planet beyond a
       sphere, taking into account its geometric complexities in a scalable
       manner.
-- [ ] You might implement a high score board which is broadcast by the server
+- [x] You might implement a high score board which is broadcast by the server
       to the client on termination of the simulation, indicating the top ten
       recorded scores.
 - [x] You might introduce broadphase culling to optimise your physics
