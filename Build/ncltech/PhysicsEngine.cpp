@@ -1,10 +1,12 @@
 #include "PhysicsEngine.h"
+
 #include "CollisionDetectionSAT.h"
 #include "NCLDebug.h"
 #include "Object.h"
 #include <algorithm>
 #include <nclgl\Window.h>
 #include <omp.h>
+#include "IntegrationHelpers.h"
 
 /**
  * @brief Sets default engine settings.
@@ -265,13 +267,49 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 
     case INTEGRATION_RUNGE_KUTTA_2:
     {
-      // TODO
+      // RK2 integration for linear motion
+      IntegrationHelpers::State state = { obj->m_position, obj->m_linearVelocity, obj->m_linearForce * obj->m_inverseMass };
+      IntegrationHelpers::RK2(state, m_UpdateTimestep);
+      obj->m_position = state.position;
+      obj->m_linearVelocity = state.velocity;
+
+      // Linear velocity damping
+      obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
+
+      // Update angular velocity
+      obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
+
+      // Angular velocity damping
+      obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
+
+      // Update orientation
+      obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
+      obj->m_orientation.Normalise();
+
       break;
     }
 
     case INTEGRATION_RUNGE_KUTTA_4:
     {
-      // TODO
+      // RK4 integration for linear motion
+      IntegrationHelpers::State state = { obj->m_position, obj->m_linearVelocity, obj->m_linearForce * obj->m_inverseMass };
+      IntegrationHelpers::RK4(state, m_UpdateTimestep);
+      obj->m_position = state.position;
+      obj->m_linearVelocity = state.velocity;
+
+      // Linear velocity damping
+      obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
+
+      // Update angular velocity
+      obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
+
+      // Angular velocity damping
+      obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
+
+      // Update orientation
+      obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
+      obj->m_orientation.Normalise();
+
       break;
     }
     }

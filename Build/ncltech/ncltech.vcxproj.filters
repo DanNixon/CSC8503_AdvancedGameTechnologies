@@ -197,6 +197,9 @@
     <ClCompile Include="Utility.cpp">
       <Filter>src\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="IntegrationHelpers.cpp">
+      <Filter>src\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonMeshes.h">
@@ -345,6 +348,9 @@
     </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>include\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="IntegrationHelpers.h">
+      <Filter>include\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

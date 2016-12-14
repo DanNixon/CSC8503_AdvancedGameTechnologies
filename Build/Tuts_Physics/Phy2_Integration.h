@@ -175,7 +175,7 @@ public:
       break;
     }
 
-    NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "Integration Method: %s", integrationMethodName);
+    NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "Integration Method: %s", integrationMethodName.c_str());
     NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "Select Integration Method:");
     NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "     7: Explicit Euler");
     NCLDebug::AddStatusEntry(Vector4(0.9f, 1.0f, 0.8f, 1.0f), "     8: Semi-Implicit Euler");
