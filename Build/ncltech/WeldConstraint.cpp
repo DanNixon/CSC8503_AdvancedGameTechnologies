@@ -1,5 +1,10 @@
 #include "WeldConstraint.h"
 
+/**
+ * @brief Creates a new weld constraint.
+ * @param obj1 Object to constrain to
+ * @param obj2 Object to be constrained
+ */
 WeldConstraint::WeldConstraint(PhysicsObject *obj1, PhysicsObject *obj2)
     : m_pObj1(obj1)
     , m_pObj2(obj2)
@@ -8,6 +13,9 @@ WeldConstraint::WeldConstraint(PhysicsObject *obj1, PhysicsObject *obj2)
   m_orientation = obj2->GetOrientation();
 }
 
+/**
+ * @copydoc IConstraint::ApplyImpulse
+ */
 void WeldConstraint::ApplyImpulse()
 {
   // Position
@@ -20,6 +28,9 @@ void WeldConstraint::ApplyImpulse()
   m_pObj2->SetOrientation(m_pObj1->GetOrientation() * m_orientation);
 }
 
+/**
+ * @copydoc IConstraint::DebugDraw
+ */
 void WeldConstraint::DebugDraw() const
 {
   Vector3 posA = m_pObj1->GetPosition();

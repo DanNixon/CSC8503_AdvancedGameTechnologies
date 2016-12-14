@@ -10,7 +10,7 @@
 /**
  * @class HighscoreBoard
  * @author Dan Nixon
- * @brief COntainer for high scores.
+ * @brief Container for high scores.
  */
 class HighscoreBoard : public IPubSubClient
 {
