@@ -23,7 +23,7 @@
 /**
  * @brief Radius of the planet.
  */
-const float CourseworkScene::PLANET_RADIUS = 100.0f;
+const float CourseworkScene::PLANET_RADIUS = 50.0f;
 
 /**
  * @brief Prints the key mappings to the log.
@@ -343,7 +343,7 @@ void CourseworkScene::OnInitializeScene()
     m_target->SetMesh(m_targetMesh, false);
 
     m_target->CreatePhysicsNode();
-    m_target->Physics()->SetPosition(Vector3(PLANET_RADIUS + 5.0f, 0.0f, 0.0f));
+    m_target->Physics()->SetPosition(Vector3(PLANET_RADIUS + 1.0f, 0.0f, 0.0f));
     m_target->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
 
     m_target->Physics()->SetInverseMass(0.0f);
@@ -374,8 +374,10 @@ void CourseworkScene::OnInitializeScene()
     m_lampPost->SetColour(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
     m_lampPost->CreatePhysicsNode();
-    m_lampPost->Physics()->SetPosition(Vector3(PLANET_RADIUS + 10.0f, 0.0f, 0.0f));
-    m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, -1.0f), 90.0f));
+    m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, -1.0f), 90.0f) * Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 30.0f));
+    Vector3 lampPostPosition(0.0f, PLANET_RADIUS, 0.0f);
+    Quaternion::RotatePointByQuaternion(m_lampPost->Physics()->GetOrientation(), lampPostPosition);
+    m_lampPost->Physics()->SetPosition(lampPostPosition);
 
     m_target->Physics()->SetInverseMass(0.0f);
 

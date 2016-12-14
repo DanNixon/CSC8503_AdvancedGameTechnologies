@@ -23,12 +23,19 @@ Player::Player(Scene *scene, PubSubBroker * broker)
     reset->AddOnEntryBehaviour([this](State *) {
       NCLDebug::Log("Player reset.");
 
+      // Clear shot things
       for (auto it = this->m_shotThings.begin(); it != this->m_shotThings.end(); ++it)
       {
         if (this->m_scene)
           this->m_scene->RemoveGameObject(*it);
       }
       this->m_shotThings.clear();
+
+      // Reset number of shots
+      this->m_numShootablesRemaining = 25;
+
+      // Reset score
+      this->m_score.Reset();
     });
 
     // Exit conditions
@@ -105,9 +112,8 @@ Player::~Player()
  */
 void Player::Reset()
 {
+  // This should just reset the state machine, resetting other things should be handled in the state machine
   m_playerStateMachine.Reset();
-  //m_numShootablesRemaining = 25;
-  m_numShootablesRemaining = 2;
 }
 
 /**
