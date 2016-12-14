@@ -24,6 +24,7 @@ This class is a singleton, so is unique and can be accessed globally.
 */ /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
 #include "SceneRenderer.h"
 
 class SceneManager : public SceneRenderer, public TSingleton<SceneManager>

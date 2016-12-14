@@ -6,9 +6,9 @@
 #include "ShootableBall.h"
 #include "ShootableCube.h"
 
-Player::Player(Scene *scene)
+Player::Player(Scene *scene, PubSubBroker * broker)
     : m_scene(scene)
-    , m_score(nullptr) // TODO
+    , m_score(broker)
 {
   // State machine
   {
@@ -45,13 +45,25 @@ Player::Player(Scene *scene)
 
     // Shooting
     {
+      // End of turn (score submission) state
+      State *endOfTurn = new State("end_of_turn", m_playerStateMachine.RootState(), &m_playerStateMachine);
+      endOfTurn->AddOnEntryBehaviour([this](State *) {
+        if (this->NumShootablesRemaining() == 0)
+        {
+          NCLDebug::Log("Out of things to shoot! Submitting score...");
+          this->m_score.Submit("no name");
+          this->m_score.Reset();
+        }
+      });
+      endOfTurn->AddTransferFromTest([idle]() { return idle; });
+
       State::OnEntryBehaviour powerUpBehaviour = [](State *) { NCLDebug::Log("Hold to power up. Release to fire!"); };
-      State::TransferFromTest returnToIdle = [idle]() { return idle; };
+      State::TransferFromTest afterShotTransfer = [endOfTurn]() { return endOfTurn; };
 
       // Shooting cubes
       {
         State *shootCube = new State("shoot_cube", m_playerStateMachine.RootState(), &m_playerStateMachine);
-        shootCube->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY); });
+        shootCube->AddTransferToTest([this]() { return Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY) && this->NumShootablesRemaining() > 0; });
 
         State *preShoot = new State("pre_shoot", shootCube, &m_playerStateMachine);
         preShoot->AddOnEntryBehaviour(powerUpBehaviour);
@@ -60,13 +72,13 @@ Player::Player(Scene *scene)
         State *shoot = new State("shoot", shootCube, &m_playerStateMachine);
         shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY); });
         shoot->AddOnEntryBehaviour([this](State *s) { this->ShootFromCamera(new ShootableCube(this), s->TimeInState()); });
-        shoot->AddTransferFromTest(returnToIdle);
+        shoot->AddTransferFromTest(afterShotTransfer);
       }
 
       // Shooting spheres
       {
         State *shootBall = new State("shoot_ball", m_playerStateMachine.RootState(), &m_playerStateMachine);
-        shootBall->AddTransferToTest([]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
+        shootBall->AddTransferToTest([this]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY) && this->NumShootablesRemaining() > 0; });
 
         State *preShoot = new State("pre_shoot", shootBall, &m_playerStateMachine);
         preShoot->AddOnEntryBehaviour(powerUpBehaviour);
@@ -75,12 +87,13 @@ Player::Player(Scene *scene)
         State *shoot = new State("shoot", shootBall, &m_playerStateMachine);
         shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
         shoot->AddOnEntryBehaviour([this](State *s) { this->ShootFromCamera(new ShootableBall(this), s->TimeInState()); });
-        shoot->AddTransferFromTest(returnToIdle);
+        shoot->AddTransferFromTest(afterShotTransfer);
       }
     }
-
-    m_playerStateMachine.Reset();
   }
+
+  // Set initial state
+  Reset();
 }
 
 Player::~Player()
@@ -93,6 +106,8 @@ Player::~Player()
 void Player::Reset()
 {
   m_playerStateMachine.Reset();
+  //m_numShootablesRemaining = 25;
+  m_numShootablesRemaining = 2;
 }
 
 /**
@@ -138,6 +153,7 @@ void Player::ShootFromCamera(IShootable *shootable, float power)
   shootable->Physics()->SetLinearVelocity(velocity);
 
   m_shotThings.push_back(shootable);
+  m_numShootablesRemaining--;
 
   if (m_scene)
   {

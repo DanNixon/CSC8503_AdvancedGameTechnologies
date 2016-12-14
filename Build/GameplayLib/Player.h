@@ -30,7 +30,7 @@ public:
   static const KeyboardKeys PLAYER_RESET_KEY = KeyboardKeys::KEYBOARD_K;
 
 public:
-  Player(Scene *scene = nullptr);
+  Player(Scene *scene = nullptr, PubSubBroker * broker = nullptr);
   virtual ~Player();
 
   /**
@@ -40,6 +40,15 @@ public:
   LocalScore &GetScoreCounter()
   {
     return m_score;
+  }
+
+  /**
+   * @brief Gets the remaining number of shots the player can take.
+   * @return Shots remaining
+   */
+  int NumShootablesRemaining() const
+  {
+    return m_numShootablesRemaining;
   }
 
   void Reset();
@@ -52,5 +61,6 @@ protected:
   Scene *m_scene;                         //!< Scene this player operates in
   StateMachine m_playerStateMachine;      //!< State machine controlling player behaviour
   LocalScore m_score;                     //!< Player's score
+  int m_numShootablesRemaining;           //!< Number of things the player has left to shoot
   std::vector<IShootable *> m_shotThings; //!< Things shot by the player
 };

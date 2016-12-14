@@ -19,7 +19,6 @@ whether an object is already in the list or not a bitwise flag is set on the Obj
 results in a hard-limit of 32 renderlists. As the constructor could exceed this value, a factory is
 used to create the renderlist, returning false if all renderlists have already been allocated previously.
 
-
 		(\_/)
 		( '_')
 	 /""""""""""""\=========     -----D
@@ -27,7 +26,9 @@ used to create the renderlist, returning false if all renderlists have already b
 ....\_@____@____@____@____@_/
 
 */ /////////////////////////////////////////////////////////////////////////////
+
 #pragma once
+
 #include "Object.h"
 #include <nclgl\Frustum.h>
 #include <nclgl\Vector3.h>

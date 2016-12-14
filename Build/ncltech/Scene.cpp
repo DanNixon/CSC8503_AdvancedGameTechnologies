@@ -1,7 +1,9 @@
 #include "Scene.h"
+
 #include "CommonMeshes.h"
 #include "NCLDebug.h"
 #include "PhysicsEngine.h"
+#include "SceneManager.h"
 #include <algorithm>
 
 Scene::Scene(const std::string &friendly_name)
@@ -30,6 +32,8 @@ void Scene::RemoveGameObject(Object *gameObject)
 {
   if (gameObject->m_parent == nullptr)
     return;
+
+  SceneManager::Instance()->FreeObjectFromRenderLists(gameObject);
 
   auto it = std::find(gameObject->m_parent->m_vpChildren.begin(), gameObject->m_parent->m_vpChildren.end(), gameObject);
   if (it != gameObject->m_parent->m_vpChildren.end())

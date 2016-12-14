@@ -60,7 +60,15 @@ IShootable::IShootable(Player *owner, float lifetime)
     shot->AddTransferFromTest([this, shot, targetHit]() { return this->m_hitTarget ? targetHit : nullptr; });
 
     // State change from shot to expired after lifetime has elapsed
-    shot->AddTransferFromTest([this, shot, expired]() { return (shot->TimeInState() > this->m_lifetime) ? expired : nullptr; });
+    shot->AddTransferFromTest([this, shot, expired]() -> State * {
+      if (shot->TimeInState() > this->m_lifetime)
+      {
+        this->m_owner->GetScoreCounter().DeltaPoints(-20.0f);
+        return expired;
+      }
+      
+      return nullptr;
+    });
 
     // Set default state
     m_stateMachine.SetDefaultState(idle);

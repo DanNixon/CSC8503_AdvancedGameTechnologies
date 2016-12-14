@@ -221,6 +221,8 @@ public:
     m_NumSuperSamples = scalar;
   }
 
+  void FreeObjectFromRenderLists(Object * obj);
+
 protected:
   // Class-Only Functions
   SceneRenderer();

@@ -12,6 +12,13 @@ void SceneRenderer::InitializeOGLContext(Window &Parent)
   InitialiseGL();
 }
 
+void SceneRenderer::FreeObjectFromRenderLists(Object * obj)
+{
+  m_pFrameRenderList->RemoveObject(obj);
+  for (size_t i = 0; i < m_ShadowMapNum; i++)
+    m_apShadowRenderLists[i]->RemoveObject(obj);
+}
+
 SceneRenderer::SceneRenderer()
     : OGLRenderer()
     , m_pScene(NULL)

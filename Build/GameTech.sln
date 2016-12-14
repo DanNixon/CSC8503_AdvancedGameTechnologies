@@ -65,6 +65,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommandLineInterfaceLibTest", "CommandLineInterfaceLibTest\CommandLineInterfaceLibTest.vcxproj", "{DCB6D64F-045C-4500-80BD-803DBBE88F1E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{67C67E1B-66DE-49CF-99D4-A72F688BA43E} = {67C67E1B-66DE-49CF-99D4-A72F688BA43E}
+		{9FD1ABBA-7FDF-451C-BF1F-030F93B1AE7E} = {9FD1ABBA-7FDF-451C-BF1F-030F93B1AE7E}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameplayLib", "GameplayLib\GameplayLib.vcxproj", "{BAC591A3-7B6A-42EC-899A-0723693D361D}"

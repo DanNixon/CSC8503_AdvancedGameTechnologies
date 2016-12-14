@@ -34,7 +34,7 @@ HighscoreBoard::~HighscoreBoard()
  */
 size_t HighscoreBoard::AddScore(const LocalScore *score, const std::string &name)
 {
-  return AddScore(score->GetScoreCounter(), name);
+  return AddScore(score->GetScore(), name);
 }
 
 /**
@@ -45,10 +45,11 @@ size_t HighscoreBoard::AddScore(const LocalScore *score, const std::string &name
  */
 size_t HighscoreBoard::AddScore(float score, const std::string &name)
 {
-  m_highScores.push_back({name, score});
+  HighscoreRecord newRecord = { name, score };
+  m_highScores.push_back(newRecord);
   std::sort(m_highScores.begin(), m_highScores.end(), [](HighscoreRecord &a, HighscoreRecord &b) { return a.score > b.score; });
-  // TODO
-  return 0;
+  auto it = std::find_if(m_highScores.begin(), m_highScores.end(), [newRecord](HighscoreRecord &r) { return r == newRecord; });
+  return (size_t)(it - m_highScores.begin());
 }
 
 /**
@@ -68,7 +69,7 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
   }
   else if (topic == "highscore/list")
   {
-    size_t numToList = std::atoi(msg);
+    size_t numToList = std::min((size_t) std::atoi(msg), m_highScores.size());
 
     std::stringstream str;
     for (size_t i = 0; i < numToList; i++)

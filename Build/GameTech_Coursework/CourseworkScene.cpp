@@ -310,9 +310,6 @@ void CourseworkScene::OnInitializeScene()
   m_broadphaseModeStateMachine.Reset();
   m_integrationModeStateMachine.Reset();
 
-  // Create player
-  m_player = new Player(this);
-
   // Create planet
   {
     m_planet = new ObjectMesh("planet");
@@ -398,6 +395,9 @@ void CourseworkScene::OnInitializeScene()
     PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_lampPost->Physics()));
   }
 
+  // Create player
+  m_player = new Player(this, m_broker);
+
   // Check for server connection (should have probably happened in the time taken for world generation, etc. (on a local
   // connection at least))
   if (m_broker->IsConnectedToServer())
@@ -408,6 +408,10 @@ void CourseworkScene::OnInitializeScene()
 
 void CourseworkScene::OnCleanupScene()
 {
+  // Remove player
+  delete m_player;
+  m_player = nullptr;
+
   // Close networking
   PubSubBrokerNetNode *broker = m_broker;
   {
@@ -436,10 +440,6 @@ void CourseworkScene::OnCleanupScene()
   m_broadphaseModeStateMachine.Reset();
   m_integrationModeStateMachine.Reset();
 
-  // Remove player
-  delete m_player;
-  m_player = nullptr;
-
   // Cleanup object pointers
   m_planet = nullptr;
   m_target = nullptr;
@@ -460,7 +460,8 @@ void CourseworkScene::OnUpdateScene(float dt)
   if (m_player != nullptr)
   {
     NCLDebug::AddStatusEntry(Vector4(), "");
-    NCLDebug::AddStatusEntry(Vector4(0.0f, 1.0f, 0.2f, 1.0f), "Score: %5.0f", m_player->GetScoreCounter().GetScoreCounter());
+    NCLDebug::AddStatusEntry(Vector4(0.0f, 1.0f, 0.2f, 1.0f), "Score: %5.0f", m_player->GetScoreCounter().GetScore());
+    NCLDebug::AddStatusEntry(Vector4(0.0f, 1.0f, 0.2f, 1.0f), "Shots Remaining: %d", m_player->NumShootablesRemaining());
   }
 
   // Add planet rotation

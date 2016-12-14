@@ -3,6 +3,8 @@
 #include <ncltech\NCLDebug.h>
 #include <ncltech\Utility.h>
 
+#include "HighscoreBoard.h"
+
 /**
  * @brief Creates a new local score counter.
  * @param broker Pub/sub broker used to communicate eith the high score board
@@ -14,6 +16,12 @@ LocalScore::LocalScore(PubSubBroker *broker)
     , m_bonus(0.0f)
     , m_score(0.0f)
 {
+  // Subscribe to topics
+  if (broker != nullptr)
+  {
+    broker->Subscribe(this, "highscore/add");
+    broker->Subscribe(this, "highscore/list");
+  }
 }
 
 LocalScore::~LocalScore()
@@ -53,7 +61,11 @@ void LocalScore::SetBonus(float bonus)
  */
 void LocalScore::Submit(const std::string &name)
 {
-  // TODO
+  if (m_broker != nullptr)
+  {
+    std::string msg = name + ',' + std::to_string(m_score);
+    m_broker->BroadcastMessage(this, "highscore/add", msg.c_str(), (uint16_t) msg.size());
+  }
 }
 
 /**
@@ -86,6 +98,10 @@ bool LocalScore::HandleSubscription(const std::string &topic, const char *msg, u
   else if (topic == "highscore/list")
   {
     std::vector<std::string> tokens = Utility::Split(std::string(msg), ',');
+
+    // This is most likely a request from another client, not a reponse
+    if (tokens.size() % 2 != 0)
+      return false;
 
     NCLDebug::Log("High scores:");
     for (size_t i = 0; i < tokens.size(); i += 2)

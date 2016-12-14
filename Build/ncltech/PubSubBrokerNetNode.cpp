@@ -76,6 +76,14 @@ void PubSubBrokerNetNode::PumpNetwork(float dt)
 }
 
 /**
+ * @copydoc PubSubBroker::BroadcastMessage
+ */
+void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient * source, const std::string & topic, const char * msg, uint16_t len)
+{
+  BroadcastMessageIgnorePeer(source, topic, msg, len, -1);
+}
+
+/**
  * @brief Handles a receive event.
  * @param rxEvent Event to handle
  */
@@ -97,7 +105,7 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
     printf("- Message from client %d on topic %s: %s\n", rxEvent.peer->incomingPeerID, topic.c_str(), payload);
 
     // Broadcast message
-    BroadcastMessage(nullptr, topic, payload, (uint16_t)pl.size(), rxEvent.peer->incomingPeerID);
+    BroadcastMessageIgnorePeer(nullptr, topic, payload, (uint16_t)pl.size(), rxEvent.peer->incomingPeerID);
   }
   else
   {
@@ -112,7 +120,7 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
  * @copydoc PubSubBroker::BroadcastMessage
  * @param ignorePeer Network peer to be ignored (used to prevent cycles in message delivery)
  */
-void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len,
+void PubSubBrokerNetNode::BroadcastMessageIgnorePeer(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len,
                                            int32_t ignorePeer)
 {
   // Length (topic length + equals + payload length + null terminator)
