@@ -93,7 +93,7 @@ bool LocalScore::HandleSubscription(const std::string &topic, const char *msg, u
   if (topic == "highscore/add")
   {
     long position = std::atol(msg);
-    NCLDebug::Log("Score ranking: %l", position);
+    NCLDebug::Log("Score ranking: %d", position);
   }
   else if (topic == "highscore/list")
   {
@@ -110,7 +110,7 @@ bool LocalScore::HandleSubscription(const std::string &topic, const char *msg, u
       if (name.empty())
         name = "[no name]";
 
-      NCLDebug::Log("  %d) %5.0f - %s", (i / 2) + 1, name.c_str(), tokens[i + 1].c_str());
+      NCLDebug::Log("  %d) %s - %s", (i / 2) + 1, name.c_str(), tokens[i + 1].c_str());
     }
   }
   else

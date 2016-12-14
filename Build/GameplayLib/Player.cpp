@@ -32,7 +32,7 @@ Player::Player(Scene *scene, PubSubBroker *broker)
       this->m_shotThings.clear();
 
       // Reset number of shots
-      this->m_numShootablesRemaining = 25;
+      this->m_numShootablesRemaining = 10;
 
       // Reset score
       this->m_score.Reset();
