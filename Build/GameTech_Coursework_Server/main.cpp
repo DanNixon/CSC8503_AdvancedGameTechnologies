@@ -10,7 +10,7 @@
 
 #define SERVER_PORT 1200
 
-PubSubBrokerNetNode g_node;
+PubSubBrokerNetNode g_node; //!< Pub/sub server
 
 void PrintAllAdapterIPAddresses();
 

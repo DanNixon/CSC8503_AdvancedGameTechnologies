@@ -3,6 +3,13 @@
 #include <ncltech/CommonMeshes.h>
 #include <ncltech/CuboidCollisionShape.h>
 
+/**
+ * @brief Creates a new shootable cube.
+ * @param owner Player that shot the cube
+ * @param halfDims Half dimensions of the cube
+ * @param inverseMass Inverse mass
+ * @param lifetime TIme in seconds the object is expected to stay alive for
+ */
 ShootableCube::ShootableCube(Player *owner, const Vector3 &halfDims, float inverseMass, float lifetime)
     : IShootable(owner, lifetime)
 {

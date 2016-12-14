@@ -6,9 +6,9 @@
 class Player;
 
 /**
- * @class Ball
+ * @class IShootable
  * @author Dan Nixon
- * @brief Balls that can be shot from the perspective of the player.
+ * @brief An object that the player can shoot towards things.
  */
 class IShootable : public ObjectMesh
 {

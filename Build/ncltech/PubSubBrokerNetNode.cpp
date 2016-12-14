@@ -1,5 +1,8 @@
 #include "PubSubBrokerNetNode.h"
 
+/**
+ * @brief Creates a new network synchronised publisher/subscriber broker.
+ */
 PubSubBrokerNetNode::PubSubBrokerNetNode()
 {
 }
@@ -12,12 +15,22 @@ PubSubBrokerNetNode::~PubSubBrokerNetNode()
   Release();
 }
 
+/**
+ * @brief Connects to another broker over the network.
+ * @param ip[4] IP address of broker
+ * @param port Broker port
+ */
 void PubSubBrokerNetNode::ConnectToBroker(const uint8_t ip[4], uint16_t port)
 {
   ENetPeer *peer = ConnectPeer(ip[0], ip[1], ip[2], ip[3], port);
-  // m_connections.push_back(peer);
 }
 
+/**
+ * @brief Tests if the last connected broker is connected.
+ * @return True if connected
+ *
+ * This is mainly for use on clients when only one connection will ever exist (i.e. that to the server).
+ */
 bool PubSubBrokerNetNode::IsConnectedToServer() const
 {
   if (m_connections.empty())
@@ -26,6 +39,10 @@ bool PubSubBrokerNetNode::IsConnectedToServer() const
   return m_connections.back()->state == ENET_PEER_STATE_CONNECTED;
 }
 
+/**
+ * @brief Update the network.
+ * @param dt Time in seconds since last update
+ */
 void PubSubBrokerNetNode::PumpNetwork(float dt)
 {
   ServiceNetwork(dt, [this](const ENetEvent &evnt) {
@@ -58,6 +75,10 @@ void PubSubBrokerNetNode::PumpNetwork(float dt)
   });
 }
 
+/**
+ * @brief Handles a receive event.
+ * @param rxEvent Event to handle
+ */
 void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
 {
   ENetPacket *packet = rxEvent.packet;
@@ -87,6 +108,10 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
   enet_packet_destroy(packet);
 }
 
+/**
+ * @copydoc PubSubBroker::BroadcastMessage
+ * @param ignorePeer Network peer to be ignored (used to prevent cycles in message delivery)
+ */
 void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len,
                                            int32_t ignorePeer)
 {

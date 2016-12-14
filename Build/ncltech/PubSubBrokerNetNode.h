@@ -5,12 +5,24 @@
 
 #include <mutex>
 
+/**
+ * @class PubSubBrokerNetNode
+ * @author Dan Nixon
+ * @brief Publisher/subscriber broker that synchronises with other brokers over the network.
+ */
 class PubSubBrokerNetNode : public PubSubBroker, public NetworkBase
 {
 public:
   PubSubBrokerNetNode();
   virtual ~PubSubBrokerNetNode();
 
+  /**
+   * @brief Gets a mutex that may be used to make calls to this broker thread safe.
+   * @return Reference to mutex
+   *
+   * This is done manually rather than mutex locing each call as it may be desirable to hold the lock for the duration of several
+   * operations (for instance when closing the network).
+   */
   inline std::mutex &Mutex()
   {
     return m_netMutex;

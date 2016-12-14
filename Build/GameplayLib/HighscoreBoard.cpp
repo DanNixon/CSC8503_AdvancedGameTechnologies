@@ -5,6 +5,10 @@
 
 #include <ncltech\Utility.h>
 
+/**
+ * @brief Create a new high score board.
+ * @param broker Pub/sub broker used to communicate
+ */
 HighscoreBoard::HighscoreBoard(PubSubBroker *broker)
     : IPubSubClient(broker)
 {
@@ -22,11 +26,23 @@ HighscoreBoard::~HighscoreBoard()
 {
 }
 
+/**
+ * @brief Adds a new score to the high score board.
+ * @param score Score record
+ * @param name Player name
+ * @return Position of the score in the rankings
+ */
 size_t HighscoreBoard::AddScore(const LocalScore *score, const std::string &name)
 {
   return AddScore(score->GetScoreCounter(), name);
 }
 
+/**
+ * @brief Adds a new score to the high score board.
+ * @param score Score value
+ * @param name Player name
+ * @return Position of the score in the rankings
+ */
 size_t HighscoreBoard::AddScore(float score, const std::string &name)
 {
   m_highScores.push_back({name, score});
@@ -35,6 +51,9 @@ size_t HighscoreBoard::AddScore(float score, const std::string &name)
   return 0;
 }
 
+/**
+ * @copydoc IPubSubClient::HandleSubscription
+ */
 bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *msg, uint16_t len)
 {
   if (topic == "highscore/add")
@@ -83,12 +102,22 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
   return true;
 }
 
+/**
+ * @brief Loads scores from an ASCII file.
+ * @param filename File to load from
+ * @return True if loading was successful
+ */
 bool HighscoreBoard::LoadFromFile(const std::string &filename)
 {
   // TODO
   return false;
 }
 
+/**
+ * @brief Saves scores to an ASCII file.
+ * @param filename File to save to
+ * @return True if saving was successful
+ */
 bool HighscoreBoard::SaveToFile(const std::string &filename)
 {
   // TODO

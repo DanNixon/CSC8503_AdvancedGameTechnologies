@@ -5,6 +5,11 @@
 
 #include "Player.h"
 
+/**
+ * @brief Creates a new shootable object.
+ * @param owner Player that shot the object
+ * @param lifetime TIme in seconds the object is expected to stay alive for
+ */
 IShootable::IShootable(Player *owner, float lifetime)
     : ObjectMesh("shootable")
     , m_owner(owner)
@@ -67,6 +72,10 @@ IShootable::~IShootable()
 {
 }
 
+/**
+ * @brief Performs final creation steps that must be done after the collision shape has been added.
+ * @param inverseMass Inverse mass
+ */
 void IShootable::PostCreate(float inverseMass)
 {
   SetTexture(CommonMeshes::CheckerboardTex(), false);

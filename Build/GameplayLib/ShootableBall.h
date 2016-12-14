@@ -2,6 +2,11 @@
 
 #include "IShootable.h"
 
+/**
+ * @class ShootableBall
+ * @author Dan Nixon
+ * @brief Ball that can be shot by the player.
+ */
 class ShootableBall : public IShootable
 {
 public:

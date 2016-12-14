@@ -87,11 +87,18 @@ Player::~Player()
 {
 }
 
+/**
+ * @brief Resets player state.
+ */
 void Player::Reset()
 {
   m_playerStateMachine.Reset();
 }
 
+/**
+ * @brief Updates player state.
+ * @param dt TIme in seconds since last update
+ */
 void Player::Update(float dt)
 {
   m_playerStateMachine.Update(dt);

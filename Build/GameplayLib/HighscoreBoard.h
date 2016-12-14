@@ -7,19 +7,31 @@
 
 #include "LocalScore.h"
 
+/**
+ * @class HighscoreBoard
+ * @author Dan Nixon
+ * @brief COntainer for high scores.
+ */
 class HighscoreBoard : public IPubSubClient
 {
 public:
+  /**
+   * @brief Stores data for a single high score record.
+   */
   struct HighscoreRecord
   {
-    std::string name;
-    float score;
+    std::string name; //!< Player name
+    float score;      //!< Score
   };
 
 public:
   HighscoreBoard(PubSubBroker *broker);
   virtual ~HighscoreBoard();
 
+  /**
+   * @brief Gets the number of scores that have been recorded.
+   * @return Score count
+   */
   inline size_t NumScores() const
   {
     return m_highScores.size();

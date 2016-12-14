@@ -2,6 +2,11 @@
 
 #include <ncltech\IPubSubClient.h>
 
+/**
+ * @class LocalScore
+ * @author Dan Nixon
+ * @brief Utility class for recording a player score.
+ */
 class LocalScore : public IPubSubClient
 {
 public:
@@ -12,16 +17,28 @@ public:
   virtual void SetModifier(float modifier);
   virtual void SetBonus(float bonus);
 
+  /**
+   * @brief Gets the default score.
+   * @return Default score
+   */
   inline float GetDefault() const
   {
     return m_startingScore;
   }
 
+  /**
+   * @brief Gets the score modifier coefficient.
+   * @return Score modifier
+   */
   inline float GetModifier() const
   {
     return m_modifier;
   }
 
+  /**
+   * @brief Gets the bonus amount.
+   * @return Bonus
+   */
   inline float GetBonus() const
   {
     return m_bonus;
@@ -32,7 +49,11 @@ public:
 
   virtual void DeltaPoints(float points);
 
-  inline float GetScoreCounter() const
+  /**
+   * @brief Gets the current score.
+   * @return Score
+   */
+  inline float GetScore() const
   {
     return m_score;
   }

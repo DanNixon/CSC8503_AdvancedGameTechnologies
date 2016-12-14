@@ -11,6 +11,11 @@
 #include <ncltech\PubSubBrokerNetNode.h>
 #include <ncltech\FunctionalPubSubClient.h>
 
+/**
+ * @class ClientCLI
+ * @author Dan Nixon
+ * @brief Provides a command line interface to client functionality over the network.
+ */
 class ClientCLI : public CLI
 {
 public:
@@ -23,9 +28,8 @@ protected:
   void NetworkUpdateLoop();
 
 protected:
-  GameTimer m_networkUpdateTimer;
-  PubSubBrokerNetNode *m_broker;
-  FunctionalPubSubClient *m_cliPubSubClient;
-
-  std::thread m_networkUpdateThread;
+  GameTimer m_networkUpdateTimer;            //!< Timer used to time network updates
+  PubSubBrokerNetNode *m_broker;             //!< Client broker node
+  FunctionalPubSubClient *m_cliPubSubClient; //!< Pub/sub client used for basic debugging on CLI
+  std::thread m_networkUpdateThread;         //!< Thread that runs network update loop
 };

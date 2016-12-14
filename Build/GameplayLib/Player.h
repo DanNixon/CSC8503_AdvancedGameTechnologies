@@ -6,6 +6,11 @@
 #include "IShootable.h"
 #include "LocalScore.h"
 
+/**
+ * @class Player
+ * @author Dan Nixon
+ * @brief Represents a player in the simulation.
+ */
 class Player
 {
 public:

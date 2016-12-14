@@ -3,6 +3,11 @@
 #include <CommandLineInterfaceLib\SubCommand.h>
 #include <ncltech\Utility.h>
 
+/**
+ * @brief Creates a new client CLI.
+ * @param in Reference to input stream
+ * @param out Reference to output stream
+ */
 ClientCLI::ClientCLI(std::istream &in, std::ostream &out)
     : CLI(in, out)
 {
