@@ -12,5 +12,10 @@ class Utility
 {
 public:
   static std::vector<std::string> Split(const std::string &str, char delim = '/');
+  static std::string SanitizeFilename(std::string str);
+
   static void ParseIPAddress(uint8_t *data, const std::string &str);
+
+  static bool MakeDirectories(const std::string &path);
+  static std::string GetHomeConfigDirectory(const std::string &appName);
 };

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <fstream>
 
 #include <ncltech\Utility.h>
 
@@ -11,6 +12,7 @@
  */
 HighscoreBoard::HighscoreBoard(PubSubBroker *broker)
     : IPubSubClient(broker)
+    , m_highscoreFilename(Utility::GetHomeConfigDirectory("GameTech") + "highscores.txt")
 {
   // Subscribe to topics
   if (broker != nullptr)
@@ -74,7 +76,7 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
     std::stringstream str;
     for (size_t i = 0; i < numToList; i++)
     {
-      if (1 > 0)
+      if (i > 0)
         str << ',';
 
       str << m_highScores[i].name << ',' << m_highScores[i].score;
@@ -85,14 +87,12 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
   }
   else if (topic == "highscore/load")
   {
-    std::string filename(msg);
-    char result = (char)LoadFromFile(filename);
+    char result = (msg[0] == 'L' && LoadFromFile()) ? '1' : '0';
     m_broker->BroadcastMessage(this, topic, &result, 1);
   }
   else if (topic == "highscore/save")
   {
-    std::string filename(msg);
-    char result = (char)SaveToFile(filename);
+    char result = (msg[0] == 'S' && SaveToFile()) ? '1' : '0';
     m_broker->BroadcastMessage(this, topic, &result, 1);
   }
   else
@@ -105,22 +105,37 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
 
 /**
  * @brief Loads scores from an ASCII file.
- * @param filename File to load from
  * @return True if loading was successful
  */
-bool HighscoreBoard::LoadFromFile(const std::string &filename)
+bool HighscoreBoard::LoadFromFile()
 {
+  std::ifstream file;
+
+  file.open(m_highscoreFilename, std::ios_base::in);
+  if (!file.is_open())
+    return false;
+
   // TODO
-  return false;
+
+  file.close();
+  return true;
 }
 
 /**
  * @brief Saves scores to an ASCII file.
- * @param filename File to save to
  * @return True if saving was successful
  */
-bool HighscoreBoard::SaveToFile(const std::string &filename)
+bool HighscoreBoard::SaveToFile()
 {
-  // TODO
-  return false;
+  std::ofstream file;
+
+  file.open(m_highscoreFilename, std::ios_base::out | std::ios_base::trunc);
+  if (!file.is_open())
+    return false;
+
+  for (auto it = m_highScores.begin(); it != m_highScores.end(); ++it)
+    file << it->name << '\t' << it->score << '\n';
+
+  file.close();
+  return true;
 }

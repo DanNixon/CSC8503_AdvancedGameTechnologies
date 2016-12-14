@@ -47,9 +47,10 @@ public:
 
   virtual bool HandleSubscription(const std::string &topic, const char *msg, uint16_t len);
 
-  bool LoadFromFile(const std::string &filename);
-  bool SaveToFile(const std::string &filename);
+  bool LoadFromFile();
+  bool SaveToFile();
 
 protected:
+  const std::string m_highscoreFilename;
   std::vector<HighscoreRecord> m_highScores; //!< Current high scores
 };
