@@ -375,12 +375,44 @@ void CourseworkScene::OnInitializeScene()
 
     m_lampPost->CreatePhysicsNode();
     m_lampPost->Physics()->SetPosition(Vector3(PLANET_RADIUS + 10.0f, 0.0f, 0.0f));
-    // m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), 90.0f));
+    m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, -1.0f), 90.0f));
 
     m_target->Physics()->SetInverseMass(0.0f);
 
-    ICollisionShape *shape1 = new CuboidCollisionShape(Vector3(1.0f, 1.0f, 1.0f));
-    m_lampPost->Physics()->AddCollisionShape(shape1);
+    // Base shape
+    {
+      ICollisionShape *shape = new CuboidCollisionShape(Vector3(0.4f, 0.05f, 0.35f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(-0.12f, 0.0f, 0.0f)));
+      m_lampPost->Physics()->AddCollisionShape(shape);
+    }
+
+    // Pole shape
+    {
+      ICollisionShape *shape = new CuboidCollisionShape(Vector3(0.08f, 1.8f, 0.08f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(-0.36f, 1.8f, 0.0f)));
+      m_lampPost->Physics()->AddCollisionShape(shape);
+    }
+
+    // Top bar shape
+    {
+      ICollisionShape *shape = new CuboidCollisionShape(Vector3(0.3f, 0.08f, 0.08f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(-0.1f, 3.6f, 0.0f)));
+      m_lampPost->Physics()->AddCollisionShape(shape);
+    }
+
+    // Top lamp shape
+    {
+      ICollisionShape *shape = new CuboidCollisionShape(Vector3(0.38f, 0.08f, 0.38f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.18f, 3.4f, 0.0f)));
+      m_lampPost->Physics()->AddCollisionShape(shape);
+    }
+
+    // Main lamp shape
+    {
+      ICollisionShape *shape = new CuboidCollisionShape(Vector3(0.22f, 0.3f, 0.22f));
+      shape->SetLocalTransform(Matrix4::Translation(Vector3(0.18f, 3.2f, 0.0f)));
+      m_lampPost->Physics()->AddCollisionShape(shape);
+    }
 
     m_lampPost->Physics()->AutoResizeBoundingBox();
 

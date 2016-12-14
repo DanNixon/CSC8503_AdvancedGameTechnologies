@@ -76,6 +76,7 @@ const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
  * @brief Automatically resizes the local bounding box to the minimum volume that contains all collision shapes.
  *
  * Also sets the bounding sphere radius of the parent Object (if one is associated).
+ * Bounding sphere radius is doubled to ensure that it always covers the entire object (e.g. if the object origin is in the lower vertex of the bounding box).
  */
 void PhysicsObject::AutoResizeBoundingBox()
 {
@@ -104,7 +105,7 @@ void PhysicsObject::AutoResizeBoundingBox()
 
   // Set bounding radius of parent
   if (m_parent != nullptr)
-    m_parent->SetBoundingRadius(m_localBoundingBox.SphereRadius());
+    m_parent->SetBoundingRadius(m_localBoundingBox.SphereRadius() * 2.0f);
 
   m_wsAabbInvalidated = true;
 }
@@ -146,7 +147,17 @@ void PhysicsObject::DebugDraw(uint64_t flags) const
     Vector4 colour(0.2f, 0.8f, 1.0f, 1.0f);
     if (m_atRest)
       colour = Vector4(0.8f, 0.8f, 1.0f, 1.0f);
+
+    // AABB
     GetWorldSpaceAABB().DebugDraw(Matrix4(), Vector4(0.8f, 1.0f, 1.0f, 0.25f), colour);
+
+    // Object bounding radius
+    if (m_parent != nullptr)
+    {
+      Vector4 boundRadiusCol(colour);
+      boundRadiusCol.w = 0.5f;
+      NCLDebug::DrawPointNDT(GetWorldSpaceTransform().GetPositionVector(), m_parent->GetBoundingRadius(), boundRadiusCol);
+    }
   }
 
   if (flags & DEBUGDRAW_FLAGS_LINEARVELOCITY)
