@@ -23,7 +23,7 @@ public:
     std::string name; //!< Player name
     float score;      //!< Score
 
-    bool operator==(const HighscoreRecord & other) const
+    bool operator==(const HighscoreRecord &other) const
     {
       return name == other.name && score == other.score;
     }

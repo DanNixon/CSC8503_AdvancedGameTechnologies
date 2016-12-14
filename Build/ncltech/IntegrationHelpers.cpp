@@ -5,7 +5,7 @@
  * @param state Reference to motion state (containing state at start of frame)
  * @param dt Update timestep
  */
-void IntegrationHelpers::RK2(State & state, float dt)
+void IntegrationHelpers::RK2(State &state, float dt)
 {
   State a, b, c, d;
 
@@ -24,7 +24,7 @@ void IntegrationHelpers::RK2(State & state, float dt)
  * @param state Reference to motion state (containing state at start of frame)
  * @param dt Update timestep
  */
-void IntegrationHelpers::RK4(State & state, float dt)
+void IntegrationHelpers::RK4(State &state, float dt)
 {
   State a, b, c, d;
 
@@ -46,11 +46,11 @@ void IntegrationHelpers::RK4(State & state, float dt)
  * @param dt Update timestep
  * @param derivative Derivative state
  */
-IntegrationHelpers::State IntegrationHelpers::Evaluate(State initial, float dt, const State & derivative)
+IntegrationHelpers::State IntegrationHelpers::Evaluate(State initial, float dt, const State &derivative)
 {
   initial.position += derivative.velocity * dt;
   initial.velocity += derivative.acceleration * dt;
-  
+
   State out;
   out.velocity = initial.velocity;
   out.acceleration = initial.acceleration;

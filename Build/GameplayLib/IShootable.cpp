@@ -66,7 +66,7 @@ IShootable::IShootable(Player *owner, float lifetime)
         this->m_owner->GetScoreCounter().DeltaPoints(-20.0f);
         return expired;
       }
-      
+
       return nullptr;
     });
 

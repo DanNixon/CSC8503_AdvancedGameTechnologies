@@ -76,7 +76,8 @@ const Matrix4 &PhysicsObject::GetWorldSpaceTransform() const
  * @brief Automatically resizes the local bounding box to the minimum volume that contains all collision shapes.
  *
  * Also sets the bounding sphere radius of the parent Object (if one is associated).
- * Bounding sphere radius is doubled to ensure that it always covers the entire object (e.g. if the object origin is in the lower vertex of the bounding box).
+ * Bounding sphere radius is doubled to ensure that it always covers the entire object (e.g. if the object origin is in the lower
+ * vertex of the bounding box).
  */
 void PhysicsObject::AutoResizeBoundingBox()
 {

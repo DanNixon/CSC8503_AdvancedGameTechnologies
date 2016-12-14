@@ -30,7 +30,7 @@ public:
   static const KeyboardKeys PLAYER_RESET_KEY = KeyboardKeys::KEYBOARD_K;
 
 public:
-  Player(Scene *scene = nullptr, PubSubBroker * broker = nullptr);
+  Player(Scene *scene = nullptr, PubSubBroker *broker = nullptr);
   virtual ~Player();
 
   /**

@@ -64,7 +64,7 @@ void LocalScore::Submit(const std::string &name)
   if (m_broker != nullptr)
   {
     std::string msg = name + ',' + std::to_string(m_score);
-    m_broker->BroadcastMessage(this, "highscore/add", msg.c_str(), (uint16_t) msg.size());
+    m_broker->BroadcastMessage(this, "highscore/add", msg.c_str(), (uint16_t)msg.size());
   }
 }
 

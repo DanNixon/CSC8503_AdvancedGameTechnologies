@@ -6,7 +6,7 @@
 #include "ShootableBall.h"
 #include "ShootableCube.h"
 
-Player::Player(Scene *scene, PubSubBroker * broker)
+Player::Player(Scene *scene, PubSubBroker *broker)
     : m_scene(scene)
     , m_score(broker)
 {
@@ -70,7 +70,8 @@ Player::Player(Scene *scene, PubSubBroker * broker)
       // Shooting cubes
       {
         State *shootCube = new State("shoot_cube", m_playerStateMachine.RootState(), &m_playerStateMachine);
-        shootCube->AddTransferToTest([this]() { return Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY) && this->NumShootablesRemaining() > 0; });
+        shootCube->AddTransferToTest(
+            [this]() { return Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY) && this->NumShootablesRemaining() > 0; });
 
         State *preShoot = new State("pre_shoot", shootCube, &m_playerStateMachine);
         preShoot->AddOnEntryBehaviour(powerUpBehaviour);
@@ -85,7 +86,8 @@ Player::Player(Scene *scene, PubSubBroker * broker)
       // Shooting spheres
       {
         State *shootBall = new State("shoot_ball", m_playerStateMachine.RootState(), &m_playerStateMachine);
-        shootBall->AddTransferToTest([this]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY) && this->NumShootablesRemaining() > 0; });
+        shootBall->AddTransferToTest(
+            [this]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY) && this->NumShootablesRemaining() > 0; });
 
         State *preShoot = new State("pre_shoot", shootBall, &m_playerStateMachine);
         preShoot->AddOnEntryBehaviour(powerUpBehaviour);

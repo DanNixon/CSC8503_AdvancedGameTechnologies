@@ -78,7 +78,7 @@ void PubSubBrokerNetNode::PumpNetwork(float dt)
 /**
  * @copydoc PubSubBroker::BroadcastMessage
  */
-void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient * source, const std::string & topic, const char * msg, uint16_t len)
+void PubSubBrokerNetNode::BroadcastMessage(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len)
 {
   BroadcastMessageIgnorePeer(source, topic, msg, len, -1);
 }
@@ -120,8 +120,8 @@ void PubSubBrokerNetNode::HandleRxEvent(const ENetEvent &rxEvent)
  * @copydoc PubSubBroker::BroadcastMessage
  * @param ignorePeer Network peer to be ignored (used to prevent cycles in message delivery)
  */
-void PubSubBrokerNetNode::BroadcastMessageIgnorePeer(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len,
-                                           int32_t ignorePeer)
+void PubSubBrokerNetNode::BroadcastMessageIgnorePeer(IPubSubClient *source, const std::string &topic, const char *msg,
+                                                     uint16_t len, int32_t ignorePeer)
 {
   // Length (topic length + equals + payload length + null terminator)
   uint16_t packetLen = (uint16_t)topic.length() + len + 2;

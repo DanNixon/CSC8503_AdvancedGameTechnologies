@@ -221,7 +221,7 @@ public:
     m_NumSuperSamples = scalar;
   }
 
-  void FreeObjectFromRenderLists(Object * obj);
+  void FreeObjectFromRenderLists(Object *obj);
 
 protected:
   // Class-Only Functions

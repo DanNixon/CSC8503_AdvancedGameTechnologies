@@ -1,12 +1,12 @@
 #include "PhysicsEngine.h"
 
 #include "CollisionDetectionSAT.h"
+#include "IntegrationHelpers.h"
 #include "NCLDebug.h"
 #include "Object.h"
 #include <algorithm>
 #include <nclgl\Window.h>
 #include <omp.h>
-#include "IntegrationHelpers.h"
 
 /**
  * @brief Sets default engine settings.
@@ -268,7 +268,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
     case INTEGRATION_RUNGE_KUTTA_2:
     {
       // RK2 integration for linear motion
-      IntegrationHelpers::State state = { obj->m_position, obj->m_linearVelocity, obj->m_linearForce * obj->m_inverseMass };
+      IntegrationHelpers::State state = {obj->m_position, obj->m_linearVelocity, obj->m_linearForce * obj->m_inverseMass};
       IntegrationHelpers::RK2(state, m_UpdateTimestep);
       obj->m_position = state.position;
       obj->m_linearVelocity = state.velocity;
@@ -292,7 +292,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
     case INTEGRATION_RUNGE_KUTTA_4:
     {
       // RK4 integration for linear motion
-      IntegrationHelpers::State state = { obj->m_position, obj->m_linearVelocity, obj->m_linearForce * obj->m_inverseMass };
+      IntegrationHelpers::State state = {obj->m_position, obj->m_linearVelocity, obj->m_linearForce * obj->m_inverseMass};
       IntegrationHelpers::RK4(state, m_UpdateTimestep);
       obj->m_position = state.position;
       obj->m_linearVelocity = state.velocity;

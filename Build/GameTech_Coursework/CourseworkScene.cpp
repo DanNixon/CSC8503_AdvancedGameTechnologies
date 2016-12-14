@@ -374,7 +374,8 @@ void CourseworkScene::OnInitializeScene()
     m_lampPost->SetMesh(m_lampPostMesh, false);
 
     m_lampPost->CreatePhysicsNode();
-    m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, -1.0f), 90.0f) * Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 30.0f));
+    m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, -1.0f), 90.0f) *
+                                          Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 30.0f));
     Vector3 lampPostPosition(0.0f, PLANET_RADIUS, 0.0f);
     Quaternion::RotatePointByQuaternion(m_lampPost->Physics()->GetOrientation(), lampPostPosition);
     m_lampPost->Physics()->SetPosition(lampPostPosition);

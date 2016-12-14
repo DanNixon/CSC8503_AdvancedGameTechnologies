@@ -21,8 +21,8 @@ public:
   };
 
 public:
-  static void RK2(State & state, float dt);
-  static void RK4(State & state, float dt);
+  static void RK2(State &state, float dt);
+  static void RK4(State &state, float dt);
 
-  static State Evaluate(State initial, float dt, const State & derivative);
+  static State Evaluate(State initial, float dt, const State &derivative);
 };

@@ -39,7 +39,7 @@ protected:
   void HandleRxEvent(const ENetEvent &rxEvent);
 
   void BroadcastMessageIgnorePeer(IPubSubClient *source, const std::string &topic, const char *msg, uint16_t len,
-    int32_t ignorePeer);
+                                  int32_t ignorePeer);
 
 protected:
   std::mutex m_netMutex;                 //!< Mutex controling access
