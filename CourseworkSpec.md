@@ -69,7 +69,7 @@ higher mark will require the implementation of optional elements.
         you're encouraged to integrate the quads into your environment in a
         graphically pleasing form (for example, as elements of decoration on
         the planet, assuming your scaling permits).
-- [ ] You must physically represent the Planet (see CSC8502 coursework) in some
+- [x] You must physically represent the Planet (see CSC8502 coursework) in some
       fashion (e.g., a sphere). The planet must rotate about its polar axis.
 - [x] You must add a target to the surface of the planet. This region will
       rotate as the planet does, and should be clearly indicated graphically
