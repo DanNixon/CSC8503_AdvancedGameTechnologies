@@ -29,7 +29,7 @@ void ClientCLI::InitCLI()
   // Connect command
   {
     auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
-      if (this->m_broker != nullptr)
+      if (m_broker != nullptr)
       {
         out << "Already connected to a server.\n";
         return 1;
@@ -37,29 +37,29 @@ void ClientCLI::InitCLI()
 
       {
         // Create and init broker
-        this->m_broker = new PubSubBrokerNetNode();
-        if (!this->m_broker->Initialize(std::stoi(argv[1]), 16))
+        m_broker = new PubSubBrokerNetNode();
+        if (!m_broker->Initialize(std::stoi(argv[1]), 16))
         {
           out << "Broker node init failed.\n";
-          delete this->m_broker;
+          delete m_broker;
           return 1;
         }
 
         // Connect to server
         uint8_t ip[4];
         Utility::ParseIPAddress(ip, argv[2]);
-        this->m_broker->ConnectToBroker(ip, std::stoi(argv[3]));
+        m_broker->ConnectToBroker(ip, std::stoi(argv[3]));
         out << "Connected to server.\n";
 
         // Create local pub/sub client
-        this->m_pubSubClients["basic"] = new FunctionalPubSubClient(this->m_broker);
-        this->m_pubSubClients["basic"]->SetSubscriptionHandler([&](const std::string &topic, const char *msg, uint16_t) {
+        this->m_pubSubClients["basic"] = new FunctionalPubSubClient(m_broker);
+        this->m_pubSubClients["basic"]->SetSubscriptionHandler([](const std::string &topic, const char *msg, uint16_t) {
           printf("MSG: %s = %s\n", topic.c_str(), msg);
           return true;
         });
 
         // Start network update thread
-        this->m_networkUpdateThread = std::thread(&ClientCLI::NetworkUpdateLoop, this);
+        m_networkUpdateThread = std::thread(&ClientCLI::NetworkUpdateLoop, this);
       }
 
       return COMMAND_EXIT_CLEAN;
@@ -72,27 +72,27 @@ void ClientCLI::InitCLI()
   // Disconnect command
   {
     auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
-      if (this->m_broker == nullptr)
+      if (m_broker == nullptr)
       {
         out << "Not connected to a server.\n";
         return 1;
       }
 
-      PubSubBrokerNetNode *broker = this->m_broker;
+      PubSubBrokerNetNode *broker = m_broker;
       {
-        std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
+        std::lock_guard<std::mutex> lock(m_broker->Mutex());
 
         // Remove all clients
         for (auto it = m_pubSubClients.begin(); it != m_pubSubClients.end(); ++it)
         {
-          this->m_broker->UnSubscribeFromAll(it->second);
+          m_broker->UnSubscribeFromAll(it->second);
           delete it->second;
         }
         m_pubSubClients.clear();
 
         // Close broker network node
-        this->m_broker->Release();
-        this->m_broker = nullptr;
+        m_broker->Release();
+        m_broker = nullptr;
       }
 
       // Stop network update thread
@@ -112,7 +112,7 @@ void ClientCLI::InitCLI()
   // Publish command
   {
     auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
-      if (this->m_broker == nullptr)
+      if (m_broker == nullptr)
       {
         out << "Not connected to a server.\n";
         return 1;
@@ -124,8 +124,8 @@ void ClientCLI::InitCLI()
 
       // Broadcast message
       {
-        std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
-        this->m_broker->BroadcastMessage(nullptr, argv[1], msg.c_str(), (uint16_t)msg.size());
+        std::lock_guard<std::mutex> lock(m_broker->Mutex());
+        m_broker->BroadcastMessage(nullptr, argv[1], msg.c_str(), (uint16_t)msg.size());
       }
 
       out << "Published to topic \"" << argv[1] << "\": " << msg << "\n";
@@ -138,7 +138,7 @@ void ClientCLI::InitCLI()
   // Subscribe command
   {
     auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
-      if (this->m_broker == nullptr)
+      if (m_broker == nullptr)
       {
         out << "Not connected to a server.\n";
         return 1;
@@ -146,8 +146,8 @@ void ClientCLI::InitCLI()
 
       // Subscribe local pub/sub client to a topic
       {
-        std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
-        this->m_broker->Subscribe(this->m_pubSubClients["basic"], argv[1]);
+        std::lock_guard<std::mutex> lock(m_broker->Mutex());
+        m_broker->Subscribe(m_pubSubClients["basic"], argv[1]);
       }
 
       out << "Subscribed to topic \"" << argv[1] << "\"\n";
@@ -165,7 +165,7 @@ void ClientCLI::InitCLI()
     // Announce message
     {
       auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
-        if (this->m_broker == nullptr)
+        if (m_broker == nullptr)
         {
           out << "Not connected to a server.\n";
           return 1;
@@ -175,10 +175,10 @@ void ClientCLI::InitCLI()
         std::vector<std::string> messageParts(argv.begin() + 1, argv.end());
         std::string msg = Utility::Join(messageParts, ' ');
 
-        // Broadcast announce message
+        // Broadcast message
         {
-          std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
-          this->m_broker->BroadcastMessage(this->m_pubSubClients["basic"], "announce", msg.c_str(), (uint16_t)msg.size());
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["basic"], "announce", msg.c_str(), (uint16_t)msg.size());
         }
 
         return COMMAND_EXIT_CLEAN;
@@ -190,7 +190,47 @@ void ClientCLI::InitCLI()
     // List highscore command
     {
       auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
-        // TODO
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Create the client if it does not exist
+        if (this->m_pubSubClients["highscores"] == nullptr)
+        {
+          m_pubSubClients["highscores"] = new FunctionalPubSubClient(m_broker);
+          m_broker->Subscribe(m_pubSubClients["highscores"], "highscore/list");
+          m_pubSubClients["highscores"]->SetSubscriptionHandler([&out](const std::string &topic, const char *msg, uint16_t) {
+            std::vector<std::string> tokens = Utility::Split(std::string(msg), ',');
+
+            if (tokens.empty())
+            {
+              out << "No scores!\n";
+            }
+            else
+            {
+              out << "Top scores:\n";
+              for (size_t i = 0; i < tokens.size(); i += 2)
+              {
+                std::string name = tokens[i];
+                if (name.empty())
+                  name = "[no name]";
+
+                out << "  " << (i / 2) + 1 << ") " << name << " - " << tokens[i + 1] << '\n';
+              }
+            }
+
+            return true;
+          });
+        }
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["highscores"], "highscore/list", argv[1].c_str(), (uint16_t)argv[1].size());
+        }
+
         return COMMAND_EXIT_CLEAN;
       };
 
@@ -200,7 +240,33 @@ void ClientCLI::InitCLI()
     // Save highscores command
     {
       auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
-        // TODO
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Create the client if it does not exist
+        if (this->m_pubSubClients["savescores"] == nullptr)
+        {
+          m_pubSubClients["savescores"] = new FunctionalPubSubClient(m_broker);
+          m_broker->Subscribe(m_pubSubClients["savescores"], "highscore/save");
+          m_pubSubClients["savescores"]->SetSubscriptionHandler([&out](const std::string &topic, const char *msg, uint16_t) {
+            if (msg[0] == '1')
+              out << "Saved server scoreboard.\n";
+            else
+              out << "Failed to save server scoreboard!\n";
+
+            return true;
+          });
+        }
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["savescores"], "highscore/save", "S", 1);
+        }
+
         return COMMAND_EXIT_CLEAN;
       };
 
@@ -210,7 +276,33 @@ void ClientCLI::InitCLI()
     // Load highscores command
     {
       auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
-        // TODO
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Create the client if it does not exist
+        if (this->m_pubSubClients["loadscores"] == nullptr)
+        {
+          m_pubSubClients["loadscores"] = new FunctionalPubSubClient(m_broker);
+          m_broker->Subscribe(m_pubSubClients["loadscores"], "highscore/load");
+          m_pubSubClients["loadscores"]->SetSubscriptionHandler([&out](const std::string &topic, const char *msg, uint16_t) {
+            if (msg[0] == '1')
+              out << "Loaded server scoreboard.\n";
+            else
+              out << "Failed to load server scoreboard!\n";
+
+            return true;
+          });
+        }
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["loadscores"], "highscore/load", "L", 1);
+        }
+
         return COMMAND_EXIT_CLEAN;
       };
 
