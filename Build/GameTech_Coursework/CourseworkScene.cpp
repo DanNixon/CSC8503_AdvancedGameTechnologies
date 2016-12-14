@@ -51,6 +51,7 @@ CourseworkScene::CourseworkScene()
     , m_targetMesh(nullptr)
     , m_lampPostMesh(nullptr)
     , m_planet(nullptr)
+    , m_atmosphere(nullptr)
     , m_target(nullptr)
     , m_lampPost(nullptr)
     , m_spaceCube(nullptr)
@@ -314,6 +315,8 @@ void CourseworkScene::OnInitializeScene()
 
   // Create planet
   {
+    const Vector3 PLANET_POSITION(0.0f, 0.0f, 0.0f);
+
     m_planet = new ObjectMesh("planet");
 
     m_planet->SetMesh(CommonMeshes::Sphere(), false);
@@ -322,7 +325,7 @@ void CourseworkScene::OnInitializeScene()
     m_planet->SetLocalTransform(Matrix4::Scale(PLANET_RADIUS));
 
     m_planet->CreatePhysicsNode();
-    m_planet->Physics()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    m_planet->Physics()->SetPosition(PLANET_POSITION);
     m_planet->Physics()->SetInverseMass(0.0f);
 
     ICollisionShape *shape = new SphereCollisionShape(PLANET_RADIUS);
@@ -335,6 +338,32 @@ void CourseworkScene::OnInitializeScene()
     m_planet->Physics()->AutoResizeBoundingBox();
 
     AddGameObject(m_planet);
+
+    // Planet atmosphere
+    {
+      m_atmosphere = new PhysicsObject();
+      m_atmosphere->SetPosition(PLANET_POSITION);
+
+      // Spherical collision shape bigger than the planet
+      ICollisionShape *shape = new SphereCollisionShape(PLANET_RADIUS * 1.2f);
+      m_atmosphere->AddCollisionShape(shape);
+      m_atmosphere->AutoResizeBoundingBox();
+
+      // Collision handler
+      m_atmosphere->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
+        bool valid = !(b == m_planet->Physics() || b == m_target->Physics() || b == m_lampPost->Physics());
+        
+        if (valid)
+        {
+          // TODO
+          NCLDebug::Log("%s is in atmosphere", b->GetAssociatedObject()->GetName().c_str());
+        }
+
+        return false;
+      });
+
+      PhysicsEngine::Instance()->AddPhysicsObject(m_atmosphere);
+    }
   }
 
   // Create target
@@ -360,7 +389,7 @@ void CourseworkScene::OnInitializeScene()
 
     m_target->Physics()->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
       // No collisions with planet
-      return (b != this->m_planet->Physics());
+      return (b != m_planet->Physics());
     });
 
     // Fix target position to planet
@@ -530,6 +559,7 @@ void CourseworkScene::OnCleanupScene()
 
   // Cleanup object pointers
   m_planet = nullptr;
+  m_atmosphere = nullptr;
   m_target = nullptr;
   m_lampPost = nullptr;
   m_spaceCube = nullptr;

@@ -23,7 +23,7 @@ IShootable::IShootable(Player *owner, float lifetime)
   {
     m_pPhysicsObject->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
       // Check if the ball hit the target
-      if (b->GetAssociatedObject()->GetName() == "target")
+      if (b->GetAssociatedObject() != nullptr && b->GetAssociatedObject()->GetName() == "target")
         this->m_hitTarget = true;
 
       return true;
