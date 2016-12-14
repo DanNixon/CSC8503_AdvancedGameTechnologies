@@ -21,7 +21,7 @@ PubSubBroker::~PubSubBroker()
 void PubSubBroker::Subscribe(IPubSubClient *client, const std::string &topic)
 {
   // Search for existing subscription
-  auto it = std::find(m_subscriptions.begin(), m_subscriptions.end(), Subscription({ client, topic }));
+  auto it = std::find(m_subscriptions.begin(), m_subscriptions.end(), Subscription({client, topic}));
 
   // If not already subscribed then add the subscription
   if (it == m_subscriptions.end())

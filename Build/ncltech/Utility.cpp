@@ -34,7 +34,7 @@ std::vector<std::string> Utility::Split(const std::string &str, char delim)
  * @param delimiter Delimiter to join on
  * @return Joined string
  */
-std::string Utility::Join(const std::vector<std::string>& strings, char delim)
+std::string Utility::Join(const std::vector<std::string> &strings, char delim)
 {
   std::stringstream str;
 
