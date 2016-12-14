@@ -29,6 +29,27 @@ std::vector<std::string> Utility::Split(const std::string &str, char delim)
 }
 
 /**
+ * @brief Joins a vector of strings on a delimiter.
+ * @param strings Vector of strings to join
+ * @param delimiter Delimiter to join on
+ * @return Joined string
+ */
+std::string Utility::Join(const std::vector<std::string>& strings, char delim)
+{
+  std::stringstream str;
+
+  for (auto it = strings.begin(); it != strings.end(); ++it)
+  {
+    if (it != strings.begin())
+      str << delim;
+
+    str << *it;
+  }
+
+  return str.str();
+}
+
+/**
  * @brief Converts a string into a string that can be a filename/path by removing whitespace and punctuation.
  * @param str String to sanitize
  * @return Sanitized string

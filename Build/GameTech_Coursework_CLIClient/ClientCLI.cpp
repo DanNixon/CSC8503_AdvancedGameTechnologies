@@ -15,6 +15,10 @@ ClientCLI::ClientCLI(std::istream &in, std::ostream &out)
 
 ClientCLI::~ClientCLI()
 {
+  // Remove all clients
+  for (auto it = m_pubSubClients.begin(); it != m_pubSubClients.end(); ++it)
+    delete it->second;
+  m_pubSubClients.clear();
 }
 
 /**
@@ -48,8 +52,8 @@ void ClientCLI::InitCLI()
         out << "Connected to server.\n";
 
         // Create local pub/sub client
-        this->m_cliPubSubClient = new FunctionalPubSubClient(this->m_broker);
-        m_cliPubSubClient->SetSubscriptionHandler([&](const std::string &topic, const char *msg, uint16_t) {
+        this->m_pubSubClients["basic"] = new FunctionalPubSubClient(this->m_broker);
+        this->m_pubSubClients["basic"]->SetSubscriptionHandler([&](const std::string &topic, const char *msg, uint16_t) {
           printf("MSG: %s = %s\n", topic.c_str(), msg);
           return true;
         });
@@ -78,10 +82,13 @@ void ClientCLI::InitCLI()
       {
         std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
 
-        // Remove CLI pub/sub client
-        this->m_broker->UnSubscribeFromAll(this->m_cliPubSubClient);
-        delete this->m_cliPubSubClient;
-        this->m_cliPubSubClient = nullptr;
+        // Remove all clients
+        for (auto it = m_pubSubClients.begin(); it != m_pubSubClients.end(); ++it)
+        {
+          this->m_broker->UnSubscribeFromAll(it->second);
+          delete it->second;
+        }
+        m_pubSubClients.clear();
 
         // Close broker network node
         this->m_broker->Release();
@@ -111,15 +118,17 @@ void ClientCLI::InitCLI()
         return 1;
       }
 
-      // Broadcast a message
-      const char *msg = argv[2].c_str();
+      // Generate message
+      std::vector<std::string> messageParts(argv.begin() + 1, argv.end());
+      std::string msg = Utility::Join(messageParts, ' ');
 
+      // Broadcast message
       {
         std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
-        this->m_broker->BroadcastMessage(nullptr, argv[1], msg, (uint16_t)strlen(msg));
+        this->m_broker->BroadcastMessage(nullptr, argv[1], msg.c_str(), (uint16_t)msg.size());
       }
 
-      out << "Published to topic \"" << argv[1] << "\": " << argv[2] << "\n";
+      out << "Published to topic \"" << argv[1] << "\": " << msg << "\n";
       return COMMAND_EXIT_CLEAN;
     };
 
@@ -138,7 +147,7 @@ void ClientCLI::InitCLI()
       // Subscribe local pub/sub client to a topic
       {
         std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
-        this->m_broker->Subscribe(m_cliPubSubClient, argv[1]);
+        this->m_broker->Subscribe(this->m_pubSubClients["basic"], argv[1]);
       }
 
       out << "Subscribed to topic \"" << argv[1] << "\"\n";
@@ -153,7 +162,60 @@ void ClientCLI::InitCLI()
     SubCommand_ptr gameCommands = std::make_shared<SubCommand>("game", "Game specific commands.");
     registerCommand(gameCommands);
 
-    // TODO
+    // Announce message
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        if (this->m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Generate message
+        std::vector<std::string> messageParts(argv.begin() + 1, argv.end());
+        std::string msg = Utility::Join(messageParts, ' ');
+
+        // Broadcast announce message
+        {
+          std::lock_guard<std::mutex> lock(this->m_broker->Mutex());
+          this->m_broker->BroadcastMessage(this->m_pubSubClients["basic"], "announce", msg.c_str(), (uint16_t)msg.size());
+        }
+
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      gameCommands->registerCommand(std::make_shared<Command>("announce", func, 2, "Announces a message to all clients."));
+    }
+
+    // List highscore command
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        // TODO
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      gameCommands->registerCommand(std::make_shared<Command>("highscores", func, 2, "Lists top scores from server."));
+    }
+
+    // Save highscores command
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        // TODO
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      gameCommands->registerCommand(std::make_shared<Command>("savescores", func, 1, "Saves highscores on server from file."));
+    }
+
+    // Load highscores command
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        // TODO
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      gameCommands->registerCommand(std::make_shared<Command>("loadscores", func, 1, "Loads highscores on server from file."));
+    }
   }
 }
 

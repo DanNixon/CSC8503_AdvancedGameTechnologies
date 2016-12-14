@@ -59,6 +59,7 @@ size_t HighscoreBoard::AddScore(float score, const std::string &name)
  */
 bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *msg, uint16_t len)
 {
+  // Handle adding a new score
   if (topic == "highscore/add")
   {
     std::vector<std::string> tokens = Utility::Split(std::string(msg), ',');
@@ -69,6 +70,7 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
     std::string ack = std::to_string(position);
     m_broker->BroadcastMessage(this, topic, ack.c_str(), (uint16_t)ack.size());
   }
+  // Handle request for high score board
   else if (topic == "highscore/list")
   {
     size_t numToList = std::min((size_t)std::atoi(msg), m_highScores.size());
@@ -85,11 +87,13 @@ bool HighscoreBoard::HandleSubscription(const std::string &topic, const char *ms
     std::string ack = str.str();
     m_broker->BroadcastMessage(this, topic, ack.c_str(), (uint16_t)ack.size());
   }
+  // Handle request for loading highscores from file
   else if (topic == "highscore/load")
   {
     char result = (msg[0] == 'L' && LoadFromFile()) ? '1' : '0';
     m_broker->BroadcastMessage(this, topic, &result, 1);
   }
+  // Handle request for saving highscores to file
   else if (topic == "highscore/save")
   {
     char result = (msg[0] == 'S' && SaveToFile()) ? '1' : '0';
