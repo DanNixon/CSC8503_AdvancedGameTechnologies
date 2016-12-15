@@ -76,6 +76,15 @@ public:
     return m_pNodeB;
   }
 
+  /**
+   * @brief Gets the contact points in this manifold
+   * @return Reference to contact points
+   */
+  inline std::vector<ContactPoint> &ContactPoints()
+  {
+    return m_vContacts;
+  }
+
 protected:
   void SolveContactPoint(ContactPoint &c);
   void UpdateConstraint(ContactPoint &c);

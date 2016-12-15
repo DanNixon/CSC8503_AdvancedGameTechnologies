@@ -382,9 +382,12 @@ void PhysicsEngine::NarrowPhaseCollisions()
               Manifold *manifold = new Manifold();
               manifold->Initiate(cp.pObjectA, cp.pObjectB);
 
-              // Construct contact points that form the perimeter of the collision
-              // manifold
+              // Construct contact points that form the perimeter of the collision manifold
               colDetect.GenContactPoints(manifold);
+
+              // Fire callback
+              cp.pObjectA->FireOnCollisionManifoldCallback(cp.pObjectA, cp.pObjectB, manifold);
+              cp.pObjectB->FireOnCollisionManifoldCallback(cp.pObjectB, cp.pObjectA, manifold);
 
               // Add to list of manifolds that need solving
               m_vpManifolds.push_back(manifold);

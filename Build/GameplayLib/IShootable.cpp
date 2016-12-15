@@ -2,6 +2,7 @@
 
 #include <ncltech/CommonMeshes.h>
 #include <ncltech/NCLDebug.h>
+#include <ncltech/Manifold.h>
 
 #include "Player.h"
 
@@ -14,6 +15,7 @@ IShootable::IShootable(Player *owner, float lifetime)
     : ObjectMesh("shootable")
     , m_owner(owner)
     , m_lifetime(lifetime)
+    , m_deltaPoints(0.0f)
     , m_hitTarget(false)
     , m_expired(false)
 {
@@ -21,12 +23,21 @@ IShootable::IShootable(Player *owner, float lifetime)
 
   // Collision handler
   {
-    m_pPhysicsObject->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
+    m_pPhysicsObject->SetOnCollisionManifoldCallback([this](PhysicsObject *a, PhysicsObject *b, Manifold * m) {
       // Check if the ball hit the target
       if (b->GetAssociatedObject() != nullptr && b->GetAssociatedObject()->GetName() == "target")
-        this->m_hitTarget = true;
+      {
+        Vector3 pointOnTarget;
+        auto cps = m->ContactPoints();
+        for (auto it = cps.begin(); it != cps.end(); ++it)
+          pointOnTarget += it->relPosB;
+        pointOnTarget = pointOnTarget / (float)cps.size();
 
-      return true;
+        // TODO
+        m_deltaPoints = 100.0f * pointOnTarget.LengthSquared();
+
+        m_hitTarget = true;
+      }
     });
   }
 
@@ -46,14 +57,14 @@ IShootable::IShootable(Player *owner, float lifetime)
     expired->AddTransferToTest([]() { return true; });
     expired->AddOnEntryBehaviour([this](State *) {
       // Set dead flag
-      this->m_expired = true;
+      m_expired = true;
     });
 
     // Target hit state
     State *targetHit = new State("target_hit", shot, &m_stateMachine);
     targetHit->AddOnEntryBehaviour([this](State *) {
       NCLDebug::Log("Hit Target!");
-      this->m_owner->GetScoreCounter().DeltaPoints(100.0f);
+      m_owner->GetScoreCounter().DeltaPoints(m_deltaPoints);
     });
 
     // State change from shot to hit target when hit target flag is set
@@ -61,9 +72,9 @@ IShootable::IShootable(Player *owner, float lifetime)
 
     // State change from shot to expired after lifetime has elapsed
     shot->AddTransferFromTest([this, shot, expired]() -> State * {
-      if (shot->TimeInState() > this->m_lifetime)
+      if (shot->TimeInState() > m_lifetime)
       {
-        this->m_owner->GetScoreCounter().DeltaPoints(-20.0f);
+        m_owner->GetScoreCounter().DeltaPoints(-20.0f);
         return expired;
       }
 

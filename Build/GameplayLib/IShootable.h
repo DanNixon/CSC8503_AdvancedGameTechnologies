@@ -52,6 +52,8 @@ protected:
   float m_lifetime;            //!< Lifetime in seconds
   StateMachine m_stateMachine; //!< AI for the ball
 
+  float m_deltaPoints; //!< Points that are awared when the object expires
+
   bool m_hitTarget; //!< Flag indicating that this ball has collided with the target
   bool m_expired;   //!< Flag indicating that this ball should be removed
 };

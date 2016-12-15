@@ -424,7 +424,7 @@ void CourseworkScene::OnInitializeScene()
     m_lampPost = new ObjectMesh("lamp_post");
 
     m_lampPost->SetMesh(m_lampPostMesh, false);
-    m_lampPost->SetTexture(CommonMeshes::CheckerboardTex(), false); // TODO
+    m_lampPost->SetTexture(CommonMeshes::CheckerboardTex(), false);
 
     m_lampPost->CreatePhysicsNode();
     m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, -1.0f), 90.0f) *
