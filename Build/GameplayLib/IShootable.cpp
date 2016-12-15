@@ -90,5 +90,6 @@ void IShootable::PostCreate(float inverseMass)
   SetColour(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
   m_pPhysicsObject->SetInverseMass(inverseMass);
+  m_pPhysicsObject->SetElasticity(0.5f);
   m_pPhysicsObject->AutoResizeBoundingBox();
 }

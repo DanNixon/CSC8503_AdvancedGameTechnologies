@@ -22,19 +22,37 @@ class Camera
 public:
   Camera(void)
   {
-    position = Vector3(0.0f, 0.0f, 0.0f);
-    yaw = 0.0f;
-    pitch = 0.0f;
+    m_position = Vector3(0.0f, 0.0f, 0.0f);
+    m_yaw = 0.0f;
+    m_pitch = 0.0f;
   };
 
-  Camera(float pitch, float yaw, Vector3 position)
+  Camera(float m_pitch, float m_yaw, Vector3 position)
   {
-    this->pitch = pitch;
-    this->yaw = yaw;
-    this->position = position;
+    this->m_pitch = m_pitch;
+    this->m_yaw = m_yaw;
+    this->m_position = position;
   }
 
   ~Camera(void){};
+
+  /**
+   * @brief Gets the flag that defines if mouse and keyboard input is handled by this camera.
+   * @return True if MK input is used
+   */
+  inline bool IsInputEnabled() const
+  {
+    return m_handleInput;
+  }
+
+  /**
+   * @brief Sets the flag that defines if mouse and keyboard input is handled by this camera.
+   * @param enable True if MK input is used
+   */
+  void SetHandleInput(bool enable)
+  {
+    m_handleInput = enable;
+  }
 
   void HandleMouse(float dt);
   void HandleKeyboard(float dt);
@@ -46,43 +64,44 @@ public:
   // Gets position in world space
   Vector3 GetPosition() const
   {
-    return position;
+    return m_position;
   }
 
   // Sets position in world space
   void SetPosition(Vector3 val)
   {
-    position = val;
+    m_position = val;
   }
 
   // Gets yaw, in degrees
   float GetYaw() const
   {
-    return yaw;
+    return m_yaw;
   }
 
   // Sets yaw, in degrees
   void SetYaw(float y)
   {
-    yaw = y;
+    m_yaw = y;
   }
 
   // Gets pitch, in degrees
   float GetPitch() const
   {
-    return pitch;
+    return m_pitch;
   }
 
   // Sets pitch, in degrees
   void SetPitch(float p)
   {
-    pitch = p;
+    m_pitch = p;
   }
 
   Quaternion GetOrientation() const;
 
 protected:
-  float yaw;
-  float pitch;
-  Vector3 position;
+  bool m_handleInput;
+  float m_yaw;
+  float m_pitch;
+  Vector3 m_position;
 };

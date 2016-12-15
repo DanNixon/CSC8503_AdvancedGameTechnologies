@@ -328,6 +328,8 @@ void CourseworkScene::OnInitializeScene()
     m_planet->CreatePhysicsNode();
     m_planet->Physics()->SetPosition(PLANET_POSITION);
     m_planet->Physics()->SetInverseMass(0.0f);
+    m_planet->Physics()->SetFriction(0.8f);
+    m_planet->Physics()->SetElasticity(0.5f);
 
     ICollisionShape *shape = new SphereCollisionShape(PLANET_RADIUS);
     m_planet->Physics()->AddCollisionShape(shape);
@@ -346,7 +348,7 @@ void CourseworkScene::OnInitializeScene()
       m_atmosphere->SetPosition(PLANET_POSITION);
 
       // Spherical collision shape bigger than the planet
-      ICollisionShape *shape = new SphereCollisionShape(PLANET_RADIUS * 1.2f);
+      ICollisionShape *shape = new SphereCollisionShape(PLANET_RADIUS * 1.5f);
       m_atmosphere->AddCollisionShape(shape);
       m_atmosphere->AutoResizeBoundingBox();
 
@@ -356,8 +358,9 @@ void CourseworkScene::OnInitializeScene()
         
         if (valid)
         {
-          // TODO
-          NCLDebug::Log("%s is in atmosphere", b->GetAssociatedObject()->GetName().c_str());
+          // Dampen velocity
+          b->SetLinearVelocity(b->GetLinearVelocity() * 0.95f);
+          b->SetAngularVelocity(b->GetAngularVelocity() * 0.95f);
         }
 
         return false;
@@ -383,6 +386,8 @@ void CourseworkScene::OnInitializeScene()
     shape->BuildFromMesh(m_targetMesh);
     m_target->Physics()->AddCollisionShape(shape);
     m_target->Physics()->SetInverseInertia(shape->BuildInverseInertia(0.0f));
+    m_target->Physics()->SetFriction(1.0f);
+    m_target->Physics()->SetElasticity(0.0f);
 
     m_target->Physics()->AutoResizeBoundingBox();
 
