@@ -201,7 +201,7 @@ void ClientCLI::InitCLI()
         // Broadcast message
         {
           std::lock_guard<std::mutex> lock(m_broker->Mutex());
-          //m_broker->BroadcastMessage(m_pubSubClients["basic"], "", , );
+          // m_broker->BroadcastMessage(m_pubSubClients["basic"], "", , );
         }
 
         return COMMAND_EXIT_CLEAN;
@@ -375,7 +375,7 @@ void ClientCLI::InitCLI()
         // Generate message
         uint16_t len = sizeof(int);
         int value = std::stoi(argv[1]);
-        char * msg = new char[len];
+        char *msg = new char[len];
         memcpy(msg, &value, len);
 
         // Broadcast message
@@ -388,7 +388,8 @@ void ClientCLI::InitCLI()
         return COMMAND_EXIT_CLEAN;
       };
 
-      gameCommands->registerCommand(std::make_shared<Command>("ammogive", func, 2, "Gives (or takes away) ammo from the player."));
+      gameCommands->registerCommand(
+          std::make_shared<Command>("ammogive", func, 2, "Gives (or takes away) ammo from the player."));
     }
 
     // Set shootable lifetime command
@@ -403,7 +404,7 @@ void ClientCLI::InitCLI()
         // Generate message
         uint16_t len = sizeof(float);
         float value = std::stof(argv[1]);
-        char * msg = new char[len];
+        char *msg = new char[len];
         memcpy(msg, &value, len);
 
         // Broadcast message
@@ -416,7 +417,8 @@ void ClientCLI::InitCLI()
         return COMMAND_EXIT_CLEAN;
       };
 
-      gameCommands->registerCommand(std::make_shared<Command>("shootablelife", func, 2, "Sets the lifetime of shootable objects (in seconds)."));
+      gameCommands->registerCommand(
+          std::make_shared<Command>("shootablelife", func, 2, "Sets the lifetime of shootable objects (in seconds)."));
     }
   }
 }

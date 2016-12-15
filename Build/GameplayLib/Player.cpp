@@ -88,7 +88,8 @@ Player::Player(Scene *scene, PubSubBroker *broker)
 
         State *shoot = new State("shoot", shootCube, &m_playerStateMachine);
         shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY); });
-        shoot->AddOnEntryBehaviour([this](State *s) { this->ShootFromCamera(new ShootableCube(this, m_shootableLifetime), s->TimeInState()); });
+        shoot->AddOnEntryBehaviour(
+            [this](State *s) { this->ShootFromCamera(new ShootableCube(this, m_shootableLifetime), s->TimeInState()); });
         shoot->AddTransferFromTest(afterShotTransfer);
       }
 
@@ -104,7 +105,8 @@ Player::Player(Scene *scene, PubSubBroker *broker)
 
         State *shoot = new State("shoot", shootBall, &m_playerStateMachine);
         shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
-        shoot->AddOnEntryBehaviour([this](State *s) { this->ShootFromCamera(new ShootableBall(this, m_shootableLifetime), s->TimeInState()); });
+        shoot->AddOnEntryBehaviour(
+            [this](State *s) { this->ShootFromCamera(new ShootableBall(this, m_shootableLifetime), s->TimeInState()); });
         shoot->AddTransferFromTest(afterShotTransfer);
       }
     }
@@ -157,7 +159,7 @@ void Player::Update(float dt)
 /**
  * @copydoc IPubSubCLient::HandleSubscription
  */
-bool Player::HandleSubscription(const std::string & topic, const char * msg, uint16_t len)
+bool Player::HandleSubscription(const std::string &topic, const char *msg, uint16_t len)
 {
   if (topic == "player/ammo_delta")
   {

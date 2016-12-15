@@ -16,7 +16,6 @@ public:
   static std::string SanitizeFilename(std::string str);
   static bool StringToBool(std::string str, bool defaultVal = false);
 
-
   static void ParseIPAddress(uint8_t *data, const std::string &str);
 
   static bool MakeDirectories(const std::string &path);

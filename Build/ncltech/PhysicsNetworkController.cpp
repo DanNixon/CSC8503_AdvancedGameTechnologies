@@ -2,8 +2,8 @@
 
 #include "PhysicsEngine.h"
 
-PhysicsNetworkController::PhysicsNetworkController(PubSubBroker * broker)
-  : IPubSubClient(broker)
+PhysicsNetworkController::PhysicsNetworkController(PubSubBroker *broker)
+    : IPubSubClient(broker)
 {
   // Subscribe to topics
   if (broker != nullptr)
@@ -20,7 +20,7 @@ PhysicsNetworkController::~PhysicsNetworkController()
 /**
  * @copydoc IPubSubClient::HandleSubscription
  */
-bool PhysicsNetworkController::HandleSubscription(const std::string & topic, const char * msg, uint16_t len)
+bool PhysicsNetworkController::HandleSubscription(const std::string &topic, const char *msg, uint16_t len)
 {
   if (topic == "physics/pause")
   {

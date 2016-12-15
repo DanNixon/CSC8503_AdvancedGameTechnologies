@@ -76,8 +76,8 @@ bool Utility::StringToBool(std::string str, bool defaultVal)
   std::transform(str.begin(), str.end(), str.begin(), tolower);
 
   // List of words that correspond to true or false
-  static const std::vector<std::string> trueStrs = { "1", "true", "yes", "on", "enable" };
-  static const std::vector<std::string> falseStrs = { "0", "false", "no", "off", "disable" };
+  static const std::vector<std::string> trueStrs = {"1", "true", "yes", "on", "enable"};
+  static const std::vector<std::string> falseStrs = {"0", "false", "no", "off", "disable"};
 
   // Test for a true value
   if (std::find(trueStrs.begin(), trueStrs.end(), str) != trueStrs.end())
@@ -96,7 +96,7 @@ bool Utility::StringToBool(std::string str, bool defaultVal)
  *
  * Format is the standard IPv4 standard, i.e. 127.0.0.1
  */
- void Utility::ParseIPAddress(uint8_t *data, const std::string &str)
+void Utility::ParseIPAddress(uint8_t *data, const std::string &str)
 {
   std::vector<std::string> tokens = Split(str, '.');
 

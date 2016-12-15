@@ -544,7 +544,7 @@ void CourseworkScene::OnInitializeScene()
       m_testQuad1->Physics()->SetInverseMass(0.0f);
 
       m_testQuad1->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 120.0f) *
-        Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
+                                             Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
       Vector3 position(0.0f, 0.0f, PLANET_RADIUS + 1.0f);
       Quaternion::RotatePointByQuaternion(m_testQuad1->Physics()->GetOrientation(), position);
       m_testQuad1->Physics()->SetPosition(position);
@@ -575,11 +575,12 @@ void CourseworkScene::OnInitializeScene()
       m_testQuad2->Physics()->SetInverseMass(0.0f);
 
       m_testQuad2->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 118.0f) *
-        Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
+                                             Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
       Vector3 position(0.0f, 0.0f, PLANET_RADIUS + 2.5f);
       Quaternion::RotatePointByQuaternion(m_testQuad2->Physics()->GetOrientation(), position);
       m_testQuad2->Physics()->SetPosition(position);
-      m_testQuad2->Physics()->SetOrientation(m_testQuad2->Physics()->GetOrientation() * Quaternion::AxisAngleToQuaterion(Vector3(0.0f, -1.0f, 0.0f), 90.0f));
+      m_testQuad2->Physics()->SetOrientation(m_testQuad2->Physics()->GetOrientation() *
+                                             Quaternion::AxisAngleToQuaterion(Vector3(0.0f, -1.0f, 0.0f), 90.0f));
 
       ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
       m_testQuad2->Physics()->AddCollisionShape(shape);

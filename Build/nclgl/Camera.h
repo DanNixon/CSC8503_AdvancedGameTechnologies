@@ -21,12 +21,10 @@ class Camera
 {
 public:
   Camera()
-    : m_handleInput(true)
-    , m_position(0.0f, 0.0f, 0.0f)
-    , m_pitch(0.0f)
-    , m_yaw(0.0f)
-  {
-  };
+      : m_handleInput(true)
+      , m_position(0.0f, 0.0f, 0.0f)
+      , m_pitch(0.0f)
+      , m_yaw(0.0f){};
 
   Camera(float m_pitch, float m_yaw, Vector3 position)
   {
