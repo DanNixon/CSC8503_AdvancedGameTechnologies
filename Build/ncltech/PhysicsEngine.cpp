@@ -443,3 +443,18 @@ bool PhysicsEngine::SimulationIsAtRest() const
       std::find_if(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), [](PhysicsObject *o) { return o->IsAwake(); });
   return (firstObjectNotAtRest == m_PhysicsObjects.end());
 }
+
+/**
+ * @brief Finds a physics object based on the name of its associated (parent) game object.
+ * @param name Name of the obeject to find
+ * @return Pointer to physics object (nullptr if not found)
+ */
+PhysicsObject * PhysicsEngine::FindObjectByName(const std::string & name)
+{
+  auto it = std::find_if(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), [name](PhysicsObject * o) {
+    Object * po = o->GetAssociatedObject();
+    return (po != nullptr && po->GetName() == name);
+  });
+
+  return (it == m_PhysicsObjects.end()) ? nullptr : *it;
+}

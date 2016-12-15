@@ -545,7 +545,7 @@ void CourseworkScene::OnInitializeScene()
       m_testQuad1 = new ObjectMesh("test_plane_1");
 
       m_testQuad1->SetMesh(Mesh::GenerateQuadAlt(), true);
-      m_testQuad1->SetTexture(CommonMeshes::CheckerboardTex(), false); // TODO
+      m_testQuad1->SetTexture(CommonMeshes::CheckerboardTex(), false);
 
       m_testQuad1->SetColour(Vector4(1.0f, 1.0f, 1.0f, 0.6f));
       m_testQuad1->SetLocalTransform(Matrix4::Scale(DIMENSIONS));
@@ -576,7 +576,7 @@ void CourseworkScene::OnInitializeScene()
       m_testQuad2 = new ObjectMesh("test_plane_1");
 
       m_testQuad2->SetMesh(Mesh::GenerateQuadAlt(), true);
-      m_testQuad2->SetTexture(CommonMeshes::CheckerboardTex(), false); // TODO
+      m_testQuad2->SetTexture(CommonMeshes::CheckerboardTex(), false);
 
       m_testQuad2->SetColour(Vector4(1.0f, 1.0f, 1.0f, 0.6f));
       m_testQuad2->SetLocalTransform(Matrix4::Scale(DIMENSIONS));

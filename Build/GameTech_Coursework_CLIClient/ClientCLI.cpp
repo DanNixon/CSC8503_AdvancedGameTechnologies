@@ -1,7 +1,11 @@
 #include "ClientCLI.h"
 
-#include <CommandLineInterfaceLib\SubCommand.h>
-#include <ncltech\Utility.h>
+#include <CommandLineInterfaceLib/SubCommand.h>
+#include <nclgl/Quaternion.h>
+#include <nclgl/Vector3.h>
+#include <ncltech/PhysicsNetworkController.h>
+#include <ncltech/Utility.h>
+#include <sstream>
 
 /**
  * @brief Creates a new client CLI.
@@ -26,6 +30,12 @@ ClientCLI::~ClientCLI()
  */
 void ClientCLI::InitCLI()
 {
+  static std::map<std::string, char> VALUE_TYPES = {
+      {PhysicsNetworkController::INV_MASS_NAME, 'F'},        {PhysicsNetworkController::POSITION_NAME, '3'},
+      {PhysicsNetworkController::LINEAR_VELOCITY_NAME, '3'}, {PhysicsNetworkController::FORCE_NAME, '3'},
+      {PhysicsNetworkController::ORIENTATION_NAME, 'Q'},     {PhysicsNetworkController::ANGULAR_VEL_NAME, '3'},
+      {PhysicsNetworkController::TORQUE_NAME, '3'}};
+
   // Connect command
   {
     auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
@@ -52,10 +62,63 @@ void ClientCLI::InitCLI()
         out << "Connected to server.\n";
 
         // Create local pub/sub client
-        this->m_pubSubClients["basic"] = new FunctionalPubSubClient(m_broker);
-        this->m_pubSubClients["basic"]->SetSubscriptionHandler([](const std::string &topic, const char *msg, uint16_t) {
+        m_pubSubClients["basic"] = new FunctionalPubSubClient(m_broker);
+        m_pubSubClients["basic"]->SetSubscriptionHandler([](const std::string &topic, const char *msg, uint16_t) {
           printf("MSG: %s = %s\n", topic.c_str(), msg);
           return true;
+        });
+
+        // Create physics pub/sub client
+        m_pubSubClients["physics"] = new FunctionalPubSubClient(m_broker);
+        m_pubSubClients["physics"]->SetSubscriptionHandler([](const std::string &topic, const char *msg, uint16_t) {
+          std::vector<std::string> tokens = Utility::Split(topic, '/');
+
+          // Ignore non physics messages
+          if (tokens[0] != "physics")
+            return false;
+
+          // Is an object update message
+          if (tokens[1] == "objects")
+          {
+            std::stringstream ss;
+            ss << tokens[2] << '.' << tokens[3] << " = ";
+
+            switch (VALUE_TYPES[tokens[3]])
+            {
+            // Value is float
+            case 'F':
+            {
+              float value;
+              memcpy(&value, msg, sizeof(float));
+              ss << value;
+              break;
+            }
+            // Value is 3 element vector
+            case '3':
+            {
+              Vector3 value;
+              memcpy(&value, msg, sizeof(Vector3));
+              ss << value;
+              break;
+            }
+            // Value is quaternion
+            case 'Q':
+            {
+              Quaternion value;
+              memcpy(&value, msg, sizeof(Quaternion));
+              ss << value;
+              break;
+            }
+            default:
+              return false;
+            }
+
+            ss << '\n';
+            printf(ss.str().c_str());
+            return true;
+          }
+
+          return false;
         });
 
         // Start network update thread
@@ -96,8 +159,8 @@ void ClientCLI::InitCLI()
       }
 
       // Stop network update thread
-      if (this->m_networkUpdateThread.joinable())
-        this->m_networkUpdateThread.join();
+      if (m_networkUpdateThread.joinable())
+        m_networkUpdateThread.join();
 
       // Free broker
       delete broker;
@@ -159,6 +222,12 @@ void ClientCLI::InitCLI()
 
   // Physics specific commands
   {
+    static const std::vector<std::string> VALID_VALUE_NAMES = {
+        PhysicsNetworkController::INV_MASS_NAME,        PhysicsNetworkController::POSITION_NAME,
+        PhysicsNetworkController::LINEAR_VELOCITY_NAME, PhysicsNetworkController::FORCE_NAME,
+        PhysicsNetworkController::ORIENTATION_NAME,     PhysicsNetworkController::ANGULAR_VEL_NAME,
+        PhysicsNetworkController::TORQUE_NAME};
+
     SubCommand_ptr physicsCommands = std::make_shared<SubCommand>("physics", "Physics specific commands.");
     registerCommand(physicsCommands);
 
@@ -186,8 +255,123 @@ void ClientCLI::InitCLI()
       physicsCommands->registerCommand(std::make_shared<Command>("pause", func, 2, "Toggles pausing of physics engine."));
     }
 
-    // TODO
-    // TEMPLATE
+    // Get command
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Check value name is valid
+        if (std::find(VALID_VALUE_NAMES.cbegin(), VALID_VALUE_NAMES.cend(), argv[2]) == VALID_VALUE_NAMES.cend())
+        {
+          out << "Value name \"" << argv[2] << "\" is not valid!\n";
+          return 2;
+        }
+
+        // Generate message
+        std::string msg = argv[1] + '.' + argv[2];
+
+        // Subscribe physics broker to receive data
+        std::string topic = "physics/objects/" + argv[1] + "/" + argv[2];
+        m_broker->Subscribe(m_pubSubClients["physics"], topic);
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/get", msg.c_str(), (uint16_t)msg.size());
+        }
+
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      physicsCommands->registerCommand(std::make_shared<Command>("get", func, 3, "Gets a physical value from an object."));
+    }
+
+    // Set command
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        std::string valueName = argv[2];
+        std::stringstream valueSS(argv[3]);
+
+        // Check value name is valid
+        if (std::find(VALID_VALUE_NAMES.cbegin(), VALID_VALUE_NAMES.cend(), valueName) == VALID_VALUE_NAMES.cend())
+        {
+          out << "Value name \"" << valueName << "\" is not valid!\n";
+          return 2;
+        }
+
+        // Generate message
+        std::string idStr = argv[1] + '.' + valueName + '=';
+        uint16_t len = (uint16_t)idStr.size();
+        char *msg = nullptr;
+
+        // Get value
+        switch (VALUE_TYPES[valueName])
+        {
+        // Value is float
+        case 'F':
+        {
+          float value;
+          valueSS >> value;
+
+          len += sizeof(float);
+          msg = new char[len];
+
+          memcpy(msg + idStr.size(), &value, sizeof(float));
+          break;
+        }
+        // Value is 3 element vector
+        case '3':
+        {
+          Vector3 value;
+          valueSS >> value;
+
+          len += sizeof(Vector3);
+          msg = new char[len];
+
+          memcpy(msg + idStr.size(), &value, sizeof(Vector3));
+          break;
+        }
+        // Value is quaternion
+        case 'Q':
+        {
+          Quaternion value;
+          valueSS >> value;
+
+          len += sizeof(Quaternion);
+          msg = new char[len];
+
+          memcpy(msg + idStr.size(), &value, sizeof(Quaternion));
+          break;
+        }
+        default:
+          return false;
+        }
+
+        memcpy(msg, idStr.c_str(), (uint16_t)idStr.size());
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/collsub", msg, len);
+        }
+
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      physicsCommands->registerCommand(std::make_shared<Command>("set", func, 4, "Sets a physical value."));
+    }
+
+    // Subscribe to collisions
     {
       auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
         if (m_broker == nullptr)
@@ -201,13 +385,13 @@ void ClientCLI::InitCLI()
         // Broadcast message
         {
           std::lock_guard<std::mutex> lock(m_broker->Mutex());
-          // m_broker->BroadcastMessage(m_pubSubClients["basic"], "", , );
+          //m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/collsub", , );
         }
 
         return COMMAND_EXIT_CLEAN;
       };
 
-      physicsCommands->registerCommand(std::make_shared<Command>("template", func, 1, ""));
+      physicsCommands->registerCommand(std::make_shared<Command>("collsub", func, 2, "Subscribe to collision messages."));
     }
   }
 
