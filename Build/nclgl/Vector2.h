@@ -40,12 +40,6 @@ public:
     y = 0.0f;
   }
 
-  inline friend std::ostream &operator<<(std::ostream &o, const Vector2 &v)
-  {
-    o << "Vector2(" << v.x << "," << v.y << ")" << std::endl;
-    return o;
-  }
-
   inline Vector2 operator-(const Vector2 &a) const
   {
     return Vector2(x - a.x, y - a.y);
@@ -67,5 +61,30 @@ public:
     default:
       return 0.0f;
     }
+  }
+
+  /**
+   * @brief Outputs the component values of a vector to a strem in the format "[x,y]".
+   * @param stream The stream to output to
+   * @param v The vector to output
+   */
+  inline friend std::ostream &operator<<(std::ostream &stream, const Vector2 &v)
+  {
+    stream << '[' << v.x << ',' << v.y << ']';
+    return stream;
+  }
+
+  /**
+   * @brief Reads component values of a vector from a stream in format "[x,y]".
+   * @param stream Stream to read from
+   * @param v Vector to store values in
+   */
+  inline friend std::istream &operator >> (std::istream &stream, Vector2 &v)
+  {
+    float x, y;
+    char delim;
+    stream >> delim >> x >> delim >> y >> delim;
+    v = Vector2(x, y);
+    return stream;
   }
 };

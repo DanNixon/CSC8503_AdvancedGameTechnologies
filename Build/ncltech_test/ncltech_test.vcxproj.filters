@@ -10,6 +10,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{33bd866b-3bd2-4ec5-8bfc-de1695d34dd6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{05d671aa-f69c-4aec-abd5-8054758d3c90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StateContainerTest.cpp">
@@ -44,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="BoundingBoxTest.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="MathTypesTest.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

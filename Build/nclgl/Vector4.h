@@ -88,4 +88,29 @@ public:
       return 0.0f;
     }
   }
+
+  /**
+   * @brief Outputs the component values of a vector to a strem in the format "[x,y,z,w]".
+   * @param stream The stream to output to
+   * @param v The vector to output
+   */
+  inline friend std::ostream &operator<<(std::ostream &stream, const Vector4 &v)
+  {
+    stream << '[' << v.x << ',' << v.y << ',' << v.z << ',' << v.w << ']';
+    return stream;
+  }
+
+  /**
+   * @brief Reads component values of a vector from a stream in format "[x,y,z,w]".
+   * @param stream Stream to read from
+   * @param v Vector to store values in
+   */
+  inline friend std::istream &operator>>(std::istream &stream, Vector4 &v)
+  {
+    float x, y, z, w;
+    char delim;
+    stream >> delim >> x >> delim >> y >> delim >> z >> delim >> w >> delim;
+    v = Vector4(x, y, z, w);
+    return stream;
+  }
 };

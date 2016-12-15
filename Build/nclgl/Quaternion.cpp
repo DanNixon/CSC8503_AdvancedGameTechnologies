@@ -280,3 +280,28 @@ Quaternion Quaternion::Interpolate(const Quaternion &start, const Quaternion &en
 
   return out;
 }
+
+/**
+ * @brief Outputs the component values of a quaternion to a strem in the format "[x,y,z,w]".
+ * @param stream The stream to output to
+ * @param q The quaternion to output
+ */
+std::ostream &operator<<(std::ostream &stream, const Quaternion &q)
+{
+  stream << '[' << q.x << ',' << q.y << ',' << q.z << ',' << q.w << ']';
+  return stream;
+}
+
+/**
+ * @brief Reads component values of a quaternion from a stream in format "[x,y,z,w]".
+ * @param stream Stream to read from
+ * @param q Quaternion to store values in
+ */
+std::istream &operator >> (std::istream &stream, Quaternion &q)
+{
+  float x, y, z, w;
+  char delim;
+  stream >> delim >> x >> delim >> y >> delim >> z >> delim >> w >> delim;
+  q = Quaternion(x, y, z, w);
+  return stream;
+}

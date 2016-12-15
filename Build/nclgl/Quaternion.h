@@ -63,7 +63,6 @@ public:
   static void RotatePointByQuaternion(const Quaternion &q, Vector3 &point);
 
   static Quaternion FromMatrix(const Matrix4 &m);
-  static Quaternion FromMatrix(const Matrix3 &m);
 
   static float Dot(const Quaternion &a, const Quaternion &b);
 
@@ -77,9 +76,7 @@ public:
 
   Quaternion Interpolate(const Quaternion &pStart, const Quaternion &pEnd, float pFactor);
 
-  inline friend std::ostream &operator<<(std::ostream &o, const Quaternion &q)
-  {
-    o << "Quat(" << q.x << "," << q.y << "," << q.z << "," << q.w << ")" << std::endl;
-    return o;
-  }
+  friend std::ostream &operator<<(std::ostream &o, const Quaternion &q);
 };
+
+std::istream &operator>>(std::istream &stream, Quaternion &q);

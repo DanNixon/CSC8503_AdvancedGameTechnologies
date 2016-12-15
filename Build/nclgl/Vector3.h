@@ -87,12 +87,6 @@ public:
     return Vector3((a.y * b.z) - (a.z * b.y), (a.z * b.x) - (a.x * b.z), (a.x * b.y) - (a.y * b.x));
   }
 
-  inline friend std::ostream &operator<<(std::ostream &o, const Vector3 &v)
-  {
-    o << "Vector3(" << v.x << "," << v.y << "," << v.z << ")" << std::endl;
-    return o;
-  }
-
   inline Vector3 operator+(const Vector3 &a) const
   {
     return Vector3(x + a.x, y + a.y, z + a.z);
@@ -185,5 +179,30 @@ public:
     default:
       return 0.0f;
     }
+  }
+
+  /**
+   * @brief Outputs the component values of a vector to a strem in the format "[x,y,z]".
+   * @param stream The stream to output to
+   * @param v The vector to output
+   */
+  inline friend std::ostream &operator<<(std::ostream &stream, const Vector3 &v)
+  {
+    stream << '[' << v.x << ',' << v.y << ',' << v.z << ']';
+    return stream;
+  }
+
+  /**
+   * @brief Reads component values of a vector from a stream in format "[x,y,z]".
+   * @param stream Stream to read from
+   * @param v Vector to store values in
+   */
+  inline friend std::istream &operator >> (std::istream &stream, Vector3 &v)
+  {
+    float x, y, z;
+    char delim;
+    stream >> delim >> x >> delim >> y >> delim >> z >> delim;
+    v = Vector3(x, y, z);
+    return stream;
   }
 };

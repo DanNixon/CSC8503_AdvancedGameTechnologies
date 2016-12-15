@@ -170,6 +170,7 @@
     <ClCompile Include="AStarTest.cpp" />
     <ClCompile Include="AStarWeightedTest.cpp" />
     <ClCompile Include="BoundingBoxTest.cpp" />
+    <ClCompile Include="MathTypesTest.cpp" />
     <ClCompile Include="NetSyncStateMachineTest.cpp" />
     <ClCompile Include="PathEdgeTest.cpp" />
     <ClCompile Include="StateTest.cpp" />
