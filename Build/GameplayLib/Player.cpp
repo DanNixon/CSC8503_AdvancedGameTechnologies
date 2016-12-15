@@ -33,18 +33,18 @@ Player::Player(Scene *scene, PubSubBroker *broker)
       NCLDebug::Log("Player reset.");
 
       // Clear shot things
-      for (auto it = this->m_shotThings.begin(); it != this->m_shotThings.end(); ++it)
+      for (auto it = m_shotThings.begin(); it != m_shotThings.end(); ++it)
       {
-        if (this->m_scene)
-          this->m_scene->RemoveGameObject(*it);
+        if (m_scene)
+          m_scene->RemoveGameObject(*it);
       }
-      this->m_shotThings.clear();
+      m_shotThings.clear();
 
       // Reset number of shots
-      this->m_numShootablesRemaining = 10;
+      m_numShootablesRemaining = 10;
 
       // Reset score
-      this->m_score.Reset();
+      m_score.Reset();
     });
 
     // Exit conditions
@@ -64,11 +64,11 @@ Player::Player(Scene *scene, PubSubBroker *broker)
       // End of turn (score submission) state
       State *endOfTurn = new State("end_of_turn", m_playerStateMachine.RootState(), &m_playerStateMachine);
       endOfTurn->AddOnEntryBehaviour([this](State *) {
-        if (this->NumShootablesRemaining() == 0)
+        if (NumShootablesRemaining() == 0)
         {
           NCLDebug::Log("Out of things to shoot! Submitting score...");
-          this->m_score.Submit("no name");
-          this->m_score.Reset();
+          m_score.Submit("no name");
+          m_score.Reset();
         }
       });
       endOfTurn->AddTransferFromTest([idle]() { return idle; });
@@ -80,16 +80,16 @@ Player::Player(Scene *scene, PubSubBroker *broker)
       {
         State *shootCube = new State("shoot_cube", m_playerStateMachine.RootState(), &m_playerStateMachine);
         shootCube->AddTransferToTest(
-            [this]() { return Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY) && this->NumShootablesRemaining() > 0; });
+            [this]() { return Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY) && NumShootablesRemaining() > 0; });
 
         State *preShoot = new State("pre_shoot", shootCube, &m_playerStateMachine);
         preShoot->AddOnEntryBehaviour(powerUpBehaviour);
-        shootCube->AddOnEntryBehaviour([this, preShoot](State *) { this->m_playerStateMachine.ActivateState(preShoot); });
+        shootCube->AddOnEntryBehaviour([this, preShoot](State *) { m_playerStateMachine.ActivateState(preShoot); });
 
         State *shoot = new State("shoot", shootCube, &m_playerStateMachine);
         shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY); });
         shoot->AddOnEntryBehaviour(
-            [this](State *s) { this->ShootFromCamera(new ShootableCube(this, m_shootableLifetime), s->TimeInState()); });
+            [this](State *s) { ShootFromCamera(new ShootableCube(this, m_shootableLifetime), s->TimeInState()); });
         shoot->AddTransferFromTest(afterShotTransfer);
       }
 
@@ -97,16 +97,16 @@ Player::Player(Scene *scene, PubSubBroker *broker)
       {
         State *shootBall = new State("shoot_ball", m_playerStateMachine.RootState(), &m_playerStateMachine);
         shootBall->AddTransferToTest(
-            [this]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY) && this->NumShootablesRemaining() > 0; });
+            [this]() { return Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY) && NumShootablesRemaining() > 0; });
 
         State *preShoot = new State("pre_shoot", shootBall, &m_playerStateMachine);
         preShoot->AddOnEntryBehaviour(powerUpBehaviour);
-        shootBall->AddOnEntryBehaviour([this, preShoot](State *) { this->m_playerStateMachine.ActivateState(preShoot); });
+        shootBall->AddOnEntryBehaviour([this, preShoot](State *) { m_playerStateMachine.ActivateState(preShoot); });
 
         State *shoot = new State("shoot", shootBall, &m_playerStateMachine);
         shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_BALL_KEY); });
         shoot->AddOnEntryBehaviour(
-            [this](State *s) { this->ShootFromCamera(new ShootableBall(this, m_shootableLifetime), s->TimeInState()); });
+            [this](State *s) { ShootFromCamera(new ShootableBall(this, m_shootableLifetime), s->TimeInState()); });
         shoot->AddTransferFromTest(afterShotTransfer);
       }
     }

@@ -435,7 +435,7 @@ void ClientCLI::InitCLI()
         }
 
         // Create the client if it does not exist
-        if (this->m_pubSubClients["highscores"] == nullptr)
+        if (m_pubSubClients["highscores"] == nullptr)
         {
           m_pubSubClients["highscores"] = new FunctionalPubSubClient(m_broker);
           m_broker->Subscribe(m_pubSubClients["highscores"], "highscore/list");
@@ -485,7 +485,7 @@ void ClientCLI::InitCLI()
         }
 
         // Create the client if it does not exist
-        if (this->m_pubSubClients["savescores"] == nullptr)
+        if (m_pubSubClients["savescores"] == nullptr)
         {
           m_pubSubClients["savescores"] = new FunctionalPubSubClient(m_broker);
           m_broker->Subscribe(m_pubSubClients["savescores"], "highscore/save");
@@ -521,7 +521,7 @@ void ClientCLI::InitCLI()
         }
 
         // Create the client if it does not exist
-        if (this->m_pubSubClients["loadscores"] == nullptr)
+        if (m_pubSubClients["loadscores"] == nullptr)
         {
           m_pubSubClients["loadscores"] = new FunctionalPubSubClient(m_broker);
           m_broker->Subscribe(m_pubSubClients["loadscores"], "highscore/load");

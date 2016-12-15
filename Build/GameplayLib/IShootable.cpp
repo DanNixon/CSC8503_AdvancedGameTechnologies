@@ -27,15 +27,9 @@ IShootable::IShootable(Player *owner, float lifetime)
       // Check if the ball hit the target
       if (b->GetAssociatedObject() != nullptr && b->GetAssociatedObject()->GetName() == "target")
       {
-        Vector3 pointOnTarget;
-        auto cps = m->ContactPoints();
-        for (auto it = cps.begin(); it != cps.end(); ++it)
-          pointOnTarget += it->relPosB;
-        pointOnTarget = pointOnTarget / (float)cps.size();
-
-        // TODO
-        m_deltaPoints = 100.0f * pointOnTarget.LengthSquared();
-
+        // Modify score based on distance from target
+        Vector3 delta = (a->GetPosition() - b->GetPosition());
+        m_deltaPoints = max(0.0f, 100.0f - (delta.LengthSquared() * 0.5f));
         m_hitTarget = true;
       }
     });
@@ -63,7 +57,7 @@ IShootable::IShootable(Player *owner, float lifetime)
     // Target hit state
     State *targetHit = new State("target_hit", shot, &m_stateMachine);
     targetHit->AddOnEntryBehaviour([this](State *) {
-      NCLDebug::Log("Hit Target!");
+      NCLDebug::Log("Hit Target! (%d points)", (int)m_deltaPoints);
       m_owner->GetScoreCounter().DeltaPoints(m_deltaPoints);
     });
 
