@@ -56,7 +56,7 @@ public:
   void Reset();
   void Update(float dt);
 
-  virtual bool HandleSubscription(const std::string &topic, void *msg, uint16_t len);
+  virtual bool HandleSubscription(const std::string &topic, const char *msg, uint16_t len) override;
 
 protected:
   void ShootFromCamera(IShootable *shootable, float power = 1.0f);

@@ -8,5 +8,5 @@ public:
   PhysicsNetworkController(PubSubBroker * broker);
   virtual ~PhysicsNetworkController();
 
-  virtual bool HandleSubscription(const std::string &topic, void *msg, uint16_t len) override;
+  virtual bool HandleSubscription(const std::string &topic, const char *msg, uint16_t len) override;
 };

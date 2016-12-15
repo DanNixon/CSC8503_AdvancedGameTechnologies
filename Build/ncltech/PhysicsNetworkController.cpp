@@ -9,6 +9,7 @@ PhysicsNetworkController::PhysicsNetworkController(PubSubBroker * broker)
   if (broker != nullptr)
   {
     broker->Subscribe(this, "physics/pause");
+    // TODO
   }
 }
 
@@ -16,12 +17,17 @@ PhysicsNetworkController::~PhysicsNetworkController()
 {
 }
 
-bool PhysicsNetworkController::HandleSubscription(const std::string & topic, void * msg, uint16_t len)
+/**
+ * @copydoc IPubSubClient::HandleSubscription
+ */
+bool PhysicsNetworkController::HandleSubscription(const std::string & topic, const char * msg, uint16_t len)
 {
-  if (topic == "pause")
+  if (topic == "physics/pause")
   {
+    // Handle pause/resume
     PhysicsEngine::Instance()->SetPaused(((char *)msg)[0] == 'P');
   }
+  // TODO
   else
   {
     return false;

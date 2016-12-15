@@ -172,7 +172,7 @@ void ClientCLI::InitCLI()
         }
 
         // Generate message
-        char msg = Utility::StringToBool(argv[1], true) ? 'R' : 'P';
+        char msg = Utility::StringToBool(argv[1], true) ? 'P' : 'R';
 
         // Broadcast message
         {
@@ -375,7 +375,7 @@ void ClientCLI::InitCLI()
         // Broadcast message
         {
           std::lock_guard<std::mutex> lock(m_broker->Mutex());
-          m_broker->BroadcastMessage(m_pubSubClients["basic"], "player/ammo_delta", (void*)argv[1].c_str(), (uint16_t) argv[1].size());
+          m_broker->BroadcastMessage(m_pubSubClients["basic"], "player/ammo_delta", argv[1].c_str(), (uint16_t) argv[1].size());
         }
 
         return COMMAND_EXIT_CLEAN;
@@ -394,13 +394,18 @@ void ClientCLI::InitCLI()
         }
 
         // Generate message
-        float msg = std::stof(argv[1]);
+        uint16_t len = sizeof(float);
+        float value = std::stof(argv[1]);
+        char * msg = new char[len];
+        memcpy(msg, &value, len);
 
         // Broadcast message
         {
           std::lock_guard<std::mutex> lock(m_broker->Mutex());
-          m_broker->BroadcastMessage(m_pubSubClients["basic"], "player/shootable_lifetime", (void*)&msg, (uint16_t)sizeof(float));
+          m_broker->BroadcastMessage(m_pubSubClients["basic"], "player/shootable_lifetime", msg, len);
         }
+
+        delete msg;
 
         return COMMAND_EXIT_CLEAN;
       };

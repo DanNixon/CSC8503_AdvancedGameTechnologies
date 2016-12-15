@@ -6,11 +6,11 @@
 /**
  * @brief Creates a new shootable ball.
  * @param owner Player that shot the ball
+ * @param lifetime TIme in seconds the object is expected to stay alive for
  * @param radius Radius of the ball
  * @param inverseMass Inverse mass
- * @param lifetime TIme in seconds the object is expected to stay alive for
  */
-ShootableBall::ShootableBall(Player *owner, float radius, float inverseMass, float lifetime)
+ShootableBall::ShootableBall(Player *owner, float lifetime, float radius, float inverseMass)
     : IShootable(owner, lifetime)
 {
   SetMesh(CommonMeshes::Sphere(), false);

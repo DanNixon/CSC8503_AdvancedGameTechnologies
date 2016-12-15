@@ -6,11 +6,11 @@
 /**
  * @brief Creates a new shootable cube.
  * @param owner Player that shot the cube
+ * @param lifetime TIme in seconds the object is expected to stay alive for
  * @param halfDims Half dimensions of the cube
  * @param inverseMass Inverse mass
- * @param lifetime TIme in seconds the object is expected to stay alive for
  */
-ShootableCube::ShootableCube(Player *owner, const Vector3 &halfDims, float inverseMass, float lifetime)
+ShootableCube::ShootableCube(Player *owner, float lifetime, const Vector3 &halfDims, float inverseMass)
     : IShootable(owner, lifetime)
 {
   SetMesh(CommonMeshes::Cube(), false);
