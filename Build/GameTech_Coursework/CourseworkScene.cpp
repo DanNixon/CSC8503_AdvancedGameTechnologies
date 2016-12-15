@@ -179,6 +179,14 @@ CourseworkScene::CourseworkScene()
       NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: octree (obj. lim 10, div. lim. 4, brute force)");
     });
 
+    State *octreeSortSweepHybrid = new State("octree_sortsweep_hybrid", m_broadphaseModeStateMachine.RootState(), &m_broadphaseModeStateMachine);
+    octreeSortSweepHybrid->AddOnEntryBehaviour(removePrevBroadphase);
+    octreeSortSweepHybrid->AddOnEntryBehaviour(
+      [](State *) { PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(10, 4, new SortAndSweepBroadphase())); });
+    octreeSortSweepHybrid->AddOnOperateBehaviour([BROADPHASE_MODE_STATUS_COLOUR]() {
+      NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: octree (obj. lim 10, div. lim. 4, sort/sweep)");
+    });
+
     // State transitions
     sortAndSweepX->AddTransferFromTest(
         [sortAndSweepY]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepY : nullptr; });
@@ -193,6 +201,9 @@ CourseworkScene::CourseworkScene()
         [octree]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? octree : nullptr; });
 
     octree->AddTransferFromTest(
+        [octreeSortSweepHybrid]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? octreeSortSweepHybrid : nullptr; });
+
+    octreeSortSweepHybrid->AddTransferFromTest(
         [sortAndSweepX]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepX : nullptr; });
 
     // Default state
