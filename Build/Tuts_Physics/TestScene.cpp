@@ -8,8 +8,6 @@
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
 
-using namespace CommonUtils;
-
 TestScene::TestScene(const std::string &friendly_name)
     : Scene(friendly_name)
     , m_AccumTime(0.0f)
@@ -43,11 +41,11 @@ void TestScene::OnInitializeScene()
 
   //<--- SCENE CREATION --->
   // Create Ground
-  AddGameObject(BuildCuboidObject("ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false,
+  AddGameObject(CommonUtils::BuildCuboidObject("ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false,
                                   Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
   // Create Player (See OnUpdateScene)
-  m_pPlayer = BuildCuboidObject("Player1", Vector3(5.f, 0.5f, 0.0f), Vector3(0.5f, 0.5f, 1.0f), true, 0.0f, true, false,
+  m_pPlayer = CommonUtils::BuildCuboidObject("Player1", Vector3(5.f, 0.5f, 0.0f), Vector3(0.5f, 0.5f, 1.0f), true, 0.0f, true, false,
                                 Vector4(0.1f, 0.1f, 0.1f, 1.0f));
   AddGameObject(m_pPlayer);
 
@@ -58,10 +56,10 @@ void TestScene::OnInitializeScene()
       for (int y = 0; y < 6; ++y)
       {
         uint idx = x * 5 + y;
-        Vector4 colour = GenColour(idx / 10.f, 0.5f);
+        Vector4 colour = CommonUtils::GenColour(idx / 10.f, 0.5f);
         Vector3 pos = offset + Vector3(x * cubewidth, 1e-3f + y * cubewidth, cubewidth * (idx % 2 == 0) ? 0.5f : -0.5f);
 
-        Object *cube = BuildCuboidObject("cube", pos, halfdims, true, 1.0f, true, true, colour);
+        Object *cube = CommonUtils::BuildCuboidObject("cube", pos, halfdims, true, 1.0f, true, true, colour);
         AddGameObject(cube);
       }
     }
@@ -78,7 +76,7 @@ void TestScene::OnInitializeScene()
         for (int z = 0; z < dims; ++z)
         {
           Vector3 pos = offset + Vector3(scale.x * x, scale.y * y, scale.z * z);
-          Object *sphere = BuildSphereObject("sphere", pos, ballsize, true, 1.0f, true, true, col);
+          Object *sphere = CommonUtils::BuildSphereObject("sphere", pos, ballsize, true, 1.0f, true, true, col);
           AddGameObject(sphere);
         }
       }
