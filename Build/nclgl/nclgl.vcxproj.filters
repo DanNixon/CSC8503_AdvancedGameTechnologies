@@ -9,9 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="CubeRobot.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -69,11 +66,17 @@
     <ClCompile Include="Window.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="CartesianCamera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="PolarCamera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="ICamera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="common.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -148,6 +151,15 @@
     </ClInclude>
     <ClInclude Include="ChildMeshInterface.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="ICamera.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="CartesianCamera.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="PolarCamera.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

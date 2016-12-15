@@ -89,9 +89,9 @@ public:
   {
     PhysicsEngine::Instance()->SetPaused(true);
 
-    SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-2.0f, 7.5f, -8.0f));
-    SceneManager::Instance()->GetCamera()->SetYaw(-160.f);
-    SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
+    //SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-2.0f, 7.5f, -8.0f));
+    //SceneManager::Instance()->GetCamera()->SetYaw(-160.f);
+    //SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
 
     PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_MANIFOLD);

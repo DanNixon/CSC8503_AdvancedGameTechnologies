@@ -20,7 +20,7 @@ public:
   {
     PhysicsEngine::Instance()->SetPaused(true);
 
-    SceneManager::Instance()->GetCamera()->SetPosition(Vector3(0.0f, 25.0f, 25.0f));
+    //SceneManager::Instance()->GetCamera()->SetPosition(Vector3(0.0f, 25.0f, 25.0f));
 
     PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(5, 3, new SortAndSweepBroadphase()));
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT);

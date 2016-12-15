@@ -38,6 +38,7 @@ void CourseworkScene::PrintKeyMapping()
   NCLDebug::Log("  Switch physics view mode: %c", PHYSICS_DEBUG_VIEW_KEY);
   NCLDebug::Log("  Switch broadphase culling mode: %c", BROADPHASE_MODE_KEY);
   NCLDebug::Log("  Switch integrations mode: %c", INTEGRATION_MODE_KEY);
+  NCLDebug::Log("  Switch camera mode: %c", CAMERA_TOGGLE_KEY);
   NCLDebug::Log("  Toggle atmosphere: %c", ATMOSPHERE_TOGGLE_KEY);
 }
 
@@ -49,6 +50,8 @@ CourseworkScene::CourseworkScene()
     , m_broker(nullptr)
     , m_netAnnounceClient(nullptr)
     , m_physicsNetClient(nullptr)
+    , m_cartesianCamera(nullptr)
+    , m_polarCamera(nullptr)
     , m_planetTex(0)
     , m_targetMesh(nullptr)
     , m_lampPostMesh(nullptr)
@@ -325,10 +328,17 @@ void CourseworkScene::OnInitializeScene()
   PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase());
   PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
 
-  // Set the camera position
-  SceneManager::Instance()->GetCamera()->SetPosition(Vector3(PLANET_RADIUS + 5.0f, 0.0f, 0.0f));
-  SceneManager::Instance()->GetCamera()->SetYaw(0.0f);
-  SceneManager::Instance()->GetCamera()->SetPitch(0.0f);
+  // Create cameras
+  {
+    m_cartesianCamera = new CartesianCamera(0.0f, 0.0f, Vector3(PLANET_RADIUS + 5.0f, 0.0f, 0.0f));
+    m_polarCamera = new PolarCamera();
+
+    // Delete the default camera
+    delete SceneManager::Instance()->GetCamera();
+
+    // Set Cartesian camera by default
+    SceneManager::Instance()->SetCamera(m_cartesianCamera);
+  }
 
   // Reset state machines
   m_debugDrawStateMachine.Reset();
@@ -703,6 +713,13 @@ void CourseworkScene::OnCleanupScene()
   m_testQuad2 = nullptr;
   m_softBody = nullptr;
 
+  // Remove cameras
+  SceneManager::Instance()->SetCamera(nullptr);
+  delete m_cartesianCamera;
+  delete m_polarCamera;
+  m_cartesianCamera = nullptr;
+  m_polarCamera = nullptr;
+
   Scene::OnCleanupScene();
 }
 
@@ -713,6 +730,17 @@ void CourseworkScene::OnUpdateScene(float dt)
   m_broadphaseModeStateMachine.Update(dt);
   m_integrationModeStateMachine.Update(dt);
   m_player->Update(dt);
+
+  // Camera status and toggle
+  bool cartesianCameraActive = SceneManager::Instance()->GetCamera() == m_cartesianCamera;
+  NCLDebug::AddStatusEntry(Vector4(0.8f, 0.0f, 0.4f, 1.0f), "Camera: %s", (cartesianCameraActive ? "Cartesian" : "Polar"));
+  if (Window::GetKeyboard()->KeyTriggered(CAMERA_TOGGLE_KEY))
+  {
+    if (cartesianCameraActive)
+      SceneManager::Instance()->SetCamera(m_polarCamera);
+    else
+      SceneManager::Instance()->SetCamera(m_cartesianCamera);
+  }
 
   // Atmosphere status and toggle
   NCLDebug::AddStatusEntry(Vector4(0.5f, 1.0f, 0.0f, 1.0f), "Atmosphere: %s", (m_atmosphere->CanCollide() ? "on" : "off"));

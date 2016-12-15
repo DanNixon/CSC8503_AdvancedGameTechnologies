@@ -122,10 +122,22 @@ public:
   // the physics updates
   virtual void UpdateScene(float dt) override;
 
-  // Get Camera instance
-  inline Camera *GetCamera()
+  /**
+   * @brief Get Camera instance.
+   * @return Pointer to camera
+   */
+  inline ICamera *GetCamera()
   {
     return m_pCamera;
+  }
+
+  /**
+   * @brief Sets the camera currently in use.
+   * @param camera Pointer to new camera
+   */
+  inline void SetCamera(ICamera * camera)
+  {
+    m_pCamera = camera;
   }
 
   // Get Render Lighting Parameters
@@ -253,7 +265,7 @@ protected:
   Shader *m_pShaderPresentToWindow;
 
   // Camera + view frustum/renderlist
-  Camera *m_pCamera;
+  ICamera *m_pCamera;
   Frustum m_FrameFrustum;
   RenderList *m_pFrameRenderList;
 

@@ -188,7 +188,7 @@ bool Player::HandleSubscription(const std::string &topic, const char *msg, uint1
  */
 void Player::ShootFromCamera(IShootable *shootable, float power)
 {
-  Camera *camera = SceneManager::Instance()->GetCamera();
+  ICamera *camera = SceneManager::Instance()->GetCamera();
 
   Vector3 velocity(0.0f, 0.0f, -power * 10.0f);
   Quaternion::RotatePointByQuaternion(camera->GetOrientation(), velocity);

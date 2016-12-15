@@ -1,4 +1,7 @@
 #include "SceneRenderer.h"
+
+#include <nclgl/CartesianCamera.h>
+
 #include "BoundingBox.h"
 #include "CommonMeshes.h"
 #include "NCLDebug.h"
@@ -85,12 +88,6 @@ SceneRenderer::~SceneRenderer()
     m_pShaderColNorm = NULL;
   }
 
-  if (m_pCamera)
-  {
-    delete m_pCamera;
-    m_pCamera = NULL;
-  }
-
   if (m_ScreenTex[0])
   {
     glDeleteTextures(SCREENTEX_MAX, m_ScreenTex);
@@ -105,6 +102,12 @@ SceneRenderer::~SceneRenderer()
     m_pScene = NULL;
   }
 
+  if (m_pCamera)
+  {
+    delete m_pCamera;
+    m_pCamera = NULL;
+  }
+
   ScreenPicker::Release();
   NCLDebug::ReleaseShaders();
   CommonMeshes::ReleaseMeshes();
@@ -114,7 +117,7 @@ bool SceneRenderer::InitialiseGL()
 {
   CommonMeshes::InitializeMeshes();
 
-  m_pCamera = new Camera();
+  m_pCamera = new CartesianCamera(-30.0f, -10.0f, Vector3(-3.0f, 10.0f, 15.0f));
 
   BuildFBOs();
 
@@ -133,10 +136,6 @@ void SceneRenderer::InitializeDefaults()
 {
   NCLDebug::ClearLog();
   ScreenPicker::Instance()->ClearAllObjects();
-
-  m_pCamera->SetPosition(Vector3(-3.0f, 10.0f, 15.0f));
-  m_pCamera->SetYaw(-10.f);
-  m_pCamera->SetPitch(-30.f);
 
   m_BackgroundColour = Vector3(0.8f, 0.8f, 0.8f);
   m_AmbientColour = Vector3(0.4f, 0.4f, 0.4f);

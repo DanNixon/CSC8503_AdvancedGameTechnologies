@@ -2,6 +2,8 @@
 
 #include <mutex>
 #include <nclgl\Mesh.h>
+#include <nclgl\CartesianCamera.h>
+#include <nclgl\PolarCamera.h>
 #include <ncltech\FunctionalPubSubClient.h>
 #include <ncltech\NetSyncStateMachine.h>
 #include <ncltech\ObjectMesh.h>
@@ -39,6 +41,11 @@ public:
   static const KeyboardKeys PHYSICS_DEBUG_VIEW_KEY = KeyboardKeys::KEYBOARD_M;
 
   /**
+   * @brief Key used to toggle camera type.
+   */
+  static const KeyboardKeys CAMERA_TOGGLE_KEY = KeyboardKeys::KEYBOARD_T;
+
+  /**
    * @brief Key used to toggle planet atmosphere.
    */
   static const KeyboardKeys ATMOSPHERE_TOGGLE_KEY = KeyboardKeys::KEYBOARD_U;
@@ -67,6 +74,9 @@ protected:
   StateMachine m_debugDrawStateMachine;       //!< State machine controlling debug draw
   StateMachine m_broadphaseModeStateMachine;  //!< State machine controlling broadphase mode
   StateMachine m_integrationModeStateMachine; //!< State machine controlling broadphase mode
+
+  CartesianCamera * m_cartesianCamera; //!< Camera in Cartesian coordinate space
+  PolarCamera * m_polarCamera; //!< Camera in polar coordinate space
 
   GLuint m_planetTex;   //!< Texture of planet surface
   Mesh *m_targetMesh;   //!< Graphical mesh for the target
