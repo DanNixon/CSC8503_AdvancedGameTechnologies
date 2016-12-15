@@ -15,5 +15,6 @@ public:
                                    bool physics_enabled = false, float inverse_mass = 0.0f, bool collidable = true,
                                    bool dragable = true, const Vector4 &color = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
-  static Object *BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size_t yNodeCount, float xNodeSpacing = 2.0f, float yNodeSpacing = 2.0f, PhysicsObject * gravity = nullptr);
+  static Object *BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size_t yNodeCount, float xNodeSpacing = 2.0f,
+                                   float yNodeSpacing = 2.0f, PhysicsObject *gravity = nullptr);
 };

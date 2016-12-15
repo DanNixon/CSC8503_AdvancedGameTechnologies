@@ -393,7 +393,7 @@ void ClientCLI::InitCLI()
         // Broadcast message
         {
           std::lock_guard<std::mutex> lock(m_broker->Mutex());
-          m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/collsub", argv[1].c_str(), (uint16_t) argv[1].size());
+          m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/collsub", argv[1].c_str(), (uint16_t)argv[1].size());
         }
 
         return COMMAND_EXIT_CLEAN;

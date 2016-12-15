@@ -2,10 +2,10 @@
 
 #include "IPubSubClient.h"
 
-#include <thread>
+#include <atomic>
 #include <mutex>
 #include <set>
-#include <atomic>
+#include <thread>
 
 class PhysicsNetworkController : public IPubSubClient
 {
@@ -33,9 +33,9 @@ protected:
   void UpdateThreadFunc(float updateTime);
 
 protected:
-  std::thread m_collisionUpdateThread; //!< Thread publishes collision list to broker
+  std::thread m_collisionUpdateThread;             //!< Thread publishes collision list to broker
   std::atomic_bool m_collisionUpdateThreadRunFlag; //!< FLag indicating the update thread should run
-  
+
   std::set<std::pair<std::string, std::string>> m_collisionList; //!< Cached list of collisions
-  std::mutex m_collisionListMutex; //!< Mutex for guarding access to collision list
+  std::mutex m_collisionListMutex;                               //!< Mutex for guarding access to collision list
 };

@@ -2,8 +2,8 @@
 
 #include "Object.h"
 #include "PhysicsEngine.h"
-#include "Utility.h"
 #include "PubSubBrokerNetNode.h"
+#include "Utility.h"
 
 const std::string PhysicsNetworkController::INV_MASS_NAME = "inv_mass";
 const std::string PhysicsNetworkController::POSITION_NAME = "position";
@@ -194,8 +194,8 @@ bool PhysicsNetworkController::HandleSubscription(const std::string &topic, cons
 
     // Add collision handler to flag update
     obj->AddOnCollisionManifoldCallback([this](PhysicsObject *a, PhysicsObject *b, Manifold *) {
-      Object * oa = a->GetAssociatedObject();
-      Object * ob = b->GetAssociatedObject();
+      Object *oa = a->GetAssociatedObject();
+      Object *ob = b->GetAssociatedObject();
 
       if (oa != nullptr && ob != nullptr)
       {
@@ -234,7 +234,7 @@ void PhysicsNetworkController::StopUpdateThread()
 void PhysicsNetworkController::PublishCollisionLists()
 {
   // Lock the broker
-  PubSubBrokerNetNode * netBroker = dynamic_cast<PubSubBrokerNetNode *>(m_broker);
+  PubSubBrokerNetNode *netBroker = dynamic_cast<PubSubBrokerNetNode *>(m_broker);
   if (netBroker != nullptr)
     std::lock_guard<std::mutex> brokerLock(netBroker->Mutex());
 
@@ -254,7 +254,7 @@ void PhysicsNetworkController::PublishCollisionLists()
 
 void PhysicsNetworkController::UpdateThreadFunc(float updateTime)
 {
-  DWORD sleepTimeMs = ((DWORD) updateTime) / 1000;
+  DWORD sleepTimeMs = ((DWORD)updateTime) / 1000;
 
   while (m_collisionUpdateThreadRunFlag)
   {

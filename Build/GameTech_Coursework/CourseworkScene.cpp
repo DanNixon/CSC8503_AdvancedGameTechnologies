@@ -179,10 +179,11 @@ CourseworkScene::CourseworkScene()
       NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: octree (obj. lim 10, div. lim. 4, brute force)");
     });
 
-    State *octreeSortSweepHybrid = new State("octree_sortsweep_hybrid", m_broadphaseModeStateMachine.RootState(), &m_broadphaseModeStateMachine);
+    State *octreeSortSweepHybrid =
+        new State("octree_sortsweep_hybrid", m_broadphaseModeStateMachine.RootState(), &m_broadphaseModeStateMachine);
     octreeSortSweepHybrid->AddOnEntryBehaviour(removePrevBroadphase);
     octreeSortSweepHybrid->AddOnEntryBehaviour(
-      [](State *) { PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(10, 4, new SortAndSweepBroadphase())); });
+        [](State *) { PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(10, 4, new SortAndSweepBroadphase())); });
     octreeSortSweepHybrid->AddOnOperateBehaviour([BROADPHASE_MODE_STATUS_COLOUR]() {
       NCLDebug::AddStatusEntry(BROADPHASE_MODE_STATUS_COLOUR, "Broadphase: octree (obj. lim 10, div. lim. 4, sort/sweep)");
     });
@@ -200,8 +201,9 @@ CourseworkScene::CourseworkScene()
     bruteForce->AddTransferFromTest(
         [octree]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? octree : nullptr; });
 
-    octree->AddTransferFromTest(
-        [octreeSortSweepHybrid]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? octreeSortSweepHybrid : nullptr; });
+    octree->AddTransferFromTest([octreeSortSweepHybrid]() {
+      return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? octreeSortSweepHybrid : nullptr;
+    });
 
     octreeSortSweepHybrid->AddTransferFromTest(
         [sortAndSweepX]() { return Window::GetKeyboard()->KeyTriggered(BROADPHASE_MODE_KEY) ? sortAndSweepX : nullptr; });
@@ -553,104 +555,102 @@ void CourseworkScene::OnInitializeScene()
   }
 
   // Test quads
-  {
-    // Quad 1
-    {
-      static const Vector3 DIMENSIONS(10.0f, 10.0f, 0.2f);
+  {// Quad 1
+   {static const Vector3 DIMENSIONS(10.0f, 10.0f, 0.2f);
 
-      m_testQuad1 = new ObjectMesh("test_plane_1");
+  m_testQuad1 = new ObjectMesh("test_plane_1");
 
-      m_testQuad1->SetMesh(Mesh::GenerateQuadAlt(), true);
-      m_testQuad1->SetTexture(CommonMeshes::CheckerboardTex(), false);
+  m_testQuad1->SetMesh(Mesh::GenerateQuadAlt(), true);
+  m_testQuad1->SetTexture(CommonMeshes::CheckerboardTex(), false);
 
-      m_testQuad1->SetColour(Vector4(1.0f, 1.0f, 1.0f, 0.6f));
-      m_testQuad1->SetLocalTransform(Matrix4::Scale(DIMENSIONS));
+  m_testQuad1->SetColour(Vector4(1.0f, 1.0f, 1.0f, 0.6f));
+  m_testQuad1->SetLocalTransform(Matrix4::Scale(DIMENSIONS));
 
-      m_testQuad1->CreatePhysicsNode();
-      m_testQuad1->Physics()->SetInverseMass(0.0f);
+  m_testQuad1->CreatePhysicsNode();
+  m_testQuad1->Physics()->SetInverseMass(0.0f);
 
-      m_testQuad1->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 120.0f) *
-                                             Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
-      Vector3 position(0.0f, 0.0f, PLANET_RADIUS + 1.0f);
-      Quaternion::RotatePointByQuaternion(m_testQuad1->Physics()->GetOrientation(), position);
-      m_testQuad1->Physics()->SetPosition(position);
+  m_testQuad1->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 120.0f) *
+                                         Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
+  Vector3 position(0.0f, 0.0f, PLANET_RADIUS + 1.0f);
+  Quaternion::RotatePointByQuaternion(m_testQuad1->Physics()->GetOrientation(), position);
+  m_testQuad1->Physics()->SetPosition(position);
 
-      ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
-      m_testQuad1->Physics()->AddCollisionShape(shape);
+  ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
+  m_testQuad1->Physics()->AddCollisionShape(shape);
 
-      m_testQuad1->Physics()->SetOnCollisionCallback([this](PhysicsObject *, PhysicsObject * o) {
-        // No collide with planet
-        return (o != m_planet->Physics());
-      });
+  m_testQuad1->Physics()->SetOnCollisionCallback([this](PhysicsObject *, PhysicsObject *o) {
+    // No collide with planet
+    return (o != m_planet->Physics());
+  });
 
-      m_testQuad1->Physics()->AutoResizeBoundingBox();
-      AddGameObject(m_testQuad1);
+  m_testQuad1->Physics()->AutoResizeBoundingBox();
+  AddGameObject(m_testQuad1);
 
-      // Fix position to planet
-      PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_testQuad1->Physics()));
-    }
+  // Fix position to planet
+  PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_testQuad1->Physics()));
+}
 
-    // Quad 2
-    {
-      static const Vector3 DIMENSIONS(10.0f, 10.0f, 0.2f);
+// Quad 2
+{
+  static const Vector3 DIMENSIONS(10.0f, 10.0f, 0.2f);
 
-      m_testQuad2 = new ObjectMesh("test_plane_1");
+  m_testQuad2 = new ObjectMesh("test_plane_1");
 
-      m_testQuad2->SetMesh(Mesh::GenerateQuadAlt(), true);
-      m_testQuad2->SetTexture(CommonMeshes::CheckerboardTex(), false);
+  m_testQuad2->SetMesh(Mesh::GenerateQuadAlt(), true);
+  m_testQuad2->SetTexture(CommonMeshes::CheckerboardTex(), false);
 
-      m_testQuad2->SetColour(Vector4(1.0f, 1.0f, 1.0f, 0.6f));
-      m_testQuad2->SetLocalTransform(Matrix4::Scale(DIMENSIONS));
+  m_testQuad2->SetColour(Vector4(1.0f, 1.0f, 1.0f, 0.6f));
+  m_testQuad2->SetLocalTransform(Matrix4::Scale(DIMENSIONS));
 
-      m_testQuad2->CreatePhysicsNode();
-      m_testQuad2->Physics()->SetInverseMass(0.0f);
+  m_testQuad2->CreatePhysicsNode();
+  m_testQuad2->Physics()->SetInverseMass(0.0f);
 
-      m_testQuad2->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 118.0f) *
-                                             Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
-      Vector3 position(0.0f, 0.0f, PLANET_RADIUS + 2.5f);
-      Quaternion::RotatePointByQuaternion(m_testQuad2->Physics()->GetOrientation(), position);
-      m_testQuad2->Physics()->SetPosition(position);
-      m_testQuad2->Physics()->SetOrientation(m_testQuad2->Physics()->GetOrientation() *
-                                             Quaternion::AxisAngleToQuaterion(Vector3(0.0f, -1.0f, 0.0f), 90.0f));
+  m_testQuad2->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 118.0f) *
+                                         Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
+  Vector3 position(0.0f, 0.0f, PLANET_RADIUS + 2.5f);
+  Quaternion::RotatePointByQuaternion(m_testQuad2->Physics()->GetOrientation(), position);
+  m_testQuad2->Physics()->SetPosition(position);
+  m_testQuad2->Physics()->SetOrientation(m_testQuad2->Physics()->GetOrientation() *
+                                         Quaternion::AxisAngleToQuaterion(Vector3(0.0f, -1.0f, 0.0f), 90.0f));
 
-      ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
-      m_testQuad2->Physics()->AddCollisionShape(shape);
+  ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
+  m_testQuad2->Physics()->AddCollisionShape(shape);
 
-      m_testQuad2->Physics()->SetOnCollisionCallback([this](PhysicsObject *, PhysicsObject * o) {
-        // No collide with planet
-        return (o != m_planet->Physics());
-      });
+  m_testQuad2->Physics()->SetOnCollisionCallback([this](PhysicsObject *, PhysicsObject *o) {
+    // No collide with planet
+    return (o != m_planet->Physics());
+  });
 
-      m_testQuad2->Physics()->AutoResizeBoundingBox();
-      AddGameObject(m_testQuad2);
+  m_testQuad2->Physics()->AutoResizeBoundingBox();
+  AddGameObject(m_testQuad2);
 
-      // Fix position to planet
-      PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_testQuad2->Physics()));
-    }
-  }
+  // Fix position to planet
+  PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_testQuad2->Physics()));
+}
+}
 
-  // Soft body
-  {
-    m_softBody = CommonUtils::BuildSoftBodyDemo(Vector3(0.0f, PLANET_RADIUS, 0.0f), 10, 10, 2.0f, 2.0f, m_planet->Physics());
+// Soft body
+{
+  m_softBody = CommonUtils::BuildSoftBodyDemo(Vector3(0.0f, PLANET_RADIUS, 0.0f), 10, 10, 2.0f, 2.0f, m_planet->Physics());
 
-    // Fix position to planet
-    PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_softBody->Physics()));
+  // Fix position to planet
+  PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_softBody->Physics()));
 
-    AddGameObject(m_softBody);
-  }
+  AddGameObject(m_softBody);
+}
 
-  // Create player
-  m_player = new Player(this, m_broker);
+// Create player
+m_player = new Player(this, m_broker);
 
-  // Check for server connection (should have probably happened in the time taken for world generation, etc. (on a local
-  // connection at least))
-  if (m_broker->IsConnectedToServer())
-    NCLDebug::Log("Connected to server!");
-  else
-    NCLERROR("Cannot connect to server.");
+// Check for server connection (should have probably happened in the time taken for world generation, etc. (on a local
+// connection at least))
+if (m_broker->IsConnectedToServer())
+  NCLDebug::Log("Connected to server!");
+else
+  NCLERROR("Cannot connect to server.");
 
-  // Publish collision detection messages at 15Hz
-  m_physicsNetClient->StartUpdateThread(0.016f);
+// Publish collision detection messages at 15Hz
+m_physicsNetClient->StartUpdateThread(0.016f);
 }
 
 void CourseworkScene::OnCleanupScene()

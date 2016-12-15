@@ -130,16 +130,17 @@ Object *CommonUtils::BuildCuboidObject(const std::string &name, const Vector3 &p
  * @param yNodeSpacing Distence between centres of nodes in Y axis
  * @param gravity Point gravity target
  */
-Object *CommonUtils::BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size_t yNodeCount, float xNodeSpacing, float yNodeSpacing, PhysicsObject * gravity)
+Object *CommonUtils::BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size_t yNodeCount, float xNodeSpacing,
+                                       float yNodeSpacing, PhysicsObject *gravity)
 {
   Object *softBody = new Object("soft_body");
   softBody->CreatePhysicsNode();
 
   float poleLength = (xNodeCount * xNodeSpacing) * 0.5f;
 
-  Object *pole =
-      CommonUtils::BuildCuboidObject("soft_body_pole", position + Vector3(poleLength - 1.0f, 20.0f, 0.0f), Vector3(poleLength + 2.0f, 0.25f, 0.25f), true,
-                                     0.0f, true, false, CommonUtils::GenColour(0.45f, 0.5f));
+  Object *pole = CommonUtils::BuildCuboidObject("soft_body_pole", position + Vector3(poleLength - 1.0f, 20.0f, 0.0f),
+                                                Vector3(poleLength + 2.0f, 0.25f, 0.25f), true, 0.0f, true, false,
+                                                CommonUtils::GenColour(0.45f, 0.5f));
   softBody->AddChildObject(pole);
   pole->Physics()->SetGravitationTarget(gravity);
 
@@ -155,8 +156,8 @@ Object *CommonUtils::BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size
     {
       float x = j * xNodeSpacing;
 
-      Object *node = CommonUtils::BuildSphereObject("soft_body_node", position + Vector3(x, 19.0f - y, 0.0f), 0.5f, true, 10.0f, true, true,
-                                                    CommonUtils::GenColour(0.5f, 1.0f));
+      Object *node = CommonUtils::BuildSphereObject("soft_body_node", position + Vector3(x, 19.0f - y, 0.0f), 0.5f, true, 10.0f,
+                                                    true, true, CommonUtils::GenColour(0.5f, 1.0f));
       softBody->AddChildObject(node);
       softBodyNodes.push_back(node);
       node->Physics()->WakeUp();
