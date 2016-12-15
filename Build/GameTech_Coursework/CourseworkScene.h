@@ -6,6 +6,7 @@
 #include <ncltech\NetSyncStateMachine.h>
 #include <ncltech\ObjectMesh.h>
 #include <ncltech\PubSubBrokerNetNode.h>
+#include <ncltech\PhysicsNetworkController.h>
 #include <ncltech\Scene.h>
 #include <thread>
 #include <vector>
@@ -61,6 +62,7 @@ protected:
   GameTimer m_networkTimer;                    //!< Timer for network updates
   PubSubBrokerNetNode *m_broker;               //!< Publisher/subscriber broker network node
   FunctionalPubSubClient *m_netAnnounceClient; //!< Pub/sub client used for network announcements
+  PhysicsNetworkController * m_physicsNetClient; //!< Pub/sub client for controlling physics engine over the network
 
   StateMachine m_debugDrawStateMachine;       //!< State machine controlling debug draw
   StateMachine m_broadphaseModeStateMachine;  //!< State machine controlling broadphase mode

@@ -7,9 +7,18 @@
 #include "ShootableCube.h"
 
 Player::Player(Scene *scene, PubSubBroker *broker)
-    : m_scene(scene)
+    : IPubSubClient(broker)
+    , m_scene(scene)
     , m_score(broker)
+    , m_shootableLifetime(10.0f)
 {
+  // Subscribe to topics
+  if (broker != nullptr)
+  {
+    broker->Subscribe(this, "player/ammo_delta");
+    broker->Subscribe(this, "player/shootable_lifetime");
+  }
+
   // State machine
   {
     // Idle (default) state
@@ -143,6 +152,31 @@ void Player::Update(float dt)
       ++it;
     }
   }
+}
+
+/**
+ * @copydoc IPubSubCLient::HandleSubscription
+ */
+bool Player::HandleSubscription(const std::string & topic, void * msg, uint16_t len)
+{
+  if (topic == "player/ammo_delta")
+  {
+    // Offset player ammo
+    int offset;
+    memcpy(&offset, msg, sizeof(int));
+    m_numShootablesRemaining += offset;
+  }
+  else if (topic == "player/shootable_lifetime")
+  {
+    // Set shootable lifetime
+    memcpy(&m_shootableLifetime, msg, sizeof(float));
+  }
+  else
+  {
+    return false;
+  }
+
+  return true;
 }
 
 /**

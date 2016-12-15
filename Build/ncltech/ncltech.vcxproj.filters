@@ -200,6 +200,9 @@
     <ClCompile Include="IntegrationHelpers.cpp">
       <Filter>src\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsNetworkController.cpp">
+      <Filter>src\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonMeshes.h">
@@ -351,6 +354,9 @@
     </ClInclude>
     <ClInclude Include="IntegrationHelpers.h">
       <Filter>include\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsNetworkController.h">
+      <Filter>include\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

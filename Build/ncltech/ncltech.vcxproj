@@ -89,6 +89,7 @@
     <ClCompile Include="HullCollisionShape.cpp" />
     <ClCompile Include="IntegrationHelpers.cpp" />
     <ClCompile Include="NetSyncStateMachine.cpp" />
+    <ClCompile Include="PhysicsNetworkController.cpp" />
     <ClCompile Include="PubSubBrokerNetNode.cpp" />
     <ClCompile Include="OctreeBroadphase.cpp" />
     <ClCompile Include="PathEdge.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="HullCollisionShape.h" />
     <ClInclude Include="IntegrationHelpers.h" />
     <ClInclude Include="NetSyncStateMachine.h" />
+    <ClInclude Include="PhysicsNetworkController.h" />
     <ClInclude Include="PubSubBrokerNetNode.h" />
     <ClInclude Include="OctreeBroadphase.h" />
     <ClInclude Include="PathEdge.h" />

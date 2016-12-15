@@ -157,6 +157,60 @@ void ClientCLI::InitCLI()
     registerCommand(std::make_shared<Command>("subscribe", func, 2, "Subscribes to a topic."));
   }
 
+  // Physics specific commands
+  {
+    SubCommand_ptr physicsCommands = std::make_shared<SubCommand>("physics", "Physics specific commands.");
+    registerCommand(physicsCommands);
+
+    // Toggle pause
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Generate message
+        char msg = Utility::StringToBool(argv[1], true) ? 'R' : 'P';
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["basic"], "physics/pause", &msg, 1);
+        }
+
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      physicsCommands->registerCommand(std::make_shared<Command>("pause", func, 2, "Toggles pausing of physics engine."));
+    }
+
+    // TODO
+    // TEMPLATE
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // TODO
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          //m_broker->BroadcastMessage(m_pubSubClients["basic"], "", , );
+        }
+
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      physicsCommands->registerCommand(std::make_shared<Command>("template", func, 1, ""));
+    }
+  }
+
   // Game specific commands
   {
     SubCommand_ptr gameCommands = std::make_shared<SubCommand>("game", "Game specific commands.");
@@ -307,6 +361,51 @@ void ClientCLI::InitCLI()
       };
 
       gameCommands->registerCommand(std::make_shared<Command>("loadscores", func, 1, "Loads highscores on server from file."));
+    }
+
+    // "Give player ammo" command
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["basic"], "player/ammo_delta", (void*)argv[1].c_str(), (uint16_t) argv[1].size());
+        }
+
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      gameCommands->registerCommand(std::make_shared<Command>("ammogive", func, 2, "Gives (or takes away) ammo from the player."));
+    }
+
+    // Set shootable lifetime command
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Generate message
+        float msg = std::stof(argv[1]);
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["basic"], "player/shootable_lifetime", (void*)&msg, (uint16_t)sizeof(float));
+        }
+
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      gameCommands->registerCommand(std::make_shared<Command>("shootablelife", func, 2, "Sets the lifetime of shootable objects (in seconds)."));
     }
   }
 }

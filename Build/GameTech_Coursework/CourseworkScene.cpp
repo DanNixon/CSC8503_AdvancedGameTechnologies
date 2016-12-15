@@ -48,6 +48,7 @@ CourseworkScene::CourseworkScene()
     : Scene("GameTech coursework")
     , m_broker(nullptr)
     , m_netAnnounceClient(nullptr)
+    , m_physicsNetClient(nullptr)
     , m_planetTex(0)
     , m_targetMesh(nullptr)
     , m_lampPostMesh(nullptr)
@@ -272,6 +273,7 @@ CourseworkScene::CourseworkScene()
 CourseworkScene::~CourseworkScene()
 {
   delete m_netAnnounceClient;
+  delete m_physicsNetClient;
 }
 
 void CourseworkScene::OnInitializeScene()
@@ -290,6 +292,9 @@ void CourseworkScene::OnInitializeScene()
       NCLDebug::Log("[ANNOUNCE] %s\n", msg);
       return true;
     });
+
+    // Add physics control client
+    m_physicsNetClient = new PhysicsNetworkController(m_broker);
 
     // Start network update thread
     m_networkThread = std::thread(&CourseworkScene::BrokerNetworkLoop, this);
@@ -414,9 +419,9 @@ void CourseworkScene::OnInitializeScene()
     m_lampPost->CreatePhysicsNode();
     m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, -1.0f), 90.0f) *
                                           Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 30.0f));
-    Vector3 lampPostPosition(0.0f, PLANET_RADIUS, 0.0f);
-    Quaternion::RotatePointByQuaternion(m_lampPost->Physics()->GetOrientation(), lampPostPosition);
-    m_lampPost->Physics()->SetPosition(lampPostPosition);
+    Vector3 position(0.0f, PLANET_RADIUS, 0.0f);
+    Quaternion::RotatePointByQuaternion(m_lampPost->Physics()->GetOrientation(), position);
+    m_lampPost->Physics()->SetPosition(position);
 
     m_target->Physics()->SetInverseMass(0.0f);
 
@@ -464,7 +469,7 @@ void CourseworkScene::OnInitializeScene()
       return (b != this->m_planet->Physics());
     });
 
-    // Fix target position to planet
+    // Fix position to planet
     PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_lampPost->Physics()));
   }
 
@@ -525,25 +530,65 @@ void CourseworkScene::OnInitializeScene()
   {
     // Quad 1
     {
+      static const Vector3 DIMENSIONS(10.0f, 10.0f, 0.2f);
+
       m_testQuad1 = new ObjectMesh("test_plane_1");
+
       m_testQuad1->SetMesh(Mesh::GenerateQuadAlt(), true);
       m_testQuad1->SetTexture(CommonMeshes::CheckerboardTex(), false); // TODO
-      m_testQuad1->SetLocalTransform(Matrix4::Scale(Vector3(10.0f, 10.0f, 10.0f)));
+
+      m_testQuad1->SetColour(Vector4(1.0f, 1.0f, 1.0f, 0.6f));
+      m_testQuad1->SetLocalTransform(Matrix4::Scale(DIMENSIONS));
 
       m_testQuad1->CreatePhysicsNode();
-      m_testQuad1->Physics()->SetPosition(Vector3(PLANET_RADIUS + 3.0f, 0.0f, 0.0f));
       m_testQuad1->Physics()->SetInverseMass(0.0f);
 
-      //ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
-      //m_testQuad1->Physics()->AddCollisionShape(shape);
+      m_testQuad1->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 120.0f) *
+        Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
+      Vector3 position(0.0f, 0.0f, PLANET_RADIUS + 1.0f);
+      Quaternion::RotatePointByQuaternion(m_testQuad1->Physics()->GetOrientation(), position);
+      m_testQuad1->Physics()->SetPosition(position);
 
-      //m_testQuad1->Physics()->AutoResizeBoundingBox();
+      ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
+      m_testQuad1->Physics()->AddCollisionShape(shape);
+
+      m_testQuad1->Physics()->AutoResizeBoundingBox();
       AddGameObject(m_testQuad1);
+
+      // Fix position to planet
+      PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_testQuad1->Physics()));
     }
 
     // Quad 2
     {
-      // TODO
+      static const Vector3 DIMENSIONS(10.0f, 10.0f, 0.2f);
+
+      m_testQuad2 = new ObjectMesh("test_plane_1");
+
+      m_testQuad2->SetMesh(Mesh::GenerateQuadAlt(), true);
+      m_testQuad2->SetTexture(CommonMeshes::CheckerboardTex(), false); // TODO
+
+      m_testQuad2->SetColour(Vector4(1.0f, 1.0f, 1.0f, 0.6f));
+      m_testQuad2->SetLocalTransform(Matrix4::Scale(DIMENSIONS));
+
+      m_testQuad2->CreatePhysicsNode();
+      m_testQuad2->Physics()->SetInverseMass(0.0f);
+
+      m_testQuad2->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), 118.0f) *
+        Quaternion::AxisAngleToQuaterion(Vector3(1.0f, 0.0f, 0.0f), 20.0f));
+      Vector3 position(0.0f, 0.0f, PLANET_RADIUS + 2.5f);
+      Quaternion::RotatePointByQuaternion(m_testQuad2->Physics()->GetOrientation(), position);
+      m_testQuad2->Physics()->SetPosition(position);
+      m_testQuad2->Physics()->SetOrientation(m_testQuad2->Physics()->GetOrientation() * Quaternion::AxisAngleToQuaterion(Vector3(0.0f, -1.0f, 0.0f), 90.0f));
+
+      ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
+      m_testQuad2->Physics()->AddCollisionShape(shape);
+
+      m_testQuad2->Physics()->AutoResizeBoundingBox();
+      AddGameObject(m_testQuad2);
+
+      // Fix position to planet
+      PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_testQuad2->Physics()));
     }
   }
 
@@ -569,10 +614,15 @@ void CourseworkScene::OnCleanupScene()
   {
     std::lock_guard<std::mutex> lock(m_broker->Mutex());
 
-    // Remove CLI pub/sub client
+    // Remove announce client
     m_broker->UnSubscribeFromAll(m_netAnnounceClient);
     delete m_netAnnounceClient;
     m_netAnnounceClient = nullptr;
+
+    // Remove physics control client
+    m_broker->UnSubscribeFromAll(m_physicsNetClient);
+    delete m_physicsNetClient;
+    m_physicsNetClient = nullptr;
 
     // Close broker network node
     m_broker->Release();

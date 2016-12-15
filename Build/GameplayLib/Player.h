@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ncltech\IPubSubClient.h>
+
 #include <ncltech\Scene.h>
 #include <ncltech\StateMachine.h>
 
@@ -11,7 +13,7 @@
  * @author Dan Nixon
  * @brief Represents a player in the simulation.
  */
-class Player
+class Player : public IPubSubClient
 {
 public:
   /**
@@ -54,6 +56,8 @@ public:
   void Reset();
   void Update(float dt);
 
+  virtual bool HandleSubscription(const std::string &topic, void *msg, uint16_t len);
+
 protected:
   void ShootFromCamera(IShootable *shootable, float power = 1.0f);
 
@@ -62,5 +66,6 @@ protected:
   StateMachine m_playerStateMachine;      //!< State machine controlling player behaviour
   LocalScore m_score;                     //!< Player's score
   int m_numShootablesRemaining;           //!< Number of things the player has left to shoot
+  float m_shootableLifetime; //!< Lifetime (in seconds) of shootable objects
   std::vector<IShootable *> m_shotThings; //!< Things shot by the player
 };

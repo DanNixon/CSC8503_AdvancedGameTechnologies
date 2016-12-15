@@ -63,13 +63,40 @@ std::string Utility::SanitizeFilename(std::string str)
 }
 
 /**
+ * @brief Coverts a string value to a boolean.
+ * @param str String value
+ * @param defaultVal If string could not be parsed this value is returned
+ * @return Parsed value, defaultValue if value could not be determined
+ */
+bool Utility::StringToBool(std::string str, bool defaultVal)
+{
+  bool retVal = defaultVal;
+
+  // Make string lowercase
+  std::transform(str.begin(), str.end(), str.begin(), tolower);
+
+  // List of words that correspond to true or false
+  static const std::vector<std::string> trueStrs = { "1", "true", "yes", "on", "enable" };
+  static const std::vector<std::string> falseStrs = { "0", "false", "no", "off", "disable" };
+
+  // Test for a true value
+  if (std::find(trueStrs.begin(), trueStrs.end(), str) != trueStrs.end())
+    retVal = true;
+  // Test for a false value
+  else if (std::find(falseStrs.begin(), falseStrs.end(), str) != falseStrs.end())
+    retVal = false;
+
+  return retVal;
+}
+
+/**
  * @brief Parses an IP address from a string.
  * @param data Storage for IP address
  * @param str String containing IP address
  *
  * Format is the standard IPv4 standard, i.e. 127.0.0.1
  */
-void Utility::ParseIPAddress(uint8_t *data, const std::string &str)
+ void Utility::ParseIPAddress(uint8_t *data, const std::string &str)
 {
   std::vector<std::string> tokens = Split(str, '.');
 

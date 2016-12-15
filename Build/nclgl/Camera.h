@@ -20,11 +20,12 @@ _-_-_-_-_-_-_-""  ""
 class Camera
 {
 public:
-  Camera(void)
+  Camera()
+    : m_handleInput(true)
+    , m_position(0.0f, 0.0f, 0.0f)
+    , m_pitch(0.0f)
+    , m_yaw(0.0f)
   {
-    m_position = Vector3(0.0f, 0.0f, 0.0f);
-    m_yaw = 0.0f;
-    m_pitch = 0.0f;
   };
 
   Camera(float m_pitch, float m_yaw, Vector3 position)
@@ -34,7 +35,7 @@ public:
     this->m_position = position;
   }
 
-  ~Camera(void){};
+  ~Camera(){};
 
   /**
    * @brief Gets the flag that defines if mouse and keyboard input is handled by this camera.
