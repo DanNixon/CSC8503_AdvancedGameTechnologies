@@ -27,17 +27,6 @@ class PhysicsEngine;
 class Object;
 class Manifold;
 
-// Callback function called whenever a collision is detected between two objects
-// Params:
-//	PhysicsObject* this_obj			- The current object class that contains the callback
-//	PhysicsObject* colliding_obj	- The object that is colliding with the given object
-// Return:
-//  True	- The physics engine should process the collision as normal
-//	False	- The physics engine should drop the collision pair and not do any further collision resolution/manifold
-// generation
-//			  > This can be useful for AI to see if a player/agent is inside an area/collision volume
-typedef std::function<bool(PhysicsObject *this_obj, PhysicsObject *colliding_obj)> PhysicsCollisionCallback;
-
 /**
  * @class PhysicsObject
  * @brief Physical object in the simulation.
@@ -47,6 +36,19 @@ class PhysicsObject
   friend class PhysicsEngine;
 
 public:
+  /**
+   * @brief Callback function called whenever a collision is detected between two objects.
+   *
+   * First object is "this" object, second is the object collided with.
+   * Returns a boolean indicating if the collision should be handled.
+   */
+  typedef std::function<bool(PhysicsObject *, PhysicsObject *)> PhysicsCollisionCallback;
+
+  /**
+   * @brief Callback function called whenever a manifold is generted for a collision.
+   *
+   * First object is "this" object, second is the object collided with.
+   */
   typedef std::function<void(PhysicsObject *, PhysicsObject *, Manifold *)> OnCollisionManifoldCallback;
 
 public:
@@ -431,14 +433,14 @@ public:
   }
 
   /**
-   * @brief Sets the collision callback that is fired after tha manifold is generated.
+   * @brief Adds a collision callback that is fired after tha manifold is generated.
    * @param callback Callback function
    *
    * Useful if the contact points are needed in the callback.
    */
-  inline void SetOnCollisionManifoldCallback(OnCollisionManifoldCallback callback)
+  inline void AddOnCollisionManifoldCallback(OnCollisionManifoldCallback callback)
   {
-    m_onCollisionManifoldCallback = callback;
+    m_onCollisionManifoldCallbacks.push_back(callback);
   }
 
   /**
@@ -458,10 +460,16 @@ public:
     return handleCollision;
   }
 
+  /**
+   * @brief Fires collision callbacks after manifold generation.
+   * @param obj_a First (this) object
+   * @param obj_b Second (other) object
+   * @param manifold Collision manifold between objects
+   */
   inline void FireOnCollisionManifoldCallback(PhysicsObject *a, PhysicsObject *b, Manifold *manifold)
   {
-    if (m_onCollisionManifoldCallback)
-      m_onCollisionManifoldCallback(a, b, manifold);
+    for (auto it = m_onCollisionManifoldCallbacks.begin(); it != m_onCollisionManifoldCallbacks.end(); ++it)
+      it->operator()(a, b, manifold);
   }
 
   void DoAtRestTest();
@@ -510,5 +518,5 @@ protected:
 
   std::vector<ICollisionShape *> m_collisionShapes;          //!< Collection of collision shapes in this object
   PhysicsCollisionCallback m_onCollisionCallback;            //!< Collision callback
-  OnCollisionManifoldCallback m_onCollisionManifoldCallback; //!< Collision callback post manifold generation
+  std::vector<OnCollisionManifoldCallback> m_onCollisionManifoldCallbacks; //!< Collision callbacks post manifold generation
 };
