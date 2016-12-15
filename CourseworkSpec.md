@@ -92,7 +92,7 @@ higher mark will require the implementation of optional elements.
       collision detection and response approach, such as separating-axis
       theorem and manifolds. More marks will be awarded for an even more
       advanced approach (e.g. GJK/EPA).
-- [ ] Introduce additional objects of a more complex collision shape to the
+- [x] Introduce additional objects of a more complex collision shape to the
       environment to demonstrate this functionality, which begin hovering at
       rest, and awaken when collided with.
 - [ ] You will implement networking code to support a client-controlled entity
@@ -112,7 +112,7 @@ higher mark will require the implementation of optional elements.
       possibly break apart. If you do this, ensure there is an option to
       disable the functionality to allow test-firing at the planetary target
       region (see Part A).
-- [ ] You might extend the scoring system to relate to accuracy, a higher score
+- [x] You might extend the scoring system to relate to accuracy, a higher score
       being awarded for hitting the target region nearer its centre. You might
       also consider having the client-controlled entity (see COMPULSORY
       elements) affect scoring in some way.
@@ -125,7 +125,7 @@ higher mark will require the implementation of optional elements.
 - [x] You might introduce broadphase culling to optimise your physics
       computation. More marks will be awarded for more sophisticated
       approaches.
-- [ ] You might implement some form of artificial intelligence for your client
+- [x] You might implement some form of artificial intelligence for your client
       (such as a hierarchical finite state machine) which adjusts the
       client-controlled entity's behaviour based on server messages. For
       example, on learning of a collision in one direction, a client might
