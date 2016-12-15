@@ -18,7 +18,7 @@ public:
   virtual Vector3 GetPosition() const override;
 
 protected:
-  Vector3 m_origin; //!< Origin point in Cartesian coordinate space
+  Vector3 m_origin;                //!< Origin point in Cartesian coordinate space
   Quaternion m_positionalRotation; //!< ROtation about otigin point
-  float m_distance; //!< DIstance from origin point
+  float m_distance;                //!< DIstance from origin point
 };

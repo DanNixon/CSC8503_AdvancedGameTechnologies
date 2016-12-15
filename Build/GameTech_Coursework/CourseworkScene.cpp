@@ -743,7 +743,7 @@ void CourseworkScene::OnUpdateScene(float dt)
   }
 
   // Atmosphere status and toggle
-  NCLDebug::AddStatusEntry(Vector4(0.5f, 1.0f, 0.0f, 1.0f), "Atmosphere: %s", (m_atmosphere->CanCollide() ? "on" : "off"));
+  NCLDebug::AddStatusEntry(Vector4(0.2f, 1.0f, 0.0f, 1.0f), "Atmosphere: %s", (m_atmosphere->CanCollide() ? "on" : "off"));
   if (Window::GetKeyboard()->KeyTriggered(ATMOSPHERE_TOGGLE_KEY))
     m_atmosphere->SetCollisionsEnabled(!m_atmosphere->CanCollide());
 

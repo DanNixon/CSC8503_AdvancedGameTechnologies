@@ -29,9 +29,9 @@ void TestScene::OnInitializeScene()
   PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_BROADPHASE | DEBUGDRAW_FLAGS_BROADPHASE_PAIRS);
 
   // Set the camera position
-  //SceneManager::Instance()->GetCamera()->SetPosition(Vector3(15.0f, 10.0f, -15.0f));
-  //SceneManager::Instance()->GetCamera()->SetYaw(140.f);
-  //SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
+  // SceneManager::Instance()->GetCamera()->SetPosition(Vector3(15.0f, 10.0f, -15.0f));
+  // SceneManager::Instance()->GetCamera()->SetYaw(140.f);
+  // SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
   m_AccumTime = 0.0f;
 

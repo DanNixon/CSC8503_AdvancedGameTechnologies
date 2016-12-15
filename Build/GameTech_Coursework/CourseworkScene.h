@@ -75,8 +75,8 @@ protected:
   StateMachine m_broadphaseModeStateMachine;  //!< State machine controlling broadphase mode
   StateMachine m_integrationModeStateMachine; //!< State machine controlling broadphase mode
 
-  CartesianCamera * m_cartesianCamera; //!< Camera in Cartesian coordinate space
-  PolarCamera * m_polarCamera; //!< Camera in polar coordinate space
+  CartesianCamera *m_cartesianCamera; //!< Camera in Cartesian coordinate space
+  PolarCamera *m_polarCamera;         //!< Camera in polar coordinate space
 
   GLuint m_planetTex;   //!< Texture of planet surface
   Mesh *m_targetMesh;   //!< Graphical mesh for the target

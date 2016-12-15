@@ -109,8 +109,8 @@ void Net1_Client::OnInitializeScene()
   }
 
   // Generate Simple Scene with a box that can be updated upon recieving server packets
-  //SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
-  //SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
+  // SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
+  // SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
   m_pObj = CommonUtils::BuildCuboidObject("Server", Vector3(0.0f, 1.0f, 0.0f), Vector3(0.5f, 0.5f, 0.5f),
                                           true, // Physics Enabled here Purely to make setting position easier via

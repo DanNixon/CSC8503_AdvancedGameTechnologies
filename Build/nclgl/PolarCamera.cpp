@@ -23,7 +23,7 @@ void PolarCamera::HandleKeyboard(float dt)
 
   float speed = 3.5f * dt; // 3.5m per second
 
-  // TODO
+// TODO
 #if 0
   if (Window::GetKeyboard()->KeyDown(CAMERA_FORWARDS))
     m_position += Matrix4::Rotation(m_yaw, Vector3(0, 1, 0)) * Vector3(0, 0, -1) * speed;

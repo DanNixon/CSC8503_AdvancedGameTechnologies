@@ -106,5 +106,5 @@ protected:
   bool m_handleInput; //!< Flag indicating if input should be handled
 
   float m_pitch; //!< Pitch view angle
-  float m_yaw; //!< Yaw view angle
+  float m_yaw;   //!< Yaw view angle
 };

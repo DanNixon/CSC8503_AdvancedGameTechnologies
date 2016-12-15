@@ -6,9 +6,9 @@
  * @brief Creates a new camera.
  */
 ICamera::ICamera()
-  : m_handleInput(true)
-  , m_pitch(0.0f)
-  , m_yaw(0.0f)
+    : m_handleInput(true)
+    , m_pitch(0.0f)
+    , m_yaw(0.0f)
 {
 }
 

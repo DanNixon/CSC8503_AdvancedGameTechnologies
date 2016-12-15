@@ -17,8 +17,8 @@ public:
 
   virtual void OnInitializeScene() override
   {
-    //SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 10.0f));
-    //SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
+    // SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 10.0f));
+    // SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
     PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT);

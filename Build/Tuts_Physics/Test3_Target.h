@@ -27,9 +27,9 @@ public:
     PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_COLLISIONVOLUMES | DEBUGDRAW_FLAGS_AABB);
 
-    //SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 15.0f));
-    //SceneManager::Instance()->GetCamera()->SetYaw(-10.f);
-    //SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
+    // SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 15.0f));
+    // SceneManager::Instance()->GetCamera()->SetYaw(-10.f);
+    // SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
 
     // Create Ground
     AddGameObject(CommonUtils::BuildCuboidObject("Ground", Vector3(0.0f, -1.001f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f,

@@ -135,7 +135,7 @@ public:
    * @brief Sets the camera currently in use.
    * @param camera Pointer to new camera
    */
-  inline void SetCamera(ICamera * camera)
+  inline void SetCamera(ICamera *camera)
   {
     m_pCamera = camera;
   }

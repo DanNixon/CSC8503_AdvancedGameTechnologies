@@ -54,9 +54,9 @@ public:
   {
     PhysicsEngine::Instance()->SetPaused(true);
 
-    //SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 15.0f));
-    //SceneManager::Instance()->GetCamera()->SetYaw(-10.f);
-    //SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
+    // SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 10.0f, 15.0f));
+    // SceneManager::Instance()->GetCamera()->SetYaw(-10.f);
+    // SceneManager::Instance()->GetCamera()->SetPitch(-30.f);
 
     PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
 

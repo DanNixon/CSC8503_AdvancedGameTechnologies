@@ -85,8 +85,8 @@ public:
 
   virtual void OnInitializeScene() override
   {
-    //SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
-    //SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
+    // SceneManager::Instance()->GetCamera()->SetPosition(Vector3(-3.0f, 4.0f, 10.0f));
+    // SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
     // PhysicsEngine::Instance()->SetBroadphase(new SortAndSweepBroadphase(Vector3(1.0f, 0.0f, 0.0f)));
     PhysicsEngine::Instance()->SetBroadphase(new OctreeBroadphase(2, 2, new BruteForceBroadphase()));
