@@ -235,24 +235,6 @@ public:
   }
 
   /**
-   * @brief Sets the velocity damping factor.
-   * @param d Damping factor
-   */
-  void SetDampingFactor(float d)
-  {
-    m_DampingFactor = d;
-  }
-
-  /**
-   * @brief Gets the velocity damping factor.
-   * @return Damping factor
-   */
-  float GetDampingFactor() const
-  {
-    return m_DampingFactor;
-  }
-
-  /**
    * @brief Gets the target update time step in seconds.
    * @return Target update timestep
    */
@@ -287,8 +269,6 @@ protected:
   Vector3 m_LinearGravity;  //!< Linear acceleration due to gravity (zero to disable linear gravity)
   float m_PointGravity;     //!< Acceleration due to point gravity (one object is stationary)
   float m_PointGravitation; //!< Gravitation constant for point gravity (both objects are movable)
-
-  float m_DampingFactor; //!< Velocity dampening factor
 
   IBroadphase *m_broadphaseDetection;                    //!< Handler used to find broadphase collision pairs
   std::vector<CollisionPair> m_BroadphaseCollisionPairs; //!< Set of collision paris found in broadphase

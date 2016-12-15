@@ -89,7 +89,6 @@ public:
 
     PhysicsEngine::Instance()->SetBroadphase(new BruteForceBroadphase());
     PhysicsEngine::Instance()->SetGravity(Vector3(0.0f, 0.0f, 0.0f));
-    PhysicsEngine::Instance()->SetDampingFactor(1.0f);
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_LINEARVELOCITY | DEBUGDRAW_FLAGS_LINEARFORCE);
 
     // Create Ground
@@ -120,6 +119,7 @@ public:
 
     m_Sphere->CreatePhysicsNode();
     m_Sphere->Physics()->SetInverseMass(1.f);
+    m_Sphere->Physics()->SetDampingCoefficient(1.0f);
     this->AddGameObject(m_Sphere);
 
     ResetScene(PhysicsEngine::Instance()->GetUpdateTimestep());

@@ -349,6 +349,10 @@ void CourseworkScene::OnInitializeScene()
 
     AddGameObject(m_planet);
 
+    // Planet rotation
+    m_planet->Physics()->SetDampingCoefficient(1.0f);
+    m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.01f, 0.0f));
+
     // Planet atmosphere
     {
       m_atmosphere = new PhysicsObject();
@@ -686,9 +690,6 @@ void CourseworkScene::OnUpdateScene(float dt)
     NCLDebug::AddStatusEntry(Vector4(0.0f, 1.0f, 0.2f, 1.0f), "Score: %5.0f", m_player->GetScoreCounter().GetScore());
     NCLDebug::AddStatusEntry(Vector4(0.0f, 1.0f, 0.2f, 1.0f), "Shots Remaining: %d", m_player->NumShootablesRemaining());
   }
-
-  // Add planet rotation
-  m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.01f, 0.0f));
 }
 
 /**

@@ -20,7 +20,6 @@ void PhysicsEngine::SetDefaults()
   m_LinearGravity = Vector3(0.0f, -9.81f, 0.0f);
   m_PointGravity = -9.81f;
   m_PointGravitation = 6.674e-11f;
-  m_DampingFactor = 0.999f;
   m_integrationType = INTEGRATION_SEMI_IMPLICIT_EULER;
 }
 
@@ -183,6 +182,8 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
 {
   if (obj->IsAwake())
   {
+    float damping = obj->m_dampingCoefficient;
+
     // Apply gravity
     if (obj->m_inverseMass > 0.0f)
     {
@@ -225,7 +226,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
       obj->m_linearVelocity += obj->m_linearForce * obj->m_inverseMass * m_UpdateTimestep;
 
       // Linear velocity damping
-      obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
+      obj->m_linearVelocity = obj->m_linearVelocity * damping;
 
       // Update orientation
       obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
@@ -235,7 +236,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
       obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
 
       // Angular velocity damping
-      obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
+      obj->m_angularVelocity = obj->m_angularVelocity * damping;
 
       break;
     }
@@ -247,7 +248,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
       obj->m_linearVelocity += obj->m_linearForce * obj->m_inverseMass * m_UpdateTimestep;
 
       // Linear velocity damping
-      obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
+      obj->m_linearVelocity = obj->m_linearVelocity * damping;
 
       // Update position
       obj->m_position += obj->m_linearVelocity * m_UpdateTimestep;
@@ -256,7 +257,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
       obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
 
       // Angular velocity damping
-      obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
+      obj->m_angularVelocity = obj->m_angularVelocity * damping;
 
       // Update orientation
       obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
@@ -274,13 +275,13 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
       obj->m_linearVelocity = state.velocity;
 
       // Linear velocity damping
-      obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
+      obj->m_linearVelocity = obj->m_linearVelocity * damping;
 
       // Update angular velocity
       obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
 
       // Angular velocity damping
-      obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
+      obj->m_angularVelocity = obj->m_angularVelocity * damping;
 
       // Update orientation
       obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));
@@ -298,13 +299,13 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject *obj)
       obj->m_linearVelocity = state.velocity;
 
       // Linear velocity damping
-      obj->m_linearVelocity = obj->m_linearVelocity * m_DampingFactor;
+      obj->m_linearVelocity = obj->m_linearVelocity * damping;
 
       // Update angular velocity
       obj->m_angularVelocity += obj->m_inverseInertia * obj->m_torque * m_UpdateTimestep;
 
       // Angular velocity damping
-      obj->m_angularVelocity = obj->m_angularVelocity * m_DampingFactor;
+      obj->m_angularVelocity = obj->m_angularVelocity * damping;
 
       // Update orientation
       obj->m_orientation = obj->m_orientation + (obj->m_orientation * (obj->m_angularVelocity * m_UpdateTimestep * 0.5f));

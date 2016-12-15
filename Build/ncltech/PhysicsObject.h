@@ -90,6 +90,15 @@ public:
   }
 
   /**
+   * @brief Gets the damping factor coefficient.
+   * @return Damping coefficient
+   */
+  inline float GetDampingCoefficient() const
+  {
+    return m_dampingCoefficient;
+  }
+
+  /**
    * @brief Gets the local model bounding box.
    * @return Bounding box
    */
@@ -268,6 +277,15 @@ public:
   inline void SetGravitationTarget(PhysicsObject *obj)
   {
     m_gravitationTarget = obj;
+  }
+
+  /**
+   * @brief Sets the damping factor coefficient for object specific damping factor adjustments.
+   * @param coeff Damping coefficient
+   */
+  inline void SetDampingCoefficient(float coeff)
+  {
+    m_dampingCoefficient = coeff;
   }
 
   /**
@@ -465,6 +483,8 @@ protected:
   bool m_atRest;                        //!< Flag indicating if this object is at rest
   float m_restVelocityThresholdSquared; //!< Squared velocity vector magnitude at which the object is deemed to be stationary
   float m_averageSummedVelocity;        //!< Exponential moving average of sum of magnitudes of linear and angular velocity
+
+  float m_dampingCoefficient; //!< Damping coefficient for velocity
 
   PhysicsObject *m_gravitationTarget; //!< Physical object that this object is attracted to through gravity
 
