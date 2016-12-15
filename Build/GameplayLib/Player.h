@@ -66,6 +66,6 @@ protected:
   StateMachine m_playerStateMachine;      //!< State machine controlling player behaviour
   LocalScore m_score;                     //!< Player's score
   int m_numShootablesRemaining;           //!< Number of things the player has left to shoot
-  float m_shootableLifetime; //!< Lifetime (in seconds) of shootable objects
+  float m_shootableLifetime;              //!< Lifetime (in seconds) of shootable objects
   std::vector<IShootable *> m_shotThings; //!< Things shot by the player
 };

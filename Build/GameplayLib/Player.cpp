@@ -162,7 +162,9 @@ bool Player::HandleSubscription(const std::string & topic, const char * msg, uin
   if (topic == "player/ammo_delta")
   {
     // Offset player ammo
-    m_numShootablesRemaining += std::atoi(msg);
+    int offset;
+    memcpy(&offset, msg, sizeof(int));
+    m_numShootablesRemaining += offset;
   }
   else if (topic == "player/shootable_lifetime")
   {
