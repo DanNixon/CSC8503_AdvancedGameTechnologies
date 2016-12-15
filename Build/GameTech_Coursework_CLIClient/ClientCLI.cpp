@@ -34,7 +34,7 @@ void ClientCLI::InitCLI()
       {PhysicsNetworkController::INV_MASS_NAME, 'F'},        {PhysicsNetworkController::POSITION_NAME, '3'},
       {PhysicsNetworkController::LINEAR_VELOCITY_NAME, '3'}, {PhysicsNetworkController::FORCE_NAME, '3'},
       {PhysicsNetworkController::ORIENTATION_NAME, 'Q'},     {PhysicsNetworkController::ANGULAR_VEL_NAME, '3'},
-      {PhysicsNetworkController::TORQUE_NAME, '3'}};
+      {PhysicsNetworkController::TORQUE_NAME, '3'} };
 
   // Connect command
   {
@@ -85,7 +85,7 @@ void ClientCLI::InitCLI()
 
             switch (VALUE_TYPES[tokens[3]])
             {
-            // Value is float
+              // Value is float
             case 'F':
             {
               float value;
@@ -129,7 +129,7 @@ void ClientCLI::InitCLI()
     };
 
     registerCommand(
-        std::make_shared<Command>("connect", func, 4, "Connects to a server instance. [my port] [server IP] [server port]"));
+      std::make_shared<Command>("connect", func, 4, "Connects to a server instance. [my port] [server IP] [server port]"));
   }
 
   // Disconnect command
@@ -226,7 +226,7 @@ void ClientCLI::InitCLI()
         PhysicsNetworkController::INV_MASS_NAME,        PhysicsNetworkController::POSITION_NAME,
         PhysicsNetworkController::LINEAR_VELOCITY_NAME, PhysicsNetworkController::FORCE_NAME,
         PhysicsNetworkController::ORIENTATION_NAME,     PhysicsNetworkController::ANGULAR_VEL_NAME,
-        PhysicsNetworkController::TORQUE_NAME};
+        PhysicsNetworkController::TORQUE_NAME };
 
     SubCommand_ptr physicsCommands = std::make_shared<SubCommand>("physics", "Physics specific commands.");
     registerCommand(physicsCommands);
@@ -317,7 +317,7 @@ void ClientCLI::InitCLI()
         // Get value
         switch (VALUE_TYPES[valueName])
         {
-        // Value is float
+          // Value is float
         case 'F':
         {
           float value;
@@ -362,7 +362,7 @@ void ClientCLI::InitCLI()
         // Broadcast message
         {
           std::lock_guard<std::mutex> lock(m_broker->Mutex());
-          m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/collsub", msg, len);
+          m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/set", msg, len);
         }
 
         return COMMAND_EXIT_CLEAN;
@@ -573,7 +573,7 @@ void ClientCLI::InitCLI()
       };
 
       gameCommands->registerCommand(
-          std::make_shared<Command>("ammogive", func, 2, "Gives (or takes away) ammo from the player."));
+        std::make_shared<Command>("ammogive", func, 2, "Gives (or takes away) ammo from the player."));
     }
 
     // Set shootable lifetime command
@@ -602,7 +602,38 @@ void ClientCLI::InitCLI()
       };
 
       gameCommands->registerCommand(
-          std::make_shared<Command>("shootablelife", func, 2, "Sets the lifetime of shootable objects (in seconds)."));
+        std::make_shared<Command>("shootablelife", func, 2, "Sets the lifetime of shootable objects (in seconds)."));
+    }
+
+    // Set planet rotation speed
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Generate message
+        std::string idStr = "planet." + PhysicsNetworkController::ANGULAR_VEL_NAME + '=';
+        uint16_t len = (uint16_t)idStr.size() + sizeof(Vector3);
+        char *msg = new char[len];
+        memcpy(msg, idStr.c_str(), (uint16_t)idStr.size());
+        Vector3 value(0.0f, std::stof(argv[1]), 0.0f);
+        memcpy(msg + idStr.size(), &value, sizeof(Vector3));
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/set", msg, len);
+        }
+
+        delete msg;
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      gameCommands->registerCommand(
+        std::make_shared<Command>("planetspeed", func, 2, "Sets the rotational speed of the planet."));
     }
   }
 }
