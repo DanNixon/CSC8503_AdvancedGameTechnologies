@@ -60,6 +60,7 @@ CourseworkScene::CourseworkScene()
     , m_spaceSphere(nullptr)
     , m_testQuad1(nullptr)
     , m_testQuad2(nullptr)
+    , m_softBody(nullptr)
 {
   // Debug draw state machine (overfill for a state machine really...)
   {
@@ -607,6 +608,16 @@ void CourseworkScene::OnInitializeScene()
     }
   }
 
+  // Soft body
+  {
+    m_softBody = CommonUtils::BuildSoftBodyDemo(Vector3(0.0f, PLANET_RADIUS, 0.0f), 10, 10, 2.0f, 2.0f, m_planet->Physics());
+
+    // Fix position to planet
+    PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_softBody->Physics()));
+
+    AddGameObject(m_softBody);
+  }
+
   // Create player
   m_player = new Player(this, m_broker);
 
@@ -666,6 +677,7 @@ void CourseworkScene::OnCleanupScene()
   m_spaceSphere = nullptr;
   m_testQuad1 = nullptr;
   m_testQuad2 = nullptr;
+  m_softBody = nullptr;
 
   Scene::OnCleanupScene();
 }

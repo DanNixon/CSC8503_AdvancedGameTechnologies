@@ -123,21 +123,25 @@ Object *CommonUtils::BuildCuboidObject(const std::string &name, const Vector3 &p
 
 /**
  * @brief Creates a demo soft body mesh.
+ * @param position Position of the soft body structure
  * @param xNodeCount Number of nodes in X axis
  * @param yNodeCount Number of nodes in Y axis
  * @param xNodeSpacing Distence between centres of nodes in X axis
  * @param yNodeSpacing Distence between centres of nodes in Y axis
+ * @param gravity Point gravity target
  */
-Object *CommonUtils::BuildSoftBodyDemo(size_t xNodeCount, size_t yNodeCount, float xNodeSpacing, float yNodeSpacing)
+Object *CommonUtils::BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size_t yNodeCount, float xNodeSpacing, float yNodeSpacing, PhysicsObject * gravity)
 {
   Object *softBody = new Object("soft_body");
+  softBody->CreatePhysicsNode();
 
   float poleLength = (xNodeCount * xNodeSpacing) * 0.5f;
 
   Object *pole =
-      CommonUtils::BuildCuboidObject("", Vector3(poleLength - 1.0f, 20.0f, 0.0f), Vector3(poleLength + 2.0f, 0.25f, 0.25f), true,
-                                     0.0f, true, true, CommonUtils::GenColour(0.45f, 0.5f));
+      CommonUtils::BuildCuboidObject("soft_body_pole", position + Vector3(poleLength - 1.0f, 20.0f, 0.0f), Vector3(poleLength + 2.0f, 0.25f, 0.25f), true,
+                                     0.0f, true, false, CommonUtils::GenColour(0.45f, 0.5f));
   softBody->AddChildObject(pole);
+  pole->Physics()->SetGravitationTarget(gravity);
 
   // Generate soft body cloth mesh
   std::vector<Object *> softBodyNodes;
@@ -151,11 +155,12 @@ Object *CommonUtils::BuildSoftBodyDemo(size_t xNodeCount, size_t yNodeCount, flo
     {
       float x = j * xNodeSpacing;
 
-      Object *node = CommonUtils::BuildSphereObject("", Vector3(x, 19.0f - y, 0.0f), 0.5f, true, 10.0f, true, true,
+      Object *node = CommonUtils::BuildSphereObject("soft_body_node", position + Vector3(x, 19.0f - y, 0.0f), 0.5f, true, 10.0f, true, true,
                                                     CommonUtils::GenColour(0.5f, 1.0f));
       softBody->AddChildObject(node);
       softBodyNodes.push_back(node);
       node->Physics()->WakeUp();
+      node->Physics()->SetGravitationTarget(gravity);
 
       // Add constraint to above node
       if (i > 0)

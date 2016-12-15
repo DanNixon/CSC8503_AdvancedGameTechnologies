@@ -78,8 +78,9 @@ protected:
   ObjectMesh *m_lampPost;      //!< Lamp post object
   ObjectMesh *m_spaceCube;     //!< Space cube
   ObjectMesh *m_spaceSphere;   //!< Space sphere
-  ObjectMesh *m_testQuad1;
-  ObjectMesh *m_testQuad2;
+  ObjectMesh *m_testQuad1; //!< Demo plane 1
+  ObjectMesh *m_testQuad2; //!< Demo plane 2
+  Object *m_softBody; //!< Soft body demo
 
   Player *m_player; //!< Player
 };

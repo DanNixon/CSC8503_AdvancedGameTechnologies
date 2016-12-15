@@ -26,7 +26,7 @@ public:
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT);
 
     // Build soft body
-    Object *sb = CommonUtils::BuildSoftBodyDemo(20, 10, 1.5f, 2.0f);
+    Object *sb = CommonUtils::BuildSoftBodyDemo(Vector3(0.0f, 0.0f, 0.0f), 20, 10, 1.5f, 2.0f);
     AddGameObject(sb);
   }
 };
