@@ -77,7 +77,7 @@ void ClientCLI::InitCLI()
           if (tokens[0] != "physics")
             return false;
 
-          // Is an object update message
+          // Is an object update message?
           if (tokens[1] == "objects")
           {
             std::stringstream ss;
@@ -115,6 +115,12 @@ void ClientCLI::InitCLI()
 
             ss << '\n';
             printf(ss.str().c_str());
+            return true;
+          }
+          // Is a collision notification message?
+          else if (tokens[1] == "collision")
+          {
+            printf("Object \"%s\" collises with \"%s\"", tokens[2].c_str(), msg);
             return true;
           }
 
@@ -380,12 +386,14 @@ void ClientCLI::InitCLI()
           return 1;
         }
 
-        // TODO
+        // Subscribe to responses
+        std::string replyTopic = "physics/collision/" + argv[1];
+        m_broker->Subscribe(m_pubSubClients["physics"], replyTopic);
 
         // Broadcast message
         {
           std::lock_guard<std::mutex> lock(m_broker->Mutex());
-          // m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/collsub", , );
+          m_broker->BroadcastMessage(m_pubSubClients["physics"], "physics/collsub", argv[1].c_str(), (uint16_t) argv[1].size());
         }
 
         return COMMAND_EXIT_CLEAN;

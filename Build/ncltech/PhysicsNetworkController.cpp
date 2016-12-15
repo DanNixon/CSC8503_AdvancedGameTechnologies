@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "PhysicsEngine.h"
 #include "Utility.h"
+#include "PubSubBrokerNetNode.h"
 
 const std::string PhysicsNetworkController::INV_MASS_NAME = "inv_mass";
 const std::string PhysicsNetworkController::POSITION_NAME = "position";
@@ -21,6 +22,7 @@ PhysicsNetworkController::PhysicsNetworkController(PubSubBroker *broker)
     broker->Subscribe(this, "physics/pause");
     broker->Subscribe(this, "physics/get");
     broker->Subscribe(this, "physics/set");
+    broker->Subscribe(this, "physics/collsub");
   }
 }
 
@@ -33,9 +35,9 @@ PhysicsNetworkController::~PhysicsNetworkController()
  */
 bool PhysicsNetworkController::HandleSubscription(const std::string &topic, const char *msg, uint16_t len)
 {
+  // Handle pause/resume
   if (topic == "physics/pause")
   {
-    // Handle pause/resume
     PhysicsEngine::Instance()->SetPaused(((char *)msg)[0] == 'P');
   }
   // Get physical property
@@ -183,8 +185,28 @@ bool PhysicsNetworkController::HandleSubscription(const std::string &topic, cons
   // Subscribe to collision detection
   else if (topic == "physics/collsub")
   {
-    // TODO
-    return false;
+    // Find object
+    PhysicsObject *obj = PhysicsEngine::Instance()->FindObjectByName(std::string(msg));
+    if (obj == nullptr)
+      return false;
+
+    // Add collision handler to flag update
+    obj->AddOnCollisionManifoldCallback([this](PhysicsObject *a, PhysicsObject *b, Manifold *) {
+      Object * oa = a->GetAssociatedObject();
+      Object * ob = b->GetAssociatedObject();
+
+      if (oa != nullptr && ob != nullptr)
+      {
+        auto cp = std::make_pair(oa->GetName(), ob->GetName());
+
+        {
+          std::lock_guard<std::mutex> listLock(m_collisionListMutex);
+          m_collisionList.insert(cp);
+        }
+      }
+    });
+
+    return true;
   }
   else
   {
@@ -192,4 +214,25 @@ bool PhysicsNetworkController::HandleSubscription(const std::string &topic, cons
   }
 
   return true;
+}
+
+void PhysicsNetworkController::PublishCollisionLists()
+{
+  // Lock the broker
+  PubSubBrokerNetNode * netBroker = dynamic_cast<PubSubBrokerNetNode *>(m_broker);
+  if (netBroker != nullptr)
+    std::lock_guard<std::mutex> brokerLock(netBroker->Mutex());
+
+  // Lock the collision list
+  std::lock_guard<std::mutex> listLock(m_collisionListMutex);
+
+  // Publish messages
+  for (auto it = m_collisionList.begin(); it != m_collisionList.end(); ++it)
+  {
+    std::string topic = "physics/collision/" + it->first;
+    m_broker->BroadcastMessage(this, topic, it->second.c_str(), (uint16_t)it->second.size());
+  }
+
+  // Clear list of collisions
+  m_collisionList.clear();
 }

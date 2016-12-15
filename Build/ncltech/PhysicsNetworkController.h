@@ -2,6 +2,10 @@
 
 #include "IPubSubClient.h"
 
+#include <thread>
+#include <mutex>
+#include <set>
+
 class PhysicsNetworkController : public IPubSubClient
 {
 public:
@@ -18,4 +22,12 @@ public:
   virtual ~PhysicsNetworkController();
 
   virtual bool HandleSubscription(const std::string &topic, const char *msg, uint16_t len) override;
+
+  void PublishCollisionLists();
+
+protected:
+  std::thread m_collisionUpdateThread; //!< Thread publishes collision list to broker
+  
+  std::set<std::pair<std::string, std::string>> m_collisionList; //!< Cached list of collisions
+  std::mutex m_collisionListMutex; //!< Mutex for guarding access to collision list
 };

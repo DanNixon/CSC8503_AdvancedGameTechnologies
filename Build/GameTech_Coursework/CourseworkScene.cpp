@@ -578,6 +578,11 @@ void CourseworkScene::OnInitializeScene()
       ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
       m_testQuad1->Physics()->AddCollisionShape(shape);
 
+      m_testQuad1->Physics()->SetOnCollisionCallback([this](PhysicsObject *, PhysicsObject * o) {
+        // No collide with planet
+        return (o != m_planet->Physics());
+      });
+
       m_testQuad1->Physics()->AutoResizeBoundingBox();
       AddGameObject(m_testQuad1);
 
@@ -610,6 +615,11 @@ void CourseworkScene::OnInitializeScene()
 
       ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
       m_testQuad2->Physics()->AddCollisionShape(shape);
+
+      m_testQuad2->Physics()->SetOnCollisionCallback([this](PhysicsObject *, PhysicsObject * o) {
+        // No collide with planet
+        return (o != m_planet->Physics());
+      });
 
       m_testQuad2->Physics()->AutoResizeBoundingBox();
       AddGameObject(m_testQuad2);
@@ -713,6 +723,9 @@ void CourseworkScene::OnUpdateScene(float dt)
     NCLDebug::AddStatusEntry(Vector4(0.0f, 1.0f, 0.2f, 1.0f), "Score: %5.0f", m_player->GetScoreCounter().GetScore());
     NCLDebug::AddStatusEntry(Vector4(0.0f, 1.0f, 0.2f, 1.0f), "Shots Remaining: %d", m_player->NumShootablesRemaining());
   }
+
+  // TODO: move to thread
+  m_physicsNetClient->PublishCollisionLists();
 }
 
 /**
