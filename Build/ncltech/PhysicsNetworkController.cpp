@@ -15,6 +15,7 @@ const std::string PhysicsNetworkController::TORQUE_NAME = "torque";
 
 PhysicsNetworkController::PhysicsNetworkController(PubSubBroker *broker)
     : IPubSubClient(broker)
+    , m_collisionUpdateThreadRunFlag(true)
 {
   // Subscribe to topics
   if (broker != nullptr)
@@ -28,6 +29,7 @@ PhysicsNetworkController::PhysicsNetworkController(PubSubBroker *broker)
 
 PhysicsNetworkController::~PhysicsNetworkController()
 {
+  StopUpdateThread();
 }
 
 /**
@@ -216,6 +218,19 @@ bool PhysicsNetworkController::HandleSubscription(const std::string &topic, cons
   return true;
 }
 
+void PhysicsNetworkController::StartUpdateThread(float updateTime)
+{
+  m_collisionUpdateThread = std::thread(&PhysicsNetworkController::UpdateThreadFunc, this, updateTime);
+}
+
+void PhysicsNetworkController::StopUpdateThread()
+{
+  // Exit the update thread
+  m_collisionUpdateThreadRunFlag = false;
+  if (m_collisionUpdateThread.joinable())
+    m_collisionUpdateThread.join();
+}
+
 void PhysicsNetworkController::PublishCollisionLists()
 {
   // Lock the broker
@@ -235,4 +250,15 @@ void PhysicsNetworkController::PublishCollisionLists()
 
   // Clear list of collisions
   m_collisionList.clear();
+}
+
+void PhysicsNetworkController::UpdateThreadFunc(float updateTime)
+{
+  DWORD sleepTimeMs = ((DWORD) updateTime) / 1000;
+
+  while (m_collisionUpdateThreadRunFlag)
+  {
+    PublishCollisionLists();
+    Sleep(1000);
+  }
 }

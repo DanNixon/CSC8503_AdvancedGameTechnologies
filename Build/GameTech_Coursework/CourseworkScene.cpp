@@ -648,6 +648,9 @@ void CourseworkScene::OnInitializeScene()
     NCLDebug::Log("Connected to server!");
   else
     NCLERROR("Cannot connect to server.");
+
+  // Publish collision detection messages at 15Hz
+  m_physicsNetClient->StartUpdateThread(0.016f);
 }
 
 void CourseworkScene::OnCleanupScene()
@@ -723,9 +726,6 @@ void CourseworkScene::OnUpdateScene(float dt)
     NCLDebug::AddStatusEntry(Vector4(0.0f, 1.0f, 0.2f, 1.0f), "Score: %5.0f", m_player->GetScoreCounter().GetScore());
     NCLDebug::AddStatusEntry(Vector4(0.0f, 1.0f, 0.2f, 1.0f), "Shots Remaining: %d", m_player->NumShootablesRemaining());
   }
-
-  // TODO: move to thread
-  m_physicsNetClient->PublishCollisionLists();
 }
 
 /**
