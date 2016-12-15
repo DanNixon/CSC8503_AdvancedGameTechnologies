@@ -440,7 +440,7 @@ public:
     return handleCollision;
   }
 
-  inline void FireOnCollisionManifoldCallback(PhysicsObject * a, PhysicsObject * b, Manifold * manifold)
+  inline void FireOnCollisionManifoldCallback(PhysicsObject *a, PhysicsObject *b, Manifold *manifold)
   {
     if (m_onCollisionManifoldCallback)
       m_onCollisionManifoldCallback(a, b, manifold);
@@ -488,7 +488,7 @@ protected:
   Vector3 m_torque;          //!< Axis torque
   Matrix3 m_inverseInertia;  //!< Inverse intertia matrix
 
-  std::vector<ICollisionShape *> m_collisionShapes; //!< Collection of collision shapes in this object
-  PhysicsCollisionCallback m_onCollisionCallback;   //!< Collision callback
+  std::vector<ICollisionShape *> m_collisionShapes;          //!< Collection of collision shapes in this object
+  PhysicsCollisionCallback m_onCollisionCallback;            //!< Collision callback
   OnCollisionManifoldCallback m_onCollisionManifoldCallback; //!< Collision callback post manifold generation
 };

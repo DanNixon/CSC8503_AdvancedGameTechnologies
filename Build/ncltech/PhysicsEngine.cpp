@@ -449,10 +449,10 @@ bool PhysicsEngine::SimulationIsAtRest() const
  * @param name Name of the obeject to find
  * @return Pointer to physics object (nullptr if not found)
  */
-PhysicsObject * PhysicsEngine::FindObjectByName(const std::string & name)
+PhysicsObject *PhysicsEngine::FindObjectByName(const std::string &name)
 {
-  auto it = std::find_if(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), [name](PhysicsObject * o) {
-    Object * po = o->GetAssociatedObject();
+  auto it = std::find_if(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), [name](PhysicsObject *o) {
+    Object *po = o->GetAssociatedObject();
     return (po != nullptr && po->GetName() == name);
   });
 

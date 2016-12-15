@@ -8,7 +8,7 @@ const std::string PhysicsNetworkController::INV_MASS_NAME = "inv_mass";
 const std::string PhysicsNetworkController::POSITION_NAME = "position";
 const std::string PhysicsNetworkController::LINEAR_VELOCITY_NAME = "lin_vel";
 const std::string PhysicsNetworkController::FORCE_NAME = "force";
-const std::string PhysicsNetworkController::ORIENTATION_NAME= "orientation";
+const std::string PhysicsNetworkController::ORIENTATION_NAME = "orientation";
 const std::string PhysicsNetworkController::ANGULAR_VEL_NAME = "ang_vel";
 const std::string PhysicsNetworkController::TORQUE_NAME = "torque";
 
@@ -123,7 +123,7 @@ bool PhysicsNetworkController::HandleSubscription(const std::string &topic, cons
         break;
     }
 
-    const char * data = msg + idx + 1;
+    const char *data = msg + idx + 1;
     std::vector<std::string> tokens = Utility::Split(std::string(msg, msg + idx), '.');
     std::string valueName = tokens[1];
 

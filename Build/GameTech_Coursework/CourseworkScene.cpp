@@ -371,7 +371,7 @@ void CourseworkScene::OnInitializeScene()
           b->SetAngularVelocity(b->GetAngularVelocity() * 0.95f);
 
           // Reduce opacity
-          Object * obj = b->GetAssociatedObject();
+          Object *obj = b->GetAssociatedObject();
           if (obj != nullptr)
           {
             Vector4 col = obj->GetColour();

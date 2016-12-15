@@ -263,7 +263,7 @@ public:
 
   bool SimulationIsAtRest() const;
 
-  PhysicsObject * FindObjectByName(const std::string &name);
+  PhysicsObject *FindObjectByName(const std::string &name);
 
 protected:
   PhysicsEngine();

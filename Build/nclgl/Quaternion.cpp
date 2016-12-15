@@ -297,7 +297,7 @@ std::ostream &operator<<(std::ostream &stream, const Quaternion &q)
  * @param stream Stream to read from
  * @param q Quaternion to store values in
  */
-std::istream &operator >> (std::istream &stream, Quaternion &q)
+std::istream &operator>>(std::istream &stream, Quaternion &q)
 {
   float x, y, z, w;
   char delim;

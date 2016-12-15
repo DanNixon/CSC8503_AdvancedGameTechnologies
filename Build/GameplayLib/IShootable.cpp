@@ -1,8 +1,8 @@
 #include "IShootable.h"
 
 #include <ncltech/CommonMeshes.h>
-#include <ncltech/NCLDebug.h>
 #include <ncltech/Manifold.h>
+#include <ncltech/NCLDebug.h>
 
 #include "Player.h"
 
@@ -23,7 +23,7 @@ IShootable::IShootable(Player *owner, float lifetime)
 
   // Collision handler
   {
-    m_pPhysicsObject->SetOnCollisionManifoldCallback([this](PhysicsObject *a, PhysicsObject *b, Manifold * m) {
+    m_pPhysicsObject->SetOnCollisionManifoldCallback([this](PhysicsObject *a, PhysicsObject *b, Manifold *m) {
       // Check if the ball hit the target
       if (b->GetAssociatedObject() != nullptr && b->GetAssociatedObject()->GetName() == "target")
       {

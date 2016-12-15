@@ -1,9 +1,9 @@
 #include <CppUnitTest.h>
 
+#include <nclgl/Quaternion.h>
 #include <nclgl/Vector2.h>
 #include <nclgl/Vector3.h>
 #include <nclgl/Vector4.h>
-#include <nclgl/Quaternion.h>
 
 #include <sstream>
 

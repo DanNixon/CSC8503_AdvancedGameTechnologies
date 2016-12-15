@@ -197,7 +197,7 @@ public:
    * @param stream Stream to read from
    * @param v Vector to store values in
    */
-  inline friend std::istream &operator >> (std::istream &stream, Vector3 &v)
+  inline friend std::istream &operator>>(std::istream &stream, Vector3 &v)
   {
     float x, y, z;
     char delim;
