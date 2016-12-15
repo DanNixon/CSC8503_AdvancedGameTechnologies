@@ -31,8 +31,8 @@ and handle cleanup of Objects yourself.
 */ /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include <nclgl/ICamera.h>
 #include <nclgl/Frustum.h>
+#include <nclgl/ICamera.h>
 #include <nclgl/OGLRenderer.h>
 #include <nclgl/Shader.h>
 

@@ -1,17 +1,21 @@
 #pragma once
 
 #include <mutex>
+#include <thread>
+#include <vector>
+
+// clang-format off
 #include <nclgl\Mesh.h>
 #include <nclgl\CartesianCamera.h>
 #include <nclgl\PolarCamera.h>
+// clang-format on
+
 #include <ncltech\FunctionalPubSubClient.h>
 #include <ncltech\NetSyncStateMachine.h>
 #include <ncltech\ObjectMesh.h>
 #include <ncltech\PhysicsNetworkController.h>
 #include <ncltech\PubSubBrokerNetNode.h>
 #include <ncltech\Scene.h>
-#include <thread>
-#include <vector>
 
 #include <GameplayLib\Player.h>
 

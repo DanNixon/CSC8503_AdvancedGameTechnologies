@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Matrix4.h"
-#include "Vector3.h"
-#include "Quaternion.h"
 #include "Keyboard.h"
+#include "Matrix4.h"
+#include "Quaternion.h"
+#include "Vector3.h"
 
 /**
  * @class ICamera
