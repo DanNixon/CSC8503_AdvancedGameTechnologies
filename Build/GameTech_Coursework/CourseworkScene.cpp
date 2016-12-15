@@ -409,6 +409,7 @@ void CourseworkScene::OnInitializeScene()
     m_lampPost = new ObjectMesh("lamp_post");
 
     m_lampPost->SetMesh(m_lampPostMesh, false);
+    m_lampPost->SetTexture(CommonMeshes::CheckerboardTex(), false); // TODO
 
     m_lampPost->CreatePhysicsNode();
     m_lampPost->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, -1.0f), 90.0f) *
@@ -522,7 +523,28 @@ void CourseworkScene::OnInitializeScene()
 
   // Test quads
   {
-    // TODO
+    // Quad 1
+    {
+      m_testQuad1 = new ObjectMesh("test_plane_1");
+      m_testQuad1->SetMesh(Mesh::GenerateQuadAlt(), true);
+      m_testQuad1->SetTexture(CommonMeshes::CheckerboardTex(), false); // TODO
+      m_testQuad1->SetLocalTransform(Matrix4::Scale(Vector3(10.0f, 10.0f, 10.0f)));
+
+      m_testQuad1->CreatePhysicsNode();
+      m_testQuad1->Physics()->SetPosition(Vector3(PLANET_RADIUS + 3.0f, 0.0f, 0.0f));
+      m_testQuad1->Physics()->SetInverseMass(0.0f);
+
+      //ICollisionShape *shape = new CuboidCollisionShape(DIMENSIONS);
+      //m_testQuad1->Physics()->AddCollisionShape(shape);
+
+      //m_testQuad1->Physics()->AutoResizeBoundingBox();
+      AddGameObject(m_testQuad1);
+    }
+
+    // Quad 2
+    {
+      // TODO
+    }
   }
 
   // Create player
