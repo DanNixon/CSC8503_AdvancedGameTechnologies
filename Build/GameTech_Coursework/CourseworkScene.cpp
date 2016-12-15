@@ -57,6 +57,8 @@ CourseworkScene::CourseworkScene()
     , m_lampPost(nullptr)
     , m_spaceCube(nullptr)
     , m_spaceSphere(nullptr)
+    , m_testQuad1(nullptr)
+    , m_testQuad2(nullptr)
 {
   // Debug draw state machine (overfill for a state machine really...)
   {
@@ -355,7 +357,7 @@ void CourseworkScene::OnInitializeScene()
       // Collision handler
       m_atmosphere->SetOnCollisionCallback([this](PhysicsObject *a, PhysicsObject *b) {
         bool valid = !(b == m_planet->Physics() || b == m_target->Physics() || b == m_lampPost->Physics());
-        
+
         if (valid)
         {
           // Dampen velocity
@@ -518,6 +520,11 @@ void CourseworkScene::OnInitializeScene()
     }
   }
 
+  // Test quads
+  {
+    // TODO
+  }
+
   // Create player
   m_player = new Player(this, m_broker);
 
@@ -570,6 +577,8 @@ void CourseworkScene::OnCleanupScene()
   m_lampPost = nullptr;
   m_spaceCube = nullptr;
   m_spaceSphere = nullptr;
+  m_testQuad1 = nullptr;
+  m_testQuad2 = nullptr;
 
   Scene::OnCleanupScene();
 }
@@ -599,6 +608,9 @@ void CourseworkScene::OnUpdateScene(float dt)
   m_planet->Physics()->SetAngularVelocity(Vector3(0.0f, 0.01f, 0.0f));
 }
 
+/**
+ * @brief Runs the update loop required for the broker network.
+ */
 void CourseworkScene::BrokerNetworkLoop()
 {
   while (m_broker != nullptr)

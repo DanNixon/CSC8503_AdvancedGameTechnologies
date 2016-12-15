@@ -70,12 +70,14 @@ protected:
   Mesh *m_targetMesh;   //!< Graphical mesh for the target
   Mesh *m_lampPostMesh; //!< Graphical mesh for the lamp post
 
-  ObjectMesh *m_planet;         //!< Planet object
-  PhysicsObject * m_atmosphere; //!< Planet atmosphere bounds
-  ObjectMesh *m_target;         //!< Target object
-  ObjectMesh *m_lampPost;       //!< Lamp post object
-  ObjectMesh *m_spaceCube;      //!< Space cube
-  ObjectMesh *m_spaceSphere;    //!< Space sphere
+  ObjectMesh *m_planet;        //!< Planet object
+  PhysicsObject *m_atmosphere; //!< Planet atmosphere bounds
+  ObjectMesh *m_target;        //!< Target object
+  ObjectMesh *m_lampPost;      //!< Lamp post object
+  ObjectMesh *m_spaceCube;     //!< Space cube
+  ObjectMesh *m_spaceSphere;   //!< Space sphere
+  ObjectMesh *m_testQuad1;
+  ObjectMesh *m_testQuad2;
 
   Player *m_player; //!< Player
 };
