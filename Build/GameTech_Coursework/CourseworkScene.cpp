@@ -352,6 +352,7 @@ void CourseworkScene::OnInitializeScene()
     // Planet atmosphere
     {
       m_atmosphere = new PhysicsObject();
+      m_atmosphere->SetCollisionsEnabled(false);
       m_atmosphere->SetPosition(PLANET_POSITION);
 
       // Spherical collision shape bigger than the planet
@@ -368,6 +369,15 @@ void CourseworkScene::OnInitializeScene()
           // Dampen velocity
           b->SetLinearVelocity(b->GetLinearVelocity() * 0.95f);
           b->SetAngularVelocity(b->GetAngularVelocity() * 0.95f);
+
+          // Reduce opacity
+          Object * obj = b->GetAssociatedObject();
+          if (obj != nullptr)
+          {
+            Vector4 col = obj->GetColour();
+            col.w *= (0.995f - (b->GetLinearVelocity().LengthSquared() * 1e-4f));
+            obj->SetColour(col);
+          }
         }
 
         return false;
