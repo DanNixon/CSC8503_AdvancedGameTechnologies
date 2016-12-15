@@ -516,7 +516,7 @@ protected:
   Vector3 m_torque;          //!< Axis torque
   Matrix3 m_inverseInertia;  //!< Inverse intertia matrix
 
-  std::vector<ICollisionShape *> m_collisionShapes;          //!< Collection of collision shapes in this object
-  PhysicsCollisionCallback m_onCollisionCallback;            //!< Collision callback
+  std::vector<ICollisionShape *> m_collisionShapes;                        //!< Collection of collision shapes in this object
+  PhysicsCollisionCallback m_onCollisionCallback;                          //!< Collision callback
   std::vector<OnCollisionManifoldCallback> m_onCollisionManifoldCallbacks; //!< Collision callbacks post manifold generation
 };

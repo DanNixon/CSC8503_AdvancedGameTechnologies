@@ -41,12 +41,12 @@ void TestScene::OnInitializeScene()
 
   //<--- SCENE CREATION --->
   // Create Ground
-  AddGameObject(CommonUtils::BuildCuboidObject("ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false,
-                                  Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+  AddGameObject(CommonUtils::BuildCuboidObject("ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f,
+                                               true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
   // Create Player (See OnUpdateScene)
-  m_pPlayer = CommonUtils::BuildCuboidObject("Player1", Vector3(5.f, 0.5f, 0.0f), Vector3(0.5f, 0.5f, 1.0f), true, 0.0f, true, false,
-                                Vector4(0.1f, 0.1f, 0.1f, 1.0f));
+  m_pPlayer = CommonUtils::BuildCuboidObject("Player1", Vector3(5.f, 0.5f, 0.0f), Vector3(0.5f, 0.5f, 1.0f), true, 0.0f, true,
+                                             false, Vector4(0.1f, 0.1f, 0.1f, 1.0f));
   AddGameObject(m_pPlayer);
 
   auto create_cube_tower = [&](const Vector3 &offset, float cubewidth) {

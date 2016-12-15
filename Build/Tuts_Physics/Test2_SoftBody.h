@@ -1,12 +1,12 @@
 #pragma once
 
-#include <ncltech\OctreeBroadphase.h>
-#include <ncltech\SortAndSweepBroadphase.h>
 #include <ncltech\CommonUtils.h>
 #include <ncltech\DistanceConstraint.h>
+#include <ncltech\OctreeBroadphase.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\Scene.h>
 #include <ncltech\SceneManager.h>
+#include <ncltech\SortAndSweepBroadphase.h>
 
 class Test2_SoftBody : public Scene
 {
@@ -26,7 +26,7 @@ public:
     PhysicsEngine::Instance()->SetDebugDrawFlags(DEBUGDRAW_FLAGS_CONSTRAINT);
 
     // Build soft body
-    Object * sb = CommonUtils::BuildSoftBodyDemo(20, 10, 1.5f, 2.0f);
+    Object *sb = CommonUtils::BuildSoftBodyDemo(20, 10, 1.5f, 2.0f);
     AddGameObject(sb);
   }
 };
