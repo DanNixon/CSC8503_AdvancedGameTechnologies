@@ -114,6 +114,9 @@ Player::Player(Scene *scene, PubSubBroker *broker)
 
   // Set initial state
   Reset();
+
+  // Show highscores
+  m_score.RequestHighscores();
 }
 
 Player::~Player()

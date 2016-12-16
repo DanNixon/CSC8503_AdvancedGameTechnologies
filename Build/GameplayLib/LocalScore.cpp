@@ -69,6 +69,21 @@ void LocalScore::Submit(const std::string &name)
 }
 
 /**
+ * @brief Requests high scores from the sevrer score board.
+ * @param Number of scores to request
+ *
+ * Scores are output onto the in game log.
+ */
+void LocalScore::RequestHighscores(size_t num)
+{
+  if (m_broker != nullptr)
+  {
+    std::string msg = std::to_string(num);
+    m_broker->BroadcastMessage(this, "highscore/list", msg.c_str(), (uint16_t)msg.size());
+  }
+}
+
+/**
  * @brief Resets the score counter to the default score.
  */
 void LocalScore::Reset()

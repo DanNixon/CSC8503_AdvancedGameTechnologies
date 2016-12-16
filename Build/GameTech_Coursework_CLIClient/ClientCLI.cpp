@@ -450,7 +450,7 @@ void ClientCLI::InitCLI()
           m_pubSubClients["highscores"]->SetSubscriptionHandler([&out](const std::string &topic, const char *msg, uint16_t) {
             std::vector<std::string> tokens = Utility::Split(std::string(msg), ',');
 
-            if (tokens.empty())
+            if (tokens.empty() || (tokens.size() % 2) == 1)
             {
               out << "No scores!\n";
             }

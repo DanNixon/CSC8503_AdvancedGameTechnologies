@@ -45,6 +45,7 @@ public:
   }
 
   virtual void Submit(const std::string &name = "Player");
+  virtual void RequestHighscores(size_t num = 5);
   virtual void Reset();
 
   virtual void DeltaPoints(float points);
