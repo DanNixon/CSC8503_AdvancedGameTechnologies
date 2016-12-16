@@ -246,7 +246,7 @@ Quaternion Quaternion::FromMatrix(const Matrix4 &m)
  * @param v2 Second vector
  * @return Rotation
  */
-Quaternion Quaternion::FromVectors(const Vector3 & v1, const Vector3 & v2)
+Quaternion Quaternion::FromVectors(const Vector3 &v1, const Vector3 &v2)
 {
   Quaternion q;
   Vector3 a = Vector3::Cross(v1, v2);
