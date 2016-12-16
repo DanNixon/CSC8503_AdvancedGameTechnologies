@@ -158,7 +158,7 @@ void PhysicsObject::DebugDraw(uint64_t flags) const
     if (m_parent != nullptr)
     {
       Vector4 boundRadiusCol(colour);
-      boundRadiusCol.w = 0.5f;
+      boundRadiusCol.w = 0.2f;
       NCLDebug::DrawPointNDT(GetWorldSpaceTransform().GetPositionVector(), m_parent->GetBoundingRadius(), boundRadiusCol);
     }
   }

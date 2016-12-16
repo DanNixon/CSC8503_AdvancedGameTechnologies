@@ -95,7 +95,7 @@ higher mark will require the implementation of optional elements.
 - [x] Introduce additional objects of a more complex collision shape to the
       environment to demonstrate this functionality, which begin hovering at
       rest, and awaken when collided with.
-- [ ] You will implement networking code to support a client-controlled entity
+- [x] You will implement networking code to support a client-controlled entity
       within your environment. The client will execute on the same computer as
       your simulation (which will be considered the server), and will
       periodically adjust the acceleration of the client-controlled entity
@@ -106,7 +106,7 @@ higher mark will require the implementation of optional elements.
 
 ### Optional
 
-- [ ] You might adjust the physical properties of your simulation based on
+- [x] You might adjust the physical properties of your simulation based on
       proximity to the planetary surface, to represent atmosphere. For example,
       on entering the atmosphere a projectile might begin to slow, turn red and
       possibly break apart. If you do this, ensure there is an option to
