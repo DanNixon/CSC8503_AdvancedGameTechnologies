@@ -16,5 +16,5 @@ public:
                                    bool dragable = true, const Vector4 &color = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
   static Object *BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size_t yNodeCount, float xNodeSpacing = 2.0f,
-                                   float yNodeSpacing = 2.0f, PhysicsObject *gravity = nullptr);
+                                   float yNodeSpacing = 2.0f, PhysicsObject *gravity = nullptr, float k = 0.9f, float d = 0.08f);
 };

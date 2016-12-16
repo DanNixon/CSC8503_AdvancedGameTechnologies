@@ -2,7 +2,7 @@
 
 #include "CommonMeshes.h"
 #include "CuboidCollisionShape.h"
-#include "DistanceConstraint.h"
+#include "SpringConstraint.h"
 #include "ObjectMesh.h"
 #include "ObjectMeshDragable.h"
 #include "PhysicsEngine.h"
@@ -129,9 +129,12 @@ Object *CommonUtils::BuildCuboidObject(const std::string &name, const Vector3 &p
  * @param xNodeSpacing Distence between centres of nodes in X axis
  * @param yNodeSpacing Distence between centres of nodes in Y axis
  * @param gravity Point gravity target
+ * @param k Spring constant
+ * @param d Velocity damping
+ * @return Object containing demo
  */
 Object *CommonUtils::BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size_t yNodeCount, float xNodeSpacing,
-                                       float yNodeSpacing, PhysicsObject *gravity)
+                                       float yNodeSpacing, PhysicsObject *gravity, float k, float d)
 {
   Object *softBody = new Object("soft_body");
   softBody->CreatePhysicsNode();
@@ -168,14 +171,14 @@ Object *CommonUtils::BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size
       {
         Object *o = softBodyNodes[softBodyNodes.size() - xNodeCount - 1];
         PhysicsEngine::Instance()->AddConstraint(
-            new DistanceConstraint(node->Physics(), o->Physics(), node->Physics()->GetPosition(), o->Physics()->GetPosition()));
+            new SpringConstraint(node->Physics(), o->Physics(), node->Physics()->GetPosition(), o->Physics()->GetPosition(), k, d));
 
         // Add constraint to left above node
         if (j > 0)
         {
           Object *o = softBodyNodes[softBodyNodes.size() - xNodeCount - 2];
           PhysicsEngine::Instance()->AddConstraint(
-              new DistanceConstraint(node->Physics(), o->Physics(), node->Physics()->GetPosition(), o->Physics()->GetPosition()));
+              new SpringConstraint(node->Physics(), o->Physics(), node->Physics()->GetPosition(), o->Physics()->GetPosition(), k, d));
         }
       }
       // Add constraint to pole
@@ -184,7 +187,7 @@ Object *CommonUtils::BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size
         Vector3 pos = pole->Physics()->GetPosition();
         pos.x = x;
         PhysicsEngine::Instance()->AddConstraint(
-            new DistanceConstraint(node->Physics(), pole->Physics(), node->Physics()->GetPosition(), pos));
+            new SpringConstraint(node->Physics(), pole->Physics(), node->Physics()->GetPosition(), pos, k, d));
       }
 
       // Add constraint to left node
@@ -192,7 +195,7 @@ Object *CommonUtils::BuildSoftBodyDemo(Vector3 position, size_t xNodeCount, size
       {
         Object *o = softBodyNodes[softBodyNodes.size() - 2];
         PhysicsEngine::Instance()->AddConstraint(
-            new DistanceConstraint(node->Physics(), o->Physics(), node->Physics()->GetPosition(), o->Physics()->GetPosition()));
+            new SpringConstraint(node->Physics(), o->Physics(), node->Physics()->GetPosition(), o->Physics()->GetPosition(), k, d));
       }
     }
   }

@@ -90,7 +90,7 @@ Player::Player(Scene *scene, PubSubBroker *broker)
         State *shoot = new State("shoot", shootCube, &m_playerStateMachine);
         shoot->AddTransferToTest([]() { return !Window::GetKeyboard()->KeyDown(SHOOT_CUBE_KEY); });
         shoot->AddOnEntryBehaviour(
-            [this](State *s) { ShootFromCamera(new ShootableCube(this, m_shootableLifetime), s->TimeInState()); });
+            [this](State *s) { ShootFromCamera(new ShootableCube(this, m_shootableLifetime, Vector3(1.5f, 1.5f, 1.5f)), s->TimeInState()); });
         shoot->AddTransferFromTest(afterShotTransfer);
       }
 
