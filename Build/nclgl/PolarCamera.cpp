@@ -85,3 +85,11 @@ Vector3 PolarCamera::GetPosition() const
   offset += m_origin;
   return offset;
 }
+
+/**
+ * @copydoc ICamera::GetOrientation
+ */
+Quaternion PolarCamera::GetOrientation() const
+{
+  return m_positionalRotation * Quaternion::EulerAnglesToQuaternion(m_pitch, m_yaw, 0.0f);
+}

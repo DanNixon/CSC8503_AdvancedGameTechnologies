@@ -16,6 +16,7 @@ public:
 
   virtual Matrix4 BuildViewMatrix() override;
   virtual Vector3 GetPosition() const override;
+  virtual Quaternion GetOrientation() const override;
 
   void SetDistance(float dist)
   {
