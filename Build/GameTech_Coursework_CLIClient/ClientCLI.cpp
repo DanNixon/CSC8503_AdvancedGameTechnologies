@@ -643,6 +643,35 @@ void ClientCLI::InitCLI()
       gameCommands->registerCommand(
           std::make_shared<Command>("planetspeed", func, 2, "Sets the rotational speed of the planet."));
     }
+
+    // Set camera speed command
+    {
+      auto func = [this](std::istream &in, std::ostream &out, std::vector<std::string> &argv) -> int {
+        if (m_broker == nullptr)
+        {
+          out << "Not connected to a server.\n";
+          return 1;
+        }
+
+        // Generate message
+        uint16_t len = sizeof(float);
+        float value = std::stof(argv[1]);
+        char *msg = new char[len];
+        memcpy(msg, &value, len);
+
+        // Broadcast message
+        {
+          std::lock_guard<std::mutex> lock(m_broker->Mutex());
+          m_broker->BroadcastMessage(m_pubSubClients["basic"], "player/camera_speed", msg, len);
+        }
+
+        delete msg;
+        return COMMAND_EXIT_CLEAN;
+      };
+
+      gameCommands->registerCommand(
+        std::make_shared<Command>("camspeed", func, 2, "Sets the speed of camera movement."));
+    }
   }
 }
 

@@ -64,6 +64,10 @@
 
   Sets the speed of rotation of the planet.
 
+- `game camspeed [speed]`
+
+  Sets the movement speed of the currently active player camera.
+
 ## Physical value names
 
 - `inv_mass` (float)

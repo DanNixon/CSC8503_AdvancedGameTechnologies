@@ -644,10 +644,6 @@ void CourseworkScene::OnInitializeScene()
 // Soft body
 {
   m_softBody = CommonUtils::BuildSoftBodyDemo(Vector3(0.0f, PLANET_RADIUS, 0.0f), 10, 10, 2.0f, 2.0f, m_planet->Physics());
-
-  // Fix position to planet
-  PhysicsEngine::Instance()->AddConstraint(new WeldConstraint(m_planet->Physics(), m_softBody->Physics()));
-
   AddGameObject(m_softBody);
 }
 

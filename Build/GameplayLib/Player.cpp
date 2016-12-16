@@ -17,6 +17,7 @@ Player::Player(Scene *scene, PubSubBroker *broker)
   {
     broker->Subscribe(this, "player/ammo_delta");
     broker->Subscribe(this, "player/shootable_lifetime");
+    broker->Subscribe(this, "player/camera_speed");
   }
 
   // State machine
@@ -175,6 +176,13 @@ bool Player::HandleSubscription(const std::string &topic, const char *msg, uint1
   {
     // Set shootable lifetime
     memcpy(&m_shootableLifetime, msg, sizeof(float));
+  }
+  else if (topic == "player/camera_speed")
+  {
+    // Set the camera movement speed
+    float speed;
+    memcpy(&speed, msg, sizeof(float));
+    SceneManager::Instance()->GetCamera()->SetSpeed(speed);
   }
   else
   {
