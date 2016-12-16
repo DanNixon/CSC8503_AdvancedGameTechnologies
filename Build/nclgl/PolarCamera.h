@@ -17,6 +17,11 @@ public:
   virtual Matrix4 BuildViewMatrix() override;
   virtual Vector3 GetPosition() const override;
 
+  void SetDistance(float dist)
+  {
+    m_distance = dist;
+  }
+
 protected:
   Vector3 m_origin;                //!< Origin point in Cartesian coordinate space
   Quaternion m_positionalRotation; //!< ROtation about otigin point

@@ -6,6 +6,8 @@
  * @brief Creates a new camera in PolarCamera coordinate space.
  */
 PolarCamera::PolarCamera()
+  : m_origin(0.0f, 0.0f, 0.0f)
+  , m_distance(0.0f)
 {
 }
 
@@ -21,22 +23,41 @@ void PolarCamera::HandleKeyboard(float dt)
   if (!m_handleInput)
     return;
 
-  float speed = 3.5f * dt; // 3.5m per second
+  float speed = m_speed * dt;
 
-// TODO
-#if 0
+  Matrix4 orientation = GetOrientation().ToMatrix4();
+  Vector3 targetPos = GetPosition();
+  bool targetPosChanged = false;
+
   if (Window::GetKeyboard()->KeyDown(CAMERA_FORWARDS))
-    m_position += Matrix4::Rotation(m_yaw, Vector3(0, 1, 0)) * Vector3(0, 0, -1) * speed;
+  {
+    targetPos += -orientation.GetBackVector() * speed;
+    targetPosChanged = true;
+  }
 
   if (Window::GetKeyboard()->KeyDown(CAMERA_BACKWARDS))
-    m_position -= Matrix4::Rotation(m_yaw, Vector3(0, 1, 0)) * Vector3(0, 0, -1) * speed;
+  {
+    targetPos += orientation.GetBackVector() * speed;
+    targetPosChanged = true;
+  }
 
   if (Window::GetKeyboard()->KeyDown(CAMERA_LEFT))
-    m_position += Matrix4::Rotation(m_yaw, Vector3(0, 1, 0)) * Vector3(-1, 0, 0) * speed;
+  {
+    targetPos += -orientation.GetRightVector() * speed;
+    targetPosChanged = true;
+  }
 
   if (Window::GetKeyboard()->KeyDown(CAMERA_RIGHT))
-    m_position -= Matrix4::Rotation(m_yaw, Vector3(0, 1, 0)) * Vector3(-1, 0, 0) * speed;
-#endif
+  {
+    targetPos += orientation.GetRightVector() * speed;
+    targetPosChanged = true;
+  }
+
+  if (targetPosChanged)
+  {
+    Vector3 originalPos = GetPosition();
+    m_positionalRotation = m_positionalRotation * Quaternion::FromVectors(originalPos, targetPos);
+  }
 
   if (Window::GetKeyboard()->KeyDown(CAMERA_UP))
     m_distance += speed;
@@ -50,12 +71,17 @@ void PolarCamera::HandleKeyboard(float dt)
  */
 Matrix4 PolarCamera::BuildViewMatrix()
 {
-  // TODO
-  return Matrix4();
+  return Matrix4::Rotation(-m_pitch, Vector3(1, 0, 0)) * Matrix4::Rotation(-m_yaw, Vector3(0, 1, 0)) *
+    Matrix4::Translation(Vector3(0.0f, -m_distance, 0.0f)) * m_positionalRotation.Inverse().ToMatrix4();
 }
 
+/**
+ * @copydoc ICamera::GetPosition
+ */
 Vector3 PolarCamera::GetPosition() const
 {
-  // TODO
-  return Vector3();
+  Vector3 offset(0.0f, m_distance, 0.0f);
+  Quaternion::RotatePointByQuaternion(m_positionalRotation, offset);
+  offset += m_origin;
+  return offset;
 }

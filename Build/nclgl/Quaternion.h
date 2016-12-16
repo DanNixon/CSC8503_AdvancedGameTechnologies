@@ -63,6 +63,7 @@ public:
   static void RotatePointByQuaternion(const Quaternion &q, Vector3 &point);
 
   static Quaternion FromMatrix(const Matrix4 &m);
+  static Quaternion FromVectors(const Vector3 &v1, const Vector3 &v2);
 
   static float Dot(const Quaternion &a, const Quaternion &b);
 

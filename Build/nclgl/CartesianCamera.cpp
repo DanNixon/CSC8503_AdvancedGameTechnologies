@@ -27,7 +27,7 @@ void CartesianCamera::HandleKeyboard(float dt)
   if (!m_handleInput)
     return;
 
-  float speed = 3.5f * dt; // 3.5m per second
+  float speed = m_speed * dt;
 
   // Bounds check the pitch, to be between straight up and straight down ;)
   if (m_yaw < 0)

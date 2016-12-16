@@ -7,6 +7,7 @@
  */
 ICamera::ICamera()
     : m_handleInput(true)
+    , m_speed(3.5f)
     , m_pitch(0.0f)
     , m_yaw(0.0f)
 {

@@ -240,6 +240,24 @@ Quaternion Quaternion::FromMatrix(const Matrix4 &m)
   return q;
 }
 
+/**
+ * @brief Creates a quaternion from the rotation between two vectors.
+ * @param v1 First vector
+ * @param v2 Second vector
+ * @return Rotation
+ */
+Quaternion Quaternion::FromVectors(const Vector3 & v1, const Vector3 & v2)
+{
+  Quaternion q;
+  Vector3 a = Vector3::Cross(v1, v2);
+  q.x = a.x;
+  q.y = a.y;
+  q.z = a.z;
+  q.w = v1.LengthSquared() + v2.LengthSquared() + Vector3::Dot(v1, v2);
+  q.Normalise();
+  return q;
+}
+
 Quaternion Quaternion::Interpolate(const Quaternion &start, const Quaternion &end, float factor)
 {
   // Clamp interpolation between start and end

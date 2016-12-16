@@ -42,6 +42,24 @@ public:
     m_handleInput = enable;
   }
 
+  /**
+   * @brief Gets speed of movement.
+   * @return Speed
+   */
+  inline float GetSpeed() const
+  {
+    return m_speed;
+  }
+
+  /**
+   * @brief Sets speed of movement.
+   * @param speed Speed
+   */
+  void SetSpeed(float speed)
+  {
+    m_speed = speed;
+  }
+
   virtual void HandleMouse(float dt);
 
   /**
@@ -104,6 +122,7 @@ public:
 
 protected:
   bool m_handleInput; //!< Flag indicating if input should be handled
+  float m_speed;      //!< Movement speed
 
   float m_pitch; //!< Pitch view angle
   float m_yaw;   //!< Yaw view angle

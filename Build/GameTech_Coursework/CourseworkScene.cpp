@@ -333,6 +333,8 @@ void CourseworkScene::OnInitializeScene()
     m_cartesianCamera = new CartesianCamera(0.0f, 0.0f, Vector3(PLANET_RADIUS + 5.0f, 0.0f, 0.0f));
     m_polarCamera = new PolarCamera();
 
+    m_polarCamera->SetDistance(PLANET_RADIUS + 2.0f);
+
     // Delete the default camera
     delete SceneManager::Instance()->GetCamera();
 
